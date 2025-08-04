@@ -93,11 +93,29 @@
             .social-links {
               flex-direction: column !important;
               align-items: stretch !important;
+              width: 100%;
+              padding: 0 1rem;
             }
             .social-links .cta-btn {
               width: 100%;
+              max-width: 100%;
               justify-content: center;
             }
+          }
+          .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            max-width: 100%;
+            box-sizing: border-box;
+          }
+          .social-links .cta-btn {
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
           .social-links .cta-btn img {
             filter: invert(1);
@@ -115,7 +133,7 @@
           .hero-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.1); /* less dark */
+            background: rgba(0,0,0,0.2); /* less dark */
             z-index: 1;
           }
           

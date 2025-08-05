@@ -171,6 +171,10 @@ body {
   margin: 2rem auto 2rem;
   max-width: 900px;
   border-radius: 0;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  top: 0;
+  position: relative;
 }
 .hero p {
   font-size: 1.35rem;

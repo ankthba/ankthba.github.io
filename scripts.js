@@ -14,26 +14,46 @@ document.querySelectorAll('.navbar-links a[href^="#"]').forEach(link => {
     });
   });
   
-  // Theme toggler (dark/light)
+  // Theme toggler (auto/light/dark)
   const themeToggle = document.getElementById('theme-toggle');
   const root = document.documentElement;
-  
+  const mql = window.matchMedia('(prefers-color-scheme: dark)');
+
   function setTheme(theme) {
+    // theme: 'auto' | 'light' | 'dark'
     root.setAttribute('data-theme', theme);
+    const effective = theme === 'auto' ? (mql.matches ? 'dark' : 'light') : theme;
+    root.style.colorScheme = effective;
     localStorage.setItem('theme', theme);
   }
-  
+
   function getTheme() {
-    return localStorage.getItem('theme') || 'dark';
+    return localStorage.getItem('theme') || 'auto';
   }
-  
-  themeToggle.addEventListener('click', () => {
-    const newTheme = getTheme() === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
+
+  function syncThemeUI(theme) {
+    if (themeToggle) themeToggle.value = theme;
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('change', (e) => {
+      const t = e.target.value;
+      setTheme(t);
+    });
+  }
+
+  mql.addEventListener && mql.addEventListener('change', () => {
+    if (getTheme() === 'auto') setTheme('auto');
   });
-  
+  // Safari fallback
+  mql.addListener && mql.addListener(() => {
+    if (getTheme() === 'auto') setTheme('auto');
+  });
+
   window.addEventListener('DOMContentLoaded', () => {
-    setTheme(getTheme());
+    const initial = getTheme();
+    setTheme(initial);
+    syncThemeUI(initial);
   });
   
   // Contact form handler

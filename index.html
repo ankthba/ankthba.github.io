@@ -27,7 +27,7 @@
     <section id="home" class="hero" style="background-image: url('hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
       <div class="hero-overlay"></div>
       <h1>Hey, I'm Aniketh 👋</h1>
-      <p>President @ OCRadar, Ohm | EE+CS</p>
+      <p>President @ OCRadar, Ohm | EECS</p>
       <img src="aniketh.jpeg" alt="Aniketh profile picture" class="profile-pic">
       <br>
       <br>
@@ -142,7 +142,13 @@
   </main>
   <footer>
     <span>&copy; 2025 Aniketh</span>
+    <label for="theme-toggle" class="visually-hidden">Theme</label>
+    <select id="theme-toggle" aria-label="Theme" style="margin-left: .75rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
+      <option value="auto">Auto</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
   </footer>
-  <script src="script.js"></script>
+  <script src="scripts.js" defer></script>
 </body>
 </html>

@@ -33,6 +33,9 @@
           <div class="card">
             <h3>Ohm Hardware, Founder</h3>
             <p>Designing intelligent embedded systems that combine advanced PCB layout, circuit design, and software integration. Creator of Ohm AI, a tool that turns natural language into manufacturable circuit boards.</p>
+            <div class="actions">
+              <a class="btn button" href="https://ohmhardware.github.io/" target="_blank" rel="noopener noreferrer">Visit site</a>
+            </div>
           </div>
           <div class="card">
             <h3>PCB Design</h3>
@@ -52,6 +55,9 @@
           <div class="card">
             <h3>OCRadar, CEO & President</h3>
             <p>AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
+            <div class="actions">
+              <a class="btn button" href="https://ocradar.com/" target="_blank" rel="noopener noreferrer">Visit site</a>
+            </div>
           </div>
           <div class="card">
             <h3>Ohm AI</h3>
@@ -62,8 +68,11 @@
             <p>Developing a novel research benchmark to evaluate how memory-augmented LLMs handle temporal reasoning, dynamic event updates, and long-term workflows. Focuses on probing the limits of architectures like A-Mem and MIRIX using multi-session dialogue simulation, timeline extraction, and custom temporal logic tasks.</p>
           </div>
           <div class="card">
-            <h3>Full Stack Web Dev</h3>
-            <p>Building modern, responsive websites and web applications for clients. Specializing in custom frontend design, backend development, and seamless deployment, delivering fast, secure, and scalable solutions.</p>
+            <h3>IllumiSign: Eye-Tracking Communication Software</h3>
+            <p>IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.</p>
+            <div class="actions">
+              <a class="btn button" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener noreferrer">View project</a>
+            </div>
           </div>
         </div>
       </section>
@@ -73,8 +82,11 @@
           <h2>Mechatronics</h2>
           <div class="cards">
             <div class="card">
-              <h3>FRC Robotics, Former Software Lead</h3>
+              <h3>FRC Robotics, Software Lead</h3>
               <p>Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.</p>
+              <div class="actions">
+                <a class="btn button" href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener noreferrer">View repo</a>
+              </div>
             </div>
             <div class="card">
               <h3>FTC Robotics, Team Captain</h3>
@@ -91,7 +103,13 @@
   </main>
   <footer>
     <span>&copy; 2025 Aniketh</span>
+    <label for="theme-toggle" class="visually-hidden">Theme</label>
+    <select id="theme-toggle" aria-label="Theme" style="margin-left: .75rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
+      <option value="auto">Auto</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
   </footer>
-  <script src="scripts.js"></script>
+  <script src="scripts.js" defer></script>
 </body>
 </html>

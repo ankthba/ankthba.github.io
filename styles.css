@@ -136,9 +136,9 @@ h1, h2, h3, h4, h5, h6,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(10, 10, 10, 0.2);
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  background: rgba(10, 10, 10, 0.5);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
   padding: 0 2rem;
   height: 68px;
   border-bottom: 1px solid var(--color-border);
@@ -860,7 +860,7 @@ footer select {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0,0,0,0.1);
   pointer-events: none;
   z-index: 0;
 }

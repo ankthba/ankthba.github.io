@@ -36,9 +36,8 @@
 
 /* Theme palettes: default to 'auto' (follow system) */
 :root, :root[data-theme="auto"] {
-  /* Light defaults */
-  --color-bg: #ffffff;
-  --color-bg-alt: #ffffff;
+  --color-bg: #f5f5f7;        /* was #ffffff */
+  --color-bg-alt: #f5f5f7;
   --color-card: #ffffff;
   --color-primary: #111111;
   --color-secondary: #111111;
@@ -51,9 +50,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #000000;
-    --color-bg-alt: #000000;
-    --color-card: #000000;
+    --color-bg: #000;
+    --color-bg-alt: #000;
+    --color-card: #191919;
     --color-primary: #ffffff;
     --color-secondary: #ffffff;
     --color-accent: #ffffff;
@@ -66,8 +65,8 @@
 
 /* Explicit overrides */
 :root[data-theme="light"] {
-  --color-bg: #ffffff;
-  --color-bg-alt: #ffffff;
+  --color-bg: #f5f5f7;        /* was #ffffff */
+  --color-bg-alt: #f5f5f7;
   --color-card: #ffffff;
   --color-primary: #111111;
   --color-secondary: #111111;
@@ -78,9 +77,9 @@
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --color-bg: #000000;
-  --color-bg-alt: #000000;
-  --color-card: #000000;
+  --color-bg: #000;
+  --color-bg-alt: #000;
+  --color-card: #191919;
   --color-primary: #ffffff;
   --color-secondary: #ffffff;
   --color-accent: #ffffff;
@@ -137,7 +136,7 @@ h1, h2, h3, h4, h5, h6,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(10, 10, 10, 0.25);
+  background: rgba(10, 10, 10, 0.2);
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   padding: 0 2rem;
@@ -309,16 +308,18 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+
+  /* Full-bleed */
+  width: 100%;
+  max-width: none;
+  margin: 0;
   padding: 4rem 2rem 3rem;
+
   background: var(--color-bg-alt);
   box-shadow: none;
-  margin: 2rem auto 2rem;
-  max-width: 900px;
   border-radius: 0;
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  top: 0;
   position: relative;
+  top: 0;
 }
 .hero p {
   font-size: 1.35rem;
@@ -396,6 +397,22 @@ body {
   font-family: var(--font-sans);
 }
 .card-link:hover {
+  background: var(--color-primary);
+  color: var(--color-bg);
+}
+.cta-btn,
+.card-link,
+.button,
+.btn,
+form button[type="submit"] {
+  background: var(--color-card);
+}
+
+.cta-btn:hover,
+.card-link:hover,
+.button:hover,
+.btn:hover,
+form button[type="submit"]:hover {
   background: var(--color-primary);
   color: var(--color-bg);
 }
@@ -676,3 +693,519 @@ footer select {
   color: inherit;
   border: 1px solid currentColor;
 }
+
+/* Hero section centering */
+.hero,
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;      /* vertical center */
+  align-items: center;          /* horizontal center */
+  text-align: center;
+  min-height: clamp(500px, 90vh, 900px);
+  padding: 4rem 1.5rem;
+  margin: 0 auto;
+  max-width: 1100px;
+  gap: 1.5rem;
+}
+
+.hero img,
+.hero-section img {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero .buttons,
+.hero-section .buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero .buttons a,
+.hero .buttons button,
+.hero-section .buttons a,
+.hero-section .buttons button {
+  text-align: center;
+}
+
+/* If the hero container was inside something restricting centering */
+.hero > *:not(img),
+.hero-section > *:not(img) {
+  max-width: 800px;
+}
+
+/* --- Full-bleed hero override (place AFTER previous .hero rules) --- */
+.hero,
+.hero-section {
+  position: relative;
+  width: 100%;
+  max-width: none;          /* override earlier max-width */
+  margin: 0;
+  padding: 0;               /* inner wrapper will handle padding */
+  overflow: hidden;
+}
+
+.hero::before,
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(/path/to/your/hero.jpg) center/cover no-repeat;
+  /* optional dark overlay */
+  background-blend-mode: multiply;
+  z-index: 0;
+  /* If you want a tint: */
+  /* background-color: rgba(0,0,0,0.25); */
+}
+
+.hero img.hero-bg,
+.hero-section img.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Inner constrained content */
+.hero-inner,
+.hero-section .hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(500px, 90vh, 900px);
+  text-align: center;
+  gap: 1.5rem;
+}
+
+/* Buttons row still centered */
+.hero-inner .buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Remove earlier width cap on direct children if present */
+.hero > *:not(.hero-inner),
+.hero-section > *:not(.hero-inner) {
+  /* no constraints */
+}
+
+/* --- Hero adjustments (override previous rules) --- */
+.hero,
+.hero-section {
+  position: relative;
+  /* Remove prior gradient+image stacked backgrounds; force only image */
+  background: url('hero.webp') center / cover no-repeat !important;
+  min-height: clamp(340px, 50vh, 560px) !important;
+  padding: 2.75rem 1.25rem 2.25rem !important;
+  gap: 1.1rem !important;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.2);              /* uniform dark filter */
+  pointer-events: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero img.profile-pic {
+  margin: 0.5rem auto 0;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 400px;
+    padding: 2.2rem 1rem 2rem;
+  }
+}
+
+/* --- Hero cleanup & full overlay (index + shared) --- */
+.hero,
+.hero-section {
+  position: relative;
+  /* Remove prior gradient+image stacked backgrounds; force only image */
+  background: url('hero.webp') center / cover no-repeat !important;
+  min-height: clamp(340px, 50vh, 560px) !important;
+  padding: 2.75rem 1.25rem 2.25rem !important;
+  gap: 1.1rem !important;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Full dark overlay (single source of truth) */
+.hero::before,
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Neutralize any previous partial overlays */
+.hero::after,
+.hero-section::after,
+.hero-overlay,
+.hero .hero-overlay,
+.hero-section .hero-overlay {
+  display: none !important;
+}
+
+/* Ensure stacking of content above overlay */
+.hero > * ,
+.hero-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* If an existing .hero-overlay div remains in HTML, repurpose it safely */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55) !important;
+  pointer-events: none;
+}
+
+/* Mobile tweak */
+@media (max-width: 600px) {
+  .hero,
+  .hero-section {
+    min-height: 400px !important;
+    padding: 2.3rem 1rem 2rem !important;
+  }
+}
+
+/* --- Hero full-bleed width override --- */
+.hero,
+.hero-section {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Optional: limit text line length while keeping full-bleed background.
+   Uncomment if you want narrower centered content.
+.hero > *:not(:where(.hero::before)),
+.hero-section > * {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+*/
+
+/* Center hero inner content */
+.hero,
+.hero-section {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero img.profile-pic {
+  display: block;
+  margin: 0.5rem auto 0;
+}
+
+/* Hero centering override (add near end of file) */
+.hero,
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertical centering */
+  align-items: center;       /* horizontal centering */
+  text-align: center;        /* center text */
+}
+
+.hero img,
+.hero-section img {
+  display: block;
+  margin: 0 auto;
+}
+
+.hero .btn,
+.hero-section .btn {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Center hero content */
+main > section:first-of-type {
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* horizontal centering */
+  justify-content: center;
+  text-align: center;
+  padding-left: 0;              /* in case a global section pad is asymmetric */
+  padding-right: 0;
+}
+
+/* Optional: wrap hero content in a container if you have many wide elements */
+main > section:first-of-type > .hero-inner {
+  max-width: 960px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 0 1.25rem;
+}
+
+/* Make inline avatar + heading groups center nicely */
+main > section:first-of-type h1,
+main > section:first-of-type h2,
+main > section:first-of-type p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* If an image (profile picture) is floating or inline with unexpected baseline */
+main > section:first-of-type img.profile,
+main > section:first-of-type img[alt*="profile" i] {
+  display: block;
+  margin: 1rem auto;
+}
+
+/* Buttons row centering */
+main > section:first-of-type .cta-group,
+main > section:first-of-type .buttons,
+main > section:first-of-type nav {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Safety: remove stray left/right margins on direct children */
+main > section:first-of-type > * {
+  margin-left: 0;
+}
+
+/* TEMP (uncomment to debug bounding box)
+// main > section:first-of-type { outline: 1px dashed magenta; }
+// main > section:first-of-type > * { outline: 1px dashed cyan; }
+*/
+
+/* --- HERO RESET (remove earlier conflicting hero rules) --- */
+/* Neutralize previous hero flex attempts */
+main > section:first-of-type,
+.hero,
+.hero-section {
+  all: unset;
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100dvh;                 /* full viewport height */
+  padding: clamp(2.5rem, 6vh, 5rem) 1.25rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  /* Preserve prior forced light text */
+  --color-text: #fff;
+  --color-primary: #fff;
+  --color-secondary: #fff;
+  --color-accent: #fff;
+  --color-muted: #f3f4f6;
+  --color-border: #ffffff;
+  color: var(--color-text);
+}
+
+/* Inner width constraint */
+main > section:first-of-type > .hero-inner,
+.hero > .hero-inner,
+.hero-section > .hero-inner {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 1.2vh, 1.25rem);
+}
+
+/* Headings & text spacing */
+.hero-inner h1,
+.hero-inner h2,
+.hero-inner p,
+.hero-inner .tagline {
+  margin: 0;
+  max-width: 48ch;
+}
+
+.hero-inner h1 {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero-inner h2 {
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.hero-inner p {
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  opacity: 0.85;
+}
+
+/* Profile image */
+.hero-inner .profile-pic,
+.hero-inner img.profile,
+.hero-inner img[alt*="profile" i] {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 0 0.75rem;
+  border: 2px solid rgba(255,255,255,0.6);
+  box-shadow: 0 4px 18px -6px rgba(0,0,0,0.55);
+}
+
+/* Buttons / CTA group */
+.hero-inner .cta-group,
+.hero-inner .buttons,
+.hero-inner nav.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.hero-inner .cta-group a,
+.hero-inner a.cta-btn,
+.hero-inner button.cta-btn {
+  text-decoration: none;
+  padding: 0.7rem 1.15rem;
+  font-size: 0.95rem;
+  line-height: 1.1;
+  border-radius: 999px;
+  border: 1px solid #fff;
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  backdrop-filter: blur(6px) brightness(1.15);
+  -webkit-backdrop-filter: blur(6px) brightness(1.15);
+  transition: background .25s, color .25s, border-color .25s;
+}
+
+.hero-inner .cta-group a:hover,
+.hero-inner a.cta-btn:hover,
+.hero-inner button.cta-btn:hover {
+  background: #fff;
+  color: #000;
+  border-color: #000;
+}
+
+/* Specific Projects button rule (retain intent) */
+.hero-inner a.cta-btn[href*="projects"] {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+}
+.hero-inner a.cta-btn[href*="projects"]:hover {
+  background: #fff;
+  color: #000;
+  border-color: #000;
+}
+
+/* Social icons row */
+.hero-inner .social,
+.hero-inner ul.social {
+  list-style: none;
+  display: flex;
+  gap: 0.9rem;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.hero-inner .social a {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.1);
+  transition: background .25s, border-color .25s;
+}
+
+.hero-inner .social a:hover {
+  background: #fff;
+  border-color: #fff;
+}
+
+.hero-inner .social a img,
+.hero-inner .social a svg {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+  transition: filter .25s;
+}
+
+.hero-inner .social a:hover img,
+.hero-inner .social a:hover svg {
+  filter: none;
+}
+
+/* Prevent stray horizontal shift if global sections use side padding */
+body,
+main,
+main > section:first-of-type {
+  margin: 0;
+}
+
+/* Small screens adjustments */
+@media (max-width: 600px) {
+  .hero-inner h1 { font-size: clamp(2.1rem, 9vw, 2.75rem); }
+  .hero-inner h2 { font-size: 1.05rem; }
+  .hero-inner .cta-group a,
+  .hero-inner a.cta-btn { width: auto; }
+}
+
+/* Optional subtle overlay if there's a background image */
+main > section:first-of-type::after,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+  pointer-events: none;
+  z-index: 0;
+}
+
+main > section:first-of-type > .hero-inner,
+.hero > .hero-inner {
+  position: relative;
+  z-index: 1;
+}
+

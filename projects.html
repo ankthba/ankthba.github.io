@@ -14,9 +14,9 @@
   <nav class="navbar">
     <div class="navbar-logo"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
-      <li style="margin: 0 1rem;"><a href="index.html">Home</a></li>
-      <li style="margin: 0 1rem;"><a href="#projects" class="active">Projects</a></li>
-    <li style="margin: 0 1rem;"><a href="index.html#contact">Contact</a></li>
+      <li style="margin: 0 1rem;"><a href="index.html" class="active">Home</a></li>
+      <li style="margin: 0 1rem;"><a href="projects.html">Projects</a></li>
+      <li style="margin: 0 1rem;"><a href="photos.html">Photos</a></li>
     </ul>
   </nav>
 
@@ -99,6 +99,120 @@
     <br>
     <br>
     <br>
+
+
+    <!-- Scrolling Featured Banner -->
+    <style>
+      .featured-banner {
+        width: 100%;
+        background: #000;
+        color: #fff;
+      }
+      .featured-banner .featured-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem 1rem 1.25rem;
+      }
+      .featured-banner .featured-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        margin: 0 0 0.5rem 0;
+        color: #fff;
+        opacity: 0.9;
+      }
+      .logo-scroller {
+        position: relative;
+        overflow: hidden;
+        padding: 0.5rem 0;
+        /* edge fade */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+      }
+      .logo-track {
+        display: flex;
+        align-items: center;
+        gap: 2rem; /* adjust spacing as desired */
+        width: max-content;
+        will-change: transform;
+        animation: marquee var(--marquee-duration, 40s) linear infinite;
+      }
+
+      @keyframes marquee {
+        0%   { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } /* 50% fallback */
+      }
+
+      .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
+      .logo-img:hover { opacity: 1; }
+    
+      @media (prefers-reduced-motion: reduce) {
+        .logo-track { animation: none; }
+      }
+    </style>
+    
+    <section class="featured-banner" aria-label="Featured and recognized by">
+      <div class="featured-inner">
+        <h2 style="text-align: center;">Featured & Recognized</h2>
+        <div class="logo-scroller" aria-hidden="true">
+          <div class="logo-track">
+            <!-- one set only; JS will duplicate this set -->
+            <img class="logo-img" src="logos/airfrance.png" alt="Air France">
+            <img class="logo-img" src="logos/ana.png" alt="ANA">
+            <img class="logo-img" src="logos/antonov.png" alt="Antonov">
+            <img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK">
+            <img class="logo-img" src="logos/british.png" alt="British Airways">
+            <img class="logo-img" src="logos/dulles.png" alt="Dulles Airport">
+            <img class="logo-img" src="logos/emirates.png" alt="Emirates">
+            <img class="logo-img" src="logos/fcps.png" alt="FCPS">
+            <img class="logo-img" src="logos/klm.png" alt="KLM">
+            <img class="logo-img" src="logos/korean.png" alt="Korean Air">
+            <img class="logo-img" src="logos/koreatimes.png" alt="Korea Times">
+            <img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa">
+            <img class="logo-img" src="logos/mwaa.png" alt="MWAA">
+            <img class="logo-img" src="logos/porter.png" alt="Porter">
+            <img class="logo-img" src="logos/qatar.png" alt="Qatar Airways">
+            <img class="logo-img" src="logos/reagan.png" alt="Reagan Airport">
+            <img class="logo-img" src="logos/united.png" alt="United Airlines">
+            <img class="logo-img" src="logos/visiontimes.png" alt="Vision Times">
+            <img class="logo-img" src="logos/wga.png" alt="WGA">
+            <img class="logo-img" src="logos/wtop.png" alt="WTOP">
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Duplicate the logos once so translateX(-50%) loops seamlessly
+      (function() {
+        const track = document.querySelector('.logo-track');
+        if (!track || track.dataset.duplicated) return;
+        track.dataset.duplicated = 'true';
+        const nodes = Array.from(track.children);
+        nodes.forEach(n => track.appendChild(n.cloneNode(true)));
+      })();
+
+      // Make marquee seamless using pixel distance after images load
+      window.addEventListener('load', () => {
+        const track = document.querySelector('.logo-track');
+        if (!track || track.dataset.duplicated) return;
+        track.dataset.duplicated = 'true';
+
+        // measure original width before duplicating
+        const originalWidth = Math.round(track.scrollWidth);
+
+        // duplicate once
+        const nodes = Array.from(track.children);
+        nodes.forEach(n => track.appendChild(n.cloneNode(true)));
+
+        // set CSS vars for exact pixel distance and speed
+        track.style.setProperty('--marquee-distance', `${originalWidth}px`);
+        const pxPerSec = 80; // speed in px/s; adjust as desired
+        const duration = originalWidth / pxPerSec;
+        track.style.setProperty('--marquee-duration', `${duration}s`);
+      });
+    </script>
+
 
   </main>
   <footer>

@@ -3,104 +3,240 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>aniketh, projects</title>
+  <title>aniketh, photos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/png" href="assets/qffavicon.png">
+  <style>
+    /* Light mode: translucent white with blur; dark mode unchanged */
+    @media (prefers-color-scheme: light) {
+      .navbar {
+        background-color: rgba(255, 255, 255, 0.7) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(150%);
+        backdrop-filter: blur(12px) saturate(150%);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      }
+    }
+  </style>
 </head>
 <body>
   <nav class="navbar">
     <div class="navbar-logo"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
-      <li style="margin: 0 1rem;"><a href="index.html">Home</a></li>
-      <li style="margin: 0 1rem;"><a href="#projects" class="active">Projects</a></li>
-    <li style="margin: 0 1rem;"><a href="index.html#contact">Contact</a></li>
+      <li style="margin: 0 1rem;"><a href="index.html" class="active">Home</a></li>
+      <li style="margin: 0 1rem;"><a href="projects.html">Projects</a></li>
+      <li style="margin: 0 1rem;"><a href="photos.html">Photos</a></li>
     </ul>
   </nav>
 
   <main>
     <section id="projects" class="hero" style="background-image: url('hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
       <div class="hero-overlay"></div>
-      <h1>Projects</h1>
-      <p style="font-size:1rem; line-height:1.2;">Selected work in hardware, software, and mechatronics</p>
+      <h1>Photos</h1>
+      <p style="font-size:1rem; line-height:1.2;">Selected work in aviation and landscape photography</p>
     </section>
 
-    <section id="projects" class="section">
-        <h2>Hardware</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>Founder, Ohm</h3>
-            <p>Designing intelligent embedded systems that combine advanced PCB layout, circuit design, and software integration. Creator of Ohm AI, a tool that turns natural language into manufacturable circuit boards.</p>
-            <div class="actions">
-              <a class="btn button" href="https://ohmhardware.github.io/" target="_blank" rel="noopener noreferrer">Visit site</a>
-            </div>
-          </div>
-          <div class="card">
-            <h3>PCB Design</h3>
-            <p>Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.</p>
-          </div>
-          <div class="card">
-            <h3>Chip Design & Analysis</h3>
-            <p>Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.</p>
-          </div>
-        </div>
-      </section>
-  
-  
-      <section id="projects" class="section">
-        <h2>Software</h2>
-        <div class="cards">
-          <div class="card">
-            <h3>CEO & President, OCRadar</h3>
-            <p>AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
-            <div class="actions">
-              <a class="btn button" href="https://ocradar.com/" target="_blank" rel="noopener noreferrer">Visit site</a>
-            </div>
-          </div>
-          <div class="card">
-            <h3>Ohm AI</h3>
-            <p>Natural language interface for PCB design, instantly converting text prompts into usable, manufacturable board layouts, bridging software and hardware design.        </p>
-          </div>
-          <div class="card">
-            <h3>Temporal Memory Benchmarking</h3>
-            <p>Developing a novel research benchmark to evaluate how memory-augmented LLMs handle temporal reasoning, dynamic event updates, and long-term workflows. Focuses on probing the limits of architectures like A-Mem and MIRIX using multi-session dialogue simulation, timeline extraction, and custom temporal logic tasks.</p>
-          </div>
-          <div class="card">
-            <h3>IllumiSign: Eye-Tracking Communication Software</h3>
-            <p>IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.</p>
-            <div class="actions">
-              <a class="btn button" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener noreferrer">View project</a>
-            </div>
-          </div>
-        </div>
-      </section>
-  
-  
-      <section id="projects" class="section">
-          <h2>Mechatronics</h2>
-          <div class="cards">
-            <div class="card">
-              <h3>FRC Robotics, Software Lead</h3>
-              <p>Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.</p>
-              <div class="actions">
-                <a class="btn button" href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener noreferrer">View repo</a>
-              </div>
-            </div>
-            <div class="card">
-              <h3>FTC Robotics, Team Captain</h3>
-              <p>Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.</p>
-            </div>
-            
-          </div>
-        </section>
+    <section id="aviation" class="section">
+      <h2>Aviation</h2>
+      <div class="gallery-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage1.png" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage2.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage3.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage4.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage5.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage6.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage7.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage8.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage9.png"" alt=" r" width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage10.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage11.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage12.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage13.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage14.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/planeImage15.png"" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:auto; aspect-ratio:1/1; object-fit:cover; border-radius:0;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+      </div>
+    </section>
 
-    <br>
-    <br>
-    <br>
+    <section id="landscape" class="section">
+      <h2>Landscape -  Coming Soon</h2>
+      <div class="gallery-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+        <!-- <figure style="margin:0;">
+          <img src="assets/photos/landscape-01.webp" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:100%; aspect-ratio:3/2; object-fit:cover; border-radius:8px;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/landscape-02.webp" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:100%; aspect-ratio:3/2; object-fit:cover; border-radius:8px;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure>
+        <figure style="margin:0;">
+          <img src="assets/photos/landscape-03.webp" alt=" " width="600" height="400" loading="lazy" decoding="async" style="width:100%; height:100%; aspect-ratio:3/2; object-fit:cover; border-radius:8px;">
+          <figcaption style="font-size:0.9rem; margin-top:0.5rem;">  </figcaption>
+        </figure> -->
+      </div>
+    </section>
+
+    <!-- Scrolling Featured Banner -->
+    <style>
+      .featured-banner {
+        width: 100%;
+        background: #000;
+        color: #fff;
+      }
+      .featured-banner .featured-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1rem 1rem 1.25rem;
+      }
+      .featured-banner .featured-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+        margin: 0 0 0.5rem 0;
+        color: #fff;
+        opacity: 0.9;
+      }
+      .logo-scroller {
+        position: relative;
+        overflow: hidden;
+        padding: 0.5rem 0;
+        /* edge fade */
+        -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+      }
+      .logo-track {
+        display: flex;
+        align-items: center;
+        gap: 2rem; /* adjust spacing as desired */
+        width: max-content;
+        will-change: transform;
+        animation: marquee var(--marquee-duration, 40s) linear infinite;
+      }
+
+      @keyframes marquee {
+        0%   { transform: translate3d(0, 0, 0); }
+        100% { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } /* 50% fallback */
+      }
+
+      .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
+      .logo-img:hover { opacity: 1; }
+    
+      @media (prefers-reduced-motion: reduce) {
+        .logo-track { animation: none; }
+      }
+    </style>
+    
+    <section class="featured-banner" aria-label="Featured and recognized by">
+      <div class="featured-inner">
+        <h2 style="text-align: center;">Featured & Recognized</h2>
+        <div class="logo-scroller" aria-hidden="true">
+          <div class="logo-track">
+            <!-- one set only; JS will duplicate this set -->
+            <img class="logo-img" src="logos/airfrance.png" alt="Air France">
+            <img class="logo-img" src="logos/ana.png" alt="ANA">
+            <img class="logo-img" src="logos/antonov.png" alt="Antonov">
+            <img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK">
+            <img class="logo-img" src="logos/british.png" alt="British Airways">
+            <img class="logo-img" src="logos/dulles.png" alt="Dulles Airport">
+            <img class="logo-img" src="logos/emirates.png" alt="Emirates">
+            <img class="logo-img" src="logos/fcps.png" alt="FCPS">
+            <img class="logo-img" src="logos/klm.png" alt="KLM">
+            <img class="logo-img" src="logos/korean.png" alt="Korean Air">
+            <img class="logo-img" src="logos/koreatimes.png" alt="Korea Times">
+            <img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa">
+            <img class="logo-img" src="logos/mwaa.png" alt="MWAA">
+            <img class="logo-img" src="logos/porter.png" alt="Porter">
+            <img class="logo-img" src="logos/qatar.png" alt="Qatar Airways">
+            <img class="logo-img" src="logos/reagan.png" alt="Reagan Airport">
+            <img class="logo-img" src="logos/united.png" alt="United Airlines">
+            <img class="logo-img" src="logos/visiontimes.png" alt="Vision Times">
+            <img class="logo-img" src="logos/wga.png" alt="WGA">
+            <img class="logo-img" src="logos/wtop.png" alt="WTOP">
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Duplicate the logos once so translateX(-50%) loops seamlessly
+      (function() {
+        const track = document.querySelector('.logo-track');
+        if (!track || track.dataset.duplicated) return;
+        track.dataset.duplicated = 'true';
+        const nodes = Array.from(track.children);
+        nodes.forEach(n => track.appendChild(n.cloneNode(true)));
+      })();
+
+      // Make marquee seamless using pixel distance after images load
+      window.addEventListener('load', () => {
+        const track = document.querySelector('.logo-track');
+        if (!track || track.dataset.duplicated) return;
+        track.dataset.duplicated = 'true';
+
+        // measure original width before duplicating
+        const originalWidth = Math.round(track.scrollWidth);
+
+        // duplicate once
+        const nodes = Array.from(track.children);
+        nodes.forEach(n => track.appendChild(n.cloneNode(true)));
+
+        // set CSS vars for exact pixel distance and speed
+        track.style.setProperty('--marquee-distance', `${originalWidth}px`);
+        const pxPerSec = 80; // speed in px/s; adjust as desired
+        const duration = originalWidth / pxPerSec;
+        track.style.setProperty('--marquee-duration', `${duration}s`);
+      });
+    </script>
+
 
   </main>
+
   <footer>
     <span>&copy; 2025 Aniketh</span>
     <label for="theme-toggle" class="visually-hidden">Theme</label>
@@ -110,6 +246,5 @@
       <option value="dark">Dark</option>
     </select>
   </footer>
-  <script src="scripts.js" defer></script>
 </body>
 </html>

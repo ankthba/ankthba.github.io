@@ -187,12 +187,12 @@ h1, h2, h3, h4, h5, h6,
   font-stretch: condensed;
   letter-spacing: -0.02em;
 }
-.navbar-links a.active,
+/* .navbar-links a.active,
 .navbar-links a:hover {
   background: rgba(255,255,255,0.07);
   color: var(--color-primary);
   border: 1px solid var(--color-border);
-}
+} */
 .navbar-links button {
   display: flex;
   align-items: center;
@@ -224,11 +224,11 @@ nav {
   border: none !important;
 }
 
-nav a.active,
+/* nav a.active,
 .nav a.active,
 .navbar a.active {
   border: 1px solid currentColor;
-}
+} */
 
 /* Projects page: on hover, text turns white in light mode (buttons turn black) */
 :root[data-theme="light"] #projects .cta-btn:hover,

@@ -3,18 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>aniketh</title>
+  <title>Aniketh Bandlamudi</title>
+  <meta name="description" content="Official site of Aniketh Bandlamudi — Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <link rel="canonical" href="https://yourdomain.com/">
+  <meta name="author" content="Aniketh Bandlamudi">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aniketh Bandlamudi">
+  <meta property="og:description" content="Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <meta property="og:url" content="https://yourdomain.com/">
+  <meta property="og:image" content="https://yourdomain.com/aniketh.jpeg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aniketh Bandlamudi">
+  <meta name="twitter:description" content="Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <meta name="twitter:image" content="https://yourdomain.com/aniketh.jpeg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="assets/qffavicon.png">
+  <link rel="icon" type="image/png" href="anikethFavicon.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Aniketh Bandlamudi",
+    "url": "https://yourdomain.com/",
+    "image": "https://yourdomain.com/aniketh.jpeg",
+    "jobTitle": "Founder at OCRadar",
+    "sameAs": [
+      "https://www.linkedin.com/in/aniketh-bandlamudi",
+      "https://github.com/ankthba",
+      "https://twitter.com/yourhandle"
+    ]
+  }
+  </script>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="navbar-logo">
-
-    </div>
+  <nav class="navbar" role="navigation" aria-label="Main">
+    <div class="navbar-logo" aria-hidden="true"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
       <li style="margin: 0 1rem;"><a href="#home" class="active">Home</a></li>
       <li style="margin: 0 1rem;"><a href="projects.html">Projects</a></li>
@@ -22,18 +52,14 @@
     </ul>
   </nav>
 
- 
   <main>
     <section id="home" class="hero">
       <h1>Hey, I'm Aniketh 👋</h1>
       <p style="font-size:1rem; line-height:1.2;">Founder @ OCRadar | EECS</p>
-      <img src="aniketh.jpeg" alt="Aniketh profile picture" class="profile-pic">
+      <img src="aniketh.jpeg" alt="Portrait of Aniketh Bandlamudi" class="profile-pic">
       <br>
-      <!-- <a href="projects.html" class="cta-btn">Projects</a> -->
     </section>
  
-
-  
     <section id="about" class="section">
         <h2>Links</h2>
         <style>
@@ -298,7 +324,7 @@
 
   </main>
   <footer>
-    <span>&copy; 2025 Aniketh Bandlamudi</span>
+    <p>© <span id="year"></span> Aniketh Bandlamudi</p>
     <label for="theme-toggle" class="visually-hidden">Theme</label>
     <select id="theme-toggle" aria-label="Theme" style="margin-left: .75rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
       <option value="auto">Auto</option>
@@ -306,6 +332,9 @@
       <option value="dark">Dark</option>
     </select>
   </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
   <script src="scripts.js" defer></script>
 </body>
 </html>

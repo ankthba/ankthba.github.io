@@ -38,6 +38,127 @@
       <p style="font-size:1rem; line-height:1.2;">Selected work in aviation and landscape photography</p>
     </section>
 
+    <section id="about" class="section">
+      <h2>Instagram Portfolios</h2>
+      <style>
+        @media (max-width: 600px) {
+          .social-links {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            width: 100%;
+            padding: 0 1rem;
+          }
+          .social-links .cta-btn {
+            width: 100%;
+            max-width: 100%;
+            justify-content: center;
+          }
+        }
+        .social-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          justify-content: center;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+        .social-links .cta-btn {
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .social-links .cta-btn img {
+          filter: invert(1);
+          transition: filter 0.2s;
+        }
+        .social-links .cta-btn:hover img,
+        .social-links .cta-btn:focus img {
+          filter: invert(0);
+        }
+        .hero {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .hero-overlay {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.2); /* less dark */
+          z-index: 1;
+        }
+        
+        .hero > *:not(.hero-overlay) {
+          position: relative;
+          z-index: 2;
+        }
+        .profile-pic {
+          display: block;
+          margin: 1.5rem auto;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+          width: 40vw;
+          max-width: 220px;
+          min-width: 120px;
+          height: auto;
+          aspect-ratio: 1/1;
+        }
+        
+        @media (max-width: 600px) {
+          .profile-pic {
+            width: 60vw;
+            max-width: 180px;
+            min-width: 80px;
+          }
+        }
+        .logo-track {
+          display: flex;
+          align-items: center;
+          gap: 2.5rem;
+          width: max-content;
+          animation: logo-scroll 40s linear infinite;
+          will-change: transform; /* hint GPU */
+        }
+        @keyframes logo-scroll {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-50%, 0, 0); } /* move by one set width */
+        }
+        .logo-scroller { overflow: hidden; }
+
+        .logo-track {
+          display: flex;
+          align-items: center;
+          gap: 2rem; /* adjust spacing as desired */
+          width: max-content;
+          will-change: transform;
+          animation: marquee var(--marquee-duration, 40s) linear infinite;
+        }
+
+        @keyframes marquee {
+          0%   { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } /* 50% fallback */
+        }
+
+        .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
+        .logo-img:hover { opacity: 1; }
+      
+        @media (prefers-reduced-motion: reduce) {
+          .logo-track { animation: none; }
+        }
+      </style>
+        <div class="social-links" style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+          <a href="https://www.instagram.com/aniketh.png/" target="_blank" rel="noopener" class="cta-btn" aria-label="Instagram">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">Aviation
+          </a>
+          <a href="https://www.instagram.com/aniketh.jpg/" target="_blank" rel="noopener" class="cta-btn" aria-label="Instagram">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">Landscape
+        </a>
+      </div>
+      <br>
+  </section>
+
     <section id="aviation" class="section">
       <h2>Aviation</h2>
       <div class="gallery-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">

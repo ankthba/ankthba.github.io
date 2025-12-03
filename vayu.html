@@ -2,40 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>vay - intelligent systems, built for humans</title>
+  <title>vayu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    /* Minimal styling: neutral off‑white background, default serif font, mobile friendly */
+  <link rel="icon" type="image/png" href="vayuWhiteOff.png">
+ <style>
+    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+    :root {
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #555555;
+      --link: #2255aa;
+      --hairline: rgba(0, 0, 0, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1113;
+        --fg: #e8e8e8;
+        --muted: #a0a0a0;
+        --link: #7ab7ff;
+        --hairline: rgba(255, 255, 255, 0.12);
+      }
+    }
+  
+    html {
+      box-sizing: border-box;
+      -webkit-text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    *, *::before, *::after { box-sizing: inherit; }
+  
     body {
       margin: 0;
-      padding: 16px;
-      background-color: #fefefe; /* neutral off white */
-      color: #111111;
-      font-family: "Times New Roman", Times, serif;
+      color: var(--fg);
+      background: var(--bg);
+      /* use browser default (raw HTML) font */
+      line-height: 1.6;
+      letter-spacing: -0.01em;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 350;
     }
+  
     main {
-      max-width: 640px;
+      max-width: 720px;
       margin: 0 auto;
+      padding: 24px 16px 64px;
+    }
+  
+    header {
+      padding: 24px 0 12px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 24px;
+    }
+  
+    h1, h2 {
+      margin: 0;
+      line-height: 1.2;
     }
     h1 {
-      font-size: 1.7rem;
-      margin: 0 0 0.5rem 0;
+      font-family: "Instrument Serif", serif;
+      font-weight: 200;
+      font-size: clamp(28px, 6vw, 40px);
+      letter-spacing: -0.015em;
     }
+    h1 strong { font-weight: inherit; }
+  
     h2 {
-      font-size: 1.25rem;
-      margin-top: 1.5rem;
-      margin-bottom: 0.5rem;
+      font-weight: 350;
+      font-size: clamp(18px, 3.5vw, 22px);
+      color: var(--muted);
+      margin-top: 16px;
     }
-    p {
-      line-height: 1.5;
-    }
-    small {
-      color: #444444;
-    }
+  
+    p { margin: 12px 0 0; font-size: 16px; }
+    small { color: var(--muted); }
+  
     a {
-      color: #2255aa;
+      color: var(--link);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: .08em;
     }
+    a:hover { opacity: 0.9; }
+    a:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+  
+    section + section { margin-top: 32px; }
+  
+    footer {
+      margin-top: 48px;
+      padding-top: 12px;
+      border-top: 1px solid var(--hairline);
+    }
+    footer p { margin: 0; }
+    footer p + p { margin-top: 4px; }
   </style>
+
 </head>
 <body>
   <main>
@@ -44,7 +109,7 @@
     </header>
 
     <section>
-      <h2>intelligent systems, built for humans</h2>
+      <h2><strong>intelligent systems, built for humans</strong></h2>
       <p>
         vayu designs and deploys human-centered intelligent systems that make complex technology feel simple and intuitive.
       </p>
@@ -64,15 +129,15 @@
     </section> -->
 
     <section>
-      <h2>contact</h2>
+      <h2><strong>contact</strong></h2>
       <p>
         to reach vayu, email
         <a href="mailto:me@aniketh.net">me@aniketh.net</a>
       </p>
     </section>
-
+<br>
     <footer>
-      <p>© 2025 vayu ststems</p>
+      <p>© 2025 vayu ststems</p> <p> return to <a href="https://aniketh.net" target="_blank" rel="noopener noreferrer">aniketh.net</a></p>
     </footer>
   </main>
 </body>

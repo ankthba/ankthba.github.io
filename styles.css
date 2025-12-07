@@ -360,6 +360,10 @@ body {
   justify-content: center;
 }
 .card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  /* existing card styles */
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: 0;
@@ -378,6 +382,18 @@ body {
   transform: translateY(-2px) scale(1.01);
   box-shadow: none;
   border: 2px solid var(--color-border);
+}
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* keeps a consistent cover ratio */
+  object-fit: cover;     /* fills the area, crops overflow */
+  border-radius: 0px;   /* match your card rounding */
+  background: #eee;      /* placeholder bg */
+}
+
+/* Optional: placeholder if image missing */
+.card-image[src=""], .card-image:not([src]) {
+  display: none;
 }
 .card p {
   font-size: 1rem;

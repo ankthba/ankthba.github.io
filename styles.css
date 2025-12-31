@@ -31,7 +31,7 @@
   --shadow: none;
   --transition: 0.2s cubic-bezier(.4,0,.2,1);
   --font-serif: "Instrument Serif", serif;
-  --font-sans: "Helvetica Neue UltraLight","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 /* Theme palettes: default to 'auto' (follow system) */
@@ -108,10 +108,10 @@ hr, .bordered { border-color: var(--color-border); }
   white-space: nowrap; border: 0;
 }
 
-/* Base typography: Helvetica Neue UltraLight (ultra light) */
+/* Base typography: SF Pro */
 html, body {
-  font-family: "Helvetica Neue UltraLight","Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-weight: 400; /* UltraLight */
+  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

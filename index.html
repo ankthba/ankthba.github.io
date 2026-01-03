@@ -165,7 +165,9 @@
 
           .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
           .logo-img:hover { opacity: 1; }
-        
+
+          .logo-track a { border: none; text-decoration: none; display: inline-flex; align-items: center; }
+
           @media (prefers-reduced-motion: reduce) {
             .logo-track { animation: none; }
           }
@@ -257,7 +259,9 @@
 
       .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
       .logo-img:hover { opacity: 1; }
-    
+
+      .logo-track a { border: none; text-decoration: none; display: inline-flex; align-items: center; }
+
       @media (prefers-reduced-motion: reduce) {
         .logo-track { animation: none; }
       }
@@ -269,26 +273,26 @@
         <div class="logo-scroller" aria-hidden="true">
           <div class="logo-track">
             <!-- one set only; JS will duplicate this set -->
-            <img class="logo-img" src="logos/airfrance.png" alt="Air France">
-            <img class="logo-img" src="logos/ana.png" alt="ANA">
-            <img class="logo-img" src="logos/antonov.png" alt="Antonov">
-            <img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK">
-            <img class="logo-img" src="logos/british.png" alt="British Airways">
-            <img class="logo-img" src="logos/dulles.png" alt="Dulles Airport">
-            <img class="logo-img" src="logos/emirates.png" alt="Emirates">
-            <img class="logo-img" src="logos/fcps.png" alt="FCPS">
-            <img class="logo-img" src="logos/klm.png" alt="KLM">
-            <img class="logo-img" src="logos/korean.png" alt="Korean Air">
-            <img class="logo-img" src="logos/koreatimes.png" alt="Korea Times">
-            <img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa">
-            <img class="logo-img" src="logos/mwaa.png" alt="MWAA">
-            <img class="logo-img" src="logos/porter.png" alt="Porter">
-            <img class="logo-img" src="logos/qatar.png" alt="Qatar Airways">
-            <img class="logo-img" src="logos/reagan.png" alt="Reagan Airport">
-            <img class="logo-img" src="logos/united.png" alt="United Airlines">
-            <img class="logo-img" src="logos/visiontimes.png" alt="Vision Times">
-            <img class="logo-img" src="logos/wga.png" alt="WGA">
-            <img class="logo-img" src="logos/wtop.png" alt="WTOP">
+            <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/airfrance.png" alt="Air France"></a>
+            <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="logo-img" src="logos/ana.png" alt="ANA"></a>
+            <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/antonov.png" alt="Antonov"></a>
+            <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK"></a>
+            <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/british.png" alt="British Airways"></a>
+            <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/dulles.png" alt="Dulles Airport"></a>
+            <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/emirates.png" alt="Emirates"></a>
+            <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="logo-img" src="logos/fcps.png" alt="FCPS"></a>
+            <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/klm.png" alt="KLM"></a>
+            <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/korean.png" alt="Korean Air"></a>
+            <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="logo-img" src="logos/koreatimes.png" alt="Korea Times"></a>
+            <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa"></a>
+            <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/mwaa.png" alt="MWAA"></a>
+            <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/porter.png" alt="Porter"></a>
+            <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/qatar.png" alt="Qatar Airways"></a>
+            <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/reagan.png" alt="Reagan Airport"></a>
+            <a href="https://www.united.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/united.png" alt="United Airlines"></a>
+            <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/visiontimes.png" alt="Vision Times"></a>
+            <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/wga.png" alt="WGA"></a>
+            <a href="https://wtop.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/wtop.png" alt="WTOP"></a>
 
           </div>
         </div>
@@ -328,10 +332,10 @@
 
 
   </main>
-  <footer>
-    <p>© <span id="year"></span> Aniketh Bandlamudi</p>
+  <footer style="display: flex; justify-content: center; align-items: center; gap: 1rem;">
+    <p style="margin: 0;">© <span id="year"></span> Aniketh Bandlamudi</p>
     <label for="theme-toggle" class="visually-hidden">Theme</label>
-    <select id="theme-toggle" aria-label="Theme" style="margin-left: .75rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
+    <select id="theme-toggle" aria-label="Theme" style="background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
       <option value="auto">Auto</option>
       <option value="light">Light</option>
       <option value="dark">Dark</option>

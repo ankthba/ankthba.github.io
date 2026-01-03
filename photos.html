@@ -358,14 +358,18 @@
 
   </main>
 
-  <footer>
-    <span>&copy; 2025 Aniketh</span>
+  <footer style="display: flex; justify-content: center; align-items: center; gap: 1rem;">
+    <p style="margin: 0;">© <span id="year"></span> Aniketh Bandlamudi</p>
     <label for="theme-toggle" class="visually-hidden">Theme</label>
-    <select id="theme-toggle" aria-label="Theme" style="margin-left: .75rem; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
+    <select id="theme-toggle" aria-label="Theme" style="background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px;">
       <option value="auto">Auto</option>
       <option value="light">Light</option>
       <option value="dark">Dark</option>
     </select>
   </footer>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script src="scripts.js" defer></script>
 </body>
 </html>

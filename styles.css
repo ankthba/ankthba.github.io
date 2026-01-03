@@ -230,15 +230,47 @@ nav {
   border: 1px solid currentColor;
 } */
 
-/* Projects page: on hover, text turns white in light mode (buttons turn black) */
-:root[data-theme="light"] #projects .cta-btn:hover,
-:root[data-theme="light"] #projects .cta-btn:focus-visible {
+/* Projects page: light mode hover - black background, white text */
+:root[data-theme="light"] .card .cta-btn:hover,
+:root[data-theme="light"] .card .cta-btn:focus-visible,
+:root[data-theme="light"] .card .btn:hover,
+:root[data-theme="light"] .card .btn:focus-visible,
+:root[data-theme="light"] .card .button:hover,
+:root[data-theme="light"] .card .button:focus-visible {
+  background: #111111 !important;
   color: #ffffff !important;
 }
 @media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] #projects .cta-btn:hover,
-  :root[data-theme="auto"] #projects .cta-btn:focus-visible {
+  :root[data-theme="auto"] .card .cta-btn:hover,
+  :root[data-theme="auto"] .card .cta-btn:focus-visible,
+  :root[data-theme="auto"] .card .btn:hover,
+  :root[data-theme="auto"] .card .btn:focus-visible,
+  :root[data-theme="auto"] .card .button:hover,
+  :root[data-theme="auto"] .card .button:focus-visible {
+    background: #111111 !important;
     color: #ffffff !important;
+  }
+}
+
+/* Projects page: dark mode hover - white background, black text */
+:root[data-theme="dark"] .card .cta-btn:hover,
+:root[data-theme="dark"] .card .cta-btn:focus-visible,
+:root[data-theme="dark"] .card .btn:hover,
+:root[data-theme="dark"] .card .btn:focus-visible,
+:root[data-theme="dark"] .card .button:hover,
+:root[data-theme="dark"] .card .button:focus-visible {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .card .cta-btn:hover,
+  :root[data-theme="auto"] .card .cta-btn:focus-visible,
+  :root[data-theme="auto"] .card .btn:hover,
+  :root[data-theme="auto"] .card .btn:focus-visible,
+  :root[data-theme="auto"] .card .button:hover,
+  :root[data-theme="auto"] .card .button:focus-visible {
+    background: #ffffff !important;
+    color: #000000 !important;
   }
 }
 

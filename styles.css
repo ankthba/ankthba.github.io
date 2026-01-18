@@ -303,6 +303,26 @@ h1, h2, h3, h4, h5, h6,
   align-items: center;
 }
 
+/* Mobile navbar scaling */
+@media (max-width: 768px) {
+  .navbar {
+    height: 56px;
+    max-width: 240px;
+    padding: 0 1rem;
+    top: 0.75rem;
+  }
+
+  .navbar-links {
+    gap: 1rem;
+  }
+
+  .navbar-links a,
+  .navbar-links button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+  }
+}
+
 /* Remove borders from large containers */
 .section,
 .cards,
@@ -1469,9 +1489,9 @@ main > section:first-of-type > .hero-inner,
 
 /* Social icon-only buttons */
 .social-icon-btn {
-  padding: 0.6rem !important;
-  width: 40px;
-  height: 40px;
+  padding: 0.5rem !important;
+  width: 36px;
+  height: 36px;
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -1481,8 +1501,8 @@ main > section:first-of-type > .hero-inner,
 .social-icon-btn img {
   margin: 0 !important;
   vertical-align: middle;
-  width: 20px !important;
-  height: 20px !important;
+  width: 18px !important;
+  height: 18px !important;
 }
 
 /* Force social icon buttons to stay in dark mode style even in light mode */

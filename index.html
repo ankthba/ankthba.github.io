@@ -44,251 +44,55 @@
 </head>
 <body>
   <nav class="navbar" role="navigation" aria-label="Main">
-    <button class="hamburger" aria-label="Menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
     <div class="navbar-logo" aria-hidden="true"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
-      <li class="nav-item-mobile"><a href="#home" class="active">Home</a></li>
-      <li class="nav-item-mobile"><a href="projects.html">Projects</a></li>
-      <li class="nav-item-mobile"><a href="photos.html">Photos</a></li>
-      <li class="nav-item-mobile"><a href="blog.html">Blog</a></li>
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="photos.html">Photos</a></li>
+      <li><a href="blog.html">Blog</a></li>
     </ul>
-    <div class="navbar-center">
-      <a href="#home" class="active">Home</a>
-    </div>
-    <div class="mobile-menu">
-      <a href="projects.html">Projects</a>
-      <a href="photos.html">Photos</a>
-      <a href="blog.html">Blog</a>
-    </div>
   </nav>
-  <style>
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 4px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      position: absolute;
-      left: 1rem;
-      z-index: 100;
-    }
-    .hamburger span {
-      width: 24px;
-      height: 2px;
-      background: var(--color-text);
-      transition: all 0.3s;
-    }
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -6px);
-    }
-    .navbar-center {
-      display: none;
-    }
-    .mobile-menu {
-      display: none;
-      position: absolute;
-      top: 68px;
-      left: 0;
-      right: 0;
-      background: var(--color-bg);
-      border-bottom: 1px solid var(--color-border);
-      flex-direction: column;
-      padding: 1rem;
-      gap: 0.5rem;
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-    }
-    .mobile-menu.active {
-      display: flex;
-    }
-    .mobile-menu a {
-      padding: 0.75rem 1rem;
-      text-decoration: none;
-      color: var(--color-text);
-      border: 1px solid var(--color-border);
-      border-radius: 0;
-      transition: background 0.2s;
-      font-family: "Instrument Serif", serif;
-      font-stretch: condensed;
-      letter-spacing: -0.02em;
-    }
-    .mobile-menu a:hover {
-      background: rgba(255,255,255,0.07);
-    }
-    @media (max-width: 768px) {
-      .hamburger {
-        display: flex;
-      }
-      .navbar-links {
-        display: none !important;
-      }
-      .navbar-center {
-        display: block;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      .navbar-center a {
-        color: var(--color-text);
-        text-decoration: none;
-        font-family: "Instrument Serif", serif;
-        font-stretch: condensed;
-        letter-spacing: -0.02em;
-        padding: 0.5rem 0.75rem;
-      }
-    }
-  </style>
 
   <main>
     <section id="home" class="hero">
       <h1>Hey, I'm Aniketh 👋</h1>
       <p style="font-size:1rem; line-height:1.2;">Founder @ OCRadar | EECS+Phys | 17</p>
       <img src="aniketh.jpeg" alt="Portrait of Aniketh Bandlamudi" class="profile-pic">
-      <br>
-    </section>
- 
-    <section id="about" class="section">
-        <h2>Links</h2>
-        <style>
-          @media (max-width: 600px) {
-            .social-links {
-              flex-direction: column !important;
-              align-items: stretch !important;
-              width: 100%;
-              padding: 0 1rem;
-            }
-            .social-links .cta-btn {
-              width: 100%;
-              max-width: 100%;
-              justify-content: center;
-            }
-          }
-          .social-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            max-width: 100%;
-            box-sizing: border-box;
-          }
-          .social-links .cta-btn {
-            max-width: 100%;
-            box-sizing: border-box;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .social-links .cta-btn img {
-            filter: invert(1);
-            transition: filter 0.2s;
-          }
-          .social-links .cta-btn:hover img,
-          .social-links .cta-btn:focus img {
-            filter: invert(0);
-          }
-          .hero {
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .hero-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.2); /* less dark */
-            z-index: 1;
-          }
-          
-          .hero > *:not(.hero-overlay) {
-            position: relative;
-            z-index: 2;
-          }
-          .profile-pic {
-            display: block;
-            margin: 1.5rem auto;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-            width: 40vw;
-            max-width: 220px;
-            min-width: 120px;
-            height: auto;
-            aspect-ratio: 1/1;
-          }
-          
-          @media (max-width: 600px) {
-            .profile-pic {
-              width: 60vw;
-              max-width: 180px;
-              min-width: 80px;
-            }
-          }
-          .logo-track {
-            display: flex;
-            align-items: center;
-            gap: 2.5rem;
-            width: max-content;
-            animation: logo-scroll 40s linear infinite;
-            will-change: transform; /* hint GPU */
-          }
-          @keyframes logo-scroll {
-            from { transform: translate3d(0, 0, 0); }
-            to   { transform: translate3d(-50%, 0, 0); } /* move by one set width */
-          }
-          .logo-scroller { overflow: hidden; }
-
-          .logo-track {
-            display: flex;
-            align-items: center;
-            gap: 2rem; /* adjust spacing as desired */
-            width: max-content;
-            will-change: transform;
-            animation: marquee var(--marquee-duration, 40s) linear infinite;
-          }
-
-          @keyframes marquee {
-            0%   { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } /* 50% fallback */
-          }
-
-          .logo-img { flex: 0 0 auto; height: 40px; width: auto; opacity: 0.85; transition: opacity .2s; }
-          .logo-img:hover { opacity: 1; }
-
-          .logo-track a { border: none; text-decoration: none; display: inline-flex; align-items: center; }
-
-          @media (prefers-reduced-motion: reduce) {
-            .logo-track { animation: none; }
-          }
-        </style>
-        <div class="social-links" style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
-            <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="cta-btn" aria-label="LinkedIn">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">LinkedIn
-            </a>
-            <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="cta-btn" aria-label="Instagram">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">Instagram
-            </a>
-            <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="cta-btn" aria-label="GitHub">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">GitHub
-            </a>
-            <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="cta-btn" aria-label="Twitter">
-                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">Twitter
-            </a>
-            <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t?si=3a5035155861425b" target="_blank" rel="noopener" class="cta-btn" aria-label="Spotify">
-              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg" alt="" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;">Spotify
-            </a>
-        </div>
-        <br>
+      <style>
+        .social-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          justify-content: center;
+          max-width: 100%;
+          box-sizing: border-box;
+        }
+        .social-links .cta-btn img {
+          filter: invert(1);
+          transition: filter 0.2s;
+        }
+        .social-links .cta-btn:hover img,
+        .social-links .cta-btn:focus img {
+          filter: invert(0);
+        }
+      </style>
+      <div class="social-links" style="display: flex; gap: 1rem; justify-content: center; align-items: center; margin: 1rem auto 0; flex-wrap: wrap; width: 100%;">
+          <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="cta-btn social-icon-btn" aria-label="LinkedIn">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" style="width:24px;height:24px;">
+          </a>
+          <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="cta-btn social-icon-btn" aria-label="Instagram">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram" style="width:24px;height:24px;">
+          </a>
+          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="cta-btn social-icon-btn" aria-label="GitHub">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub" style="width:24px;height:24px;">
+          </a>
+          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="cta-btn social-icon-btn" aria-label="Twitter">
+              <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg" alt="Twitter" style="width:24px;height:24px;">
+          </a>
+          <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t?si=3a5035155861425b" target="_blank" rel="noopener" class="cta-btn social-icon-btn" aria-label="Spotify">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg" alt="Spotify" style="width:24px;height:24px;">
+          </a>
+      </div>
     </section>
 
 
@@ -442,27 +246,9 @@
   </footer>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Hamburger menu toggle
-    const hamburger = document.querySelector('.hamburger');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      mobileMenu.classList.toggle('active');
-      hamburger.setAttribute('aria-expanded', hamburger.classList.contains('active'));
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
-        hamburger.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        hamburger.setAttribute('aria-expanded', 'false');
-      }
-    });
   </script>
   <script src="scripts.js" defer></script>
+  <script src="/js/navbar-refraction.js"></script>
 </body>
 </html>
 

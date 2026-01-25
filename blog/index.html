@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <title>Aniketh → Blog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="anikethFavicon.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" href="/anikethFavicon.jpg">
   <style>
     /* Light mode: translucent white with blur; dark mode unchanged */
     @media (prefers-color-scheme: light) {
@@ -76,15 +77,15 @@
   <nav class="navbar" role="navigation" aria-label="Main">
     <div class="navbar-logo" aria-hidden="true"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="photos.html">Photos</a></li>
-      <li><a href="blog.html" class="active">Blog</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/photos">Photos</a></li>
+      <li><a href="/blog" class="active">Blog</a></li>
     </ul>
   </nav>
 
   <main>
-    <section id="blog-hero" class="hero" style="background-image: url('hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
+    <section id="blog-hero" class="hero" style="background-image: url('/hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
       <div class="hero-overlay"></div>
       <h1>Blog</h1>
       <p style="font-size:1rem; line-height:1.2;">Thoughts on various topics</p>
@@ -151,7 +152,7 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
   </script>
-  <script src="scripts.js" defer></script>
+  <script src="/scripts.js" defer></script>
   <script src="/js/navbar-refraction.js"></script>
 </body>
 </html>

@@ -1481,6 +1481,9 @@ main > section:first-of-type > .hero-inner,
   .hero h1 {
     font-size: 1.9rem;
   }
+  #about-me p {
+    text-align: justify;
+  }
 }
 
 /* Social icon-only buttons */

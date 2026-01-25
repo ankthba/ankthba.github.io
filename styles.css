@@ -164,10 +164,17 @@ h1, h2, h3, h4, h5, h6,
   box-shadow:
     0 20px 80px rgba(0, 0, 0, 0.08),
     0 8px 32px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.04),
-    inset 0 -5px 15px rgba(0, 0, 0, 0.25);
-  overflow: visible;
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
   will-change: transform;
+  transition: transform 0.3s ease;
+}
+
+.navbar:hover {
+  transform: translateX(-50%) scale(1.02);
+  background: rgba(100, 100, 100, 0.4);
+  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(115%);
+  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(115%);
 }
 
 /* Subtle specular highlights for extra glossiness */
@@ -186,30 +193,6 @@ h1, h2, h3, h4, h5, h6,
   pointer-events: none;
   z-index: 3;
   border-radius: 100px;
-}
-
-/* Rim light effect for water bubble aesthetic */
-.navbar::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    transparent 20%,
-    transparent 80%,
-    rgba(255, 255, 255, 0.2) 100%
-  );
-  opacity: 0;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  z-index: 3;
-  border-radius: 100px;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  padding: 1px;
 }
 
 /* Ensure navbar content stays above all effects */
@@ -293,12 +276,6 @@ h1, h2, h3, h4, h5, h6,
   font-stretch: condensed;
   letter-spacing: -0.02em;
 }
-/* .navbar-links a.active,
-.navbar-links a:hover {
-  background: rgba(255,255,255,0.07);
-  color: var(--color-primary);
-  border: 1px solid var(--color-border);
-} */
 .navbar-links button {
   display: flex;
   align-items: center;
@@ -694,6 +671,12 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   color: #111111;
 }
 
+:root[data-theme="light"] .navbar:hover {
+  background-color: rgba(250, 250, 250, 0.25);
+  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
+  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
+}
+
 /* Light mode button styling */
 :root[data-theme="light"] .cta-btn,
 :root[data-theme="light"] .card-link,
@@ -746,6 +729,12 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   :root[data-theme="auto"] .navbar a,
   :root[data-theme="auto"] .navbar .navbar-logo {
     color: #111111;
+  }
+
+  :root[data-theme="auto"] .navbar:hover {
+    background-color: rgba(250, 250, 250, 0.25);
+    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
+    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
   }
 
   /* Light mode button styling for auto theme */
@@ -955,7 +944,7 @@ footer select {
   content: "";
   position: absolute;
   inset: 0;
-  background: url(/path/to/your/hero.jpg) center/cover no-repeat;
+  background: transparent;
   /* optional dark overlay */
   background-blend-mode: multiply;
   z-index: 0;
@@ -1010,9 +999,9 @@ footer select {
 .hero-section {
   position: relative;
   /* Remove prior gradient+image stacked backgrounds; force only image */
-  background: url('hero.webp') center / cover no-repeat !important;
+  background: var(--color-bg-alt) !important;
   min-height: clamp(340px, 50vh, 560px) !important;
-  padding: 2.75rem 1.25rem 2.25rem !important;
+  padding: 9rem 1.25rem 2.25rem !important;
   gap: 1.1rem !important;
   max-width: 1100px;
   margin: 0 auto;
@@ -1047,9 +1036,9 @@ footer select {
 .hero-section {
   position: relative;
   /* Remove prior gradient+image stacked backgrounds; force only image */
-  background: url('hero.webp') center / cover no-repeat !important;
+  background: var(--color-bg-alt) !important;
   min-height: clamp(340px, 50vh, 560px) !important;
-  padding: 2.75rem 1.25rem 2.25rem !important;
+  padding: 9rem 1.25rem 2.25rem !important;
   gap: 1.1rem !important;
   max-width: 1100px;
   margin: 0 auto;
@@ -1446,9 +1435,9 @@ main > section:first-of-type > .hero-inner,
 /* === Compact Hero + Profile Pic Overrides (add near end) === */
 .hero {
   min-height: auto !important;
-  padding: 6rem 1.25rem 2.4rem !important;
+  padding: 9rem 1.25rem 2.4rem !important;
   display: block !important;
-  margin-top: 6.5rem !important;
+  margin-top: 0 !important;
 }
 
 .hero h1 {

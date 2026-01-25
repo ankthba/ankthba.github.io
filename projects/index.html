@@ -3,26 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="view-transition" content="same-origin">
   <title>Aniketh → Projects</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/png" href="anikethFavicon.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" href="/anikethFavicon.jpg">
 </head>
 <body>
   <nav class="navbar" role="navigation" aria-label="Main">
     <div class="navbar-logo" aria-hidden="true"></div>
     <ul class="navbar-links" style="display: flex; justify-content: center; align-items: center; list-style: none; padding: 0; margin: 0; width: 100%;">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="projects.html">Projects</a></li>
-      <li><a href="photos.html">Photos</a></li>
-      <li><a href="blog.html">Blog</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/photos">Photos</a></li>
+      <li><a href="/blog">Blog</a></li>
     </ul>
   </nav>
 
   <main>
-    <section id="projects" class="hero" style="background-image: url('hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
+    <section id="projects" class="hero" style="background-image: url('/hero.webp'); background-size: cover; background-position: center; position: relative; overflow: hidden;">
       <div class="hero-overlay"></div>
       <h1>Projects</h1>
       <p style="font-size:1rem; line-height:1.2;">Selected work in hardware, software, and mechatronics</p>
@@ -37,7 +38,7 @@
 
 
           <div class="card">
-            <img class="card-image" src="projectImages/ocradar.jpg" alt="OCRadar project cover">
+            <img class="card-image" src="/projectImages/ocradar.jpg" alt="OCRadar project cover">
             <h3>Founder & President, OCRadar</h3>
             <p>AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
             <div class="actions">
@@ -46,7 +47,7 @@
           </div>
           
           <div class="card">
-            <img class="card-image" src="projectImages/frc.jpg" alt="FRC project cover">
+            <img class="card-image" src="/projectImages/frc.jpg" alt="FRC project cover">
             <h3>FRC Robotics, Software Lead</h3>
             <p>Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.</p>
             <div class="actions">
@@ -55,7 +56,7 @@
           </div>
 
           <div class="card">
-            <img class="card-image" src="projectImages/arxiv.jpg" alt="CNN project cover">
+            <img class="card-image" src="/projectImages/arxiv.jpg" alt="CNN project cover">
             <h3>Designing a CNN for High-Accuracy OCSCC Detection</h3>
             <p>This work presents a CNN trained on image datasets for high-accuracy OCSCC detection, with custom hardware for optimal image capture. Testing across resolutions showed logarithmic accuracy improvements with diminishing returns at high pixel counts. An open-access application enables broader CNN utilization for early detection.</p>
             <div class="actions">
@@ -65,7 +66,7 @@
 
 
           <div class="card">
-            <img class="card-image" src="projectImages/illumi.jpg" alt="illumisign project cover">
+            <img class="card-image" src="/projectImages/illumi.jpg" alt="illumisign project cover">
             <h3>IllumiSign: Eye-Tracking Communication Software</h3>
             <p>IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.</p>
             <div class="actions">
@@ -74,7 +75,7 @@
           </div>
 
           <div class="card">
-            <img class="card-image" src="projectImages/csdsa.jpg" alt="csds project cover">
+            <img class="card-image" src="/projectImages/csdsa.jpg" alt="csds project cover">
             <h3> CS DS&A Classwork </h3>
             <p>Assignments for the Oakton Highschool AV CS Data Structures & Algorithms course.</p>
             <div class="actions">
@@ -86,7 +87,7 @@
           
 
           <div class="card">
-            <img class="card-image" src="projectImages/ocb.jpg" alt="Oakton Codebase project cover">
+            <img class="card-image" src="/projectImages/ocb.jpg" alt="Oakton Codebase project cover">
             <h3>Oakton Codebase Co-President</h3>
             <p>Leading Oakton HS’s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep. Mentoring members, coordinating workshops and hackathons.</p>
             <div class="actions">
@@ -102,7 +103,7 @@
         <h2>Hardware</h2>
         <div class="cards">
           <div class="card">
-            <!-- <img class="card-image" src="projectImages/vayuCover.jpg" alt="Vayu project cover"> -->
+            <!-- <img class="card-image" src="/projectImages/vayuCover.jpg" alt="Vayu project cover"> -->
             <h3>Founder, Vayu</h3>
             <p>Designing intelligent systems</p>
             <div class="actions">
@@ -110,17 +111,17 @@
             </div>
           </div>
           <div class="card">
-            <img class="card-image" src="projectImages/xray-pcb.jpg" alt="pcb project cover">
+            <img class="card-image" src="/projectImages/xray-pcb.jpg" alt="pcb project cover">
             <h3>PCB Design</h3>
             <p>Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.</p>
           </div>
           <div class="card">
-            <img class="card-image" src="projectImages/silicon.jpg" alt="silicon project cover">
+            <img class="card-image" src="/projectImages/silicon.jpg" alt="silicon project cover">
             <h3>Chip Design & Analysis</h3>
             <p>Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.</p>
           </div>
           <div class="card">
-            <img class="card-image" src="projectImages/ftc.jpg" alt="ftc project cover">
+            <img class="card-image" src="/projectImages/ftc.jpg" alt="ftc project cover">
             <h3>FTC Robotics, Team Captain</h3>
             <p>Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.</p>
           </div>
@@ -188,26 +189,26 @@
         <div class="logo-scroller" aria-hidden="true">
           <div class="logo-track">
             <!-- one set only; JS will duplicate this set -->
-            <img class="logo-img" src="logos/airfrance.png" alt="Air France">
-            <img class="logo-img" src="logos/ana.png" alt="ANA">
-            <img class="logo-img" src="logos/antonov.png" alt="Antonov">
-            <img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK">
-            <img class="logo-img" src="logos/british.png" alt="British Airways">
-            <img class="logo-img" src="logos/dulles.png" alt="Dulles Airport">
-            <img class="logo-img" src="logos/emirates.png" alt="Emirates">
-            <img class="logo-img" src="logos/fcps.png" alt="FCPS">
-            <img class="logo-img" src="logos/klm.png" alt="KLM">
-            <img class="logo-img" src="logos/korean.png" alt="Korean Air">
-            <img class="logo-img" src="logos/koreatimes.png" alt="Korea Times">
-            <img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa">
-            <img class="logo-img" src="logos/mwaa.png" alt="MWAA">
-            <img class="logo-img" src="logos/porter.png" alt="Porter">
-            <img class="logo-img" src="logos/qatar.png" alt="Qatar Airways">
-            <img class="logo-img" src="logos/reagan.png" alt="Reagan Airport">
-            <img class="logo-img" src="logos/united.png" alt="United Airlines">
-            <img class="logo-img" src="logos/visiontimes.png" alt="Vision Times">
-            <img class="logo-img" src="logos/wga.png" alt="WGA">
-            <img class="logo-img" src="logos/wtop.png" alt="WTOP">
+            <img class="logo-img" src="/logos/airfrance.png" alt="Air France">
+            <img class="logo-img" src="/logos/ana.png" alt="ANA">
+            <img class="logo-img" src="/logos/antonov.png" alt="Antonov">
+            <img class="logo-img" src="/logos/blackpink.png" alt="BLACKPINK">
+            <img class="logo-img" src="/logos/british.png" alt="British Airways">
+            <img class="logo-img" src="/logos/dulles.png" alt="Dulles Airport">
+            <img class="logo-img" src="/logos/emirates.png" alt="Emirates">
+            <img class="logo-img" src="/logos/fcps.png" alt="FCPS">
+            <img class="logo-img" src="/logos/klm.png" alt="KLM">
+            <img class="logo-img" src="/logos/korean.png" alt="Korean Air">
+            <img class="logo-img" src="/logos/koreatimes.png" alt="Korea Times">
+            <img class="logo-img" src="/logos/lufthansa.png" alt="Lufthansa">
+            <img class="logo-img" src="/logos/mwaa.png" alt="MWAA">
+            <img class="logo-img" src="/logos/porter.png" alt="Porter">
+            <img class="logo-img" src="/logos/qatar.png" alt="Qatar Airways">
+            <img class="logo-img" src="/logos/reagan.png" alt="Reagan Airport">
+            <img class="logo-img" src="/logos/united.png" alt="United Airlines">
+            <img class="logo-img" src="/logos/visiontimes.png" alt="Vision Times">
+            <img class="logo-img" src="/logos/wga.png" alt="WGA">
+            <img class="logo-img" src="/logos/wtop.png" alt="WTOP">
 
           </div>
         </div>
@@ -256,7 +257,7 @@
       <option value="dark">Dark</option>
     </select>
   </footer>
-  <script src="scripts.js" defer></script>
+  <script src="/scripts.js" defer></script>
   <script src="/js/navbar-refraction.js"></script>
 </body>
 </html>

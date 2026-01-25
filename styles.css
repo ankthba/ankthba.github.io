@@ -1471,7 +1471,7 @@ main > section:first-of-type > .hero-inner,
 /* Even tighter option for very small screens */
 @media (max-width: 480px) {
   .hero {
-    padding: 1.75rem 1rem 2rem !important;
+    padding: 10rem 1rem 2rem !important;
   }
   .hero .profile-pic,
   .profile-pic {

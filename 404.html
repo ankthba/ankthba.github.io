@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>404 - Page Not Found | Aniketh Bandlamudi</title>
+  <meta name="description" content="The page you're looking for can't be found.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="anikethFavicon.jpg">
+  <style>
+    .error-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background: var(--color-bg);
+      color: var(--color-text);
+    }
+
+    .error-content {
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .error-code {
+      font-family: "Instrument Serif", serif;
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 400;
+      margin: 0 0 1rem;
+      letter-spacing: -0.02em;
+      color: var(--color-primary);
+    }
+
+    .error-message {
+      font-family: "Instrument Serif", serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 400;
+      margin: 0 0 2rem;
+      letter-spacing: -0.02em;
+      color: var(--color-text);
+    }
+
+    .ascii-cat {
+      font-family: 'Courier New', monospace;
+      font-size: clamp(0.5rem, 1.2vw, 0.75rem);
+      line-height: 1.2;
+      white-space: pre;
+      color: var(--color-muted);
+      margin: 2rem 0;
+      overflow-x: auto;
+      padding: 1rem;
+      background: rgba(80, 80, 80, 0.15);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+    }
+
+    .error-description {
+      font-size: 1.1rem;
+      color: var(--color-muted);
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    .redirect-info {
+      font-size: 0.95rem;
+      color: var(--color-muted);
+      margin: 1rem 0 2rem;
+      font-style: italic;
+    }
+
+    .countdown {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .home-btn {
+      background: rgba(80, 80, 80, 0.3);
+      -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
+      backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
+      color: var(--color-primary);
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.9rem 1.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 100px;
+      box-shadow: none;
+      text-decoration: none;
+      transition: transform 0.3s ease, background var(--transition), color var(--transition);
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.05);
+      background: rgba(100, 100, 100, 0.35);
+    }
+
+    /* Light mode overrides */
+    :root[data-theme="light"] .home-btn {
+      background: rgba(250, 250, 250, 0.15);
+      -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+      backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+      border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    :root[data-theme="light"] .home-btn:hover {
+      background: rgba(250, 250, 250, 0.3);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root[data-theme="auto"] .home-btn {
+        background: rgba(250, 250, 250, 0.15);
+        -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+        backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+      }
+
+      :root[data-theme="auto"] .home-btn:hover {
+        background: rgba(250, 250, 250, 0.3);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .ascii-cat {
+        font-size: 0.4rem;
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-content">
+      <h1 class="error-code">404</h1>
+      <h2 class="error-message">The page you're looking for can't be found</h2>
+
+      <div class="ascii-cat" aria-hidden="true">
+    /\_/\
+   ( o.o )
+    > ^ <
+   /|   |\
+  (_|   |_)
+
+  "this page
+   doesn't exist..."
+      </div>
+
+      <!-- <p class="error-description">
+        Looks like you've wandered into uncharted territory. The page you're trying to reach doesn't exist or has been moved.
+      </p> -->
+
+      <p class="redirect-info">
+        Redirecting you home in <span class="countdown" id="countdown">5</span> seconds...
+      </p>
+
+      <a href="/" class="home-btn">Take Me Home Now</a>
+    </div>
+  </div>
+
+  <script>
+    // Auto-redirect countdown
+    let seconds = 5;
+    const countdownElement = document.getElementById('countdown');
+
+    const countdown = setInterval(() => {
+      seconds--;
+      countdownElement.textContent = seconds;
+
+      if (seconds <= 0) {
+        clearInterval(countdown);
+        window.location.href = '/';
+      }
+    }, 1000);
+
+    // Apply saved theme immediately
+    (function() {
+      const saved = localStorage.getItem('theme') || 'auto';
+      document.documentElement.setAttribute('data-theme', saved);
+    })();
+  </script>
+</body>
+</html>

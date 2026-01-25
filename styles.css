@@ -421,12 +421,12 @@ main {
   border-radius: 100px;
   box-shadow: none;
   text-decoration: none;
-  transition: background var(--transition), color var(--transition), box-shadow var(--transition), border var(--transition);
+  transition: transform 0.3s ease, background var(--transition), color var(--transition), box-shadow var(--transition);
   font-family: var(--font-sans);
 }
 .cta-btn:hover {
+  transform: scale(1.05);
   background: rgba(100, 100, 100, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: none;
 }
 .section {
@@ -503,12 +503,12 @@ main {
   font-weight: 500;
   text-decoration: none;
   box-shadow: none;
-  transition: background var(--transition), color var(--transition), border var(--transition);
+  transition: transform 0.3s ease, background var(--transition), color var(--transition);
   font-family: var(--font-sans);
 }
 .card-link:hover {
+  transform: scale(1.05);
   background: rgba(100, 100, 100, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 form#contact-form {
   display: flex;
@@ -547,13 +547,13 @@ form button[type="submit"] {
   padding: 0.9rem 1.8rem;
   border-radius: 100px;
   cursor: pointer;
-  transition: background var(--transition), color var(--transition), border var(--transition);
+  transition: transform 0.3s ease, background var(--transition), color var(--transition);
   box-shadow: none;
   font-family: var(--font-sans);
 }
 form button[type="submit"]:hover {
+  transform: scale(1.05);
   background: rgba(100, 100, 100, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 #form-status {
   display: block;
@@ -584,7 +584,7 @@ footer {
   color: var(--color-accent);
 }
 
-/* Force hero (first section) text to white regardless of theme */
+/* Force hero (first section) text to white regardless of theme - dark mode */
 main > section:first-of-type,
 main > section.hero,
 main > section.hero * {
@@ -598,10 +598,63 @@ main > section.hero * {
   color: var(--color-text);
 }
 
-/* Improve readability over images */
+/* Improve readability over images - dark mode */
 main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
   color: #ffffff !important;
   text-shadow: none !important;
+}
+
+/* Light mode: make hero text black */
+:root[data-theme="light"] main > section:first-of-type,
+:root[data-theme="light"] main > section.hero,
+:root[data-theme="light"] main > section.hero * {
+  --color-text: #000000;
+  --color-primary: #000000;
+  --color-secondary: #000000;
+  --color-accent: #000000;
+  --color-muted: #4b5563;
+  --color-border: #000000;
+}
+
+:root[data-theme="light"] main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
+  color: #000000 !important;
+}
+
+/* Light mode: make all section titles and text black */
+:root[data-theme="light"] .section h2,
+:root[data-theme="light"] .section p,
+:root[data-theme="light"] #about-me h2,
+:root[data-theme="light"] #about-me p,
+:root[data-theme="light"] #contact h2,
+:root[data-theme="light"] #contact p {
+  color: #000000 !important;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] main > section:first-of-type,
+  :root[data-theme="auto"] main > section.hero,
+  :root[data-theme="auto"] main > section.hero * {
+    --color-text: #000000;
+    --color-primary: #000000;
+    --color-secondary: #000000;
+    --color-accent: #000000;
+    --color-muted: #4b5563;
+    --color-border: #000000;
+  }
+
+  :root[data-theme="auto"] main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
+    color: #000000 !important;
+  }
+
+  /* Auto theme in light mode: make all section titles and text black */
+  :root[data-theme="auto"] .section h2,
+  :root[data-theme="auto"] .section p,
+  :root[data-theme="auto"] #about-me h2,
+  :root[data-theme="auto"] #about-me p,
+  :root[data-theme="auto"] #contact h2,
+  :root[data-theme="auto"] #contact p {
+    color: #000000 !important;
+  }
 }
 
 /* Hero: force Projects button to black bg, white text, white border; invert on hover */
@@ -682,11 +735,12 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 :root[data-theme="light"] .card-link,
 :root[data-theme="light"] .button,
 :root[data-theme="light"] .btn,
-:root[data-theme="light"] form button[type="submit"] {
+:root[data-theme="light"] form button[type="submit"],
+:root[data-theme="light"] footer select {
   background: rgba(250, 250, 250, 0.15);
   -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
   backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.02);
   box-shadow: none;
 }
 
@@ -694,9 +748,10 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 :root[data-theme="light"] .card-link:hover,
 :root[data-theme="light"] .button:hover,
 :root[data-theme="light"] .btn:hover,
-:root[data-theme="light"] form button[type="submit"]:hover {
+:root[data-theme="light"] form button[type="submit"]:hover,
+:root[data-theme="light"] footer select:hover {
+  transform: scale(1.05);
   background: rgba(250, 250, 250, 0.3);
-  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 /* Light mode card styling */
@@ -742,11 +797,12 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   :root[data-theme="auto"] .card-link,
   :root[data-theme="auto"] .button,
   :root[data-theme="auto"] .btn,
-  :root[data-theme="auto"] form button[type="submit"] {
+  :root[data-theme="auto"] form button[type="submit"],
+  :root[data-theme="auto"] footer select {
     background: rgba(250, 250, 250, 0.15);
     -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
     backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.02);
     box-shadow: none;
   }
 
@@ -754,9 +810,10 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   :root[data-theme="auto"] .card-link:hover,
   :root[data-theme="auto"] .button:hover,
   :root[data-theme="auto"] .btn:hover,
-  :root[data-theme="auto"] form button[type="submit"]:hover {
+  :root[data-theme="auto"] form button[type="submit"]:hover,
+  :root[data-theme="auto"] footer select:hover {
+    transform: scale(1.05);
     background: rgba(250, 250, 250, 0.3);
-    border: 1px solid rgba(0, 0, 0, 0.3);
   }
 
   /* Light mode card styling for auto theme */
@@ -840,13 +897,13 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
   color: inherit;
   box-shadow: none;
-  transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+  transition: transform 0.3s ease, background-color .2s ease, color .2s ease, box-shadow .2s ease;
 }
 
 .button:hover,
 .btn:hover {
+  transform: scale(1.05);
   background: rgba(100, 100, 100, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Optional: spacing for action rows under cards */
@@ -879,9 +936,27 @@ footer label {
 }
 footer select {
   margin-left: 0.75rem;
-  background: transparent;
-  color: inherit;
-  border: 1px solid currentColor;
+  background: rgba(80, 80, 80, 0.3);
+  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
+  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
+  color: var(--color-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.3s ease, background var(--transition);
+  font-family: var(--font-sans);
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+footer select:hover {
+  transform: scale(1.05);
+  background: rgba(100, 100, 100, 0.35);
 }
 
 /* Hero section centering */
@@ -936,7 +1011,7 @@ footer select {
   max-width: none;          /* override earlier max-width */
   margin: 0;
   padding: 0;               /* inner wrapper will handle padding */
-  overflow: hidden;
+  overflow: visible;
 }
 
 .hero::before,
@@ -1007,14 +1082,6 @@ footer select {
   margin: 0 auto;
 }
 
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.2);              /* uniform dark filter */
-  pointer-events: none;
-}
-
 .hero > * {
   position: relative;
   z-index: 1;
@@ -1044,16 +1111,7 @@ footer select {
   margin: 0 auto;
 }
 
-/* Full dark overlay (single source of truth) */
-.hero::before,
-.hero-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.1);
-  pointer-events: none;
-  z-index: 0;
-}
+/* Full dark overlay (single source of truth) - REMOVED */
 
 /* Neutralize any previous partial overlays */
 .hero::after,
@@ -1071,13 +1129,7 @@ footer select {
   z-index: 1;
 }
 
-/* If an existing .hero-overlay div remains in HTML, repurpose it safely */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55) !important;
-  pointer-events: none;
-}
+/* If an existing .hero-overlay div remains in HTML, repurpose it safely - REMOVED */
 
 /* Mobile tweak */
 @media (max-width: 600px) {
@@ -1217,7 +1269,7 @@ main > section:first-of-type,
   padding: clamp(2.5rem, 6vh, 5rem) 1.25rem;
   margin-top: 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   text-align: center;
   /* Preserve prior forced light text */
   --color-text: #fff;
@@ -1383,16 +1435,7 @@ main > section:first-of-type {
   .hero-inner a.cta-btn { width: auto; }
 }
 
-/* Optional subtle overlay if there's a background image */
-main > section:first-of-type::after,
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
-  pointer-events: none;
-  z-index: 0;
-}
+/* Optional subtle overlay if there's a background image - REMOVED */
 
 main > section:first-of-type > .hero-inner,
 .hero > .hero-inner {
@@ -1486,7 +1529,7 @@ main > section:first-of-type > .hero-inner,
   }
 }
 
-/* Social icon-only buttons */
+/* Social icon-only buttons - match navbar material */
 .social-icon-btn {
   padding: 0.5rem !important;
   width: 36px;
@@ -1495,7 +1538,19 @@ main > section:first-of-type > .hero-inner,
   align-items: center;
   justify-content: center;
   border-radius: 50% !important;
-  box-shadow: inset 0 -3px 8px rgba(0, 0, 0, 0.15) !important;
+  background: rgba(80, 80, 80, 0.3) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
+  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow:
+    0 20px 80px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: transform 0.3s ease;
+}
+
+.social-icon-btn:hover {
+  transform: scale(1.05);
 }
 
 .social-icon-btn img {
@@ -1503,51 +1558,61 @@ main > section:first-of-type > .hero-inner,
   vertical-align: middle;
   width: 18px !important;
   height: 18px !important;
+  filter: invert(1);
+  transition: filter 0.2s;
 }
 
-/* Force social icon buttons to stay in dark mode style even in light mode */
+/* Light mode social icon buttons - match navbar light mode style */
 :root[data-theme="light"] .social-icon-btn {
-  background: rgba(80, 80, 80, 0.3) !important;
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(250, 250, 250, 0.15) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
+  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  box-shadow:
+    0 20px 80px rgba(0, 0, 0, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.04),
+    0 2px 8px rgba(0, 0, 0, 0.03) !important;
 }
 
 :root[data-theme="light"] .social-icon-btn:hover {
-  background: rgba(100, 100, 100, 0.35) !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.05);
+  background: rgba(250, 250, 250, 0.3) !important;
 }
 
 :root[data-theme="light"] .social-icon-btn img {
-  filter: invert(1) !important;
+  filter: invert(0) !important;
 }
 
 :root[data-theme="light"] .social-icon-btn:hover img,
 :root[data-theme="light"] .social-icon-btn:focus img {
-  filter: invert(1) !important;
+  filter: invert(0) !important;
 }
 
 /* Auto theme in light mode */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] .social-icon-btn {
-    background: rgba(80, 80, 80, 0.3) !important;
-    -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-    backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    background-color: rgba(250, 250, 250, 0.15) !important;
+    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
+    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    box-shadow:
+      0 20px 80px rgba(0, 0, 0, 0.05),
+      0 8px 32px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.03) !important;
   }
 
   :root[data-theme="auto"] .social-icon-btn:hover {
-    background: rgba(100, 100, 100, 0.35) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    transform: scale(1.05);
+    background: rgba(250, 250, 250, 0.3) !important;
   }
 
   :root[data-theme="auto"] .social-icon-btn img {
-    filter: invert(1) !important;
+    filter: invert(0) !important;
   }
 
   :root[data-theme="auto"] .social-icon-btn:hover img,
   :root[data-theme="auto"] .social-icon-btn:focus img {
-    filter: invert(1) !important;
+    filter: invert(0) !important;
   }
 }
 

@@ -709,16 +709,15 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 
 /* Navbar: more translucent glassy in light mode */
 :root[data-theme="light"] .navbar {
-  background-color: rgba(250, 250, 250, 0.15);
-  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+  background-color: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(12px) saturate(100%);
+  backdrop-filter: blur(12px) saturate(100%);
   color: #111111;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
     0 20px 80px rgba(0, 0, 0, 0.05),
     0 8px 32px rgba(0, 0, 0, 0.04),
-    0 2px 8px rgba(0, 0, 0, 0.03),
-    inset 0 3px 12px rgba(255, 255, 255, 1);
+    0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 :root[data-theme="light"] .navbar a,
@@ -727,9 +726,9 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 }
 
 :root[data-theme="light"] .navbar:hover {
-  background-color: rgba(250, 250, 250, 0.25);
-  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
-  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
+  background-color: rgba(255, 255, 255, 0.8);
+  -webkit-backdrop-filter: blur(12px) saturate(100%);
+  backdrop-filter: blur(12px) saturate(100%);
 }
 
 /* Light mode button styling */
@@ -739,10 +738,10 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 :root[data-theme="light"] .btn,
 :root[data-theme="light"] form button[type="submit"],
 :root[data-theme="light"] footer select {
-  background: rgba(250, 250, 250, 0.15);
-  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  border: 1px solid rgba(0, 0, 0, 0.02);
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(8px) saturate(100%);
+  backdrop-filter: blur(8px) saturate(100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: none;
 }
 
@@ -753,15 +752,15 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 :root[data-theme="light"] form button[type="submit"]:hover,
 :root[data-theme="light"] footer select:hover {
   transform: scale(1.05);
-  background: rgba(250, 250, 250, 0.3);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 /* Light mode card styling */
 :root[data-theme="light"] .card {
-  background: rgba(240, 240, 242, 0.75);
-  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(8px) saturate(100%);
+  backdrop-filter: blur(8px) saturate(100%);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: none;
 }
 
@@ -773,16 +772,15 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 /* Auto + system light */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] .navbar {
-    background-color: rgba(250, 250, 250, 0.15);
-    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
+    background-color: rgba(255, 255, 255, 0.7);
+    -webkit-backdrop-filter: blur(12px) saturate(100%);
+    backdrop-filter: blur(12px) saturate(100%);
     color: #111111;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow:
       0 20px 80px rgba(0, 0, 0, 0.05),
       0 8px 32px rgba(0, 0, 0, 0.04),
-      0 2px 8px rgba(0, 0, 0, 0.03),
-      inset 0 3px 12px rgba(255, 255, 255, 1);
+      0 2px 8px rgba(0, 0, 0, 0.03);
   }
   :root[data-theme="auto"] .navbar a,
   :root[data-theme="auto"] .navbar .navbar-logo {
@@ -790,9 +788,9 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   }
 
   :root[data-theme="auto"] .navbar:hover {
-    background-color: rgba(250, 250, 250, 0.25);
-    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
-    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(125%);
+    background-color: rgba(255, 255, 255, 0.8);
+    -webkit-backdrop-filter: blur(12px) saturate(100%);
+    backdrop-filter: blur(12px) saturate(100%);
   }
 
   /* Light mode button styling for auto theme */
@@ -802,10 +800,10 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   :root[data-theme="auto"] .btn,
   :root[data-theme="auto"] form button[type="submit"],
   :root[data-theme="auto"] footer select {
-    background: rgba(250, 250, 250, 0.15);
-    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    border: 1px solid rgba(0, 0, 0, 0.02);
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(8px) saturate(100%);
+    backdrop-filter: blur(8px) saturate(100%);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: none;
   }
 
@@ -816,7 +814,7 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   :root[data-theme="auto"] form button[type="submit"]:hover,
   :root[data-theme="auto"] footer select:hover {
     transform: scale(1.05);
-    background: rgba(250, 250, 250, 0.3);
+    background: rgba(255, 255, 255, 0.8);
   }
 
   /* Light mode card styling for auto theme */
@@ -1567,10 +1565,10 @@ main > section:first-of-type > .hero-inner,
 
 /* Light mode social icon buttons - match navbar light mode style */
 :root[data-theme="light"] .social-icon-btn {
-  background-color: rgba(250, 250, 250, 0.15) !important;
-  -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
-  backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.6) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(100%) !important;
+  backdrop-filter: blur(8px) saturate(100%) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   box-shadow:
     0 20px 80px rgba(0, 0, 0, 0.05),
     0 8px 32px rgba(0, 0, 0, 0.04),
@@ -1579,7 +1577,7 @@ main > section:first-of-type > .hero-inner,
 
 :root[data-theme="light"] .social-icon-btn:hover {
   transform: scale(1.05);
-  background: rgba(250, 250, 250, 0.3) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
 }
 
 :root[data-theme="light"] .social-icon-btn img {
@@ -1594,10 +1592,10 @@ main > section:first-of-type > .hero-inner,
 /* Auto theme in light mode */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] .social-icon-btn {
-    background-color: rgba(250, 250, 250, 0.15) !important;
-    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
-    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%) !important;
-    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(100%) !important;
+    backdrop-filter: blur(8px) saturate(100%) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
     box-shadow:
       0 20px 80px rgba(0, 0, 0, 0.05),
       0 8px 32px rgba(0, 0, 0, 0.04),
@@ -1606,7 +1604,7 @@ main > section:first-of-type > .hero-inner,
 
   :root[data-theme="auto"] .social-icon-btn:hover {
     transform: scale(1.05);
-    background: rgba(250, 250, 250, 0.3) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
   }
 
   :root[data-theme="auto"] .social-icon-btn img {

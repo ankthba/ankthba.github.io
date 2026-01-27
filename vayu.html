@@ -115,26 +115,59 @@
             opacity: 0;
             animation: fadeIn 1.2s ease forwards;
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            opacity: 0.7;
+            z-index: -1;
         }
 
         .hero h1 {
             font-size: clamp(48px, 8vw, 72px);
             margin-bottom: 24px;
-            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
         }
 
         .hero p {
             font-size: clamp(20px, 3vw, 24px);
             color: var(--text-secondary);
             margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
         }
 
         .hero .btn {
             opacity: 0;
             animation: fadeIn 1.2s ease 0.5s forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
         }
 
         /* Scroll Indicator */
@@ -146,6 +179,7 @@
             opacity: 0;
             animation: fadeIn 1.2s ease 1s forwards, bounce 2s ease-in-out 2s infinite;
             cursor: pointer;
+            z-index: 1;
         }
 
         .scroll-indicator svg {
@@ -635,6 +669,10 @@
 <body>
     <!-- Hero Section -->
     <section class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="assets/photos/hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
         <div class="container">
             <h1>Vayu</h1>
             <p>Intelligence at the edge.</p>

@@ -1,133 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>vayu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="vayuWhiteOff.png">
- <style>
-    @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-    :root {
-      --bg: #ffffff;
-      --fg: #111111;
-      --muted: #555555;
-      --link: #2255aa;
-      --hairline: rgba(0, 0, 0, 0.08);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0f1113;
-        --fg: #e8e8e8;
-        --muted: #a0a0a0;
-        --link: #7ab7ff;
-        --hairline: rgba(255, 255, 255, 0.12);
-      }
-    }
-  
-    html {
-      box-sizing: border-box;
-      -webkit-text-size-adjust: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    *, *::before, *::after { box-sizing: inherit; }
-  
-    body {
-      margin: 0;
-      color: var(--fg);
-      background: var(--bg);
-      /* use browser default (raw HTML) font */
-      line-height: 1.6;
-      letter-spacing: -0.01em;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: 350;
-    }
-  
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 24px 16px 64px;
-    }
-  
-    header {
-      padding: 24px 0 12px;
-      border-bottom: 1px solid var(--hairline);
-      margin-bottom: 24px;
-    }
-  
-    h1, h2 {
-      margin: 0;
-      line-height: 1.2;
-    }
-    h1 {
-      font-family: "Instrument Serif", serif;
-      font-weight: 200;
-      font-size: clamp(28px, 6vw, 40px);
-      letter-spacing: -0.015em;
-    }
-    h1 strong { font-weight: inherit; }
-  
-    h2 {
-      font-weight: 350;
-      font-size: clamp(18px, 3.5vw, 22px);
-      color: var(--muted);
-      margin-top: 16px;
-    }
-  
-    p { margin: 12px 0 0; font-size: 16px; }
-    small { color: var(--muted); }
-  
-    a {
-      color: var(--link);
-      text-decoration: underline;
-      text-underline-offset: 2px;
-      text-decoration-thickness: .08em;
-    }
-    a:hover { opacity: 0.9; }
-    a:focus-visible {
-      outline: 2px solid var(--link);
-      outline-offset: 3px;
-      border-radius: 2px;
-    }
-  
-    section + section { margin-top: 32px; }
-  
-    footer {
-      margin-top: 48px;
-      padding-top: 12px;
-      border-top: 1px solid var(--hairline);
-    }
-    footer p { margin: 0; }
-    footer p + p { margin-top: 4px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdgeFabric — Intelligence at the edge</title>
 
+    <!-- Essential meta tags -->
+    <meta name="description" content="Infrastructure for distributed AI inference">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="EdgeFabric — Intelligence at the edge">
+    <meta property="og:description" content="Infrastructure for distributed AI inference">
+    <meta property="og:type" content="website">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Favicon - Simple V -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>V</text></svg>">
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --bg: #ffffff;
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --text-muted: #a1a1aa;
+            --border: #e4e4e7;
+            --accent: #18181b;
+
+            --serif: 'Instrument Serif', serif;
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            --container-width: 960px;
+            --section-padding: 160px;
+            --section-padding-mobile: 80px;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--sans);
+            font-weight: 400;
+            color: var(--text-primary);
+            background: var(--bg);
+            line-height: 1.8;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: var(--serif);
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        /* Layout */
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: var(--section-padding) 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1.2s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 72px);
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: clamp(20px, 3vw, 24px);
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        .hero .btn {
+            opacity: 0;
+            animation: fadeIn 1.2s ease 0.5s forwards;
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border: 1px solid var(--accent);
+            background: transparent;
+            color: var(--accent);
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+            transform: scale(1.05);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        /* Vision Statement */
+        .vision {
+            text-align: center;
+        }
+
+        .vision .container {
+            max-width: 600px;
+        }
+
+        .vision p {
+            font-size: 20px;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+        }
+
+        /* Three Pillars */
+        .pillars {
+            background: var(--bg);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        .pillar {
+            padding: 48px 32px;
+            border-right: 1px solid var(--border);
+        }
+
+        .pillar:last-child {
+            border-right: none;
+        }
+
+        .pillar h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .pillar p {
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* What We're Building */
+        .building {
+            background: #fafafa;
+        }
+
+        .building-list {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .building-item {
+            margin-bottom: 48px;
+        }
+
+        .building-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .building-item h3 {
+            font-size: 14px;
+            font-family: var(--sans);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .building-item p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Status Section */
+        .status {
+            text-align: center;
+            background: #f5f5f5;
+        }
+
+        .status p:first-of-type {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .status p:nth-of-type(2) {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 64px 0;
+            text-align: center;
+        }
+
+        footer h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        footer .links {
+            margin-bottom: 24px;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 14px;
+            position: relative;
+        }
+
+        footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--text-secondary);
+            transition: width 0.3s ease;
+        }
+
+        footer a:hover::after {
+            width: 100%;
+        }
+
+        footer a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        footer .copyright {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: var(--section-padding-mobile) 0;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .pillar {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 32px 24px;
+            }
+
+            .pillar:last-child {
+                border-bottom: none;
+            }
+
+            .hero h1 {
+                margin-bottom: 16px;
+            }
+
+            .hero p {
+                margin-bottom: 32px;
+            }
+
+            footer .links {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            footer a {
+                margin: 0;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .btn {
+                border: 1px solid #000;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            .hero {
+                min-height: auto;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <header>
-      <h1><strong>vayu</strong></h1>
-    </header>
-
-    <section>
-      <h2><strong>intelligent systems, built for humans</strong></h2>
-      <p>
-        We synthesize distributed intelligence from ambient compute with instantaneous inference.
-      </p>
-      <!-- <p><strong>public, 2026</strong></p> -->
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Vayu Systems</h1>
+            <p>Intelligence at the edge.</p>
+            <a href="mailto:me@aniketh.net?subject=Access Request" class="btn">Request Access</a>
+        </div>
     </section>
 
-
-    <section>
-      <h2><strong>contact</strong></h2>
-      <p>
-        to reach vayu, email
-        <a href="mailto:me@aniketh.net">me@aniketh.net</a>
-      </p>
+    <!-- Vision Statement -->
+    <section class="vision fade-in">
+        <div class="container">
+            <p>We're building infrastructure for distributed AI inference.</p>
+            <p>Every device—from laptops to embedded systems—has compute capacity sitting idle. We turn that stranded capacity into a unified inference layer.</p>
+            <p>The result: faster, more private, more efficient AI.</p>
+        </div>
     </section>
-<br>
+
+    <!-- Three Pillars -->
+    <section class="pillars fade-in">
+        <div class="container">
+            <div class="pillars-grid">
+                <div class="pillar">
+                    <h3>Private by design</h3>
+                    <p>Your data never leaves your perimeter. Models execute where the data lives.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Built for performance</h3>
+                    <p>Sub-50ms latency on local networks. Automatic routing optimizes for speed.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Radically simple</h3>
+                    <p>One API call. The complexity is ours, not yours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We're Building -->
+    <section class="building fade-in">
+        <div class="container">
+            <div class="building-list">
+                <div class="building-item">
+                    <h3>Software</h3>
+                    <p>A routing layer that intelligently distributes AI inference across any devices on your network.</p>
+                </div>
+                <div class="building-item">
+                    <h3>Hardware</h3>
+                    <p>Purpose-built inference accelerators designed for the edge. Available 2026.</p>
+                </div>
+                <div class="building-item">
+                    <h3>Platform</h3>
+                    <p>A marketplace where compute providers and consumers meet. Coming soon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status -->
+    <section class="status fade-in">
+        <div class="container">
+            <p>Status: Private Beta</p>
+            <p>If you're building at the edge, we'd like to hear from you.</p>
+            <a href="mailto:me@aniketh.net?subject=Partnership Inquiry" class="btn">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-      <p>© 2026 vayu systems</p> <p> return to <a href="https://aniketh.net" target="_blank" rel="noopener noreferrer">aniketh.net</a></p>
+        <div class="container">
+            <h2>Vayu Systems</h2>
+            <p>Built by Aniketh Bandlamudi</p>
+            <div class="links">
+                <!-- <a href="https://github.com/ankthba" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <span aria-hidden="true">·</span>
+                <a href="https://twitter.com/ankthba" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <span aria-hidden="true">·</span> -->
+                <a href="mailto:me@aniketh.net">Email</a>
+            </div>
+            <p class="copyright">© 2026</p>
+        </div>
     </footer>
-  </main>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+        });
+    </script>
 </body>
 </html>

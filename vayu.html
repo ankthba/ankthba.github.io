@@ -6,12 +6,12 @@
     <title>Vayu</title>
 
     <!-- Essential meta tags -->
-    <meta name="description" content="An operating system designed for autonomous AI agents">
+    <meta name="description" content="The first operating system designed from the ground up for autonomous AI agents">
     <meta name="author" content="Aniketh Bandlamudi">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Vayu — The Agent-Native Operating System">
-    <meta property="og:description" content="An operating system designed for autonomous AI agents">
+    <meta property="og:description" content="The first operating system designed from the ground up for autonomous AI agents">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts -->
@@ -138,8 +138,14 @@
             width: 100%;
             height: 100%;
             background: var(--bg);
-            opacity: 0.7;
+            opacity: 0.4;
             z-index: -1;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .hero-overlay {
+                opacity: 0.7;
+            }
         }
 
         .hero h1 {
@@ -253,13 +259,17 @@
         }
 
         .vision .container {
-            max-width: 600px;
+            max-width: 700px;
         }
 
         .vision p {
             font-size: 20px;
             color: var(--text-primary);
             margin-bottom: 32px;
+        }
+
+        .vision p.secondary {
+            color: var(--text-secondary);
         }
 
         /* Stats Section */
@@ -484,10 +494,50 @@
             line-height: 1.6;
         }
 
+        /* Specs Section */
+        .specs {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+        }
+
+        .specs h2 {
+            font-size: clamp(32px, 5vw, 42px);
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px 64px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .spec-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
         /* Status Section */
         .status {
             text-align: center;
-            background: var(--bg);
+            background: var(--bg-elevated);
         }
 
         .status p:first-of-type {
@@ -613,6 +663,10 @@
                 gap: 32px;
             }
 
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
             .step {
                 grid-template-columns: 60px 1fr;
                 gap: 20px;
@@ -675,7 +729,7 @@
         <div class="hero-overlay"></div>
         <div class="container">
             <h1>Vayu</h1>
-            <p>An operating system for autonomous agents.</p>
+            <p>The first operating system for autonomous agents.</p>
             <a href="mailto:me@aniketh.net?subject=Access Request" class="btn">Request Access</a>
         </div>
         <div class="scroll-indicator" onclick="document.querySelector('.vision').scrollIntoView({ behavior: 'smooth' })">
@@ -688,9 +742,9 @@
     <!-- Vision Statement -->
     <section class="vision fade-in">
         <div class="container">
-            <p>Vayu is an operating system built for autonomous AI agents.</p>
-            <p>Agents are persistent, goal-directed entities that need fundamentally different primitives than traditional software.</p>
-            <p>Safety, compliance, and reliability are enforced at the kernel level—not bolted on top.</p>
+            <p>Vayu is the first operating system designed from the ground up for autonomous AI agents.</p>
+            <p class="secondary">Traditional operating systems were built for humans running programs. Agents are different—they're persistent, goal-directed entities that require fundamentally new primitives.</p>
+            <p class="secondary">Vayu provides those primitives at the kernel level.</p>
         </div>
     </section>
 
@@ -707,8 +761,8 @@
                     <span class="stat-label">Reach Production</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number">2026</span>
-                    <span class="stat-label">Compliance Deadlines</span>
+                    <span class="stat-number">$4.4T</span>
+                    <span class="stat-label">Projected AI Market</span>
                 </div>
             </div>
         </div>
@@ -722,22 +776,22 @@
                 <div class="step">
                     <div class="step-number">01</div>
                     <div class="step-content">
-                        <h3>Agents as kernel objects</h3>
-                        <p>Vayu treats agents as first-class entities with persistent identity, state, and capabilities. They're not processes—they're a fundamental primitive.</p>
+                        <h3>Agents as first-class kernel objects</h3>
+                        <p>Not processes. Not containers. Agents are a new primitive with persistent identity, cognitive state, and cryptographic capabilities. The kernel understands what an agent <em>is</em>.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">02</div>
                     <div class="step-content">
-                        <h3>Capability-based security</h3>
-                        <p>Every resource access requires an unforgeable capability token. Agents can only do what they're explicitly granted permission to do—enforced at the hardware level.</p>
+                        <h3>Zero-trust capability architecture</h3>
+                        <p>Every resource access requires an unforgeable capability token with cryptographic provenance. Agents operate on the principle of least privilege—enforced at the memory management unit.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">03</div>
                     <div class="step-content">
                         <h3>Goal-aware scheduling</h3>
-                        <p>The scheduler understands agent goals and progress, not just CPU time. Resources are allocated based on what matters: completing objectives.</p>
+                        <p>The scheduler doesn't see CPU time. It sees agent objectives, progress metrics, and priority hierarchies. Resources flow to what matters: completing goals.</p>
                     </div>
                 </div>
             </div>
@@ -749,16 +803,16 @@
         <div class="container">
             <div class="pillars-grid">
                 <div class="pillar">
-                    <h3>Security by design</h3>
-                    <p>Hardware-enforced capability model. Agents receive unforgeable tokens for each resource. Exceeding permissions is physically impossible.</p>
+                    <h3>Capability-based isolation</h3>
+                    <p>Agents receive unforgeable tokens for each resource. Memory isolation is enforced at the hardware level via ARM64 MMU. There is no ambient authority.</p>
                 </div>
                 <div class="pillar">
-                    <h3>Memory as a primitive</h3>
-                    <p>Working, episodic, semantic, and procedural memory built into the kernel. Agents have cognitive architectures, not file systems.</p>
+                    <h3>Cognitive memory primitives</h3>
+                    <p>Working memory. Episodic memory. Semantic memory. Procedural memory. Built into the kernel as first-class abstractions—not bolted-on databases.</p>
                 </div>
                 <div class="pillar">
-                    <h3>Compliance built in</h3>
-                    <p>Immutable audit logs. Cryptographically signed state. Human override switches. Regulatory requirements are kernel guarantees.</p>
+                    <h3>Compliance as architecture</h3>
+                    <p>Immutable audit logs with cryptographic integrity. Complete action provenance. Human override switches. Regulatory requirements are kernel guarantees.</p>
                 </div>
             </div>
         </div>
@@ -767,23 +821,23 @@
     <!-- Use Cases -->
     <section class="use-cases fade-in">
         <div class="container">
-            <h2>Built for mission-critical systems</h2>
+            <h2>Built for mission-critical deployments</h2>
             <div class="use-cases-grid">
                 <div class="use-case">
                     <h3>Financial services</h3>
-                    <p>Deploy autonomous trading agents with kernel-enforced risk boundaries. Every action is audited.</p>
+                    <p>Deploy autonomous trading agents with kernel-enforced risk limits and position boundaries. Every decision is cryptographically signed and auditable.</p>
                 </div>
                 <div class="use-case">
                     <h3>Healthcare</h3>
-                    <p>Run diagnostic agents with complete audit trails and data isolation. Patient information stays local. Compliance is architectural.</p>
+                    <p>Diagnostic agents with complete audit trails and hardware-enforced data isolation. HIPAA compliance is architectural, not procedural.</p>
                 </div>
                 <div class="use-case">
                     <h3>Critical infrastructure</h3>
-                    <p>Autonomous systems with hardware kill switches and instant capability revocation. Human oversight is a kernel primitive, not a feature.</p>
+                    <p>Autonomous control systems with hardware kill switches and instant capability revocation. Human oversight is a kernel primitive.</p>
                 </div>
                 <div class="use-case">
                     <h3>Enterprise AI</h3>
-                    <p>Multi-agent workflows with guaranteed isolation, resource limits, and provenance tracking. Scale agents safely.</p>
+                    <p>Multi-agent orchestration with guaranteed isolation, resource governance, and full provenance tracking. Scale agents without scaling risk.</p>
                 </div>
             </div>
         </div>
@@ -795,16 +849,69 @@
             <h2>The architecture</h2>
             <div class="building-list">
                 <div class="building-item">
-                    <h3>Verified microkernel</h3>
-                    <p>A minimal, formally verified core with machine-checked proofs. No buffer overflows. No injection vulnerabilities. Guaranteed correctness.</p>
+                    <h3>Bare-metal microkernel</h3>
+                    <p>Written entirely in Rust. Zero garbage collection. Zero runtime overhead. Boots directly on hardware—no Linux, no hypervisor, no abstraction tax.</p>
                 </div>
                 <div class="building-item">
-                    <h3>Agent lifecycle management</h3>
-                    <p>Create, checkpoint, restore, migrate, and terminate agents with kernel-level syscalls. Persistent identity and state across restarts.</p>
+                    <h3>Preemptive multi-agent scheduler</h3>
+                    <p>Hardware timer-driven context switching with priority inheritance. Agents can't starve each other. Deadlines are guarantees.</p>
+                </div>
+                <div class="building-item">
+                    <h3>Hardware-enforced isolation</h3>
+                    <p>ARM64 MMU with per-agent address spaces. TTBR0/TTBR1 separation. Agents physically cannot access memory they don't own.</p>
                 </div>
                 <div class="building-item">
                     <h3>Immutable audit infrastructure</h3>
-                    <p>Every agent action is logged to tamper-evident storage. Cryptographic signatures guarantee integrity. Compliance is enforced, not configured.</p>
+                    <p>Every syscall logged. Every state transition recorded. Cryptographic signatures guarantee integrity. The audit trail is the truth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Specs -->
+    <section class="specs fade-in">
+        <div class="container">
+            <h2>Technical specifications</h2>
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <span class="spec-label">Architecture</span>
+                    <span class="spec-value">ARM64 (AArch64)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Target</span>
+                    <span class="spec-value">Pi</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Language</span>
+                    <span class="spec-value">100% Rust</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Kernel size</span>
+                    <span class="spec-value">&lt;500KB</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Boot time</span>
+                    <span class="spec-value">&lt;100ms</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Scheduling</span>
+                    <span class="spec-value">Preemptive, goal-aware</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Memory</span>
+                    <span class="spec-value">MMU per-agent isolation</span>
+                </div>
+                <!-- <div class="spec-item">
+                    <span class="spec-label">Storage</span>
+                    <span class="spec-value">FAT32 on SD</span>
+                </div> -->
+                <div class="spec-item">
+                    <span class="spec-label">Networking</span>
+                    <span class="spec-value">Full TCP/IP stack</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">IPC</span>
+                    <span class="spec-value">Capability channels</span>
                 </div>
             </div>
         </div>
@@ -814,7 +921,7 @@
     <section class="status fade-in">
         <div class="container">
             <p>Status: Private Beta</p>
-            <p>Vayu is in limited deployment. If you're building mission-critical AI systems, let's talk.</p>
+            <p>Vayu is in limited deployment with select partners. If you're building mission-critical AI infrastructure, we should talk.</p>
             <a href="mailto:me@aniketh.net?subject=Vayu Inquiry" class="btn">Get in Touch</a>
         </div>
     </section>
@@ -826,6 +933,7 @@
             <p>Built by Aniketh Bandlamudi</p>
             <div class="links">
                 <a href="mailto:me@aniketh.net">Email</a>
+                <a href="https://github.com/vayusys/vayuOS">GitHub</a>
             </div>
             <p class="copyright">© 2026</p>
         </div>
@@ -842,7 +950,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // For elements with children that need staggered animation
                     if (entry.target.classList.contains('pillars')) {
                         entry.target.querySelectorAll('.pillar').forEach(el => el.classList.add('visible'));
                     }
@@ -857,7 +964,6 @@
             });
         }, observerOptions);
 
-        // Observe all fade-in elements
         document.addEventListener('DOMContentLoaded', () => {
             const fadeElements = document.querySelectorAll('.fade-in');
             fadeElements.forEach(el => observer.observe(el));

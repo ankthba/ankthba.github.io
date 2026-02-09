@@ -148,8 +148,25 @@
             }
         }
 
+        .hero-logo {
+            width: clamp(80px, 12vw, 120px);
+            height: auto;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 1.2s ease forwards;
+        }
+
+        /* Invert logo in light mode */
+        @media (prefers-color-scheme: light) {
+            .hero-logo {
+                filter: invert(1);
+            }
+        }
+
         .hero h1 {
-            font-size: clamp(48px, 8vw, 72px);
+            font-size: clamp(36px, 6vw, 48px);
             margin-bottom: 24px;
             color: var(--text-primary);
             position: relative;
@@ -728,8 +745,8 @@
         </video>
         <div class="hero-overlay"></div>
         <div class="container">
-            <h1>Vayu</h1>
-            <p>The first operating system for autonomous agents.</p>
+            <img src="assets/photos/vayuLogo.png" alt="Vayu Logo" class="hero-logo">
+            <p>The first operating system for autonomous agents—Vayu</p>
             <a href="mailto:me@aniketh.net?subject=Access Request" class="btn">Request Access</a>
         </div>
         <div class="scroll-indicator" onclick="document.querySelector('.vision').scrollIntoView({ behavior: 'smooth' })">
@@ -933,7 +950,8 @@
             <p>Built by Aniketh Bandlamudi</p>
             <div class="links">
                 <a href="mailto:me@aniketh.net">Email</a>
-                <a href="https://github.com/vayusys/vayuOS">GitHub</a>
+                <a href="https://github.com/vayusys">GitHub</a>
+                <a href="https://www.linkedin.com/company/vayusystems">LinkedIn</a>
             </div>
             <p class="copyright">© 2026</p>
         </div>

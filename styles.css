@@ -1,7 +1,15 @@
+/* =========================================================
+   styles.css — Aniketh Bandlamudi personal site
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. Fonts
+   --------------------------------------------------------- */
+
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-/* Instrument Serif utility classes */
 .instrument-serif-regular {
   font-family: "Instrument Serif", serif;
   font-weight: 400;
@@ -9,6 +17,7 @@
   font-stretch: condensed;
   letter-spacing: -0.02em;
 }
+
 .instrument-serif-regular-italic {
   font-family: "Instrument Serif", serif;
   font-weight: 400;
@@ -17,26 +26,32 @@
   letter-spacing: -0.02em;
 }
 
+
+/* ---------------------------------------------------------
+   2. CSS Variables & Theme Palettes
+   --------------------------------------------------------- */
+
+/* Fallback (dark) */
 :root {
   --color-bg: #000;
   --color-bg-alt: #000;
-  --color-card: #000;
+  --color-card: #191919;
   --color-primary: #fff;
   --color-secondary: #fff;
   --color-accent: #fff;
   --color-text: #fff;
   --color-muted: #d1d5db;
   --color-border: #fff;
-  --radius: 0;
-  --shadow: none;
-  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+  --transition: 0.2s cubic-bezier(.4, 0, .2, 1);
   --font-serif: "Instrument Serif", serif;
   --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color-scheme: dark;
 }
 
-/* Theme palettes: default to 'auto' (follow system) */
-:root, :root[data-theme="auto"] {
-  --color-bg: #f5f5f7;        /* was #ffffff */
+/* Auto theme: follow system (default behavior) */
+:root,
+:root[data-theme="auto"] {
+  --color-bg: #f5f5f7;
   --color-bg-alt: #f5f5f7;
   --color-card: #ffffff;
   --color-primary: #111111;
@@ -49,7 +64,8 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root, :root[data-theme="auto"] {
+  :root,
+  :root[data-theme="auto"] {
     --color-bg: #000;
     --color-bg-alt: #000;
     --color-card: #191919;
@@ -65,7 +81,7 @@
 
 /* Explicit overrides */
 :root[data-theme="light"] {
-  --color-bg: #f5f5f7;        /* was #ffffff */
+  --color-bg: #f5f5f7;
   --color-bg-alt: #f5f5f7;
   --color-card: #ffffff;
   --color-primary: #111111;
@@ -76,6 +92,7 @@
   --color-border: #111111;
   color-scheme: light;
 }
+
 :root[data-theme="dark"] {
   --color-bg: #000;
   --color-bg-alt: #000;
@@ -89,59 +106,73 @@
   color-scheme: dark;
 }
 
-/* Apply theme variables */
-html { color-scheme: light dark; }
+
+/* ---------------------------------------------------------
+   3. Base Reset & Typography
+   --------------------------------------------------------- */
+
+html {
+  margin: 0;
+  padding: 0;
+  color-scheme: light dark;
+}
+
 body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
-  transition: background-color var(--transition), color var(--transition);
-}
-a { color: var(--color-primary); }
-hr, .bordered { border-color: var(--color-border); }
-
-/* Utility for hidden label used by the toggle */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0, 0, 0, 0);
-  white-space: nowrap; border: 0;
-}
-
-/* Base typography: SF Pro */
-html, body {
-  font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background var(--transition), color var(--transition);
 }
 
-/* Remove default margins to ensure hero starts at absolute top */
-html {
-  margin: 0 !important;
-  padding: 0 !important;
+main {
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  margin: 0 !important;
-  padding: 0 !important;
+a {
+  color: var(--color-primary);
 }
 
-/* Ensure regular text inherits the light weight */
+p {
+  line-height: 1.8;
+}
+
 :where(p, a, li, span, small, label, input, textarea, button) {
   font-family: inherit;
   font-weight: inherit;
 }
 
-/* Titles stay on Instrument Serif (unchanged) */
-h1, h2, h3, h4, h5, h6,
+/* Instrument Serif for main headings only */
+h1, h4, h5, h6,
 .hero h1,
-.section > h2,
-.card h3,
 .title {
-  font-family: "Instrument Serif", serif;
-  /* no forced weight change to keep existing Instrument Serif styling */
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: condensed;
+  letter-spacing: -0.02em;
 }
+
+h2,
+.section > h2 {
+  font-family: var(--font-sans);
+}
+
+hr,
+.bordered {
+  border-color: var(--color-border);
+}
+
+
+/* ---------------------------------------------------------
+   4. Navbar
+   --------------------------------------------------------- */
 
 .navbar {
   display: flex;
@@ -168,7 +199,8 @@ h1, h2, h3, h4, h5, h6,
     inset 0 3px 12px rgba(15, 15, 15, 0.7);
   overflow: hidden;
   will-change: transform;
-  transition: transform 0.3s ease;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  view-transition-name: navbar;
 }
 
 .navbar:hover {
@@ -178,7 +210,6 @@ h1, h2, h3, h4, h5, h6,
   backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(115%);
 }
 
-/* Subtle specular highlights for extra glossiness */
 .navbar::before {
   content: '';
   position: absolute;
@@ -196,518 +227,67 @@ h1, h2, h3, h4, h5, h6,
   border-radius: 100px;
 }
 
-/* Ensure navbar content stays above all effects */
-.navbar > *:not(.navbar-refraction-container) {
+.navbar > * {
   position: relative;
   z-index: 5;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Container for WebGL/Canvas effects */
-.navbar-refraction-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 100px;
-  mix-blend-mode: normal;
-  opacity: 0.95;
-}
-
-/* Simplified mobile effect */
-.navbar.refraction-simplified::before,
-.navbar.refraction-simplified::after {
-  display: none;
-}
-
-.navbar.refraction-simplified {
-  backdrop-filter: blur(20px) saturate(120%);
-  -webkit-backdrop-filter: blur(20px) saturate(120%);
-}
-
-/* Reduced motion: disable pseudo-element effects */
-@media (prefers-reduced-motion: reduce) {
-  .navbar::before,
-  .navbar::after {
-    display: none;
-  }
-}
-
-/* Remove Quantaflux Labs text from navbar logo, keep only the logo image */
 .navbar-logo {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-size: 2.2rem;
 }
+
 .navbar-logo img {
   height: 40px;
   width: 40px;
   background: var(--color-card);
   padding: 4px;
-  /*border: 1px solid var(--color-border);*/
   border-radius: 0;
 }
 
-/* Nav bar links use condensed Instrument Serif font */
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .navbar-links a,
 .navbar-links button {
   color: var(--color-text);
   text-decoration: none;
-  font-weight: 400;
-  font-size: 1rem;
+  font-weight: 300;
+  font-size: 0.875rem;
   background: none;
-  border: none !important;
+  border: none;
   cursor: pointer;
   padding: 0.5rem 0.75rem;
   border-radius: 0;
   transition: background var(--transition), color var(--transition);
-  font-family: "Instrument Serif", serif;
-  font-stretch: condensed;
-  letter-spacing: -0.02em;
+  font-family: var(--font-sans);
 }
+
+.navbar-links a {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .navbar-links button {
   display: flex;
   align-items: center;
 }
 
-/* Mobile navbar scaling */
-@media (max-width: 768px) {
-  .navbar {
-    height: 56px;
-    max-width: 240px;
-    padding: 0 1rem;
-    top: 0.75rem;
-  }
-
-  .navbar-links {
-    gap: 1rem;
-  }
-
-  .navbar-links a,
-  .navbar-links button {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.6rem;
-  }
+.navbar-links a:active {
+  transform: scale(0.92);
 }
 
-/* Remove borders from large containers */
-.section,
-.cards,
-header,
-main,
-footer {
-  border: none !important;
-}
-
-/* nav a.active,
-.nav a.active,
-.navbar a.active {
-  border: 1px solid currentColor;
-} */
-
-
-/* Rest of the styles unchanged, but included for completeness */
-.hero h1,
-.section h2,
-.card h3 {
-  font-family: "Instrument Serif", serif;
-  font-weight: 400;
-  font-style: normal;
-  font-stretch: condensed;
-  letter-spacing: -0.02em;
-}
-.navbar-logo {
-  font-size: 2.2rem;
-}
-.hero h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-}
-.section h2 {
-  font-size: 2.3rem;
-  margin-bottom: 1.2rem;
-  text-align: center;
-}
-.card h3 {
-  font-size: 1.7rem;
-  margin-bottom: 0.7rem;
-}
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  margin: 0 !important;
-  padding: 0 !important;
-  min-height: 100vh;
-  transition: background var(--transition), color var(--transition);
-}
-
-main {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.dev-banner {
-  position: sticky;
-  top: 68px;
-  z-index: 9;
-  width: 100vw;
-  padding: 1rem 0;
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #eaf6ff;
-  background: rgba(60, 120, 255, 0.18);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 0.5px solid rgba(255,255,255,0.04);
-  box-shadow:
-    0 4px 24px 0 rgba(60, 120, 255, 0.10),
-    0 0 0 2px rgba(255,255,255,0.08) inset,
-    0 0 12px 2px rgba(60,120,255,0.06) inset;
-  margin-bottom: 2rem;
-  letter-spacing: 0.02em;
-  background-clip: padding-box;
-  overflow: hidden;
-}
-
-.hero {
-  min-height: 56vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  /* Full-bleed */
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  margin-top: 0 !important;
-  padding: 4rem 2rem 3rem;
-
-  background: var(--color-bg-alt);
-  box-shadow: none;
-  border-radius: 0;
-  position: relative;
-  top: 0;
-}
-.hero p {
-  font-size: 1.35rem;
-  color: var(--color-muted);
-  margin-bottom: 2rem;
-  font-family: var(--font-sans);
-}
-.cta-btn {
-  background: rgba(80, 80, 80, 0.3);
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  color: var(--color-primary);
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 0.9rem 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  box-shadow: none;
-  text-decoration: none;
-  transition: transform 0.3s ease, background var(--transition), color var(--transition), box-shadow var(--transition);
-  font-family: var(--font-sans);
-}
-.cta-btn:hover {
-  transform: scale(1.05);
-  background: rgba(100, 100, 100, 0.35);
-  box-shadow: none;
-}
-.section {
-  max-width: 900px;
-  margin: 0 auto 2.5rem;
-  padding: 2rem 2rem 0.5rem;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-alt);
-  border-radius: 0;
-}
-
-.section:first-of-type {
-  margin-top: 0;
-}
-.cards {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  /* existing card styles */
-  background: rgba(80, 80, 80, 0.3);
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  box-shadow: none;
-  padding: 2rem 1.2rem 1.2rem;
-  min-width: 220px;
-  flex: 1 1 220px;
-  max-width: 320px;
-  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border var(--transition);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-}
-.card:hover {
-  transform: translateY(-2px) scale(1.01);
-  background: rgba(100, 100, 100, 0.35);
-  box-shadow: none;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-.card-image {
-  width: 100%;
-  aspect-ratio: 16 / 9; /* keeps a consistent cover ratio */
-  object-fit: cover;     /* fills the area, crops overflow */
-  border-radius: 0px;
-  background: #eee;      /* placeholder bg */
-}
-
-/* Optional: placeholder if image missing */
-.card-image[src=""], .card-image:not([src]) {
-  display: none;
-}
-.card p {
-  font-size: 1rem;
-  color: var(--color-muted);
-  margin-bottom: 1.2rem;
-  font-family: var(--font-sans);
-}
-.card-link {
-  background: rgba(80, 80, 80, 0.3);
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  color: var(--color-primary);
-  padding: 0.7rem 1.4rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  font-weight: 500;
-  text-decoration: none;
-  box-shadow: none;
-  transition: transform 0.3s ease, background var(--transition), color var(--transition);
-  font-family: var(--font-sans);
-}
-.card-link:hover {
-  transform: scale(1.05);
-  background: rgba(100, 100, 100, 0.35);
-}
-form#contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 480px;
-  margin: 1.2rem auto 0;
-  background: var(--color-card);
-  padding: 2rem 1.5rem;
-  border-radius: 0;
-  box-shadow: none;
-  border: 1px solid var(--color-border);
-}
-form input, form textarea {
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  padding: 0.8rem;
-  border-radius: 0;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-alt);
-  color: var(--color-text);
-  transition: border var(--transition), background var(--transition);
-}
-form input:focus, form textarea:focus {
-  border-color: var(--color-primary);
-  background: var(--color-bg);
-  outline: none;
-}
-form button[type="submit"] {
-  background: rgba(80, 80, 80, 0.3);
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  color: var(--color-primary);
-  font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.9rem 1.8rem;
-  border-radius: 100px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background var(--transition), color var(--transition);
-  box-shadow: none;
-  font-family: var(--font-sans);
-}
-form button[type="submit"]:hover {
-  transform: scale(1.05);
-  background: rgba(100, 100, 100, 0.35);
-}
-#form-status {
-  display: block;
-  font-size: 0.97rem;
-  color: var(--color-accent);
-  margin-top: 0.5rem;
-  min-height: 1.2em;
-}
-footer {
-  background: var(--color-bg-alt);
-  color: var(--color-muted);
-  text-align: center;
-  padding: 2rem 0 1.4rem;
-  font-size: 1rem;
-  border-top: 1px solid var(--color-border);
-  margin-top: 2.5rem;
-  font-family: var(--font-sans);
-}
-.footer-link {
-  color: var(--color-primary);
-  text-decoration: none;
-  margin-left: 1.5rem;
-  font-weight: 500;
-  transition: color var(--transition);
-  font-family: var(--font-sans);
-}
-.footer-link:hover {
-  color: var(--color-accent);
-}
-
-/* Force hero (first section) text to white regardless of theme - dark mode */
-main > section:first-of-type,
-main > section.hero,
-main > section.hero * {
-  /* Override palette locally for hero */
-  --color-text: #ffffff;
-  --color-primary: #ffffff;
-  --color-secondary: #ffffff;
-  --color-accent: #ffffff;
-  --color-muted: #f3f4f6;
-  --color-border: #ffffff;
-  color: var(--color-text);
-}
-
-/* Improve readability over images - dark mode */
-main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
-  color: #ffffff !important;
-  text-shadow: none !important;
-}
-
-/* Light mode: make hero text black */
-:root[data-theme="light"] main > section:first-of-type,
-:root[data-theme="light"] main > section.hero,
-:root[data-theme="light"] main > section.hero * {
-  --color-text: #000000;
-  --color-primary: #000000;
-  --color-secondary: #000000;
-  --color-accent: #000000;
-  --color-muted: #4b5563;
-  --color-border: #000000;
-}
-
-:root[data-theme="light"] main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
-  color: #000000 !important;
-}
-
-/* Light mode: make all section titles and text black */
-:root[data-theme="light"] .section h2,
-:root[data-theme="light"] .section p,
-:root[data-theme="light"] #about-me h2,
-:root[data-theme="light"] #about-me p,
-:root[data-theme="light"] #contact h2,
-:root[data-theme="light"] #contact p {
-  color: #000000 !important;
-}
-
-@media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] main > section:first-of-type,
-  :root[data-theme="auto"] main > section.hero,
-  :root[data-theme="auto"] main > section.hero * {
-    --color-text: #000000;
-    --color-primary: #000000;
-    --color-secondary: #000000;
-    --color-accent: #000000;
-    --color-muted: #4b5563;
-    --color-border: #000000;
-  }
-
-  :root[data-theme="auto"] main > section:first-of-type :where(h1, h2, h3, h4, p, a, span, small, li, blockquote, strong, em) {
-    color: #000000 !important;
-  }
-
-  /* Auto theme in light mode: make all section titles and text black */
-  :root[data-theme="auto"] .section h2,
-  :root[data-theme="auto"] .section p,
-  :root[data-theme="auto"] #about-me h2,
-  :root[data-theme="auto"] #about-me p,
-  :root[data-theme="auto"] #contact h2,
-  :root[data-theme="auto"] #contact p {
-    color: #000000 !important;
-  }
-}
-
-/* Hero: force Projects button to black bg, white text, white border; invert on hover */
-main > section:first-of-type a.cta-btn[href="#projects"],
-main > section:first-of-type a.cta-btn[href*="projects"] {
-  background: #000 !important;
-  color: #fff !important;
-  border-color: #fff !important;
-}
-main > section:first-of-type a.cta-btn[href="#projects"]:hover,
-main > section:first-of-type a.cta-btn[href*="projects"]:hover {
-  background: #fff !important;
-  color: #000 !important;
-  border-color: #000 !important;
-}
-main > section:first-of-type a.cta-btn[href="#projects"]:focus-visible,
-main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
-  outline: 2px solid #000;
-  outline-offset: 2px;
-}
-
-/* Social icons: keep black in light mode (idle and hover) */
-:root[data-theme="light"] .cta-btn img {
-  filter: invert(0);
-  transition: filter var(--transition);
-}
-:root[data-theme="light"] .cta-btn:hover img {
-  filter: invert(0);
-}
-/* Auto + system light */
-@media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] .cta-btn img { filter: invert(0); }
-  :root[data-theme="auto"] .cta-btn:hover img { filter: invert(0); }
-}
-
-/* Dark mode: keep icons white on hover */
-:root[data-theme="dark"] .cta-btn img {
-  filter: invert(1);
-  transition: filter var(--transition);
-}
-:root[data-theme="dark"] .cta-btn:hover img {
-  filter: invert(1);
-}
-/* Auto + system dark */
-@media (prefers-color-scheme: dark) {
-  :root[data-theme="auto"] .cta-btn img { filter: invert(1); }
-  :root[data-theme="auto"] .cta-btn:hover img { filter: invert(1); }
-}
-
-/* These styles are now consolidated below - this section can be removed */
-
-/* Navbar: more translucent glassy in light mode */
+/* Light mode navbar */
 :root[data-theme="light"] .navbar {
   background-color: rgba(250, 250, 250, 0.3);
   -webkit-backdrop-filter: blur(4px) saturate(100%);
@@ -727,49 +307,8 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 
 :root[data-theme="light"] .navbar:hover {
   background-color: rgba(250, 250, 250, 0.4);
-  -webkit-backdrop-filter: blur(4px) saturate(100%);
-  backdrop-filter: blur(4px) saturate(100%);
 }
 
-/* Light mode button styling */
-:root[data-theme="light"] .cta-btn,
-:root[data-theme="light"] .card-link,
-:root[data-theme="light"] .button,
-:root[data-theme="light"] .btn,
-:root[data-theme="light"] form button[type="submit"],
-:root[data-theme="light"] footer select {
-  background: rgba(255, 255, 255, 0.6);
-  -webkit-backdrop-filter: blur(8px) saturate(100%);
-  backdrop-filter: blur(8px) saturate(100%);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: none;
-}
-
-:root[data-theme="light"] .cta-btn:hover,
-:root[data-theme="light"] .card-link:hover,
-:root[data-theme="light"] .button:hover,
-:root[data-theme="light"] .btn:hover,
-:root[data-theme="light"] form button[type="submit"]:hover,
-:root[data-theme="light"] footer select:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.8);
-}
-
-/* Light mode card styling */
-:root[data-theme="light"] .card {
-  background: rgba(255, 255, 255, 0.75);
-  -webkit-backdrop-filter: blur(8px) saturate(100%);
-  backdrop-filter: blur(8px) saturate(100%);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: none;
-}
-
-:root[data-theme="light"] .card:hover {
-  background: rgba(248, 248, 250, 0.85);
-  border: 1px solid rgba(0, 0, 0, 0.25);
-}
-
-/* Auto + system light */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] .navbar {
     background-color: rgba(250, 250, 250, 0.3);
@@ -782,6 +321,7 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
       0 8px 32px rgba(0, 0, 0, 0.04),
       0 2px 8px rgba(0, 0, 0, 0.03);
   }
+
   :root[data-theme="auto"] .navbar a,
   :root[data-theme="auto"] .navbar .navbar-logo {
     color: #111111;
@@ -789,82 +329,201 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
 
   :root[data-theme="auto"] .navbar:hover {
     background-color: rgba(250, 250, 250, 0.4);
-    -webkit-backdrop-filter: blur(4px) saturate(100%);
-    backdrop-filter: blur(4px) saturate(100%);
-  }
-
-  /* Light mode button styling for auto theme */
-  :root[data-theme="auto"] .cta-btn,
-  :root[data-theme="auto"] .card-link,
-  :root[data-theme="auto"] .button,
-  :root[data-theme="auto"] .btn,
-  :root[data-theme="auto"] form button[type="submit"],
-  :root[data-theme="auto"] footer select {
-    background: rgba(255, 255, 255, 0.6);
-    -webkit-backdrop-filter: blur(8px) saturate(100%);
-    backdrop-filter: blur(8px) saturate(100%);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: none;
-  }
-
-  :root[data-theme="auto"] .cta-btn:hover,
-  :root[data-theme="auto"] .card-link:hover,
-  :root[data-theme="auto"] .button:hover,
-  :root[data-theme="auto"] .btn:hover,
-  :root[data-theme="auto"] form button[type="submit"]:hover,
-  :root[data-theme="auto"] footer select:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.8);
-  }
-
-  /* Light mode card styling for auto theme */
-  :root[data-theme="auto"] .card {
-    background: rgba(240, 240, 242, 0.75);
-    -webkit-backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    backdrop-filter: blur(4px) saturate(125%) contrast(105%) brightness(112%);
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    box-shadow: none;
-  }
-
-  :root[data-theme="auto"] .card:hover {
-    background: rgba(248, 248, 250, 0.85);
-    border: 1px solid rgba(0, 0, 0, 0.25);
-  }
-
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .cards {
-    gap: 1.2rem;
   }
 }
-@media (max-width: 900px) {
-  .section, .hero {
-    padding: 2rem 1rem;
-    max-width: 99vw;
+
+/* Mobile navbar */
+@media (max-width: 768px) {
+  .navbar {
+    height: 56px;
+    max-width: 240px;
+    padding: 0 1rem;
+    top: 0.75rem;
   }
-  .cards {
-    flex-direction: column;
+
+  .navbar-links {
     gap: 1rem;
   }
-}
-@media (max-width: 600px) {
-  .navbar-logo {
-    font-size: 1.4rem;
-  }
-  .hero h1 {
-    font-size: 2.3rem;
-  }
-  .section h2 {
-    font-size: 1.4rem;
-  }
-  .card h3 {
-    font-size: 1.2rem;
+
+  .navbar-links a,
+  .navbar-links button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
   }
 }
 
-/* Contact Flex Styles */
+
+/* ---------------------------------------------------------
+   5. Hero Section
+   --------------------------------------------------------- */
+
+.hero {
+  /* Layout */
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 9rem 1.25rem 2.4rem;
+  min-height: auto;
+  box-sizing: border-box;
+  /* Visual */
+  background: var(--color-bg-alt);
+  border-radius: 0;
+  position: relative;
+  overflow: visible;
+  /* Text */
+  text-align: center;
+  /* Force white text regardless of theme */
+  --color-text: #fff;
+  --color-primary: #fff;
+  --color-secondary: #fff;
+  --color-accent: #fff;
+  --color-muted: #f3f4f6;
+  --color-border: #ffffff;
+  color: var(--color-text);
+}
+
+/* Flip hero text to black in light mode */
+:root[data-theme="light"] .hero {
+  --color-text: #000000;
+  --color-primary: #000000;
+  --color-secondary: #000000;
+  --color-accent: #000000;
+  --color-muted: #4b5563;
+  --color-border: #000000;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .hero {
+    --color-text: #000000;
+    --color-primary: #000000;
+    --color-secondary: #000000;
+    --color-accent: #000000;
+    --color-muted: #4b5563;
+    --color-border: #000000;
+  }
+}
+
+/* Ensure all text inherits hero color variable */
+.hero :where(h1, h2, h3, h4, p, a, span, small, li, strong, em) {
+  color: inherit;
+}
+
+/* Hide overlay divs if present in HTML */
+.hero-overlay {
+  display: none;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  margin: 0 0 0.55rem;
+  line-height: 1.05;
+}
+
+.hero p {
+  font-size: 1.35rem;
+  color: var(--color-muted);
+  margin: 0 0 0.75rem;
+  font-family: var(--font-sans);
+}
+
+.hero .cta-btn {
+  margin-top: 0.4rem;
+}
+
+/* Profile picture */
+.profile-pic {
+  width: 120px;
+  max-width: 40vw;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: 0.65rem auto 0.8rem;
+  border: none;
+  box-shadow: none;
+}
+
+
+/* ---------------------------------------------------------
+   6. Sections & Content
+   --------------------------------------------------------- */
+
+.section {
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  padding: 3rem 2.5rem;
+  background: var(--color-bg-alt);
+}
+
+.section:first-of-type {
+  margin-top: 0;
+}
+
+.section p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+  color: var(--color-muted);
+}
+
+/* Label-style headings for about/contact sections */
+#about-me h2,
+#contact h2 {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+/* Normal headings for all other sections (e.g. Software, Hardware, Aviation) */
+.section h2 {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Light mode section */
+
+:root[data-theme="light"] .section h2,
+:root[data-theme="light"] .section p,
+:root[data-theme="light"] #about-me h2,
+:root[data-theme="light"] #about-me p,
+:root[data-theme="light"] #contact h2,
+:root[data-theme="light"] #contact p {
+  color: #000000;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .section h2,
+  :root[data-theme="auto"] .section p,
+  :root[data-theme="auto"] #about-me h2,
+  :root[data-theme="auto"] #about-me p,
+  :root[data-theme="auto"] #contact h2,
+  :root[data-theme="auto"] #contact p {
+    color: #000000;
+  }
+}
+
+/* Contact layout */
 .contact-flex {
   display: flex;
   align-items: center;
@@ -880,34 +539,58 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   white-space: nowrap;
 }
 
-/* Shared button styling (used on index and projects) */
-.button,
-.btn {
-  display: inline-flex;
-  align-items: center;
+
+/* ---------------------------------------------------------
+   7. Cards
+   --------------------------------------------------------- */
+
+.cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 0.4rem;
-  padding: 0.6rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  text-decoration: none;
-  font-weight: 600;
-  line-height: 1;
-  background: rgba(80, 80, 80, 0.3);
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
-  color: inherit;
-  box-shadow: none;
-  transition: transform 0.3s ease, background-color .2s ease, color .2s ease, box-shadow .2s ease;
 }
 
-.button:hover,
-.btn:hover {
-  transform: scale(1.05);
-  background: rgba(100, 100, 100, 0.35);
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: #1c1c1e;
+  border-radius: 20px;
+  padding: 2rem 1.2rem 1.2rem;
+  min-width: 220px;
+  flex: 1 1 220px;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+  transition: transform var(--transition), background var(--transition);
 }
 
-/* Optional: spacing for action rows under cards */
+.card:hover {
+  transform: translateY(-2px) scale(1.01);
+  background: #242426;
+}
+
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0;
+  background: #eee;
+}
+
+.card-image[src=""],
+.card-image:not([src]) {
+  display: none;
+}
+
+.card p {
+  font-size: 1rem;
+  color: var(--color-muted);
+  margin-bottom: 1.2rem;
+  font-family: var(--font-sans);
+}
+
 .cards .actions {
   display: flex;
   justify-content: center;
@@ -918,25 +601,458 @@ main > section:first-of-type a.cta-btn[href*="projects"]:focus-visible {
   text-align: center;
 }
 
+/* Light mode cards */
+:root[data-theme="light"] .card {
+  background: #ffffff;
+}
+
+:root[data-theme="light"] .card:hover {
+  background: #f7f7f7;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .card {
+    background: #ffffff;
+  }
+
+  :root[data-theme="auto"] .card:hover {
+    background: #f7f7f7;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   8. Buttons
+   --------------------------------------------------------- */
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 400;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 100px;
+  box-shadow: none;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.cta-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.card-link {
+  background: transparent;
+  color: var(--color-primary);
+  padding: 0.65rem 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 100px;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  font-family: var(--font-sans);
+}
+
+.card-link:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 100px;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.button:hover,
+.btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+form button[type="submit"] {
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 400;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.75rem 1.8rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  box-shadow: none;
+  font-family: var(--font-sans);
+}
+
+form button[type="submit"]:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Light mode buttons */
+:root[data-theme="light"] .cta-btn,
+:root[data-theme="light"] .card-link,
+:root[data-theme="light"] .button,
+:root[data-theme="light"] .btn,
+:root[data-theme="light"] form button[type="submit"],
+:root[data-theme="light"] footer select {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="light"] .cta-btn:hover,
+:root[data-theme="light"] .card-link:hover,
+:root[data-theme="light"] .button:hover,
+:root[data-theme="light"] .btn:hover,
+:root[data-theme="light"] form button[type="submit"]:hover,
+:root[data-theme="light"] footer select:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .cta-btn,
+  :root[data-theme="auto"] .card-link,
+  :root[data-theme="auto"] .button,
+  :root[data-theme="auto"] .btn,
+  :root[data-theme="auto"] form button[type="submit"],
+  :root[data-theme="auto"] footer select {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  :root[data-theme="auto"] .cta-btn:hover,
+  :root[data-theme="auto"] .card-link:hover,
+  :root[data-theme="auto"] .button:hover,
+  :root[data-theme="auto"] .btn:hover,
+  :root[data-theme="auto"] form button[type="submit"]:hover,
+  :root[data-theme="auto"] footer select:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.45);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   9. Social Links & Icon Buttons
+   --------------------------------------------------------- */
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.social-icon-btn {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.social-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.social-icon-btn img {
+  margin: 0;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+  transition: filter 0.2s;
+}
+
+/* Social button image tinting */
+:root[data-theme="light"] .social-icon-btn {
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+:root[data-theme="light"] .social-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="light"] .social-icon-btn img,
+:root[data-theme="light"] .cta-btn img {
+  filter: invert(0);
+}
+
+:root[data-theme="dark"] .cta-btn img {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .social-icon-btn {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  :root[data-theme="auto"] .social-icon-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.45);
+  }
+
+  :root[data-theme="auto"] .social-icon-btn img,
+  :root[data-theme="auto"] .cta-btn img {
+    filter: invert(0);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .cta-btn img {
+    filter: invert(1);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   10. Contact Form
+   --------------------------------------------------------- */
+
+form#contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 480px;
+  margin: 1.2rem auto 0;
+  background: var(--color-card);
+  padding: 2rem 1.5rem;
+  border-radius: 0;
+  border: 1px solid var(--color-border);
+}
+
+form input,
+form textarea {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  padding: 0.8rem;
+  border-radius: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  color: var(--color-text);
+  transition: border var(--transition), background var(--transition);
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: var(--color-primary);
+  background: var(--color-bg);
+  outline: none;
+}
+
+#form-status {
+  display: block;
+  font-size: 0.97rem;
+  color: var(--color-accent);
+  margin-top: 0.5rem;
+  min-height: 1.2em;
+}
+
+
+/* ---------------------------------------------------------
+   11. Featured Banner & Logo Scroller
+   --------------------------------------------------------- */
+
+.featured-banner {
+  width: 100%;
+  background: #000;
+  color: #fff;
+}
+
+.featured-banner .featured-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1rem 1.25rem;
+}
+
+.featured-label {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin: 0 0 1rem;
+}
+
+.logo-scroller {
+  position: relative;
+  overflow: hidden;
+  padding: 0.5rem 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.logo-track {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: max-content;
+  will-change: transform;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.logo-track a {
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-img {
+  flex: 0 0 auto;
+  height: 40px;
+  width: auto;
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+.logo-img:hover {
+  opacity: 1;
+}
+
+/* Light mode featured banner */
+:root[data-theme="light"] .featured-banner {
+  background: #f5f5f7;
+  color: #000;
+}
+
+:root[data-theme="light"] .featured-banner .logo-img {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .featured-banner {
+    background: #f5f5f7;
+    color: #000;
+  }
+
+  :root[data-theme="auto"] .featured-banner .logo-img {
+    filter: invert(1);
+  }
+}
+
+
+/* ---------------------------------------------------------
+   12. Gallery (photos page)
+   --------------------------------------------------------- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-grid figure {
+  margin: 0;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+.gallery-grid figcaption {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Landscape section: contain images instead of cropping */
+#landscape .gallery-grid {
+  gap: 1.5rem;
+  align-items: center;
+  justify-items: center;
+}
+
+#landscape .gallery-grid figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+#landscape .gallery-grid img {
+  aspect-ratio: unset;
+  max-height: 350px;
+  object-fit: contain;
+}
+
+
+/* ---------------------------------------------------------
+   13. Footer
+   --------------------------------------------------------- */
+
 footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   background: var(--color-bg-alt);
   color: var(--color-muted);
   text-align: center;
   padding: 2rem 0 1.4rem;
   font-size: 1rem;
-  border-top: 1px solid var(--color-border);
   margin-top: 2.5rem;
   font-family: var(--font-sans);
 }
+
+footer p {
+  margin: 0;
+}
+
 footer span {
   display: inline-block;
   margin-right: 0.75rem;
 }
+
 footer label {
   display: none;
 }
+
 footer select {
-  margin-left: 0.75rem;
   background: rgba(80, 80, 80, 0.3);
   -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
   backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%);
@@ -949,7 +1065,6 @@ footer select {
   cursor: pointer;
   transition: transform 0.3s ease, background var(--transition);
   font-family: var(--font-sans);
-  box-shadow: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -960,696 +1075,59 @@ footer select:hover {
   background: rgba(100, 100, 100, 0.35);
 }
 
-/* Hero section centering */
-.hero,
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;      /* vertical center */
-  align-items: center;          /* horizontal center */
-  text-align: center;
-  min-height: clamp(500px, 90vh, 900px);
-  padding: 4rem 1.5rem;
-  margin: 0 auto;
-  max-width: 1100px;
-  gap: 1.5rem;
-}
-
-.hero img,
-.hero-section img {
-  max-width: 260px;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.hero .buttons,
-.hero-section .buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.hero .buttons a,
-.hero .buttons button,
-.hero-section .buttons a,
-.hero-section .buttons button {
-  text-align: center;
-}
-
-/* If the hero container was inside something restricting centering */
-.hero > *:not(img),
-.hero-section > *:not(img) {
-  max-width: 800px;
-}
-
-/* --- Full-bleed hero override (place AFTER previous .hero rules) --- */
-.hero,
-.hero-section {
-  position: relative;
-  width: 100%;
-  max-width: none;          /* override earlier max-width */
-  margin: 0;
-  padding: 0;               /* inner wrapper will handle padding */
-  overflow: visible;
-}
-
-.hero::before,
-.hero-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: transparent;
-  /* optional dark overlay */
-  background-blend-mode: multiply;
-  z-index: 0;
-  /* If you want a tint: */
-  /* background-color: rgba(0,0,0,0.25); */
-}
-
-.hero img.hero-bg,
-.hero-section img.hero-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* Inner constrained content */
-.hero-inner,
-.hero-section .hero-inner {
-  position: relative;
-  z-index: 1;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: clamp(500px, 90vh, 900px);
-  text-align: center;
-  gap: 1.5rem;
-}
-
-/* Buttons row still centered */
-.hero-inner .buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* Remove earlier width cap on direct children if present */
-.hero > *:not(.hero-inner),
-.hero-section > *:not(.hero-inner) {
-  /* no constraints */
-}
-
-/* --- Hero adjustments (override previous rules) --- */
-.hero,
-.hero-section {
-  position: relative;
-  /* Remove prior gradient+image stacked backgrounds; force only image */
-  background: var(--color-bg-alt) !important;
-  min-height: clamp(340px, 50vh, 560px) !important;
-  padding: 9rem 1.25rem 2.25rem !important;
-  gap: 1.1rem !important;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.hero > * {
-  position: relative;
-  z-index: 1;
-}
-
-.hero img.profile-pic {
-  margin: 0.5rem auto 0;
-}
-
-@media (max-width: 200px) {
-  .hero {
-    min-height: 200px;
-    padding: 2.2rem 1rem 2rem;
-  }
-}
-
-/* --- Hero cleanup & full overlay (index + shared) --- */
-.hero,
-.hero-section {
-  position: relative;
-  /* Remove prior gradient+image stacked backgrounds; force only image */
-  background: var(--color-bg-alt) !important;
-  min-height: clamp(340px, 50vh, 560px) !important;
-  padding: 9rem 1.25rem 2.25rem !important;
-  gap: 1.1rem !important;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* Full dark overlay (single source of truth) - REMOVED */
-
-/* Neutralize any previous partial overlays */
-.hero::after,
-.hero-section::after,
-.hero-overlay,
-.hero .hero-overlay,
-.hero-section .hero-overlay {
-  display: none !important;
-}
-
-/* Ensure stacking of content above overlay */
-.hero > * ,
-.hero-section > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* If an existing .hero-overlay div remains in HTML, repurpose it safely - REMOVED */
-
-/* Mobile tweak */
-@media (max-width: 600px) {
-  .hero,
-  .hero-section {
-    min-height: 400px !important;
-    padding: 2.3rem 1rem 2rem !important;
-  }
-}
-
-/* --- Hero full-bleed width override --- */
-.hero,
-.hero-section {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-}
-
-/* Optional: limit text line length while keeping full-bleed background.
-   Uncomment if you want narrower centered content.
-.hero > *:not(:where(.hero::before)),
-.hero-section > * {
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-}
-*/
-
-/* Center hero inner content */
-.hero,
-.hero-section {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.hero img.profile-pic {
-  display: block;
-  margin: 0.5rem auto 0;
-}
-
-/* Hero centering override (add near end of file) --- */
-.hero,
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;   /* vertical centering */
-  align-items: center;       /* horizontal centering */
-  text-align: center;        /* center text */
-}
-
-.hero img,
-.hero-section img {
-  display: block;
-  margin: 0 auto;
-}
-
-.hero .btn,
-.hero-section .btn {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-/* Center hero content */
-main > section:first-of-type {
-  display: flex;
-  flex-direction: column;
-  align-items: center;          /* horizontal centering */
-  justify-content: center;
-  text-align: center;
-  padding-left: 0;              /* in case a global section pad is asymmetric */
-  padding-right: 0;
-}
-
-/* Optional: wrap hero content in a container if you have many wide elements */
-main > section:first-of-type > .hero-inner {
-  max-width: 960px;
-  width: 100%;
-  margin-inline: auto;
-  padding: 0 1.25rem;
-}
-
-/* Make inline avatar + heading groups center nicely */
-main > section:first-of-type h1,
-main > section:first-of-type h2,
-main > section:first-of-type p {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* If an image (profile picture) is floating or inline with unexpected baseline */
-main > section:first-of-type img.profile,
-main > section:first-of-type img[alt*="profile" i] {
-  display: block;
-  margin: 1rem auto;
-}
-
-/* Buttons row centering */
-main > section:first-of-type .cta-group,
-main > section:first-of-type .buttons,
-main > section:first-of-type nav {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-/* Safety: remove stray left/right margins on direct children */
-main > section:first-of-type > * {
-  margin-left: 0;
-}
-
-/* TEMP (uncomment to debug bounding box)
-// main > section:first-of-type { outline: 1px dashed magenta; }
-// main > section:first-of-type > * { outline: 1px dashed cyan; }
-*/
-
-/* --- HERO RESET (remove earlier conflicting hero rules) --- */
-/* Neutralize previous hero flex attempts */
-main > section:first-of-type,
-.hero,
-.hero-section {
-  all: unset;
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100dvh;                 /* full viewport height */
-  padding: clamp(2.5rem, 6vh, 5rem) 1.25rem;
-  margin-top: 0;
-  position: relative;
-  overflow: visible;
-  text-align: center;
-  /* Preserve prior forced light text */
-  --color-text: #fff;
-  --color-primary: #fff;
-  --color-secondary: #fff;
-  --color-accent: #fff;
-  --color-muted: #f3f4f6;
-  --color-border: #ffffff;
-  color: var(--color-text);
-}
-
-/* Inner width constraint */
-main > section:first-of-type > .hero-inner,
-.hero > .hero-inner,
-.hero-section > .hero-inner {
-  width: 100%;
-  max-width: 960px;
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(0.75rem, 1.2vh, 1.25rem);
-}
-
-/* Headings & text spacing */
-.hero-inner h1,
-.hero-inner h2,
-.hero-inner p,
-.hero-inner .tagline {
-  margin: 0;
-  max-width: 48ch;
-}
-
-.hero-inner h1 {
-  font-size: clamp(2.25rem, 6vw, 3.5rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-}
-
-.hero-inner h2 {
-  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.hero-inner p {
-  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
-  opacity: 0.85;
-}
-
-/* Profile image */
-.hero-inner .profile-pic,
-.hero-inner img.profile,
-.hero-inner img[alt*="profile" i] {
-  /* width: 120px;
-  height: 120px; */
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 0 0.75rem;
-  border: 2px solid rgba(255,255,255,0.6);
-  box-shadow: 0 4px 18px -6px rgba(0,0,0,0.55);
-}
-
-/* Buttons / CTA group */
-.hero-inner .cta-group,
-.hero-inner .buttons,
-.hero-inner nav.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  justify-content: center;
-  margin-top: 0.75rem;
-}
-
-.hero-inner .cta-group a,
-.hero-inner a.cta-btn,
-.hero-inner button.cta-btn {
+.footer-link {
+  color: var(--color-primary);
   text-decoration: none;
-  padding: 0.7rem 1.15rem;
-  font-size: 0.95rem;
-  line-height: 1.1;
-  border-radius: 999px;
-  border: 1px solid #fff;
-  background: rgba(0,0,0,0.35);
-  color: #fff;
-  backdrop-filter: blur(6px) brightness(1.15);
-  -webkit-backdrop-filter: blur(6px) brightness(1.15);
-  transition: background .25s, color .25s, border-color .25s;
+  margin-left: 1.5rem;
+  font-weight: 500;
+  transition: color var(--transition);
+  font-family: var(--font-sans);
 }
 
-.hero-inner .cta-group a:hover,
-.hero-inner a.cta-btn:hover,
-.hero-inner button.cta-btn:hover {
-  background: #fff;
-  color: #000;
-  border-color: #000;
+.footer-link:hover {
+  color: var(--color-accent);
 }
 
-/* Specific Projects button rule (retain intent) */
-.hero-inner a.cta-btn[href*="projects"] {
-  background: #000;
-  color: #fff;
-  border-color: #fff;
-}
-.hero-inner a.cta-btn[href*="projects"]:hover {
-  background: #fff;
-  color: #000;
-  border-color: #000;
-}
 
-/* Social icons row */
-.hero-inner .social,
-.hero-inner ul.social {
-  list-style: none;
-  display: flex;
-  gap: 0.9rem;
+/* ---------------------------------------------------------
+   14. Utility
+   --------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   padding: 0;
-  margin: 1rem 0 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.hero-inner .social a {
-  display: inline-flex;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.55);
-  background: rgba(255,255,255,0.1);
-  transition: background .25s, border-color .25s;
+
+/* ---------------------------------------------------------
+   15. Keyframe Animations
+   --------------------------------------------------------- */
+
+@keyframes marquee {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); }
 }
 
-.hero-inner .social a:hover {
-  background: #fff;
-  border-color: #fff;
+@keyframes fade-out {
+  to { opacity: 0; }
 }
 
-.hero-inner .social a img,
-.hero-inner .social a svg {
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) invert(1);
-  transition: filter .25s;
+@keyframes fade-in {
+  from { opacity: 0; }
 }
 
-.hero-inner .social a:hover img,
-.hero-inner .social a:hover svg {
-  filter: none;
-}
 
-/* Prevent stray horizontal shift if global sections use side padding */
-body,
-main,
-main > section:first-of-type {
-  margin: 0;
-}
+/* ---------------------------------------------------------
+   16. View Transitions
+   --------------------------------------------------------- */
 
-/* Small screens adjustments */
-@media (max-width: 600px) {
-  .hero-inner h1 { font-size: clamp(2.1rem, 9vw, 2.75rem); }
-  .hero-inner h2 { font-size: 1.05rem; }
-  .hero-inner .cta-group a,
-  .hero-inner a.cta-btn { width: auto; }
-}
-
-/* Optional subtle overlay if there's a background image - REMOVED */
-
-main > section:first-of-type > .hero-inner,
-.hero > .hero-inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* Profile picture */
-.profile-pic {
-  /* width: 160px;
-  max-width: 40vw;  /* stays responsive on very small screens
-  height: auto; */
-  border-radius: 50%;
-  display: block;
-  margin: 1rem auto;
-}
-
-/* Final unified profile pic sizing */
-.hero .profile-pic,
-.profile-pic {
-  width: 140px !important;
-  max-width: 40vw;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-  margin: 1rem auto;
-  border: none;
-  box-shadow: none;
-}
-
-/* Ensure no border from any later rules */
-.hero .profile-pic,
-.profile-pic {
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* === Compact Hero + Profile Pic Overrides (add near end) === */
-.hero {
-  min-height: auto !important;
-  padding: 9rem 1.25rem 2.4rem !important;
-  display: block !important;
-  margin-top: 0 !important;
-}
-
-.hero h1 {
-  margin: 0 0 0.55rem;
-  line-height: 1.05;
-}
-
-.hero p {
-  margin: 0 0 0.75rem;
-}
-
-.hero .cta-btn {
-  margin-top: 0.4rem;
-}
-
-/* Unified profile picture styling */
-.hero .profile-pic,
-.profile-pic {
-  width: 120px !important;      /* adjust smaller/larger as desired */
-  max-width: 40vw;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  border-radius: 50%;
-  margin: 0.65rem auto 0.8rem;
-  box-shadow: none;
-  border: 1px solid var(--color-border);
-}
-
-/* Even tighter option for very small screens */
-@media (max-width: 480px) {
-  .hero {
-    padding: 10rem 1rem 2rem !important;
-  }
-  .hero .profile-pic,
-  .profile-pic {
-    width: 105px !important;
-    margin: 0.5rem auto 0.7rem;
-  }
-  .hero h1 {
-    font-size: 1.9rem;
-  }
-  #about-me p {
-    text-align: justify;
-  }
-}
-
-/* Social icon-only buttons - match navbar material */
-.social-icon-btn {
-  padding: 0.5rem !important;
-  width: 36px;
-  height: 36px;
-  display: inline-flex !important;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50% !important;
-  background: rgba(80, 80, 80, 0.3) !important;
-  -webkit-backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-  backdrop-filter: blur(4px) saturate(120%) contrast(105%) brightness(108%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow:
-    0 20px 80px rgba(0, 0, 0, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.04) !important;
-  transition: transform 0.3s ease;
-}
-
-.social-icon-btn:hover {
-  transform: scale(1.05);
-}
-
-.social-icon-btn img {
-  margin: 0 !important;
-  vertical-align: middle;
-  width: 18px !important;
-  height: 18px !important;
-  filter: invert(1);
-  transition: filter 0.2s;
-}
-
-/* Light mode social icon buttons - match navbar light mode style */
-:root[data-theme="light"] .social-icon-btn {
-  background-color: rgba(255, 255, 255, 0.6) !important;
-  -webkit-backdrop-filter: blur(8px) saturate(100%) !important;
-  backdrop-filter: blur(8px) saturate(100%) !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  box-shadow:
-    0 20px 80px rgba(0, 0, 0, 0.05),
-    0 8px 32px rgba(0, 0, 0, 0.04),
-    0 2px 8px rgba(0, 0, 0, 0.03) !important;
-}
-
-:root[data-theme="light"] .social-icon-btn:hover {
-  transform: scale(1.05);
-  background: rgba(255, 255, 255, 0.8) !important;
-}
-
-:root[data-theme="light"] .social-icon-btn img {
-  filter: invert(0) !important;
-}
-
-:root[data-theme="light"] .social-icon-btn:hover img,
-:root[data-theme="light"] .social-icon-btn:focus img {
-  filter: invert(0) !important;
-}
-
-/* Auto theme in light mode */
-@media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] .social-icon-btn {
-    background-color: rgba(255, 255, 255, 0.6) !important;
-    -webkit-backdrop-filter: blur(8px) saturate(100%) !important;
-    backdrop-filter: blur(8px) saturate(100%) !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-    box-shadow:
-      0 20px 80px rgba(0, 0, 0, 0.05),
-      0 8px 32px rgba(0, 0, 0, 0.04),
-      0 2px 8px rgba(0, 0, 0, 0.03) !important;
-  }
-
-  :root[data-theme="auto"] .social-icon-btn:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.8) !important;
-  }
-
-  :root[data-theme="auto"] .social-icon-btn img {
-    filter: invert(0) !important;
-  }
-
-  :root[data-theme="auto"] .social-icon-btn:hover img,
-  :root[data-theme="auto"] .social-icon-btn:focus img {
-    filter: invert(0) !important;
-  }
-}
-
-/* Invert featured banner in light mode */
-:root[data-theme="light"] .featured-banner {
-  background: #f5f5f7 !important;
-  color: #000 !important;
-}
-
-:root[data-theme="light"] .featured-banner .featured-title,
-:root[data-theme="light"] .featured-banner h2 {
-  color: #000 !important;
-}
-
-:root[data-theme="light"] .featured-banner .logo-img {
-  filter: invert(1);
-}
-
-/* Auto theme in light mode */
-@media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] .featured-banner {
-    background: #f5f5f7 !important;
-    color: #000 !important;
-  }
-
-  :root[data-theme="auto"] .featured-banner .featured-title,
-  :root[data-theme="auto"] .featured-banner h2 {
-    color: #000 !important;
-  }
-
-  :root[data-theme="auto"] .featured-banner .logo-img {
-    filter: invert(1);
-  }
-}
-
-/* View Transitions API - Smooth page transitions */
 @view-transition {
   navigation: auto;
 }
@@ -1668,159 +1146,101 @@ main > section:first-of-type > .hero-inner,
   animation-name: fade-in;
 }
 
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
 /* Keep navbar stable during transitions */
-.navbar {
-  view-transition-name: navbar;
-}
-
 ::view-transition-old(navbar),
 ::view-transition-new(navbar) {
   animation: none;
   mix-blend-mode: normal;
 }
 
-/* Navbar physics animations */
-@keyframes navbar-bounce {
-  0% {
-    transform: translateX(-50%) scale(1) rotate(0deg);
-  }
-  20% {
-    transform: translateX(-50%) scale(1.12) rotate(-2deg) translateY(-3px);
-  }
-  40% {
-    transform: translateX(-50%) scale(0.94) rotate(1deg) translateY(2px);
-  }
-  60% {
-    transform: translateX(-50%) scale(1.04) rotate(-0.5deg) translateY(-1px);
-  }
-  80% {
-    transform: translateX(-50%) scale(0.98) rotate(0.2deg) translateY(0.5px);
-  }
-  100% {
-    transform: translateX(-50%) scale(1) rotate(0deg) translateY(0);
+
+/* ---------------------------------------------------------
+   17. Responsive Design
+   --------------------------------------------------------- */
+
+@media (max-width: 1200px) {
+  .cards {
+    gap: 1.2rem;
   }
 }
 
-@keyframes navbar-float {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0px);
+@media (max-width: 900px) {
+  .section {
+    padding: 2rem 1rem;
+    max-width: 99vw;
   }
-  50% {
-    transform: translateX(-50%) translateY(-2px);
+
+  .cards {
+    flex-direction: column;
+    gap: 1rem;
   }
 }
 
-@keyframes navbar-entrance {
-  0% {
-    transform: translateX(-50%) translateY(-100px) scale(0.8);
-    opacity: 0;
+@media (max-width: 600px) {
+  .navbar-logo {
+    font-size: 1.4rem;
   }
-  60% {
-    transform: translateX(-50%) translateY(5px) scale(1.05);
-  }
-  100% {
-    transform: translateX(-50%) translateY(0) scale(1);
-    opacity: 1;
-  }
-}
 
-@keyframes nav-item-bounce {
-  0% {
-    transform: scale(1) translateY(0);
+  .hero h1 {
+    font-size: 3rem;
   }
-  30% {
-    transform: scale(1.15) translateY(-4px);
+
+  .card h3 {
+    font-size: 1.2rem;
   }
-  50% {
-    transform: scale(0.95) translateY(2px);
+
+  .social-links {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    padding: 0 1rem;
   }
-  70% {
-    transform: scale(1.05) translateY(-1px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
+
+  .social-links .cta-btn {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
   }
 }
 
-@keyframes nav-item-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+@media (max-width: 480px) {
+  .hero {
+    padding: 10rem 1rem 2rem;
   }
-  70% {
-    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+
+  .profile-pic {
+    width: 105px;
   }
-  100% {
-    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+
+  .hero h1 {
+    font-size: 2.75rem;
+  }
+
+  #about-me p {
+    text-align: left;
   }
 }
 
-.navbar {
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
 
-.navbar.entrance {
-  animation: navbar-entrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
+/* ---------------------------------------------------------
+   18. Accessibility
+   --------------------------------------------------------- */
 
-.navbar.bounce {
-  animation: navbar-bounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.navbar.floating {
-  animation: navbar-float 3s ease-in-out infinite;
-}
-
-.navbar-links a {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.navbar-links a.bounce-item {
-  animation: nav-item-bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.navbar-links a.pulse-item {
-  animation: nav-item-pulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.navbar-links a:active {
-  transform: scale(0.92);
-}
-
-/* Respect user preferences */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none;
   }
 
-  .navbar.bounce,
-  .navbar.entrance,
-  .navbar.floating,
-  .navbar-links a.bounce-item,
-  .navbar-links a.pulse-item {
-    animation: none !important;
+  .logo-track {
+    animation: none;
   }
 
   .navbar {
-    transition: none !important;
+    transition: none;
   }
 
   .navbar-links a:active {
     transform: scale(0.98);
   }
 }
-

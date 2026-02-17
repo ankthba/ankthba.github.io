@@ -344,15 +344,20 @@ function init3DGraph() {
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  // Create nodes with better visuals
+  // Create beautiful nodes with glow effect
   projectsData.forEach((project, index) => {
-    const geometry = new THREE.SphereGeometry(0.35, 64, 64);
-    const material = new THREE.MeshStandardMaterial({
-      color: isLight ? 0x000000 : project.color,
-      emissive: isLight ? 0x111111 : 0x222222,
-      metalness: 0.3,
-      roughness: 0.4,
-      envMapIntensity: 1
+    // Main sphere with glass-like material
+    const geometry = new THREE.SphereGeometry(0.4, 64, 64);
+    const material = new THREE.MeshPhysicalMaterial({
+      color: isLight ? 0x000000 : 0xffffff,
+      emissive: isLight ? 0x000000 : 0xffffff,
+      emissiveIntensity: 0.3,
+      metalness: 0.8,
+      roughness: 0.2,
+      transparent: true,
+      opacity: 0.9,
+      clearcoat: 1,
+      clearcoatRoughness: 0.1
     });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(...project.position);
@@ -360,26 +365,56 @@ function init3DGraph() {
     scene.add(sphere);
     nodes.push(sphere);
 
-    // Add label
+    // Outer glow ring
+    const ringGeometry = new THREE.RingGeometry(0.45, 0.5, 32);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: isLight ? 0x000000 : 0xffffff,
+      transparent: true,
+      opacity: 0.3,
+      side: THREE.DoubleSide
+    });
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+    ring.position.copy(sphere.position);
+    scene.add(ring);
+
+    // Label with better formatting
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 512;
-    canvas.height = 128;
+    canvas.width = 1024;
+    canvas.height = 256;
+
+    // Draw background panel
+    context.fillStyle = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.95)';
+    context.fillRect(100, 60, 824, 136);
+
+    // Draw border
+    context.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
+    context.lineWidth = 2;
+    context.strokeRect(100, 60, 824, 136);
+
+    // Title
     context.fillStyle = isLight ? '#000000' : '#ffffff';
-    context.font = 'bold 36px "Instrument Serif", serif';
+    context.font = 'bold 48px "Instrument Serif", serif';
     context.textAlign = 'center';
-    context.fillText(project.name, 256, 70);
+    context.fillText(project.fullName, 512, 130);
+
+    // Subtle description
+    context.fillStyle = isLight ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
+    context.font = '28px "Inter", sans-serif';
+    const desc = project.description.substring(0, 50) + '...';
+    context.fillText(desc, 512, 170);
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({
       map: texture,
       transparent: true,
-      opacity: 0.9
+      opacity: 0
     });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.set(...project.position);
-    sprite.position.y += 0.8;
-    sprite.scale.set(2.2, 0.55, 1);
+    sprite.position.y += 1.2;
+    sprite.scale.set(4, 1, 1);
+    sprite.userData = { sphere };
     scene.add(sprite);
   });
 
@@ -448,9 +483,24 @@ function init3DGraph() {
       node.scale.set(1, 1, 1);
     });
 
+    // Show label on hover
+    scene.children.forEach(child => {
+      if (child instanceof THREE.Sprite && child.material.map) {
+        child.material.opacity = 0;
+      }
+    });
+
     if (intersects.length > 0 && !isDragging) {
       const hoveredNode = intersects[0].object;
-      hoveredNode.scale.set(1.2, 1.2, 1.2);
+      hoveredNode.scale.set(1.3, 1.3, 1.3);
+
+      // Show label for this node
+      scene.children.forEach(child => {
+        if (child instanceof THREE.Sprite && child.userData.sphere === hoveredNode) {
+          child.material.opacity = 1;
+        }
+      });
+
       renderer.domElement.style.cursor = 'pointer';
     } else {
       renderer.domElement.style.cursor = isDragging ? 'grabbing' : 'grab';
@@ -625,7 +675,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ---------------------------------------------------------
-// 5. Featured Logo Marquee
+// 5. Photo Marquee
+// ---------------------------------------------------------
+
+window.addEventListener('load', () => {
+  const photoTrack = document.querySelector('.photo-track');
+  if (photoTrack) {
+    const originalWidth = Math.round(photoTrack.scrollWidth);
+    Array.from(photoTrack.children).forEach(n => photoTrack.appendChild(n.cloneNode(true)));
+    photoTrack.style.setProperty('--marquee-distance', `${originalWidth}px`);
+    const duration = originalWidth / 60;
+    photoTrack.style.setProperty('--photo-marquee-duration', `${duration}s`);
+  }
+});
+
+
+// ---------------------------------------------------------
+// 6. Featured Logo Marquee
 // ---------------------------------------------------------
 
 window.addEventListener('load', () => {

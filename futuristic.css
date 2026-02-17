@@ -377,14 +377,7 @@ main {
   height: 70vh;
   max-height: 700px;
   position: relative;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-}
-
-:root[data-theme="light"] #projects-3d-container {
-  background: linear-gradient(135deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.03) 100%);
+  background: transparent;
 }
 
 /* Elegant Project Popup */
@@ -502,13 +495,12 @@ main {
 .section-container {
   max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
 }
 
 .about-content {
   max-width: 900px;
   margin: 2rem auto 0;
-  text-align: center;
+  text-align: left;
 }
 
 .lead-text {
@@ -588,7 +580,73 @@ main {
 
 
 /* ---------------------------------------------------------
-   10. Featured Banner
+   10. Photos Section
+   --------------------------------------------------------- */
+
+.photos-banner {
+  width: 100%;
+  padding: 4rem 0;
+  background: var(--color-bg);
+}
+
+.photos-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.photo-scroller {
+  position: relative;
+  overflow: hidden;
+  padding: 2rem 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+}
+
+.photo-track {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: max-content;
+  animation: marquee var(--photo-marquee-duration, 40s) linear infinite;
+}
+
+.photo-placeholder {
+  height: 300px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.photo-placeholder span {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-muted);
+}
+
+.photo-placeholder:hover {
+  transform: scale(1.05);
+  border-color: var(--color-fg);
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+}
+
+:root[data-theme="light"] .photo-placeholder {
+  background: linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.01) 100%);
+}
+
+:root[data-theme="light"] .photo-placeholder:hover {
+  background: linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.03) 100%);
+}
+
+
+/* ---------------------------------------------------------
+   11. Featured Banner
    --------------------------------------------------------- */
 
 .featured-banner {

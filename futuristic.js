@@ -157,7 +157,70 @@ document.addEventListener('mousemove', (e) => {
 
 
 // ---------------------------------------------------------
-// 3. Smooth Scroll Navigation
+// 3. Elastic Name Hover Effect
+// ---------------------------------------------------------
+
+window.addEventListener('DOMContentLoaded', () => {
+  const heroTitle = document.querySelector('.hero-title');
+  if (!heroTitle) return;
+
+  const text = heroTitle.textContent;
+  heroTitle.textContent = '';
+  heroTitle.style.display = 'inline-flex';
+  heroTitle.style.gap = '0';
+
+  // Create spans for each letter
+  const letters = text.split('').map(char => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.display = 'inline-block';
+    span.style.transition = 'transform 0.2s ease-out';
+    span.style.transformOrigin = 'center';
+    heroTitle.appendChild(span);
+    return span;
+  });
+
+  // Track mouse movement
+  heroTitle.addEventListener('mousemove', (e) => {
+    const rect = heroTitle.getBoundingClientRect();
+
+    letters.forEach((letter) => {
+      const letterRect = letter.getBoundingClientRect();
+      const letterCenterX = letterRect.left + letterRect.width / 2;
+      const letterCenterY = letterRect.top + letterRect.height / 2;
+
+      const distanceX = e.clientX - letterCenterX;
+      const distanceY = e.clientY - letterCenterY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      // Invert the effect - letters close to cursor stay narrow, others stretch
+      const maxDistance = 150;
+      const proximity = Math.max(0, 1 - Math.min(distance / maxDistance, 1));
+
+      // Inverse scale - closer = narrower, farther = wider
+      const scaleX = 1 - proximity * 0.5; // Letter under cursor gets narrower (0.5x)
+      const scaleY = 1 + proximity * 0.3; // Gets slightly taller
+
+      // Stretch effect for letters NOT under cursor
+      const stretchAmount = (1 - proximity) * 0.4;
+      const finalScaleX = scaleX + stretchAmount;
+      const finalScaleY = scaleY + stretchAmount * 0.5;
+
+      letter.style.transform = `scale(${finalScaleX}, ${finalScaleY})`;
+    });
+  });
+
+  // Reset on mouse leave
+  heroTitle.addEventListener('mouseleave', () => {
+    letters.forEach(letter => {
+      letter.style.transform = 'scale(1)';
+    });
+  });
+});
+
+
+// ---------------------------------------------------------
+// 4. Smooth Scroll Navigation
 // ---------------------------------------------------------
 
 document.querySelectorAll('.nav-link').forEach(link => {
@@ -204,7 +267,7 @@ window.addEventListener('scroll', () => {
 
 
 // ---------------------------------------------------------
-// 4. 3D Project Graph with Three.js
+// 5. 3D Project Graph with Three.js
 // ---------------------------------------------------------
 
 const projectsData = [
@@ -344,20 +407,16 @@ function init3DGraph() {
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  // Create beautiful nodes with glow effect
+  // Create beautiful nodes
   projectsData.forEach((project, index) => {
-    // Main sphere with glass-like material
+    // Main sphere with smooth shading
     const geometry = new THREE.SphereGeometry(0.4, 64, 64);
-    const material = new THREE.MeshPhysicalMaterial({
+    const material = new THREE.MeshStandardMaterial({
       color: isLight ? 0x000000 : 0xffffff,
-      emissive: isLight ? 0x000000 : 0xffffff,
-      emissiveIntensity: 0.3,
-      metalness: 0.8,
-      roughness: 0.2,
-      transparent: true,
-      opacity: 0.9,
-      clearcoat: 1,
-      clearcoatRoughness: 0.1
+      emissive: isLight ? 0x111111 : 0x222222,
+      emissiveIntensity: 0.15,
+      metalness: 0.1,
+      roughness: 0.9
     });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(...project.position);
@@ -365,55 +424,51 @@ function init3DGraph() {
     scene.add(sphere);
     nodes.push(sphere);
 
-    // Outer glow ring
-    const ringGeometry = new THREE.RingGeometry(0.45, 0.5, 32);
-    const ringMaterial = new THREE.MeshBasicMaterial({
-      color: isLight ? 0x000000 : 0xffffff,
-      transparent: true,
-      opacity: 0.3,
-      side: THREE.DoubleSide
-    });
-    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
-    ring.position.copy(sphere.position);
-    scene.add(ring);
-
     // Label with better formatting
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 1024;
-    canvas.height = 256;
+    canvas.width = 1280;
+    canvas.height = 320;
 
-    // Draw background panel
-    context.fillStyle = isLight ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.95)';
-    context.fillRect(100, 60, 824, 136);
+    // Draw blurred background panel
+    context.fillStyle = isLight ? 'rgba(255, 255, 255, 0.85)' : 'rgba(0, 0, 0, 0.85)';
+    context.filter = 'blur(20px)';
+    context.fillRect(80, 80, 1120, 160);
+
+    // Reset filter for sharp text
+    context.filter = 'none';
+
+    // Draw background panel (sharper layer)
+    context.fillStyle = isLight ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.75)';
+    context.fillRect(80, 80, 1120, 160);
 
     // Draw border
     context.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
-    context.lineWidth = 2;
-    context.strokeRect(100, 60, 824, 136);
+    context.lineWidth = 3;
+    context.strokeRect(80, 80, 1120, 160);
 
     // Title
     context.fillStyle = isLight ? '#000000' : '#ffffff';
-    context.font = 'bold 48px "Instrument Serif", serif';
+    context.font = 'bold 56px "Instrument Serif", serif';
     context.textAlign = 'center';
-    context.fillText(project.fullName, 512, 130);
+    context.fillText(project.fullName, 640, 160);
 
     // Subtle description
-    context.fillStyle = isLight ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.6)';
-    context.font = '28px "Inter", sans-serif';
+    context.fillStyle = isLight ? 'rgba(0, 0, 0, 0.7)' : 'rgba(255, 255, 255, 0.7)';
+    context.font = '32px "Inter", sans-serif';
     const desc = project.description.substring(0, 50) + '...';
-    context.fillText(desc, 512, 170);
+    context.fillText(desc, 640, 210);
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({
       map: texture,
       transparent: true,
-      opacity: 0
+      opacity: 0.95
     });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.set(...project.position);
     sprite.position.y += 1.2;
-    sprite.scale.set(4, 1, 1);
+    sprite.scale.set(5, 1.25, 1);
     sprite.userData = { sphere };
     scene.add(sprite);
   });
@@ -483,24 +538,9 @@ function init3DGraph() {
       node.scale.set(1, 1, 1);
     });
 
-    // Show label on hover
-    scene.children.forEach(child => {
-      if (child instanceof THREE.Sprite && child.material.map) {
-        child.material.opacity = 0;
-      }
-    });
-
     if (intersects.length > 0 && !isDragging) {
       const hoveredNode = intersects[0].object;
       hoveredNode.scale.set(1.3, 1.3, 1.3);
-
-      // Show label for this node
-      scene.children.forEach(child => {
-        if (child instanceof THREE.Sprite && child.userData.sphere === hoveredNode) {
-          child.material.opacity = 1;
-        }
-      });
-
       renderer.domElement.style.cursor = 'pointer';
     } else {
       renderer.domElement.style.cursor = isDragging ? 'grabbing' : 'grab';
@@ -675,7 +715,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ---------------------------------------------------------
-// 5. Photo Marquee
+// 6. Photo Marquee
 // ---------------------------------------------------------
 
 window.addEventListener('load', () => {
@@ -691,7 +731,7 @@ window.addEventListener('load', () => {
 
 
 // ---------------------------------------------------------
-// 6. Featured Logo Marquee
+// 7. Featured Logo Marquee
 // ---------------------------------------------------------
 
 window.addEventListener('load', () => {
@@ -707,7 +747,7 @@ window.addEventListener('load', () => {
 
 
 // ---------------------------------------------------------
-// 6. Update theme for 3D scene
+// 8. Update theme for 3D scene
 // ---------------------------------------------------------
 
 if (themeToggle) {

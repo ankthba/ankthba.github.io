@@ -364,6 +364,7 @@ main {
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .section-subtitle {
@@ -611,37 +612,24 @@ main {
   animation: marquee var(--photo-marquee-duration, 40s) linear infinite;
 }
 
-.photo-placeholder {
+.photo-img {
   height: 300px;
-  width: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  width: auto;
+  object-fit: cover;
   border: 1px solid var(--color-border);
   border-radius: 8px;
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
-.photo-placeholder span {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--color-muted);
-}
-
-.photo-placeholder:hover {
+.photo-img:hover {
   transform: scale(1.05);
   border-color: var(--color-fg);
-  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-:root[data-theme="light"] .photo-placeholder {
-  background: linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.01) 100%);
-}
-
-:root[data-theme="light"] .photo-placeholder:hover {
-  background: linear-gradient(135deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.03) 100%);
+:root[data-theme="light"] .photo-img:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -809,6 +797,12 @@ main {
 
   #projects-3d-container {
     height: 500px;
+  }
+
+  /* Make graph labels more visible on mobile */
+  #projects-3d-container canvas {
+    transform: scale(1.2);
+    transform-origin: center;
   }
 
   .social-grid {

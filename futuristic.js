@@ -92,15 +92,15 @@ class Particle {
   draw() {
     const theme = root.getAttribute('data-theme');
     const isLight = theme === 'light' || (theme === 'auto' && !mql.matches);
-    ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.15)';
+    ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
   }
 }
 
-// Initialize particles - fewer for elegance
-for (let i = 0; i < 50; i++) {
+// Initialize particles
+for (let i = 0; i < 100; i++) {
   particles.push(new Particle());
 }
 
@@ -114,10 +114,10 @@ function connectParticles() {
       const dy = particles[i].y - particles[j].y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance < 120) {
-        const opacity = (120 - distance) / 120 * 0.08;
+      if (distance < 150) {
+        const opacity = (150 - distance) / 150 * 0.15;
         ctx.strokeStyle = isLight ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
@@ -344,13 +344,15 @@ function init3DGraph() {
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
-  // Create nodes
+  // Create nodes with better visuals
   projectsData.forEach((project, index) => {
-    const geometry = new THREE.SphereGeometry(0.3, 32, 32);
-    const material = new THREE.MeshPhongMaterial({
+    const geometry = new THREE.SphereGeometry(0.35, 64, 64);
+    const material = new THREE.MeshStandardMaterial({
       color: isLight ? 0x000000 : project.color,
-      emissive: isLight ? 0x222222 : 0x333333,
-      shininess: 100
+      emissive: isLight ? 0x111111 : 0x222222,
+      metalness: 0.3,
+      roughness: 0.4,
+      envMapIntensity: 1
     });
     const sphere = new THREE.Mesh(geometry, material);
     sphere.position.set(...project.position);
@@ -364,24 +366,28 @@ function init3DGraph() {
     canvas.width = 512;
     canvas.height = 128;
     context.fillStyle = isLight ? '#000000' : '#ffffff';
-    context.font = '32px Inter, sans-serif';
+    context.font = 'bold 36px "Instrument Serif", serif';
     context.textAlign = 'center';
-    context.fillText(project.name, 256, 64);
+    context.fillText(project.name, 256, 70);
 
     const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    const spriteMaterial = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0.9
+    });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.set(...project.position);
-    sprite.position.y += 0.7;
-    sprite.scale.set(2, 0.5, 1);
+    sprite.position.y += 0.8;
+    sprite.scale.set(2.2, 0.55, 1);
     scene.add(sprite);
   });
 
-  // Create edges (connections between nodes)
+  // Create edges (connections between nodes) with better appearance
   const edgeMaterial = new THREE.LineBasicMaterial({
-    color: isLight ? 0x666666 : 0x888888,
+    color: isLight ? 0x333333 : 0xcccccc,
     transparent: true,
-    opacity: 0.3
+    opacity: 0.2
   });
 
   for (let i = 0; i < nodes.length; i++) {
@@ -397,17 +403,21 @@ function init3DGraph() {
     }
   }
 
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+  // Enhanced lighting for better aesthetics
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   scene.add(ambientLight);
 
-  const pointLight1 = new THREE.PointLight(0xffffff, 0.8);
+  const pointLight1 = new THREE.PointLight(0xffffff, 1.2);
   pointLight1.position.set(10, 10, 10);
   scene.add(pointLight1);
 
-  const pointLight2 = new THREE.PointLight(0xffffff, 0.5);
+  const pointLight2 = new THREE.PointLight(0xffffff, 0.8);
   pointLight2.position.set(-10, -10, -10);
   scene.add(pointLight2);
+
+  const pointLight3 = new THREE.PointLight(isLight ? 0x000000 : 0xffffff, 0.6);
+  pointLight3.position.set(0, 10, 0);
+  scene.add(pointLight3);
 
   // Raycaster for click detection
   const raycaster = new THREE.Raycaster();
@@ -643,11 +653,11 @@ if (themeToggle) {
 
       nodes.forEach(node => {
         node.material.color.setHex(isLight ? 0x000000 : 0xffffff);
-        node.material.emissive.setHex(isLight ? 0x222222 : 0x333333);
+        node.material.emissive.setHex(isLight ? 0x111111 : 0x222222);
       });
 
       edges.forEach(edge => {
-        edge.material.color.setHex(isLight ? 0x666666 : 0x888888);
+        edge.material.color.setHex(isLight ? 0x333333 : 0xcccccc);
       });
     }
   });

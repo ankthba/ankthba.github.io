@@ -92,15 +92,15 @@ class Particle {
   draw() {
     const theme = root.getAttribute('data-theme');
     const isLight = theme === 'light' || (theme === 'auto' && !mql.matches);
-    ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)';
+    ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.15)';
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
     ctx.fill();
   }
 }
 
-// Initialize particles
-for (let i = 0; i < 100; i++) {
+// Initialize particles - fewer for elegance
+for (let i = 0; i < 50; i++) {
   particles.push(new Particle());
 }
 
@@ -114,10 +114,10 @@ function connectParticles() {
       const dy = particles[i].y - particles[j].y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance < 150) {
-        const opacity = (150 - distance) / 150 * 0.15;
+      if (distance < 120) {
+        const opacity = (120 - distance) / 120 * 0.08;
         ctx.strokeStyle = isLight ? `rgba(0, 0, 0, ${opacity})` : `rgba(255, 255, 255, ${opacity})`;
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
         ctx.moveTo(particles[i].x, particles[i].y);
         ctx.lineTo(particles[j].x, particles[j].y);
@@ -209,7 +209,8 @@ window.addEventListener('scroll', () => {
 
 const projectsData = [
   {
-    name: 'Founder, Vayu',
+    name: 'Vayu',
+    fullName: 'Founder, Vayu',
     description: 'Building an operating system for autonomous AI agents that treats agents as kernel-level primitives with built‑in safety, compliance, and reliability. It features capability‑based security, goal‑aware scheduling, and cryptographically verified audit systems for mission‑critical AI infrastructure.',
     links: [
       { label: 'Visit site', url: 'https://aniketh.net/vayu' }
@@ -218,7 +219,8 @@ const projectsData = [
     position: [0, 2.5, 0]
   },
   {
-    name: 'Founder & President, OCRadar',
+    name: 'OCRadar',
+    fullName: 'Founder & President, OCRadar',
     description: 'AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.',
     links: [
       { label: 'Visit site', url: 'https://ocradar.com/' }
@@ -227,7 +229,8 @@ const projectsData = [
     position: [3.5, 1.5, 2]
   },
   {
-    name: 'FRC Robotics, Software Lead',
+    name: 'FRC Software',
+    fullName: 'FRC Robotics, Software Lead',
     description: 'Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.',
     links: [
       { label: 'View repo', url: 'https://github.com/OaktonCougarRobotics' }
@@ -237,6 +240,7 @@ const projectsData = [
   },
   {
     name: 'EdgeFabric',
+    fullName: 'EdgeFabric',
     description: 'Synthesize distributed intelligence from ambient compute with instantaneous inference.',
     links: [
       { label: 'View repo', url: 'https://github.com/ankthba/EdgeFabric.git' }
@@ -245,7 +249,8 @@ const projectsData = [
     position: [2.5, -2, -1]
   },
   {
-    name: 'Designing a CNN for High-Accuracy OCSCC Detection',
+    name: 'CNN OCSCC',
+    fullName: 'Designing a CNN for High-Accuracy OCSCC Detection',
     description: 'This work presents a CNN trained on image datasets for high-accuracy OCSCC detection, with custom hardware for optimal image capture. Testing across resolutions showed logarithmic accuracy improvements with diminishing returns at high pixel counts. An open-access application enables broader CNN utilization for early detection.',
     links: [
       { label: 'View paper', url: 'https://arxiv.org/abs/2510.16235' }
@@ -254,7 +259,8 @@ const projectsData = [
     position: [-2.5, 1.5, -2.5]
   },
   {
-    name: 'IllumiSign: Eye-Tracking Communication Software',
+    name: 'IllumiSign',
+    fullName: 'IllumiSign: Eye-Tracking Communication Software',
     description: 'IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.',
     links: [
       { label: 'View project', url: 'https://devpost.com/software/illumisign' }
@@ -263,7 +269,8 @@ const projectsData = [
     position: [0, -1.5, 3.5]
   },
   {
-    name: 'CS DS&A Classwork',
+    name: 'CS DS&A',
+    fullName: 'CS DS&A Classwork',
     description: 'Assignments for the Oakton Highschool AV CS Data Structures & Algorithms course.',
     links: [
       { label: 'View repo', url: 'https://github.com/ankthba/csdsav.git' }
@@ -272,7 +279,8 @@ const projectsData = [
     position: [1.5, 2.5, -2]
   },
   {
-    name: 'Oakton Codebase Co-President',
+    name: 'Oakton Codebase',
+    fullName: 'Oakton Codebase Co-President',
     description: 'Leading Oakton HS\'s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep. Mentoring members, coordinating workshops and hackathons.',
     links: [
       { label: 'View site', url: 'https://oaktoncodebase.com/' }
@@ -282,20 +290,23 @@ const projectsData = [
   },
   {
     name: 'PCB Design',
+    fullName: 'PCB Design',
     description: 'Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.',
     links: [],
     color: 0xffffff,
     position: [3.5, 0, -1.5]
   },
   {
-    name: 'Chip Design & Analysis',
+    name: 'Apple Silicon',
+    fullName: 'Chip Design & Analysis',
     description: 'Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.',
     links: [],
     color: 0xffffff,
     position: [-3.5, -1.5, 0]
   },
   {
-    name: 'FTC Robotics, Team Captain',
+    name: 'FTC Captain',
+    fullName: 'FTC Robotics, Team Captain',
     description: 'Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.',
     links: [],
     color: 0xffffff,
@@ -505,7 +516,7 @@ function selectNode(node) {
   const popup = document.getElementById('project-popup');
   const overlay = document.getElementById('popup-overlay');
 
-  document.getElementById('popup-project-name').textContent = project.name;
+  document.getElementById('popup-project-name').textContent = project.fullName;
   document.getElementById('popup-project-description').textContent = project.description;
 
   const linksContainer = document.getElementById('popup-project-links');

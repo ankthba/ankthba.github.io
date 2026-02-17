@@ -209,90 +209,97 @@ window.addEventListener('scroll', () => {
 
 const projectsData = [
   {
-    name: 'Vayu Systems',
-    description: 'Building an operating system for autonomous AI agents that treats agents as kernel-level primitives with built‑in safety, compliance, and reliability. Features capability‑based security, goal‑aware scheduling, and cryptographically verified audit systems for mission‑critical AI infrastructure.',
+    name: 'Founder, Vayu',
+    description: 'Building an operating system for autonomous AI agents that treats agents as kernel-level primitives with built‑in safety, compliance, and reliability. It features capability‑based security, goal‑aware scheduling, and cryptographically verified audit systems for mission‑critical AI infrastructure.',
     links: [
-      { label: 'Visit Site', url: 'https://aniketh.net/vayu' }
+      { label: 'Visit site', url: 'https://aniketh.net/vayu' }
     ],
     color: 0xffffff,
-    position: [0, 2, 0]
+    position: [0, 2.5, 0]
   },
   {
-    name: 'OCRadar',
+    name: 'Founder & President, OCRadar',
     description: 'AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.',
     links: [
-      { label: 'Visit Site', url: 'https://ocradar.com/' }
+      { label: 'Visit site', url: 'https://ocradar.com/' }
     ],
     color: 0xffffff,
-    position: [3, 1, 2]
+    position: [3.5, 1.5, 2]
   },
   {
-    name: 'FRC Robotics',
+    name: 'FRC Robotics, Software Lead',
     description: 'Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.',
     links: [
-      { label: 'View Repo', url: 'https://github.com/OaktonCougarRobotics' }
+      { label: 'View repo', url: 'https://github.com/OaktonCougarRobotics' }
     ],
     color: 0xffffff,
-    position: [-3, 0, 1]
+    position: [-3.5, 0.5, 1.5]
   },
   {
     name: 'EdgeFabric',
     description: 'Synthesize distributed intelligence from ambient compute with instantaneous inference.',
     links: [
-      { label: 'View Repo', url: 'https://github.com/ankthba/EdgeFabric.git' }
+      { label: 'View repo', url: 'https://github.com/ankthba/EdgeFabric.git' }
     ],
     color: 0xffffff,
-    position: [2, -2, -1]
+    position: [2.5, -2, -1]
   },
   {
-    name: 'CNN for OCSCC Detection',
-    description: 'This work presents a CNN trained on image datasets for high-accuracy OCSCC detection, with custom hardware for optimal image capture.',
+    name: 'Designing a CNN for High-Accuracy OCSCC Detection',
+    description: 'This work presents a CNN trained on image datasets for high-accuracy OCSCC detection, with custom hardware for optimal image capture. Testing across resolutions showed logarithmic accuracy improvements with diminishing returns at high pixel counts. An open-access application enables broader CNN utilization for early detection.',
     links: [
-      { label: 'View Paper', url: 'https://arxiv.org/abs/2510.16235' }
+      { label: 'View paper', url: 'https://arxiv.org/abs/2510.16235' }
     ],
     color: 0xffffff,
-    position: [-2, 1, -2]
+    position: [-2.5, 1.5, -2.5]
   },
   {
-    name: 'IllumiSign',
-    description: 'IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner).',
+    name: 'IllumiSign: Eye-Tracking Communication Software',
+    description: 'IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.',
     links: [
-      { label: 'View Project', url: 'https://devpost.com/software/illumisign' }
+      { label: 'View project', url: 'https://devpost.com/software/illumisign' }
     ],
     color: 0xffffff,
-    position: [0, -1, 3]
+    position: [0, -1.5, 3.5]
   },
   {
     name: 'CS DS&A Classwork',
     description: 'Assignments for the Oakton Highschool AV CS Data Structures & Algorithms course.',
     links: [
-      { label: 'View Repo', url: 'https://github.com/ankthba/csdsav.git' }
+      { label: 'View repo', url: 'https://github.com/ankthba/csdsav.git' }
     ],
     color: 0xffffff,
-    position: [1, 2, -2]
+    position: [1.5, 2.5, -2]
   },
   {
-    name: 'Oakton Codebase',
+    name: 'Oakton Codebase Co-President',
     description: 'Leading Oakton HS\'s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep. Mentoring members, coordinating workshops and hackathons.',
     links: [
-      { label: 'View Site', url: 'https://oaktoncodebase.com/' }
+      { label: 'View site', url: 'https://oaktoncodebase.com/' }
     ],
     color: 0xffffff,
-    position: [-1, -2, 2]
+    position: [-1.5, -2.5, 2.5]
   },
   {
     name: 'PCB Design',
     description: 'Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.',
     links: [],
     color: 0xffffff,
-    position: [3, 0, -1]
+    position: [3.5, 0, -1.5]
   },
   {
     name: 'Chip Design & Analysis',
     description: 'Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.',
     links: [],
     color: 0xffffff,
-    position: [-3, -1, 0]
+    position: [-3.5, -1.5, 0]
+  },
+  {
+    name: 'FTC Robotics, Team Captain',
+    description: 'Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.',
+    links: [],
+    color: 0xffffff,
+    position: [0, -3, -2]
   }
 ];
 

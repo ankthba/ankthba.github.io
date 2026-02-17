@@ -113,18 +113,27 @@
     <section id="projects" class="projects-section">
       <div class="section-header">
         <h2 class="section-title">PROJECTS</h2>
-        <p class="section-subtitle">Interactive 3D Network Graph</p>
+        <p class="section-subtitle">Interactive 3D Network Graph — Drag to rotate · Click to explore</p>
       </div>
       <div id="projects-3d-container"></div>
-      <div class="project-info-panel" id="project-info">
-        <div class="info-header">SELECT A NODE</div>
-        <div class="info-content">
-          <h3 id="project-name">Click on any node to explore</h3>
-          <p id="project-description">Drag to rotate · Scroll to zoom · Click nodes for details</p>
-          <div id="project-links"></div>
+    </section>
+
+    <!-- Project Details Popup -->
+    <div id="popup-overlay" class="popup-overlay">
+      <div class="popup-container">
+        <button id="close-popup" class="close-popup" aria-label="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="popup-content">
+          <h2 id="popup-project-name">Project Name</h2>
+          <p id="popup-project-description">Project description</p>
+          <div id="popup-project-links" class="popup-links"></div>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- About Section -->
     <section id="about" class="about-section">

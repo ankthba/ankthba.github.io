@@ -320,8 +320,9 @@ function init3DGraph() {
   );
   camera.position.z = 8;
 
-  // Renderer
+  // Renderer with high pixel ratio for crisp rendering
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.clientWidth, container.clientHeight);
   container.appendChild(renderer.domElement);
 
@@ -445,12 +446,7 @@ function init3DGraph() {
     }, 3000);
   });
 
-  // Wheel zoom
-  renderer.domElement.addEventListener('wheel', (event) => {
-    event.preventDefault();
-    camera.position.z += event.deltaY * 0.01;
-    camera.position.z = Math.max(5, Math.min(15, camera.position.z));
-  });
+  // Removed wheel zoom for cleaner interaction
 
   // Manual rotation
   let previousMouseX = 0;
@@ -498,11 +494,14 @@ function selectNode(node) {
   selectedNode = node;
   const project = node.userData;
 
-  // Update info panel
-  document.getElementById('project-name').textContent = project.name;
-  document.getElementById('project-description').textContent = project.description;
+  // Show popup overlay
+  const popup = document.getElementById('project-popup');
+  const overlay = document.getElementById('popup-overlay');
 
-  const linksContainer = document.getElementById('project-links');
+  document.getElementById('popup-project-name').textContent = project.name;
+  document.getElementById('popup-project-description').textContent = project.description;
+
+  const linksContainer = document.getElementById('popup-project-links');
   linksContainer.innerHTML = '';
 
   if (project.links && project.links.length > 0) {
@@ -512,9 +511,16 @@ function selectNode(node) {
       a.textContent = link.label;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
+      a.className = 'popup-link';
       linksContainer.appendChild(a);
     });
   }
+
+  // Show popup with animation
+  overlay.style.display = 'flex';
+  setTimeout(() => {
+    overlay.classList.add('active');
+  }, 10);
 
   // Highlight selected node
   nodes.forEach(n => {
@@ -546,6 +552,47 @@ function animate3DGraph() {
 // Initialize 3D graph when DOM is ready
 window.addEventListener('load', () => {
   init3DGraph();
+});
+
+// Close popup functionality
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('popup-overlay');
+  const closeBtn = document.getElementById('close-popup');
+
+  function closePopup() {
+    overlay.classList.remove('active');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 300);
+
+    // Reset node highlighting
+    if (nodes.length > 0) {
+      const theme = root.getAttribute('data-theme');
+      const isLight = theme === 'light' || (theme === 'auto' && !mql.matches);
+      nodes.forEach(n => {
+        n.material.emissive.setHex(isLight ? 0x222222 : 0x333333);
+      });
+    }
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closePopup);
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closePopup();
+      }
+    });
+  }
+
+  // ESC key to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      closePopup();
+    }
+  });
 });
 
 

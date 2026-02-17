@@ -111,10 +111,10 @@ main {
   background-image:
     linear-gradient(var(--color-grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
-  background-size: 50px 50px;
+  background-size: 60px 60px;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.3;
+  opacity: 0.15;
 }
 
 
@@ -243,13 +243,8 @@ main {
   font-weight: 300;
 }
 
-.typing-text {
+.hero-subtitle span {
   display: inline-block;
-  border-right: 2px solid var(--color-fg);
-  padding-right: 10px;
-  animation: typing 4s steps(40, end), blink 0.75s step-end infinite;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .hero-image-container {
@@ -276,33 +271,29 @@ main {
 }
 
 .social-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-  max-width: 800px;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
   margin: 3rem auto;
 }
 
-.cyber-btn {
+.social-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
+  width: 50px;
+  height: 50px;
   background: transparent;
   border: 1px solid var(--color-border);
   color: var(--color-fg);
   text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  border-radius: 50%;
   position: relative;
   overflow: hidden;
   transition: all var(--transition-normal);
 }
 
-.cyber-btn::before {
+.social-icon::before {
   content: '';
   position: absolute;
   top: 0;
@@ -314,19 +305,19 @@ main {
   z-index: -1;
 }
 
-.cyber-btn:hover::before {
+.social-icon:hover::before {
   left: 0;
 }
 
-.cyber-btn:hover {
+.social-icon:hover {
   color: var(--color-bg);
   border-color: var(--color-fg);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
-.cyber-btn svg {
-  width: 20px;
-  height: 20px;
+.social-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .scroll-indicator {
@@ -369,7 +360,7 @@ main {
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 6vw, 6rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 1rem;
@@ -377,9 +368,7 @@ main {
 
 .section-subtitle {
   color: var(--color-muted);
-  font-size: 1.1rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  font-size: 1rem;
   font-weight: 300;
 }
 
@@ -510,15 +499,8 @@ main {
 }
 
 .about-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 4rem;
-  margin-top: 3rem;
-}
-
-.about-text {
-  font-size: 1.1rem;
-  line-height: 1.9;
+  max-width: 900px;
+  margin: 3rem auto 0;
 }
 
 .lead-text {
@@ -528,43 +510,11 @@ main {
   line-height: 1.6;
 }
 
-.about-text p {
+.about-content p {
   color: var(--color-muted);
   margin-bottom: 1.5rem;
-}
-
-.about-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.stat-box {
-  padding: 2rem;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.02);
-  transition: all var(--transition-normal);
-}
-
-.stat-box:hover {
-  transform: translateX(10px);
-  border-color: var(--color-fg);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.stat-number {
-  font-family: var(--font-display);
-  font-size: 4rem;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  font-weight: 500;
+  font-size: 1.05rem;
+  line-height: 1.8;
 }
 
 
@@ -595,14 +545,13 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.5rem 3rem;
+  padding: 1.25rem 2.5rem;
   background: var(--color-fg);
   color: var(--color-bg);
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   border: 1px solid var(--color-fg);
   transition: all var(--transition-normal);
   position: relative;
@@ -737,15 +686,6 @@ main {
   50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.2); }
 }
 
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  from, to { border-color: transparent; }
-  50% { border-color: var(--color-fg); }
-}
 
 
 @keyframes float {

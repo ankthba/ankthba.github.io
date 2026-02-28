@@ -2,31 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aniketh Bandlamudi</title>
-  <meta name="description" content="Official site of Aniketh Bandlamudi — Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <meta name="description" content="Aniketh Bandlamudi — Founder at Vayu & OCRadar, EECS student. Building at the intersection of hardware, software, and AI.">
   <link rel="canonical" href="https://aniketh.net/">
   <meta name="author" content="Aniketh Bandlamudi">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Aniketh Bandlamudi">
-  <meta property="og:description" content="Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <meta property="og:description" content="Founder at Vayu & OCRadar, EECS student. Building at the intersection of hardware, software, and AI.">
   <meta property="og:url" content="https://aniketh.net/">
   <meta property="og:image" content="https://aniketh.net/aniketh.jpeg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Founder at OCRadar and EECS student. Explore projects, photos, and links.">
+  <meta name="twitter:description" content="Founder at Vayu & OCRadar, EECS student. Building at the intersection of hardware, software, and AI.">
   <meta name="twitter:image" content="https://aniketh.net/aniketh.jpeg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="futuristic.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="anikethFavicon.jpg">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -34,215 +35,291 @@
     "name": "Aniketh Bandlamudi",
     "url": "https://aniketh.net/",
     "image": "https://aniketh.net/aniketh.jpeg",
-    "jobTitle": "Founder at OCRadar",
+    "jobTitle": "Founder at Vayu & OCRadar",
     "sameAs": [
-      "https://www.linkedin.com/in/aniketh-bandlamudi",
+      "https://www.linkedin.com/in/anikethb",
       "https://github.com/ankthba",
-      "https://twitter.com/yourhandle"
+      "https://x.com/ankthba"
     ]
   }
   </script>
 </head>
 <body>
-  <!-- Particle Background -->
-  <canvas id="particle-canvas"></canvas>
-
-  <!-- Futuristic Grid -->
-  <div class="grid-overlay"></div>
-
   <!-- Navigation -->
-  <nav class="futuristic-nav">
-    <div class="nav-container">
-      <div class="nav-brand">
-        <span class="glitch" data-text="AB">AB</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#home" class="nav-link active">Home</a></li>
-        <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">Aniketh</a>
+      <ul class="nav__links">
+        <li><a href="#projects" class="nav__link">Projects</a></li>
+        <li><a href="#about" class="nav__link">About</a></li>
+        <li><a href="#contact" class="nav__link">Contact</a></li>
       </ul>
     </div>
   </nav>
 
   <main>
     <!-- Hero Section -->
-    <section id="home" class="hero-section">
-      <div class="hero-content">
-        <div class="hero-glitch-wrapper">
-          <h1 class="hero-title glitch-text" data-text="ANIKETH">ANIKETH</h1>
-        </div>
-        <div class="hero-subtitle">
-          <span>Founder · Vayu · OCRadar · EECS · 17</span>
-        </div>
-        <div class="hero-image-container">
-          <div class="hexagon-frame">
-            <img src="aniketh.jpeg" alt="Aniketh Bandlamudi" class="hero-image">
-          </div>
-        </div>
-        <div class="social-grid">
-          <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="social-icon" aria-label="LinkedIn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
-          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="social-icon" aria-label="GitHub">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="social-icon" aria-label="Twitter">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
-          <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t?si=3a5035155861425b" target="_blank" rel="noopener" class="social-icon" aria-label="Spotify">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-          </a>
-        </div>
+    <section class="hero" id="home">
+      <img src="aniketh.jpeg" alt="Aniketh Bandlamudi" class="hero__image">
+      <h1 class="hero__title" id="hero-title">Aniketh</h1>
+      <p class="hero__subtitle">Founder &middot; Vayu &middot; OCRadar &middot; EECS &middot; 17</p>
+      <div class="hero__socials">
+        <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+        <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="social-link" aria-label="Twitter/X">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="social-link" aria-label="Spotify">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+        </a>
       </div>
     </section>
 
-    <!-- Projects 3D Graph Section -->
-    <section id="projects" class="projects-section">
-      <div class="section-header">
-        <h2 class="section-title">Projects</h2>
-        <p class="section-subtitle">Drag to rotate, click to explore</p>
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <div class="projects__header">
+          <h2>Projects</h2>
+        </div>
+        <div class="projects__grid">
+          <!-- Vayu -->
+          <article class="project-card">
+            <h3 class="project-card__title">Vayu</h3>
+            <p class="project-card__role">Founder</p>
+            <p class="project-card__description">Building an operating system for autonomous AI agents with capability-based security, goal-aware scheduling, and cryptographically verified audit systems for mission-critical AI infrastructure.</p>
+            <a href="https://aniketh.net/vayu" class="project-card__link">
+              Visit site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- OCRadar -->
+          <article class="project-card">
+            <h3 class="project-card__title">OCRadar</h3>
+            <p class="project-card__role">Founder & President</p>
+            <p class="project-card__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
+            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-card__link">
+              Visit site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- EdgeFabric -->
+          <article class="project-card">
+            <h3 class="project-card__title">EdgeFabric</h3>
+            <p class="project-card__role">Creator</p>
+            <p class="project-card__description">Synthesize distributed intelligence from ambient compute with instantaneous inference across edge devices.</p>
+            <a href="https://github.com/ankthba/EdgeFabric" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- CNN OCSCC -->
+          <article class="project-card">
+            <h3 class="project-card__title">CNN OCSCC Detection</h3>
+            <p class="project-card__role">Research</p>
+            <p class="project-card__description">Published paper presenting a CNN trained for high-accuracy oral cancer detection, with custom hardware for optimal image capture and an open-access application.</p>
+            <a href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener" class="project-card__link">
+              View paper
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- IllumiSign -->
+          <article class="project-card">
+            <h3 class="project-card__title">IllumiSign</h3>
+            <p class="project-card__role">Hack the Nest 2025 Winner</p>
+            <p class="project-card__description">Open-source, browser-based communication tool for people with ALS using real-time eye tracking to select letters and speak them aloud.</p>
+            <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener" class="project-card__link">
+              View project
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- FRC Robotics -->
+          <article class="project-card">
+            <h3 class="project-card__title">FRC Robotics</h3>
+            <p class="project-card__role">Software Lead</p>
+            <p class="project-card__description">Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions.</p>
+            <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- Oakton Codebase -->
+          <article class="project-card">
+            <h3 class="project-card__title">Oakton Codebase</h3>
+            <p class="project-card__role">Co-President</p>
+            <p class="project-card__description">Leading Oakton HS's premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep while mentoring members.</p>
+            <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener" class="project-card__link">
+              View site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- PCB Design -->
+          <article class="project-card">
+            <h3 class="project-card__title">PCB Design</h3>
+            <p class="project-card__role">Hardware</p>
+            <p class="project-card__description">Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity and thermal performance.</p>
+          </article>
+
+          <!-- Apple Silicon -->
+          <article class="project-card">
+            <h3 class="project-card__title">Apple Silicon Analysis</h3>
+            <p class="project-card__role">Research</p>
+            <p class="project-card__description">Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies.</p>
+          </article>
+
+          <!-- CS DS&A -->
+          <article class="project-card">
+            <h3 class="project-card__title">CS DS&A</h3>
+            <p class="project-card__role">Coursework</p>
+            <p class="project-card__description">Assignments for the Oakton High School AV CS Data Structures & Algorithms course.</p>
+            <a href="https://github.com/ankthba/csdsav" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <!-- FTC Robotics -->
+          <article class="project-card">
+            <h3 class="project-card__title">FTC Robotics</h3>
+            <p class="project-card__role">Team Captain</p>
+            <p class="project-card__description">Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.</p>
+          </article>
+        </div>
       </div>
-      <div id="projects-3d-container"></div>
     </section>
 
     <!-- Photos Section -->
-    <section class="photos-banner">
-      <div class="photos-inner">
-        <h2 class="section-title" style="margin-bottom: 2rem;">Photos</h2>
-        <div class="photo-scroller">
-          <div class="photo-track">
-            <img class="photo-img" src="assets/photos/planeImage1.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage2.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage3.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage4.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage5.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage6.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage7.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage8.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage9.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage10.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage11.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage12.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage13.png" alt="Aviation Photography">
-            <img class="photo-img" src="assets/photos/planeImage14.png" alt="Aviation Photography">
-          </div>
+    <section class="photos" id="photos">
+      <div class="container">
+        <div class="photos__header">
+          <h2>Photos</h2>
         </div>
-        <div style="text-align: center; margin-top: 2rem; margin-bottom: 2rem;">
-          <div style="display: flex; gap: 2rem; justify-content: center; align-items: flex-start;">
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-              <a href="https://www.instagram.com/ankthba.av/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram - Aviation">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </a>
-              <span style="font-size: 0.8rem; font-weight: 500; color: var(--color-fg);">Aviation</span>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-              <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram - Landscape">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </a>
-              <span style="font-size: 0.8rem; font-weight: 500; color: var(--color-fg);">Landscape</span>
-            </div>
-          </div>
+      </div>
+      <div class="photos__scroller">
+        <div class="photos__track" id="photo-track">
+          <div class="photo-item"><img src="assets/photos/planeImage1.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage2.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage3.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage4.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage5.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage6.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage7.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage8.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage9.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage10.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage11.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage12.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage13.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="assets/photos/planeImage14.png" alt="Aviation Photography" loading="lazy"></div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="photos__links">
+          <a href="https://www.instagram.com/ankthba.av/" target="_blank" rel="noopener" class="photos__link">
+            <span class="social-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </span>
+            <span class="photos__link-label">Aviation</span>
+          </a>
+          <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="photos__link">
+            <span class="social-link">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </span>
+            <span class="photos__link-label">Landscape</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Project Details Popup -->
-    <div id="popup-overlay" class="popup-overlay">
-      <div class="popup-container">
-        <button id="close-popup" class="close-popup" aria-label="Close">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        <div class="popup-content">
-          <h2 id="popup-project-name">Project Name</h2>
-          <p id="popup-project-description">Project description</p>
-          <div id="popup-project-links" class="popup-links"></div>
-        </div>
-      </div>
-    </div>
-
     <!-- About Section -->
-    <section id="about" class="about-section">
-      <div class="section-container">
-        <h2 class="section-title">About</h2>
-        <div class="about-content">
-          <p class="lead-text">I'm an EECS student building at the intersection of hardware, software, and AI.</p>
-          <p>I founded Vayu Systems to develop next-generation agentic operating systems and OCRadar to create AI-powered tools for early cancer detection.</p>
-          <p>For four years, I've led software and engineering at Oakton Robotics, developing autonomous control systems, vision pipelines, and sensor integration while mentoring students across CAD, electronics, and software.</p>
-          <p>My work has reached millions worldwide, featured by WTOP, Korea Times, United Airlines, and Washington Dulles International Airport. I earned National Merit distinction while completing 18 AP courses and won recognition at the DC region's largest high school hackathon.</p>
-          <p>Whether I'm designing custom PCBs, reverse-engineering chip architectures, or photographing aircraft at Dulles, I'm driven by curiosity and a commitment to making technology accessible.</p>
+    <section class="about" id="about">
+      <div class="container">
+        <div class="about__header">
+          <h2>About</h2>
+        </div>
+        <div class="about__content">
+          <div class="about__text">
+            <p>I'm an EECS student building at the intersection of hardware, software, and AI.</p>
+            <p>I founded Vayu Systems to develop next-generation agentic operating systems and OCRadar to create AI-powered tools for early cancer detection.</p>
+            <p>For four years, I've led software and engineering at Oakton Robotics, developing autonomous control systems, vision pipelines, and sensor integration while mentoring students across CAD, electronics, and software.</p>
+            <p>My work has reached millions worldwide, featured by WTOP, Korea Times, United Airlines, and Washington Dulles International Airport. I earned National Merit distinction while completing 18 AP courses and won recognition at the DC region's largest high school hackathon.</p>
+            <p>Whether I'm designing custom PCBs, reverse-engineering chip architectures, or photographing aircraft at Dulles, I'm driven by curiosity and a commitment to making technology accessible.</p>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-      <div class="section-container">
-        <h2 class="section-title">Contact</h2>
-        <div class="contact-content">
-          <p class="contact-text">Open to inquiries and questions.</p>
-          <a href="mailto:me@aniketh.net" class="cyber-contact-btn">
-            <span>Send Message</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact__inner">
+          <div class="contact__header">
+            <h2>Contact</h2>
+          </div>
+          <p class="contact__text">Open to inquiries and questions.</p>
+          <a href="mailto:me@aniketh.net" class="btn">
+            Send Message
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Featured Banner -->
-    <section class="featured-banner">
-      <div class="featured-inner">
-        <p class="featured-label">FEATURED &amp; RECOGNIZED</p>
-        <div class="logo-scroller">
-          <div class="logo-track">
-            <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/airfrance.png" alt="Air France"></a>
-            <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="logo-img" src="logos/ana.png" alt="ANA"></a>
-            <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/antonov.png" alt="Antonov"></a>
-            <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/blackpink.png" alt="BLACKPINK"></a>
-            <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/british.png" alt="British Airways"></a>
-            <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/dulles.png" alt="Dulles Airport"></a>
-            <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/emirates.png" alt="Emirates"></a>
-            <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="logo-img" src="logos/fcps.png" alt="FCPS"></a>
-            <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/klm.png" alt="KLM"></a>
-            <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/korean.png" alt="Korean Air"></a>
-            <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="logo-img" src="logos/koreatimes.png" alt="Korea Times"></a>
-            <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/lufthansa.png" alt="Lufthansa"></a>
-            <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/mwaa.png" alt="MWAA"></a>
-            <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/porter.png" alt="Porter"></a>
-            <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/qatar.png" alt="Qatar Airways"></a>
-            <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/reagan.png" alt="Reagan Airport"></a>
-            <a href="https://www.united.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/united.png" alt="United Airlines"></a>
-            <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/visiontimes.png" alt="Vision Times"></a>
-            <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/wga.png" alt="WGA"></a>
-            <a href="https://wtop.com" target="_blank" rel="noopener"><img class="logo-img" src="logos/wtop.png" alt="WTOP"></a>
-          </div>
+    <!-- Featured Section -->
+    <section class="featured">
+      <p style="text-align: center; width: 100%; display: block; margin: 0 auto; font-family: var(--font-sans); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-md);">Featured & Recognized</p>
+      <div class="featured__scroller">
+        <div class="featured__track" id="logo-track">
+          <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/airfrance.png" alt="Air France"></a>
+          <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="featured__logo" src="logos/ana.png" alt="ANA"></a>
+          <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/antonov.png" alt="Antonov"></a>
+          <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/blackpink.png" alt="BLACKPINK"></a>
+          <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/british.png" alt="British Airways"></a>
+          <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/dulles.png" alt="Dulles Airport"></a>
+          <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/emirates.png" alt="Emirates"></a>
+          <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="featured__logo" src="logos/fcps.png" alt="FCPS"></a>
+          <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/klm.png" alt="KLM"></a>
+          <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/korean.png" alt="Korean Air"></a>
+          <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="featured__logo" src="logos/koreatimes.png" alt="Korea Times"></a>
+          <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/lufthansa.png" alt="Lufthansa"></a>
+          <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/mwaa.png" alt="MWAA"></a>
+          <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/porter.png" alt="Porter"></a>
+          <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/qatar.png" alt="Qatar Airways"></a>
+          <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/reagan.png" alt="Reagan Airport"></a>
+          <a href="https://www.united.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/united.png" alt="United Airlines"></a>
+          <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/visiontimes.png" alt="Vision Times"></a>
+          <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wga.png" alt="WGA"></a>
+          <a href="https://wtop.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wtop.png" alt="WTOP"></a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="futuristic-footer">
-    <p>&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-    <select id="theme-toggle" aria-label="Theme">
-      <option value="auto">Auto</option>
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
+      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
+        <option value="auto">Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="futuristic.js" defer></script>
+  <script src="main.js" defer></script>
 </body>
 </html>

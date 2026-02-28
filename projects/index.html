@@ -2,180 +2,202 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="view-transition" content="same-origin">
-  <title>Aniketh → Projects</title>
+  <title>Projects — Aniketh Bandlamudi</title>
+  <meta name="description" content="Selected work in hardware, software, and mechatronics by Aniketh Bandlamudi.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <link rel="icon" type="image/png" href="../anikethFavicon.jpg">
 </head>
 <body>
-  <nav class="navbar" role="navigation" aria-label="Main">
-    <div class="navbar-logo" aria-hidden="true"></div>
-    <ul class="navbar-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/projects">Projects</a></li>
-      <li><a href="/photos">Photos</a></li>
-      <!-- <li><a href="/blog">Blog</a></li> -->
-    </ul>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Aniketh</a>
+      <ul class="nav__links">
+        <li><a href="/#projects" class="nav__link">Projects</a></li>
+        <li><a href="/#about" class="nav__link">About</a></li>
+        <li><a href="/#contact" class="nav__link">Contact</a></li>
+      </ul>
+    </div>
   </nav>
 
   <main>
-    <section id="projects" class="hero">
+    <!-- Hero -->
+    <section class="hero" style="min-height: 50vh;">
+      <p class="label">Work</p>
       <h1>Projects</h1>
-      <p>Selected work in hardware, software, and mechatronics</p>
+      <p class="hero__subtitle">Selected work in hardware, software, and mechatronics</p>
     </section>
 
-    <section id="software" class="section">
-      <h2>Software</h2>
-      <div class="cards">
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/vayuCover.jpg" alt="Vayu project cover">
-          <h3>Founder, Vayu</h3>
-          <p>Building an operating system for autonomous AI agents that treats agents as kernel-level primitives with built‑in safety, compliance, and reliability. It features capability‑based security, goal‑aware scheduling, and cryptographically verified audit systems for mission‑critical AI infrastructure</p>
-          <div class="actions">
-            <a class="btn button" href="https://aniketh.net/vayu" target="_blank" rel="noopener noreferrer">Visit site</a>
-          </div>
+    <!-- Software Section -->
+    <section class="projects" id="software">
+      <div class="container">
+        <div class="projects__header">
+          <p class="label">Development</p>
+          <h2>Software</h2>
         </div>
+        <div class="projects__grid">
+          <article class="project-card">
+            <h3 class="project-card__title">Vayu</h3>
+            <p class="project-card__role">Founder</p>
+            <p class="project-card__description">Building an operating system for autonomous AI agents with capability-based security, goal-aware scheduling, and cryptographically verified audit systems for mission-critical AI infrastructure.</p>
+            <a href="https://aniketh.net/vayu" class="project-card__link">
+              Visit site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
 
-        <div class="card">
-          <img class="card-image" src="../projectImages/ocradar.jpg" alt="OCRadar project cover">
-          <h3>Founder &amp; President, OCRadar</h3>
-          <p>AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
-          <div class="actions">
-            <a class="btn button" href="https://ocradar.com/" target="_blank" rel="noopener noreferrer">Visit site</a>
-          </div>
+          <article class="project-card">
+            <h3 class="project-card__title">OCRadar</h3>
+            <p class="project-card__role">Founder & President</p>
+            <p class="project-card__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
+            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-card__link">
+              Visit site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">FRC Robotics</h3>
+            <p class="project-card__role">Software Lead</p>
+            <p class="project-card__description">Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions.</p>
+            <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">EdgeFabric</h3>
+            <p class="project-card__role">Creator</p>
+            <p class="project-card__description">Synthesize distributed intelligence from ambient compute with instantaneous inference.</p>
+            <a href="https://github.com/ankthba/EdgeFabric" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">CNN OCSCC Detection</h3>
+            <p class="project-card__role">Research Paper</p>
+            <p class="project-card__description">Published paper presenting a CNN trained for high-accuracy OCSCC detection, with custom hardware for optimal image capture and an open-access application.</p>
+            <a href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener" class="project-card__link">
+              View paper
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">IllumiSign</h3>
+            <p class="project-card__role">Hack the Nest 2025 Winner</p>
+            <p class="project-card__description">Open-source, browser-based communication tool for people with ALS using real-time eye tracking to select letters and speak them aloud.</p>
+            <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener" class="project-card__link">
+              View project
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">CS DS&A</h3>
+            <p class="project-card__role">Coursework</p>
+            <p class="project-card__description">Assignments for the Oakton High School AV CS Data Structures & Algorithms course.</p>
+            <a href="https://github.com/ankthba/csdsav" target="_blank" rel="noopener" class="project-card__link">
+              View repo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">Oakton Codebase</h3>
+            <p class="project-card__role">Co-President</p>
+            <p class="project-card__description">Leading Oakton HS's premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep while mentoring members.</p>
+            <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener" class="project-card__link">
+              View site
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
         </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/frc.jpg" alt="FRC project cover">
-          <h3>FRC Robotics, Software Lead</h3>
-          <p>Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions in high-pressure team environments.</p>
-          <div class="actions">
-            <a class="btn button" href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener noreferrer">View repo</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/edgefabric.png" alt="EdgeFabric project cover">
-          <h3>EdgeFabric</h3>
-          <p>Synthesize distributed intelligence from ambient compute with instantaneous inference.</p>
-          <div class="actions">
-            <a class="btn button" href="https://github.com/ankthba/EdgeFabric.git" target="_blank" rel="noopener noreferrer">View repo</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/arxiv.jpg" alt="CNN project cover">
-          <h3>Designing a CNN for High-Accuracy OCSCC Detection</h3>
-          <p>This work presents a CNN trained on image datasets for high-accuracy OCSCC detection, with custom hardware for optimal image capture. Testing across resolutions showed logarithmic accuracy improvements with diminishing returns at high pixel counts. An open-access application enables broader CNN utilization for early detection.</p>
-          <div class="actions">
-            <a class="btn button" href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener noreferrer">View paper</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/illumi.jpg" alt="IllumiSign project cover">
-          <h3>IllumiSign: Eye-Tracking Communication Software</h3>
-          <p>IllumiSign is an open-source, browser-based communication tool that helps people with ALS and mobility impairments communicate using only their eyes. Built at Hack the Nest 2025 (Social Justice Track winner), it uses real-time eye tracking to select letters and phrases and speaks them aloud, with no special hardware required.</p>
-          <div class="actions">
-            <a class="btn button" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener noreferrer">View project</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/csdsa.jpg" alt="CS DS&A project cover">
-          <h3>CS DS&amp;A Classwork</h3>
-          <p>Assignments for the Oakton Highschool AV CS Data Structures &amp; Algorithms course.</p>
-          <div class="actions">
-            <a class="btn button" href="https://github.com/ankthba/csdsav.git" target="_blank" rel="noopener noreferrer">View repo</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/ocb.jpg" alt="Oakton Codebase project cover">
-          <h3>Oakton Codebase Co-President</h3>
-          <p>Leading Oakton HS's premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep. Mentoring members, coordinating workshops and hackathons.</p>
-          <div class="actions">
-            <a class="btn button" href="https://oaktoncodebase.com/" target="_blank" rel="noopener noreferrer">View site</a>
-          </div>
-        </div>
-
       </div>
     </section>
 
-    <section id="hardware" class="section">
-      <h2>Hardware</h2>
-      <div class="cards">
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/xray-pcb.jpg" alt="PCB project cover">
-          <h3>PCB Design</h3>
-          <p>Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.</p>
+    <!-- Hardware Section -->
+    <section class="projects" id="hardware" style="background: var(--color-bg);">
+      <div class="container">
+        <div class="projects__header">
+          <p class="label">Engineering</p>
+          <h2>Hardware</h2>
         </div>
+        <div class="projects__grid">
+          <article class="project-card">
+            <h3 class="project-card__title">PCB Design</h3>
+            <p class="project-card__role">Hardware</p>
+            <p class="project-card__description">Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity, thermal performance, and real-world manufacturability.</p>
+          </article>
 
-        <div class="card">
-          <img class="card-image" src="../projectImages/silicon.jpg" alt="Silicon project cover">
-          <h3>Chip Design &amp; Analysis</h3>
-          <p>Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.</p>
+          <article class="project-card">
+            <h3 class="project-card__title">Apple Silicon Analysis</h3>
+            <p class="project-card__role">Research</p>
+            <p class="project-card__description">Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies using ARM architecture insights.</p>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-card__title">FTC Robotics</h3>
+            <p class="project-card__role">Team Captain</p>
+            <p class="project-card__description">Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.</p>
+          </article>
         </div>
-
-        <div class="card">
-          <img class="card-image" src="../projectImages/ftc.jpg" alt="FTC project cover">
-          <h3>FTC Robotics, Team Captain</h3>
-          <p>Served as outreach lead and team captain, contributing to robot design, code, and advancement while mentoring and managing STEM workshops.</p>
-        </div>
-
       </div>
     </section>
 
-    <section class="featured-banner" aria-label="Featured and recognized by">
-      <div class="featured-inner">
-        <p class="featured-label">Featured &amp; Recognized</p>
-        <div class="logo-scroller" aria-hidden="true">
-          <div class="logo-track">
-            <img class="logo-img" src="../logos/airfrance.png" alt="Air France">
-            <img class="logo-img" src="../logos/ana.png" alt="ANA">
-            <img class="logo-img" src="../logos/antonov.png" alt="Antonov">
-            <img class="logo-img" src="../logos/blackpink.png" alt="BLACKPINK">
-            <img class="logo-img" src="../logos/british.png" alt="British Airways">
-            <img class="logo-img" src="../logos/dulles.png" alt="Dulles Airport">
-            <img class="logo-img" src="../logos/emirates.png" alt="Emirates">
-            <img class="logo-img" src="../logos/fcps.png" alt="FCPS">
-            <img class="logo-img" src="../logos/klm.png" alt="KLM">
-            <img class="logo-img" src="../logos/korean.png" alt="Korean Air">
-            <img class="logo-img" src="../logos/koreatimes.png" alt="Korea Times">
-            <img class="logo-img" src="../logos/lufthansa.png" alt="Lufthansa">
-            <img class="logo-img" src="../logos/mwaa.png" alt="MWAA">
-            <img class="logo-img" src="../logos/porter.png" alt="Porter">
-            <img class="logo-img" src="../logos/qatar.png" alt="Qatar Airways">
-            <img class="logo-img" src="../logos/reagan.png" alt="Reagan Airport">
-            <img class="logo-img" src="../logos/united.png" alt="United Airlines">
-            <img class="logo-img" src="../logos/visiontimes.png" alt="Vision Times">
-            <img class="logo-img" src="../logos/wga.png" alt="WGA">
-            <img class="logo-img" src="../logos/wtop.png" alt="WTOP">
-          </div>
+    <!-- Featured Section -->
+    <section class="featured">
+      <div class="container">
+        <p style="text-align: center; width: 100%; display: block; font-family: var(--font-sans); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-md);">Featured & Recognized</p>
+      </div>
+      <div class="featured__scroller">
+        <div class="featured__track" id="logo-track">
+          <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/airfrance.png" alt="Air France"></a>
+          <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/ana.png" alt="ANA"></a>
+          <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/antonov.png" alt="Antonov"></a>
+          <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/blackpink.png" alt="BLACKPINK"></a>
+          <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/british.png" alt="British Airways"></a>
+          <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/dulles.png" alt="Dulles Airport"></a>
+          <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/emirates.png" alt="Emirates"></a>
+          <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/fcps.png" alt="FCPS"></a>
+          <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/klm.png" alt="KLM"></a>
+          <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/korean.png" alt="Korean Air"></a>
+          <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/koreatimes.png" alt="Korea Times"></a>
+          <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/lufthansa.png" alt="Lufthansa"></a>
+          <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/mwaa.png" alt="MWAA"></a>
+          <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/porter.png" alt="Porter"></a>
+          <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/qatar.png" alt="Qatar Airways"></a>
+          <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/reagan.png" alt="Reagan Airport"></a>
+          <a href="https://www.united.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/united.png" alt="United Airlines"></a>
+          <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/visiontimes.png" alt="Vision Times"></a>
+          <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/wga.png" alt="WGA"></a>
+          <a href="https://wtop.com" target="_blank" rel="noopener"><img class="featured__logo" src="../logos/wtop.png" alt="WTOP"></a>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <p>&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-    <label for="theme-toggle" class="visually-hidden">Theme</label>
-    <select id="theme-toggle" aria-label="Theme">
-      <option value="auto">Auto</option>
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
+      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
+        <option value="auto">Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-  <script src="../scripts.js" defer></script>
+  <script src="../main.js" defer></script>
 </body>
 </html>

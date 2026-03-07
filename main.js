@@ -84,13 +84,27 @@ const navLinks = document.querySelectorAll('.nav__link');
 function updateActiveLink() {
   let current = '';
 
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    const sectionHeight = section.clientHeight;
-    if (window.scrollY >= sectionTop) {
-      current = section.getAttribute('id');
+  // Check if near bottom of page - if so, activate the last section
+  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
+
+  if (nearBottom) {
+    // Find the last section that has a nav link
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const id = sections[i].getAttribute('id');
+      const hasLink = document.querySelector(`.nav__link[href="#${id}"]`);
+      if (hasLink) {
+        current = id;
+        break;
+      }
     }
-  });
+  } else {
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 150;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+  }
 
   navLinks.forEach(link => {
     link.classList.remove('active');
@@ -109,28 +123,31 @@ updateActiveLink();
 // ---------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  const heroTitle = document.getElementById('hero-title');
-  if (!heroTitle) return;
+  const nameFirst = document.querySelector('.hero__name-first');
+  const nameLast = document.querySelector('.hero__name-last');
+  if (!nameFirst || !nameLast) return;
 
-  const text = heroTitle.textContent;
-  heroTitle.textContent = '';
-  heroTitle.style.display = 'inline-flex';
-  heroTitle.style.gap = '0';
+  const allLetters = [];
 
-  // Create spans for each letter
-  const letters = text.split('').map(char => {
-    const span = document.createElement('span');
-    span.textContent = char;
-    span.style.display = 'inline-block';
-    span.style.transition = 'transform 0.15s ease-out';
-    span.style.transformOrigin = 'center';
-    heroTitle.appendChild(span);
-    return span;
+  [nameFirst, nameLast].forEach(nameEl => {
+    const text = nameEl.textContent;
+    nameEl.textContent = '';
+    nameEl.style.display = 'inline-flex';
+
+    text.split('').forEach(char => {
+      const span = document.createElement('span');
+      span.textContent = char;
+      span.style.display = 'inline-block';
+      span.style.transition = 'transform 0.15s ease-out';
+      span.style.transformOrigin = 'center';
+      nameEl.appendChild(span);
+      allLetters.push(span);
+    });
   });
 
   // Track mouse movement anywhere on screen
   document.addEventListener('mousemove', (e) => {
-    letters.forEach((letter) => {
+    allLetters.forEach((letter) => {
       const letterRect = letter.getBoundingClientRect();
       const letterCenterX = letterRect.left + letterRect.width / 2;
       const letterCenterY = letterRect.top + letterRect.height / 2;
@@ -139,23 +156,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const distanceY = e.clientY - letterCenterY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-      // Larger range for effect
       const maxDistance = 500;
       const proximity = Math.max(0, 1 - Math.min(distance / maxDistance, 1));
-      const proximityCurve = proximity * proximity; // Exponential falloff for snappier feel
+      const proximityCurve = proximity * proximity;
 
-      // Natural push/pull effect based on mouse position relative to letter
       const angle = Math.atan2(distanceY, distanceX);
 
-      // Compression when mouse is close, stretch away from mouse
       const squeeze = proximityCurve * 0.5;
       const stretch = proximityCurve * 0.35;
 
-      // Push letters away from cursor
       const pushX = -Math.cos(angle) * proximityCurve * 25;
       const pushY = -Math.sin(angle) * proximityCurve * 15;
 
-      // Scale based on angle - compress toward mouse, stretch perpendicular
       const scaleX = 1 - squeeze * Math.abs(Math.cos(angle));
       const scaleY = 1 + stretch * Math.abs(Math.sin(angle));
 
@@ -163,9 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Reset when mouse leaves window
   document.addEventListener('mouseleave', () => {
-    letters.forEach(letter => {
+    allLetters.forEach(letter => {
       letter.style.transform = 'translate(0, 0) scale(1)';
     });
   });
@@ -173,24 +184,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ---------------------------------------------------------
-// 6. Photo Marquee
+// 6. Photo Grid Distance Effect
 // ---------------------------------------------------------
 
-window.addEventListener('load', () => {
-  const photoTrack = document.getElementById('photo-track');
-  if (!photoTrack) return;
+document.addEventListener('DOMContentLoaded', () => {
+  const photosGrid = document.querySelector('.photos__grid');
+  if (!photosGrid) return;
 
-  const originalWidth = Math.round(photoTrack.scrollWidth);
+  const photos = photosGrid.querySelectorAll('.photo-item');
+  let hoveredPhoto = null;
 
-  // Clone items for seamless loop
-  Array.from(photoTrack.children).forEach(n => {
-    photoTrack.appendChild(n.cloneNode(true));
+  photos.forEach(photo => {
+    photo.addEventListener('mouseenter', () => {
+      hoveredPhoto = photo;
+    });
+    photo.addEventListener('mouseleave', () => {
+      if (hoveredPhoto === photo) hoveredPhoto = null;
+    });
   });
 
-  // Set CSS variables for animation
-  photoTrack.style.setProperty('--photo-distance', `${originalWidth}px`);
-  const duration = originalWidth / 50; // pixels per second
-  photoTrack.style.setProperty('--photo-duration', `${duration}s`);
+  photosGrid.addEventListener('mousemove', (e) => {
+    photos.forEach(photo => {
+      const rect = photo.getBoundingClientRect();
+      const photoCenterX = rect.left + rect.width / 2;
+      const photoCenterY = rect.top + rect.height / 2;
+
+      const distanceX = e.clientX - photoCenterX;
+      const distanceY = e.clientY - photoCenterY;
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+      // Hovered photo gets extra big and on top
+      if (photo === hoveredPhoto) {
+        photo.style.transform = 'scale(1.8)';
+        photo.style.zIndex = '20';
+      } else {
+        // Scale based on distance - closer = slightly bigger, farther = much smaller
+        const maxDistance = 350;
+        const minScale = 0.4;
+        const maxScale = 0.85;
+
+        const normalizedDist = Math.min(distance / maxDistance, 1);
+        const scale = maxScale - (normalizedDist * (maxScale - minScale));
+
+        photo.style.transform = `scale(${scale})`;
+        photo.style.zIndex = '1';
+      }
+    });
+  });
+
+  photosGrid.addEventListener('mouseleave', () => {
+    photos.forEach(photo => {
+      photo.style.transform = 'scale(1)';
+      photo.style.zIndex = '1';
+    });
+  });
 });
 
 

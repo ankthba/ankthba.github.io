@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <link rel="icon" type="image/png" href="assets/photos/vayuLogo.png">
+    <link rel="icon" type="image/png" href="vayuFav.png">
 
     <style>
         :root {
@@ -111,7 +111,7 @@
         .nav-cta {
             padding: 8px 20px;
             background: var(--text);
-            color: #ffffff;
+            color: #ffffff !important;
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
@@ -121,6 +121,7 @@
 
         .nav-cta:hover {
             opacity: 0.85;
+            color: #ffffff !important;
         }
 
         /* Hero */
@@ -150,19 +151,18 @@
             content: '';
             width: 8px;
             height: 8px;
-            background: #16a34a;
+            background: #22c55e;
             border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            filter: blur(1px);
+            animation: pulse 2.5s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
-                box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4);
             }
             50% {
-                opacity: 0.6;
-                box-shadow: 0 0 0 4px rgba(22, 163, 74, 0);
+                opacity: 0.4;
             }
         }
 
@@ -618,7 +618,11 @@
             }
 
             .hero h1 {
-                font-size: 30px;
+                font-size: 28px;
+            }
+
+            .hero-desc {
+                font-size: 14px;
             }
 
             .hero-eyebrow {
@@ -689,7 +693,7 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-eyebrow">Private Beta</div>
+        <div class="hero-eyebrow">Development</div>
         <h1>The first operating system for <em>autonomous agents</em></h1>
         <p class="hero-desc">Vayu provides the primitives AI agents need at the kernel level. Capability-based security, goal-aware scheduling, and cryptographic audit—not as libraries, but as OS fundamentals.</p>
         <div class="hero-cta">
@@ -847,21 +851,21 @@
                 <div class="spec-label">IPC model</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Ed25519</div>
-                <div class="spec-label">Signatures</div>
+                <div class="spec-value">TTBR0/TTBR1</div>
+                <div class="spec-label">Separation</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Zero-copy</div>
-                <div class="spec-label">Message passing</div>
+                <div class="spec-value">Privacy</div>
+                <div class="spec-label">Ground Up</div>
             </div>
         </div>
     </section>
 
     <div class="cta-section">
         <div class="cta-inner">
-            <div class="cta-badge">Private Beta</div>
+            <div class="cta-badge">Development</div>
             <h2>Ready to deploy agents at scale?</h2>
-            <p>Vayu is in limited deployment with partners building mission-critical AI infrastructure.</p>
+            <p>Vayu is in deployment and scaling.</p>
             <a href="mailto:me@aniketh.net?subject=Vayu Inquiry" class="btn btn-primary">Get in touch</a>
         </div>
     </div>

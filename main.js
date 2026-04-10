@@ -107,8 +107,10 @@ function updateActiveLink() {
   }
 
   navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
     link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
+    if (href === `#${current}`) {
       link.classList.add('active');
     }
   });

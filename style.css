@@ -286,7 +286,6 @@ section {
   align-items: center;
   text-align: center;
   padding: var(--space-xl) var(--space-md);
-  padding-top: 120px;
   border-top: none !important;
 }
 
@@ -438,11 +437,12 @@ section {
   font-weight: 500;
   color: var(--color-muted);
   margin-top: 0.75rem;
-  transition: all var(--transition-fast);
+  transition: color var(--transition-fast), text-shadow var(--transition-base);
 }
 
 .project-item__link:hover {
   color: var(--color-fg);
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
 }
 
 .project-item__link svg {
@@ -731,7 +731,6 @@ section {
   }
 
   .hero {
-    padding-top: 100px;
     padding-left: var(--space-sm);
     padding-right: var(--space-sm);
   }
@@ -770,9 +769,12 @@ section {
   }
 
   .hero {
-    padding-top: 80px;
     min-height: auto;
     padding-bottom: var(--space-lg);
+  }
+
+  .hero__nav {
+    gap: var(--space-sm);
   }
 
   .hero__image {
@@ -865,7 +867,172 @@ section {
 }
 
 /* ---------------------------------------------------------
-   16. View Transitions
+   16. Home Page Two-Column Layout
+   --------------------------------------------------------- */
+
+/* Desktop: side-by-side */
+@media (min-width: 769px) {
+  section.home {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-xl);
+    padding: var(--space-xl) var(--space-lg);
+    min-height: 100vh;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .home__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .home__left .hero__title {
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    text-align: left;
+  }
+
+  .home__left .hero__nav {
+    justify-content: flex-start;
+  }
+
+  .home__right .about__text p {
+    text-align: left;
+    max-width: none;
+  }
+}
+
+/* Mobile: stacked */
+@media (max-width: 768px) {
+  section.home {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .home__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-xl) var(--space-sm) var(--space-md);
+  }
+
+  .home__right {
+    padding: 0 var(--space-sm) var(--space-xl);
+  }
+}
+
+/* ---------------------------------------------------------
+   17. Hero Nav (links below name)
+   --------------------------------------------------------- */
+
+.hero__nav {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.hero__nav-link {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  transition: color var(--transition-fast), text-shadow var(--transition-base);
+}
+
+.hero__nav-link:hover {
+  color: var(--color-fg);
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+}
+
+/* ---------------------------------------------------------
+   17. Page Header (for sub-pages)
+   --------------------------------------------------------- */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-lg) var(--space-md) var(--space-md);
+}
+
+.page-header__name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  transition: opacity var(--transition-fast);
+  margin-bottom: var(--space-sm);
+}
+
+.page-header__name:hover {
+  opacity: 0.6;
+}
+
+.page-header__nav {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-header__nav-link {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-muted);
+  transition: color var(--transition-fast), text-shadow var(--transition-base);
+}
+
+.page-header__nav-link:hover,
+.page-header__nav-link.active {
+  color: var(--color-fg);
+}
+
+.page-header__nav-link:hover {
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+}
+
+/* ---------------------------------------------------------
+   18. Social Bar (fixed at bottom)
+   --------------------------------------------------------- */
+
+.social-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem 1rem;
+  z-index: 200;
+  background: linear-gradient(to top, var(--color-bg) 60%, transparent);
+  pointer-events: none;
+}
+
+.social-bar .social-link {
+  pointer-events: all;
+}
+
+/* Ensure footer doesn't overlap social bar */
+.footer {
+  padding-bottom: calc(var(--space-md) + 72px);
+}
+
+/* ---------------------------------------------------------
+   19. View Transitions
    --------------------------------------------------------- */
 
 @view-transition {

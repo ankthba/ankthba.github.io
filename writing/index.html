@@ -16,16 +16,12 @@
   <link rel="icon" type="image/png" href="/anikethFavicon.jpg">
 
   <style>
-    .writing__header h2 {
-      font-family: var(--font-serif);
-      font-weight: 400;
-      letter-spacing: -0.03em;
+    .post {
+      padding-top: var(--space-xl);
     }
 
-    .post {
-      max-width: 720px;
-      margin: 0 auto;
-      padding-top: var(--space-xl);
+    .post:first-child {
+      padding-top: 0;
     }
 
     .post__title {
@@ -130,146 +126,145 @@
     .section-label:first-child {
       margin-top: 0;
     }
+
+    @media (min-width: 769px) {
+      .home__left--sticky {
+        position: sticky;
+        top: var(--space-xl);
+        align-self: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="/" class="nav__logo">Aniketh Bandlamudi</a>
-      <ul class="nav__links" id="nav-links">
-        <li><a href="/#about" class="nav__link">About</a></li>
-        <li><a href="/#projects" class="nav__link">Projects</a></li>
-        <li><a href="/#contact" class="nav__link">Contact</a></li>
-        <li><a href="/writing/" class="nav__link active">Writing</a></li>
-      </ul>
-    </div>
-  </nav>
-
   <main>
-    <section class="writing" id="writing">
-      <div class="container">
-        <div class="writing__header projects__header">
-          <h2>Writing</h2>
-        </div>
+    <section class="home" id="writing" style="align-items: flex-start;">
+      <div class="home__left home__left--sticky">
+        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
+        <nav class="hero__nav">
+          <a href="/projects/" class="hero__nav-link">Projects</a>
+          <a href="/work/" class="hero__nav-link">Work</a>
+          <a href="/contact/" class="hero__nav-link">Contact</a>
+          <a href="/writing/" class="hero__nav-link active">Writing</a>
+          <a href="/photos/" class="hero__nav-link">Photography</a>
+        </nav>
+      </div>
 
-        <div class="projects__list">
-          <div class="post">
+      <div class="home__right">
+        <div class="post">
 
-            <h3 class="post__title">My Stanford Essays</h3>
-            <p class="post__disclaimer">These essays are shared for reference and reading purposes only. Plagiarism is strictly prohibited. Stanford University has these essays on file. Any reproduction, submission, or adaptation of this work, in whole or in part, is not permitted.</p>
+          <h3 class="post__title">My Stanford Essays</h3>
+          <p class="post__disclaimer">These essays are shared for reference and reading purposes only. Plagiarism is strictly prohibited. Stanford University has these essays on file. Any reproduction, submission, or adaptation of this work, in whole or in part, is not permitted.</p>
 
-            <span class="section-label">Short answeris</span>
+          <span class="section-label">Short answers</span>
 
-            <div class="essay">
-              <p class="essay__prompt">What is the most significant challenge that society faces today?</p>
-              <div class="essay__text">
-                <p>Think about the laptop before you, the phone in your pocket, the plane above, and the hospital a mile away from you. They're all powered by transistors. However, they can't shrink beyond atomic limits. As the need for computing forever grows, society's greatest challenge is working around this physical boundary.</p>
-              </div>
+          <div class="essay">
+            <p class="essay__prompt">What is the most significant challenge that society faces today?</p>
+            <div class="essay__text">
+              <p>Think about the laptop before you, the phone in your pocket, the plane above, and the hospital a mile away from you. They're all powered by transistors. However, they can't shrink beyond atomic limits. As the need for computing forever grows, society's greatest challenge is working around this physical boundary.</p>
             </div>
-
-            <div class="essay">
-              <p class="essay__prompt">How did you spend your last two summers?</p>
-              <div class="essay__text">
-                <p>The faint red glow of a resistor on my screen dimly lit the room as I brought a PCB to life. Shaping code into creation and soldering fragile components, each moment felt electric. I spent my summers turning silly ideas into reality, bringing creativity into the precision of engineering.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">What historical moment or event do you wish you could have witnessed?</p>
-              <div class="essay__text">
-                <p>There's something alluring about WWDC 2009: Federighi's first keynote, perfecting MacOS in Snow Leopard. To the untrained eye, everything was shrouded in mystery. But deep within, a network of groundbreaking architecture lay. That's my fork of innovation: subtle and obsessive with details most never see, but those that change everything.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">Briefly elaborate on one of your extracurricular activities, a job you hold, or responsibilities you have for your family.</p>
-              <div class="essay__text">
-                <p>I can still remember my tears as a survivor told me he wished my project existed earlier. I built OCRadar to fight hidden battles, a way to use my love for coding and technology to detect oral cancer before it's missed. Innovation matters most when it brings purpose to others.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">List five things that are important to you.</p>
-              <div class="essay__text">
-                <ul>
-                  <li><strong>Curiosity</strong> — getting lost in the hum of planes overhead, driving me to build ideas.</li>
-                  <li><strong>Late-night coffee with friends</strong> — fuel for collaboration and laughter.</li>
-                  <li><strong>My camera</strong> — my portal for expression.</li>
-                  <li><strong>The clicks of my laptop</strong> — my path from imagination to creation.</li>
-                  <li><strong>Walks in nature</strong> — a reminder to breathe and see perspective.</li>
-                </ul>
-              </div>
-            </div>
-
-            <span class="section-label">Essays</span>
-
-            <div class="essay">
-              <p class="essay__prompt">The Stanford community is deeply curious and driven to learn in and out of the classroom. Reflect on an idea or experience that makes you genuinely excited about learning.</p>
-              <div class="essay__text">
-                <p>There's a special kind of excitement that comes from being completely lost in a physics textbook, the wires in my brain tangled in equation after equation. For days, I was stuck in the conceptual struggle. Things just wouldn't click. Instead of stepping back, I shot forward, curiosity leading me through the chapters. Suddenly, the seemingly complex abstractions vanished as I saw how electric potential shapes voltage and current to power entire systems. I realized that all the sockets, circuits, and devices I have used for years were real-life proof of these hidden laws.</p>
-                <p>My excitement couldn't be controlled. I spent hours reading, sketching diagrams, and solving problems. Not for a grade or a quiz, but purely for the joy in understanding the invisible architectures that power the world. One question led to another. How do these concepts apply to circuits? How do electrons flow in diverse networks? This induced wonder, transforming the idea of learning from an endless cycle of work into an adventure.</p>
-                <p>What began as confusion in complex topics became my spark for exploring; one that charges me to dig deep into every topic I come across, no matter how daunting. That day, Physics E&M taught me the excitement in chasing understanding; a spark that pushes me through classes, labs, and everywhere I learn. This is the same spark that drives me to Stanford.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">Virtually all of Stanford's undergraduates live on campus. Write a note to your future roommate that reveals something about you or that will help your roommate—and us—get to know you better.</p>
-              <div class="essay__text">
-                <p>Hey roommate!</p>
-                <p>I may just be text on your computer screen right now, but I can't wait to meet you! Given that we're soon calling the same room home, there are some things that you should probably know about me:</p>
-                <p>If you hear a whirring sound in the middle of the night, rest assured, it's just my laptop trying to keep up with another non-stop coding session. When an idea pops in my head, I never give up (at the expense of my computer)! My caffeine and curiosity powered ideas somehow end up working out.</p>
-                <p>It's another year and it's time for another chapter, but old habits die hard. I've always been obsessed with the niche jokes made throughout the 36 years of Apple's WWDC, and that won't end any time soon. Let's see how many you spot in here!</p>
-                <p>I'm an outdoorsy guy. Living in the suburbs of DC, I'm not used to the perfect California weather. Don't be surprised if I ever spontaneously shove myself into a VW minibus and set out on the road, boldly venturing out.</p>
-                <p>Computer problems? Back home, I'm the unofficial "tech support" with my family and friends. I'm always ready and willing to solve the toughest of problems and avert a crisis!</p>
-                <p>One more thing…</p>
-                <p>I love food! If you ever want to have some morning coffee at Philz or grab a bite at Saint Michael's Alley, never fear to ask. I'm always open to trying something new.</p>
-                <p>Stay hungry, stay foolish!<br>Aniketh</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">Please describe what aspects of your life experiences, interests and character would help you make a distinctive contribution as an undergraduate to Stanford University.</p>
-              <div class="essay__text">
-                <p>Stanford will never get bored of me. It's more than just me wiring complex robots, mentoring future generations of STEM students, and shaping the future of healthcare with AI. It's also because I truly love bringing people together for midnight coding sessions, hikes at sunrise, and spontaneous tech show visits that start with curiosity and end with newfound friends.</p>
-                <p>The best innovations happen when everyone is heard. Whether that's developing tools to improve someone's mobility or making sure everyone has a voice in a robotics project. My favorite moments aren't achievements, they're the times when I hear, "this changed my life." I never dreamed that I would have such an impact, especially at such a young age.</p>
-                <p>The world I bring is imaginative, intellectual, and always built on empathy. I've photographed aviation ever since I first held a camera, seeing a story behind every bleak airport terminal. I'm a relentless inventor whose projects mean the most when it helps even a single patient. I'm sociable with everyone, always up for coffee runs during midterm season or offering tech support at any hour of the day.</p>
-                <p>At Stanford, I'll bring my passions, curiosity, and commitment for what I love. I want to create spaces where people feel welcomed and innovation thrives. Whether in the Student Space Initiative lab, hiking the Dish, or fountain hopping, I want to add to Stanford's culture: one where invention flourishes and big ideas are encouraged. This contribution will never dry in the California sun.</p>
-              </div>
-            </div>
-
-            <span class="section-label">Deferral update</span>
-
-            <div class="essay">
-              <p class="essay__prompt">Reflect on your current year studies. What excites you about your learning and why? (125 words)</p>
-              <div class="essay__text">
-                <p>I keep finding the same pattern in every topic I approach. Renaissance perspective in art history mirrors the field lines I trace in Magnetism. In comparative government, endless constitutions and bureaucratics somehow reflect the way All the King's Men breaks down corruption through narrative. Even economics shows me where ethics cross with mathematics. Why? Because I'm not learning subjects anymore. I've discovered that every discipline is a dialect of the same language: a path through making comparisons, building off prior knowledge, and drawing parallels. Knowledge is versatile, intriguing, and, most of all, always unified. Using this knowledge, I know that daunting topics don't intimidate me anymore; they all have underlying themes connecting back to something I've already learned and loved.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">Tell us about an accomplishment you are proud of that occurred after you submitted your application. (125 words)</p>
-              <div class="essay__text">
-                <p>I'm building an operating system because the future is trapped in the 1970s. Unix philosophy: files, processes, and isolation. What was once elegant has become a cage. AI agents need fluid permissions, semantic reasoning, and systems that understand rather than simply execute.</p>
-                <p>I descended to the hardware level, writing Rust bootloaders whispering directly with hardware, sculpted memory managers from raw address space, and designed schedulers that think with consciousness, not clockwork. The kernel doesn't follow rigid hierarchies; it negotiates intent.</p>
-                <p>The first "Hello World" rendered to the screen felt amazing, it was philosophy compiled to silicon. Legacy architectures exist not because alternatives are impossible, but because most don't question the foundations.</p>
-                <p>The future is always waiting; I just had to write it myself.</p>
-              </div>
-            </div>
-
-            <div class="essay">
-              <p class="essay__prompt">How have you grown since you submitted your application? Are there any insights or realizations that have changed how you approach the world? (125 words)</p>
-              <div class="essay__text">
-                <p>I approached Economics casually, expecting intellectual tourism. Instead, I was met with theoretical density, problem sets like complex debates, and models that went against intuitions. My typical velocity stalled. Every assumption I built about my capacity froze.</p>
-                <p>In that pressure, something transformed.</p>
-                <p>Difficulty stopped acting as the enemy. Instead, it became the friction that shows I'm touching something real. The "never give up" cliches crystallized into an appetite for the impossible. I wasn't enduring the suffering, but rather becoming alive as a result of it.</p>
-                <p>When I face challenges, I'm no longer looking for the light at the end of the tunnel. I find a home in the unresolved, and a joy in what nearly breaks me. Resilience isn't surviving difficulty, it's craving it.</p>
-              </div>
-            </div>
-
           </div>
-        </div>
 
+          <div class="essay">
+            <p class="essay__prompt">How did you spend your last two summers?</p>
+            <div class="essay__text">
+              <p>The faint red glow of a resistor on my screen dimly lit the room as I brought a PCB to life. Shaping code into creation and soldering fragile components, each moment felt electric. I spent my summers turning silly ideas into reality, bringing creativity into the precision of engineering.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">What historical moment or event do you wish you could have witnessed?</p>
+            <div class="essay__text">
+              <p>There's something alluring about WWDC 2009: Federighi's first keynote, perfecting MacOS in Snow Leopard. To the untrained eye, everything was shrouded in mystery. But deep within, a network of groundbreaking architecture lay. That's my fork of innovation: subtle and obsessive with details most never see, but those that change everything.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">Briefly elaborate on one of your extracurricular activities, a job you hold, or responsibilities you have for your family.</p>
+            <div class="essay__text">
+              <p>I can still remember my tears as a survivor told me he wished my project existed earlier. I built OCRadar to fight hidden battles, a way to use my love for coding and technology to detect oral cancer before it's missed. Innovation matters most when it brings purpose to others.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">List five things that are important to you.</p>
+            <div class="essay__text">
+              <ul>
+                <li><strong>Curiosity</strong> — getting lost in the hum of planes overhead, driving me to build ideas.</li>
+                <li><strong>Late-night coffee with friends</strong> — fuel for collaboration and laughter.</li>
+                <li><strong>My camera</strong> — my portal for expression.</li>
+                <li><strong>The clicks of my laptop</strong> — my path from imagination to creation.</li>
+                <li><strong>Walks in nature</strong> — a reminder to breathe and see perspective.</li>
+              </ul>
+            </div>
+          </div>
+
+          <span class="section-label">Essays</span>
+
+          <div class="essay">
+            <p class="essay__prompt">The Stanford community is deeply curious and driven to learn in and out of the classroom. Reflect on an idea or experience that makes you genuinely excited about learning.</p>
+            <div class="essay__text">
+              <p>There's a special kind of excitement that comes from being completely lost in a physics textbook, the wires in my brain tangled in equation after equation. For days, I was stuck in the conceptual struggle. Things just wouldn't click. Instead of stepping back, I shot forward, curiosity leading me through the chapters. Suddenly, the seemingly complex abstractions vanished as I saw how electric potential shapes voltage and current to power entire systems. I realized that all the sockets, circuits, and devices I have used for years were real-life proof of these hidden laws.</p>
+              <p>My excitement couldn't be controlled. I spent hours reading, sketching diagrams, and solving problems. Not for a grade or a quiz, but purely for the joy in understanding the invisible architectures that power the world. One question led to another. How do these concepts apply to circuits? How do electrons flow in diverse networks? This induced wonder, transforming the idea of learning from an endless cycle of work into an adventure.</p>
+              <p>What began as confusion in complex topics became my spark for exploring; one that charges me to dig deep into every topic I come across, no matter how daunting. That day, Physics E&M taught me the excitement in chasing understanding; a spark that pushes me through classes, labs, and everywhere I learn. This is the same spark that drives me to Stanford.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">Virtually all of Stanford's undergraduates live on campus. Write a note to your future roommate that reveals something about you or that will help your roommate—and us—get to know you better.</p>
+            <div class="essay__text">
+              <p>Hey roommate!</p>
+              <p>I may just be text on your computer screen right now, but I can't wait to meet you! Given that we're soon calling the same room home, there are some things that you should probably know about me:</p>
+              <p>If you hear a whirring sound in the middle of the night, rest assured, it's just my laptop trying to keep up with another non-stop coding session. When an idea pops in my head, I never give up (at the expense of my computer)! My caffeine and curiosity powered ideas somehow end up working out.</p>
+              <p>It's another year and it's time for another chapter, but old habits die hard. I've always been obsessed with the niche jokes made throughout the 36 years of Apple's WWDC, and that won't end any time soon. Let's see how many you spot in here!</p>
+              <p>I'm an outdoorsy guy. Living in the suburbs of DC, I'm not used to the perfect California weather. Don't be surprised if I ever spontaneously shove myself into a VW minibus and set out on the road, boldly venturing out.</p>
+              <p>Computer problems? Back home, I'm the unofficial "tech support" with my family and friends. I'm always ready and willing to solve the toughest of problems and avert a crisis!</p>
+              <p>One more thing…</p>
+              <p>I love food! If you ever want to have some morning coffee at Philz or grab a bite at Saint Michael's Alley, never fear to ask. I'm always open to trying something new.</p>
+              <p>Stay hungry, stay foolish!<br>Aniketh</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">Please describe what aspects of your life experiences, interests and character would help you make a distinctive contribution as an undergraduate to Stanford University.</p>
+            <div class="essay__text">
+              <p>Stanford will never get bored of me. It's more than just me wiring complex robots, mentoring future generations of STEM students, and shaping the future of healthcare with AI. It's also because I truly love bringing people together for midnight coding sessions, hikes at sunrise, and spontaneous tech show visits that start with curiosity and end with newfound friends.</p>
+              <p>The best innovations happen when everyone is heard. Whether that's developing tools to improve someone's mobility or making sure everyone has a voice in a robotics project. My favorite moments aren't achievements, they're the times when I hear, "this changed my life." I never dreamed that I would have such an impact, especially at such a young age.</p>
+              <p>The world I bring is imaginative, intellectual, and always built on empathy. I've photographed aviation ever since I first held a camera, seeing a story behind every bleak airport terminal. I'm a relentless inventor whose projects mean the most when it helps even a single patient. I'm sociable with everyone, always up for coffee runs during midterm season or offering tech support at any hour of the day.</p>
+              <p>At Stanford, I'll bring my passions, curiosity, and commitment for what I love. I want to create spaces where people feel welcomed and innovation thrives. Whether in the Student Space Initiative lab, hiking the Dish, or fountain hopping, I want to add to Stanford's culture: one where invention flourishes and big ideas are encouraged. This contribution will never dry in the California sun.</p>
+            </div>
+          </div>
+
+          <span class="section-label">Deferral update</span>
+
+          <div class="essay">
+            <p class="essay__prompt">Reflect on your current year studies. What excites you about your learning and why? (125 words)</p>
+            <div class="essay__text">
+              <p>I keep finding the same pattern in every topic I approach. Renaissance perspective in art history mirrors the field lines I trace in Magnetism. In comparative government, endless constitutions and bureaucratics somehow reflect the way All the King's Men breaks down corruption through narrative. Even economics shows me where ethics cross with mathematics. Why? Because I'm not learning subjects anymore. I've discovered that every discipline is a dialect of the same language: a path through making comparisons, building off prior knowledge, and drawing parallels. Knowledge is versatile, intriguing, and, most of all, always unified. Using this knowledge, I know that daunting topics don't intimidate me anymore; they all have underlying themes connecting back to something I've already learned and loved.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">Tell us about an accomplishment you are proud of that occurred after you submitted your application. (125 words)</p>
+            <div class="essay__text">
+              <p>I'm building an operating system because the future is trapped in the 1970s. Unix philosophy: files, processes, and isolation. What was once elegant has become a cage. AI agents need fluid permissions, semantic reasoning, and systems that understand rather than simply execute.</p>
+              <p>I descended to the hardware level, writing Rust bootloaders whispering directly with hardware, sculpted memory managers from raw address space, and designed schedulers that think with consciousness, not clockwork. The kernel doesn't follow rigid hierarchies; it negotiates intent.</p>
+              <p>The first "Hello World" rendered to the screen felt amazing, it was philosophy compiled to silicon. Legacy architectures exist not because alternatives are impossible, but because most don't question the foundations.</p>
+              <p>The future is always waiting; I just had to write it myself.</p>
+            </div>
+          </div>
+
+          <div class="essay">
+            <p class="essay__prompt">How have you grown since you submitted your application? Are there any insights or realizations that have changed how you approach the world? (125 words)</p>
+            <div class="essay__text">
+              <p>I approached Economics casually, expecting intellectual tourism. Instead, I was met with theoretical density, problem sets like complex debates, and models that went against intuitions. My typical velocity stalled. Every assumption I built about my capacity froze.</p>
+              <p>In that pressure, something transformed.</p>
+              <p>Difficulty stopped acting as the enemy. Instead, it became the friction that shows I'm touching something real. The "never give up" cliches crystallized into an appetite for the impossible. I wasn't enduring the suffering, but rather becoming alive as a result of it.</p>
+              <p>When I face challenges, I'm no longer looking for the light at the end of the tunnel. I find a home in the unresolved, and a joy in what nearly breaks me. Resilience isn't surviving difficulty, it's craving it.</p>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
   </main>
@@ -284,6 +279,25 @@
       </select>
     </div>
   </footer>
+
+  <!-- Social Bar (fixed at bottom) -->
+  <div class="social-bar">
+    <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+    </a>
+    <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+    <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="social-link" aria-label="Twitter">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="social-link" aria-label="Spotify">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    </a>
+  </div>
 
   <script src="/main.js" defer></script>
 </body>

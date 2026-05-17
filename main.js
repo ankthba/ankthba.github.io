@@ -56,71 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ---------------------------------------------------------
-// 3. Navigation Scroll Effect
-// ---------------------------------------------------------
-
-const nav = document.getElementById('nav');
-
-function updateNav() {
-  if (!nav) return;
-  if (window.scrollY > 50) {
-    nav.classList.add('scrolled');
-  } else {
-    nav.classList.remove('scrolled');
-  }
-}
-
-window.addEventListener('scroll', updateNav, { passive: true });
-updateNav();
-
-
-// ---------------------------------------------------------
-// 4. Active Navigation Links
-// ---------------------------------------------------------
-
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav__link');
-
-function updateActiveLink() {
-  let current = '';
-
-  // Check if near bottom of page - if so, activate the last section
-  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
-
-  if (nearBottom) {
-    // Find the last section that has a nav link
-    for (let i = sections.length - 1; i >= 0; i--) {
-      const id = sections[i].getAttribute('id');
-      const hasLink = document.querySelector(`.nav__link[href="#${id}"]`);
-      if (hasLink) {
-        current = id;
-        break;
-      }
-    }
-  } else {
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop - 150;
-      if (window.scrollY >= sectionTop) {
-        current = section.getAttribute('id');
-      }
-    });
-  }
-
-  navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href || !href.startsWith('#')) return;
-    link.classList.remove('active');
-    if (href === `#${current}`) {
-      link.classList.add('active');
-    }
-  });
-}
-
-window.addEventListener('scroll', updateActiveLink, { passive: true });
-updateActiveLink();
-
-
-// ---------------------------------------------------------
 // 5. Elastic Name Effect (Reactive to mouse anywhere)
 // ---------------------------------------------------------
 
@@ -260,7 +195,7 @@ window.addEventListener('load', () => {
 
   // Set CSS variables for animation
   logoTrack.style.setProperty('--logo-distance', `${originalWidth}px`);
-  const duration = originalWidth / 40; // pixels per second
+  const duration = originalWidth / 90; // pixels per second
   logoTrack.style.setProperty('--logo-duration', `${duration}s`);
 });
 
@@ -285,5 +220,49 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     }
   });
 });
+
+
+// ---------------------------------------------------------
+// 9. Animated Grain / Static Effect
+// ---------------------------------------------------------
+
+(function () {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const canvas = document.createElement('canvas');
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.055;image-rendering:pixelated;';
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  let w = 0, h = 0;
+
+  function resize() {
+    // Half resolution — CSS scaling gives a subtle pixel grain
+    w = canvas.width = Math.ceil(window.innerWidth / 2);
+    h = canvas.height = Math.ceil(window.innerHeight / 2);
+  }
+
+  let last = 0;
+  function tick(now) {
+    requestAnimationFrame(tick);
+    if (reduced) return;
+    if (now - last < 60) return; // ~16 fps
+    last = now;
+
+    const img = ctx.createImageData(w, h);
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const v = (Math.random() * 255) | 0;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(tick);
+})();
 
 

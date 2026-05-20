@@ -299,6 +299,32 @@
         }
         .btn-ghost:hover { background: rgba(26,24,22,0.04); border-color: var(--text-muted); }
 
+        /* ─── DEMO VIDEO ──────────────────────────────────────────────── */
+        .demo-video {
+            position: relative;
+            background: var(--bg);
+            padding: 0 64px 120px;
+        }
+
+        .demo-video-inner {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 20px 60px -20px rgba(26,24,22,0.18);
+        }
+
+        .demo-video video {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #000;
+            pointer-events: none;
+        }
+
         /* ─── QUOTE ───────────────────────────────────────────────────── */
         .intro {
             padding: 120px 64px;
@@ -744,6 +770,8 @@
             .hero-foot { grid-template-columns: 1fr; gap: 28px; }
             .hero-actions { justify-content: flex-start; }
 
+            .demo-video { padding: 0 24px 80px; }
+
             .intro { padding: 80px 24px; }
             .intro blockquote { font-size: clamp(28px, 7vw, 48px); }
 
@@ -816,6 +844,24 @@
             </div>
         </div>
     </div>
+
+    <!-- ── DEMO VIDEO ────────────────────────────────────────────────── -->
+    <section class="demo-video" id="demo-video">
+        <div class="demo-video-inner">
+            <video
+                id="demo-video-el"
+                src="Pragmatic%20(1).mp4"
+                muted
+                defaultMuted
+                loop
+                playsinline
+                preload="auto"
+                disablepictureinpicture
+                disableremoteplayback
+                aria-hidden="true"
+                tabindex="-1"></video>
+        </div>
+    </section>
 
     <!-- ── QUOTE ─────────────────────────────────────────────────────── -->
     <div class="intro" id="intro">
@@ -1088,6 +1134,33 @@
         }, { passive: true });
 
         updateNav();
+
+        // ─── Demo video autoplay on scroll ────────────────────────────
+        const demoVideo = document.getElementById('demo-video-el');
+        if (demoVideo) {
+            const forceMute = () => {
+                demoVideo.muted = true;
+                demoVideo.defaultMuted = true;
+                demoVideo.volume = 0;
+                demoVideo.setAttribute('muted', '');
+            };
+            forceMute();
+            demoVideo.addEventListener('volumechange', forceMute);
+            demoVideo.addEventListener('loadedmetadata', forceMute);
+            demoVideo.addEventListener('play', forceMute);
+
+            const videoObs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const p = demoVideo.play();
+                        if (p && typeof p.catch === 'function') p.catch(() => {});
+                    } else {
+                        demoVideo.pause();
+                    }
+                });
+            }, { threshold: 0.25 });
+            videoObs.observe(demoVideo);
+        }
 
         // ─── Fade-in observer ─────────────────────────────────────────
         const fadeObs = new IntersectionObserver((entries) => {

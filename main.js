@@ -77,20 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
       span.style.display = 'inline-block';
       span.style.transition = 'transform 0.15s ease-out';
       span.style.transformOrigin = 'center';
+      span.style.willChange = 'transform';
       nameEl.appendChild(span);
       allLetters.push(span);
     });
   });
 
-  // Track mouse movement anywhere on screen
-  document.addEventListener('mousemove', (e) => {
-    allLetters.forEach((letter) => {
-      const letterRect = letter.getBoundingClientRect();
-      const letterCenterX = letterRect.left + letterRect.width / 2;
-      const letterCenterY = letterRect.top + letterRect.height / 2;
+  // Cache rects so getBoundingClientRect isn't called on every mousemove
+  let letterRects = [];
 
-      const distanceX = e.clientX - letterCenterX;
-      const distanceY = e.clientY - letterCenterY;
+  function cacheRects() {
+    letterRects = allLetters.map(l => {
+      const r = l.getBoundingClientRect();
+      return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
+    });
+  }
+
+  cacheRects();
+  window.addEventListener('resize', cacheRects);
+  window.addEventListener('scroll', cacheRects, { passive: true });
+
+  let mouseX = 0, mouseY = 0, rafId = null;
+
+  function updateLetters() {
+    rafId = null;
+    for (let i = 0; i < allLetters.length; i++) {
+      const { cx, cy } = letterRects[i];
+      const distanceX = mouseX - cx;
+      const distanceY = mouseY - cy;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
       const maxDistance = 500;
@@ -98,21 +112,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const proximityCurve = proximity * proximity;
 
       const angle = Math.atan2(distanceY, distanceX);
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
 
-      const squeeze = proximityCurve * 0.5;
-      const stretch = proximityCurve * 0.35;
+      const pushX = -cosA * proximityCurve * 25;
+      const pushY = -sinA * proximityCurve * 15;
+      const scaleX = 1 - proximityCurve * 0.5 * Math.abs(cosA);
+      const scaleY = 1 + proximityCurve * 0.35 * Math.abs(sinA);
 
-      const pushX = -Math.cos(angle) * proximityCurve * 25;
-      const pushY = -Math.sin(angle) * proximityCurve * 15;
+      allLetters[i].style.transform = `translate(${pushX}px, ${pushY}px) scale(${scaleX}, ${scaleY})`;
+    }
+  }
 
-      const scaleX = 1 - squeeze * Math.abs(Math.cos(angle));
-      const scaleY = 1 + stretch * Math.abs(Math.sin(angle));
-
-      letter.style.transform = `translate(${pushX}px, ${pushY}px) scale(${scaleX}, ${scaleY})`;
-    });
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!rafId) rafId = requestAnimationFrame(updateLetters);
   });
 
   document.addEventListener('mouseleave', () => {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     allLetters.forEach(letter => {
       letter.style.transform = 'translate(0, 0) scale(1)';
     });

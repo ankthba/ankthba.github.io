@@ -358,6 +358,11 @@ section {
   background: var(--color-bg);
 }
 
+#work,
+#photos {
+  align-items: flex-start;
+}
+
 .projects__header,
 .photos__header,
 .about__header,

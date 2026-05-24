@@ -340,6 +340,19 @@ section {
   opacity: 1;
 }
 
+@media (min-width: 769px) {
+  .hero__socials {
+    border-top: none;
+    padding-top: 0;
+    justify-content: flex-start;
+  }
+
+  .hero__socials .hero__nav-link {
+    font-size: 0.875rem;
+    opacity: 1;
+  }
+}
+
 .social-link {
   display: flex;
   align-items: center;
@@ -1051,11 +1064,11 @@ section {
   font-weight: 400;
   letter-spacing: -0.02em;
   color: var(--color-fg);
-  transition: opacity var(--transition-fast);
+  transition: text-shadow var(--transition-base);
 }
 
 .page-header__name:hover {
-  opacity: 0.6;
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
 }
 
 .page-header__nav {

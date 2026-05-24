@@ -1097,6 +1097,14 @@ section {
 }
 
 @media (max-width: 768px) {
+  .page-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md);
+    position: relative;
+  }
   .page-header__nav {
     display: none;
   }

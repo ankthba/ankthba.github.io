@@ -242,7 +242,31 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 
 // ---------------------------------------------------------
-// 9. Animated Grain / Static Effect
+// 9. Hamburger Menu (sub-pages)
+// ---------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+  const hamburger = document.querySelector('.page-header__hamburger');
+  const nav = document.querySelector('.page-header__nav');
+  if (!hamburger || !nav) return;
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Close when a link is tapped
+  nav.querySelectorAll('.page-header__nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+});
+
+
+// ---------------------------------------------------------
+// 10. Animated Grain / Static Effect
 // ---------------------------------------------------------
 
 (function () {

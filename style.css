@@ -748,6 +748,10 @@ section {
     --space-md: 1.5rem;
   }
 
+  .page-header {
+    padding-bottom: var(--space-lg);
+  }
+
   .hero {
     padding-left: var(--space-sm);
     padding-right: var(--space-sm);

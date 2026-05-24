@@ -949,7 +949,7 @@ section {
   }
 
   .home__right {
-    padding: 0 var(--space-sm) var(--space-xl);
+    padding: var(--space-xl) var(--space-sm) var(--space-xl);
   }
 }
 

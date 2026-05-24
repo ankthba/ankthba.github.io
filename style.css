@@ -347,14 +347,7 @@ section {
 
 @media (min-width: 769px) {
   .hero__socials {
-    border-top: none;
-    padding-top: 0;
     justify-content: flex-start;
-  }
-
-  .hero__socials .hero__nav-link {
-    font-size: 0.875rem;
-    opacity: 1;
   }
 }
 

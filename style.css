@@ -749,7 +749,15 @@ section {
   }
 
   .page-header {
-    padding-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-md) var(--space-md) var(--space-lg);
+  }
+
+  .page-header__name {
+    margin-bottom: var(--space-sm);
   }
 
   .hero {
@@ -982,11 +990,10 @@ section {
    --------------------------------------------------------- */
 
 .page-header {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  text-align: center;
-  padding: var(--space-lg) var(--space-md) var(--space-md);
+  padding: var(--space-md) var(--space-lg);
 }
 
 .page-header__name {
@@ -996,7 +1003,6 @@ section {
   letter-spacing: -0.02em;
   color: var(--color-fg);
   transition: opacity var(--transition-fast);
-  margin-bottom: var(--space-sm);
 }
 
 .page-header__name:hover {

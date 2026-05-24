@@ -1098,6 +1098,15 @@ section {
   display: none;
 }
 
+@media (max-width: 768px) {
+  .page-header__nav {
+    display: none;
+  }
+  .page-header__nav.open {
+    display: flex;
+  }
+}
+
 /* ---------------------------------------------------------
    18. View Transitions
    --------------------------------------------------------- */

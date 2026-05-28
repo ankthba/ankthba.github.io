@@ -319,6 +319,16 @@ section {
   display: block;
 }
 
+/* Name is a link on sub-pages (not home) — glow on hover */
+.hero__title a {
+  cursor: pointer;
+  transition: text-shadow var(--transition-base);
+}
+
+.hero__title a:hover {
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+}
+
 .hero__subtitle {
   font-size: 1rem;
   font-weight: 400;

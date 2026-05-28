@@ -13,26 +13,21 @@
   <link rel="icon" type="image/png" href="../anikethFavicon.jpg">
 </head>
 <body>
-  <header class="page-header">
-    <a href="/" class="page-header__name">Aniketh Bandlamudi</a>
-    <nav class="page-header__nav">
-      <a href="/projects/" class="page-header__nav-link">Projects</a>
-      <a href="/work/" class="page-header__nav-link active">Work</a>
-      <a href="/photos/" class="page-header__nav-link">Photography</a>
-      <a href="/writing/" class="page-header__nav-link">Writing</a>
-      <a href="/contact/" class="page-header__nav-link">Contact</a>
-    </nav>
-    <button type="button" class="page-header__hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
   <main>
-    <section class="projects" id="work">
-      <div class="container">
-        <div class="projects__header">
-          <h2>Work</h2>
-        </div>
+    <section class="home" id="work">
+      <div class="home__left home__left--centered">
+        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
+        <nav class="hero__nav">
+          <a href="/projects/" class="hero__nav-link">Projects</a>
+          <a href="/work/" class="hero__nav-link active">Work</a>
+          <a href="/photos/" class="hero__nav-link">Photography</a>
+          <a href="/writing/" class="hero__nav-link">Writing</a>
+          <a href="/contact/" class="hero__nav-link">Contact</a>
+        </nav>
+      </div>
+
+      <div class="home__right">
+        <h1 class="page-title">Work</h1>
         <div class="projects__list">
 
           <article class="project-item">
@@ -75,17 +70,6 @@
       </div>
     </section>
   </main>
-
-  <footer class="footer">
-    <div class="footer__inner">
-      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
-  </footer>
 
   <script src="../main.js" defer></script>
 </body>

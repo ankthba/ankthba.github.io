@@ -23,10 +23,21 @@ function getTheme() {
   return localStorage.getItem('theme') || 'auto';
 }
 
+function effectiveTheme(theme) {
+  return theme === 'auto' ? (mql.matches ? 'dark' : 'light') : theme;
+}
+
 if (themeToggle) {
-  themeToggle.addEventListener('change', (e) => {
-    setTheme(e.target.value);
-  });
+  if (themeToggle.tagName === 'SELECT') {
+    themeToggle.addEventListener('change', (e) => {
+      setTheme(e.target.value);
+    });
+  } else {
+    // Icon button: simple light/dark toggle
+    themeToggle.addEventListener('click', () => {
+      setTheme(effectiveTheme(getTheme()) === 'dark' ? 'light' : 'dark');
+    });
+  }
 }
 
 if (mql.addEventListener) {
@@ -39,7 +50,7 @@ if (mql.addEventListener) {
 document.addEventListener('DOMContentLoaded', () => {
   const initial = getTheme();
   setTheme(initial);
-  if (themeToggle) themeToggle.value = initial;
+  if (themeToggle && themeToggle.tagName === 'SELECT') themeToggle.value = initial;
 });
 
 
@@ -274,16 +285,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.055;image-rendering:pixelated;';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.085;image-rendering:pixelated;';
   document.body.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
   let w = 0, h = 0;
 
   function resize() {
-    // Half resolution — CSS scaling gives a subtle pixel grain
-    w = canvas.width = Math.ceil(window.innerWidth / 2);
-    h = canvas.height = Math.ceil(window.innerHeight / 2);
+    // Render above CSS resolution to keep grain specks fine
+    const scale = 1.5;
+    w = canvas.width = Math.ceil(window.innerWidth * scale);
+    h = canvas.height = Math.ceil(window.innerHeight * scale);
   }
 
   let last = 0;

@@ -329,7 +329,8 @@ section {
 
 .hero__socials {
   display: flex;
-  gap: var(--space-md);
+  align-items: center;
+  gap: var(--space-sm);
   justify-content: center;
   margin-top: var(--space-md);
   padding-top: var(--space-md);
@@ -1043,6 +1044,218 @@ section {
 .hero__nav-link:hover {
   color: var(--color-fg);
   text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+}
+
+.hero__nav-link.active {
+  color: var(--color-fg);
+}
+
+/* ---------------------------------------------------------
+   Sub-page content (shared two-column layout)
+   --------------------------------------------------------- */
+
+@media (min-width: 769px) {
+  .home__left--sticky {
+    position: sticky;
+    top: var(--space-xl);
+    align-self: flex-start;
+  }
+
+  /* Stays vertically centered in the viewport through the whole scroll */
+  .home__left--centered {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    justify-content: center;
+  }
+
+  /* Zero the section's vertical padding so the sticky column centers exactly;
+     move that breathing room onto the content column instead. */
+  section.home:has(.home__left--centered) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  section.home:has(.home__left--centered) .home__right {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+}
+
+.page-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.03em;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  margin-bottom: var(--space-md);
+  color: var(--color-fg);
+}
+
+.home__right .projects__list {
+  max-width: none;
+  margin: 0;
+}
+
+.home__right .photos__grid {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home__right .photos__links {
+  justify-content: flex-start;
+}
+
+/* Home page: copyright + sun/moon toggle sit inline at the right of the socials */
+.home__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-left: auto;
+}
+
+.home__copy {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--color-muted);
+  opacity: 0.65;
+}
+
+.theme-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-muted);
+  opacity: 0.65;
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--transition-fast), opacity var(--transition-fast), filter var(--transition-base);
+}
+
+.theme-icon:hover {
+  color: var(--color-fg);
+  opacity: 1;
+  filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 16px currentColor);
+}
+
+.theme-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.theme-icon .icon-sun,
+.theme-icon .icon-moon {
+  display: none;
+}
+
+:root[data-theme="light"] .theme-icon .icon-sun {
+  display: block;
+}
+
+:root[data-theme="dark"] .theme-icon .icon-moon {
+  display: block;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] .theme-icon .icon-sun {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"] .theme-icon .icon-moon {
+    display: block;
+  }
+}
+
+/* Home page: Featured scroller + copyright/theme live in their own block
+   (bottom of the left column on desktop, below everything on mobile) */
+
+/* Prevent the wide marquee from blowing out the grid column */
+.home__left,
+.home__right,
+.home__extras {
+  min-width: 0;
+}
+
+.home__extras .featured {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.home__extras .featured__scroller {
+  width: 100%;
+}
+
+.home__extras .footer {
+  width: 100%;
+  padding: 0;
+  margin-top: var(--space-md);
+  background: transparent;
+}
+
+/* Desktop home page: name/nav top-left, bio right, extras pinned bottom-left */
+@media (min-width: 769px) {
+  section#home {
+    align-items: stretch;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+      "left  right"
+      "extras right";
+  }
+
+  #home .home__left {
+    grid-area: left;
+    justify-content: center;
+  }
+
+  #home .home__right {
+    grid-area: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #home .home__extras {
+    grid-area: extras;
+    align-self: end;
+  }
+
+  .home__extras .featured {
+    margin-top: var(--space-md);
+  }
+
+  .home__extras .featured__label {
+    text-align: left;
+    margin-bottom: var(--space-sm);
+  }
+
+  .home__extras .footer {
+    text-align: left;
+  }
+
+  .home__extras .footer__inner {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile home page: extras sits below all content, centered */
+@media (max-width: 768px) {
+  .home__extras {
+    padding: 0 var(--space-sm) var(--space-xl);
+  }
+
+  .home__extras .featured {
+    margin-top: 0;
+  }
 }
 
 /* ---------------------------------------------------------

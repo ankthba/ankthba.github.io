@@ -13,41 +13,36 @@
   <link rel="icon" type="image/png" href="../anikethFavicon.jpg">
 </head>
 <body>
-  <header class="page-header">
-    <a href="/" class="page-header__name">Aniketh Bandlamudi</a>
-    <nav class="page-header__nav">
-      <a href="/projects/" class="page-header__nav-link">Projects</a>
-      <a href="/work/" class="page-header__nav-link">Work</a>
-      <a href="/photos/" class="page-header__nav-link active">Photography</a>
-      <a href="/writing/" class="page-header__nav-link">Writing</a>
-      <a href="/contact/" class="page-header__nav-link">Contact</a>
-    </nav>
-    <button type="button" class="page-header__hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
   <main>
-    <section class="photos" id="photos">
-      <div class="container">
-        <div class="photos__header">
-          <h2>Photos</h2>
-        </div>
+    <section class="home" id="photos">
+      <div class="home__left home__left--centered">
+        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
+        <nav class="hero__nav">
+          <a href="/projects/" class="hero__nav-link">Projects</a>
+          <a href="/work/" class="hero__nav-link">Work</a>
+          <a href="/photos/" class="hero__nav-link active">Photography</a>
+          <a href="/writing/" class="hero__nav-link">Writing</a>
+          <a href="/contact/" class="hero__nav-link">Contact</a>
+        </nav>
+      </div>
+
+      <div class="home__right">
+        <h1 class="page-title">Photography</h1>
         <div class="photos__grid">
-          <div class="photo-item"><img src="../assets/photos/planeImage1.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage2.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage3.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage4.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage5.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage6.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage7.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage8.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage9.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage10.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage11.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage12.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage13.png" alt="Aviation Photography" loading="lazy"></div>
-          <div class="photo-item"><img src="../assets/photos/planeImage14.png" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage1.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage2.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage3.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage4.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage5.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage6.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage7.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage8.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage9.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage10.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage11.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage12.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage13.jpg" alt="Aviation Photography" loading="lazy"></div>
+          <div class="photo-item"><img src="../assets/photos/planeImage14.jpg" alt="Aviation Photography" loading="lazy"></div>
         </div>
         <div class="photos__links">
           <a href="https://www.instagram.com/ankthba.av/" target="_blank" rel="noopener" class="photos__link">
@@ -66,17 +61,6 @@
       </div>
     </section>
   </main>
-
-  <footer class="footer">
-    <div class="footer__inner">
-      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
-  </footer>
 
   <script src="../main.js" defer></script>
 </body>

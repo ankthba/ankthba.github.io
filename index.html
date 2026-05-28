@@ -63,8 +63,16 @@
           <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="hero__nav-link">Twitter</a>
           <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="hero__nav-link">Instagram</a>
           <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="hero__nav-link">Spotify</a>
+          <span class="home__controls">
+            <span class="home__copy">&copy;</span>
+            <button class="theme-icon" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+          </span>
         </div>
       </div>
+
       <div class="home__right">
         <div class="about__text">
           <p>I'm an incoming Computer Science and Applied Mathematics student at the University of Virginia's School of Engineering and Applied Science.</p>
@@ -74,49 +82,41 @@
           <p>Outside of engineering, I photograph aircraft at Dulles and enjoy hiking.</p>
         </div>
       </div>
-    </section>
 
-    <!-- Featured Section -->
-    <section class="featured">
-      <p style="text-align: center; width: 100%; display: block; margin: 0 auto; font-family: var(--font-sans); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-md);">Featured & Recognized</p>
-      <div class="featured__scroller">
-        <div class="featured__track" id="logo-track">
-          <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/airfrance.png" alt="Air France"></a>
-          <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="featured__logo" src="logos/ana.png" alt="ANA"></a>
-          <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/antonov.png" alt="Antonov"></a>
-          <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/blackpink.png" alt="BLACKPINK"></a>
-          <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/british.png" alt="British Airways"></a>
-          <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/dulles.png" alt="Dulles Airport"></a>
-          <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/emirates.png" alt="Emirates"></a>
-          <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="featured__logo" src="logos/fcps.png" alt="FCPS"></a>
-          <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/klm.png" alt="KLM"></a>
-          <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/korean.png" alt="Korean Air"></a>
-          <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="featured__logo" src="logos/koreatimes.png" alt="Korea Times"></a>
-          <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/lufthansa.png" alt="Lufthansa"></a>
-          <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/mwaa.png" alt="MWAA"></a>
-          <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/porter.png" alt="Porter"></a>
-          <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/qatar.png" alt="Qatar Airways"></a>
-          <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/reagan.png" alt="Reagan Airport"></a>
-          <a href="https://www.united.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/united.png" alt="United Airlines"></a>
-          <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/visiontimes.png" alt="Vision Times"></a>
-          <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wga.png" alt="WGA"></a>
-          <a href="https://wtop.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wtop.png" alt="WTOP"></a>
-        </div>
+      <!-- Featured marquee (commented out for now) -->
+      <!--
+      <div class="home__extras">
+        <section class="featured">
+          <p class="featured__label">Featured &amp; Recognized</p>
+          <div class="featured__scroller">
+            <div class="featured__track" id="logo-track">
+              <a href="https://www.airfrance.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/airfrance.png" alt="Air France"></a>
+              <a href="https://www.ana.co.jp/en/us/" target="_blank" rel="noopener"><img class="featured__logo" src="logos/ana.png" alt="ANA"></a>
+              <a href="https://www.antonov.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/antonov.png" alt="Antonov"></a>
+              <a href="https://www.blackpinkofficial.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/blackpink.png" alt="BLACKPINK"></a>
+              <a href="https://www.britishairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/british.png" alt="British Airways"></a>
+              <a href="https://www.flydulles.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/dulles.png" alt="Dulles Airport"></a>
+              <a href="https://www.emirates.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/emirates.png" alt="Emirates"></a>
+              <a href="https://www.fcps.edu" target="_blank" rel="noopener"><img class="featured__logo" src="logos/fcps.png" alt="FCPS"></a>
+              <a href="https://www.klm.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/klm.png" alt="KLM"></a>
+              <a href="https://www.koreanair.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/korean.png" alt="Korean Air"></a>
+              <a href="https://www.koreatimes.co.kr" target="_blank" rel="noopener"><img class="featured__logo" src="logos/koreatimes.png" alt="Korea Times"></a>
+              <a href="https://www.lufthansa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/lufthansa.png" alt="Lufthansa"></a>
+              <a href="https://www.mwaa.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/mwaa.png" alt="MWAA"></a>
+              <a href="https://www.flyporter.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/porter.png" alt="Porter"></a>
+              <a href="https://www.qatarairways.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/qatar.png" alt="Qatar Airways"></a>
+              <a href="https://www.flyreagan.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/reagan.png" alt="Reagan Airport"></a>
+              <a href="https://www.united.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/united.png" alt="United Airlines"></a>
+              <a href="https://www.visiontimes.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/visiontimes.png" alt="Vision Times"></a>
+              <a href="https://www.westernglobalairlines.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wga.png" alt="WGA"></a>
+              <a href="https://wtop.com" target="_blank" rel="noopener"><img class="featured__logo" src="logos/wtop.png" alt="WTOP"></a>
+            </div>
+          </div>
+        </section>
       </div>
+      -->
     </section>
   </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
-  </footer>
 
   <script src="main.js" defer></script>
 </body>

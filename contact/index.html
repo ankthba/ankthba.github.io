@@ -13,48 +13,29 @@
   <link rel="icon" type="image/png" href="../anikethFavicon.jpg">
 </head>
 <body>
-  <header class="page-header">
-    <a href="/" class="page-header__name">Aniketh Bandlamudi</a>
-    <nav class="page-header__nav">
-      <a href="/projects/" class="page-header__nav-link">Projects</a>
-      <a href="/work/" class="page-header__nav-link">Work</a>
-      <a href="/photos/" class="page-header__nav-link">Photography</a>
-      <a href="/writing/" class="page-header__nav-link">Writing</a>
-      <a href="/contact/" class="page-header__nav-link active">Contact</a>
-    </nav>
-    <button type="button" class="page-header__hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
   <main>
-    <section class="contact" id="contact" style="min-height: calc(100vh - 180px);">
-      <div class="container">
-        <div class="contact__inner">
-          <div class="contact__header">
-            <h2>Contact</h2>
-          </div>
-          <p class="contact__text">Open to inquiries and questions.</p>
-          <a href="mailto:me@aniketh.net" class="btn">
-            Send Message
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-        </div>
+    <section class="home" id="contact">
+      <div class="home__left home__left--centered">
+        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
+        <nav class="hero__nav">
+          <a href="/projects/" class="hero__nav-link">Projects</a>
+          <a href="/work/" class="hero__nav-link">Work</a>
+          <a href="/photos/" class="hero__nav-link">Photography</a>
+          <a href="/writing/" class="hero__nav-link">Writing</a>
+          <a href="/contact/" class="hero__nav-link active">Contact</a>
+        </nav>
+      </div>
+
+      <div class="home__right">
+        <h1 class="page-title">Contact</h1>
+        <p class="contact__text" style="margin-left: 0; margin-right: 0;">Open to inquiries and questions.</p>
+        <a href="mailto:me@aniketh.net" class="btn">
+          Send Message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
       </div>
     </section>
   </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <p class="footer__copy">&copy; <span id="year"></span> Aniketh Bandlamudi</p>
-      <select class="theme-toggle" id="theme-toggle" aria-label="Theme">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div>
-  </footer>
 
   <script src="../main.js" defer></script>
 </body>

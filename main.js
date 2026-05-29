@@ -285,15 +285,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const canvas = document.createElement('canvas');
   canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.085;image-rendering:pixelated;';
+  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.06;filter:blur(0.6px);';
   document.body.appendChild(canvas);
 
   const ctx = canvas.getContext('2d');
   let w = 0, h = 0;
 
   function resize() {
-    // Render above CSS resolution to keep grain specks fine
-    const scale = 1.5;
+    // Lower scale stretches fewer pixels over the viewport -> larger grain specks
+    const scale = 1.0;
     w = canvas.width = Math.ceil(window.innerWidth * scale);
     h = canvas.height = Math.ceil(window.innerHeight * scale);
   }

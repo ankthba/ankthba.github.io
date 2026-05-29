@@ -14,12 +14,12 @@
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #fafafa;
-  --color-bg-alt: #ffffff;
-  --color-fg: #0a0a0a;
-  --color-muted: #555555;
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-hover: rgba(0, 0, 0, 0.2);
+  --color-bg: #f4efe4;
+  --color-bg-alt: #fdfaf3;
+  --color-fg: #26231d;
+  --color-muted: #6b6357;
+  --color-border: rgba(45, 40, 30, 0.1);
+  --color-border-hover: rgba(45, 40, 30, 0.22);
 
   --font-serif: "Instrument Serif", Georgia, serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -39,33 +39,33 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #0a0a0a;
-    --color-bg-alt: #0f0f0f;
-    --color-fg: #fafafa;
-    --color-muted: #999999;
-    --color-border: rgba(255, 255, 255, 0.08);
-    --color-border-hover: rgba(255, 255, 255, 0.2);
+    --color-bg: #171717;
+    --color-bg-alt: #1f1f1f;
+    --color-fg: #f0eee8;
+    --color-muted: #a39a89;
+    --color-border: rgba(241, 233, 217, 0.09);
+    --color-border-hover: rgba(241, 233, 217, 0.22);
     color-scheme: dark;
   }
 }
 
 :root[data-theme="light"] {
-  --color-bg: #fafafa;
-  --color-bg-alt: #ffffff;
-  --color-fg: #0a0a0a;
-  --color-muted: #555555;
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-hover: rgba(0, 0, 0, 0.2);
+  --color-bg: #f4efe4;
+  --color-bg-alt: #fdfaf3;
+  --color-fg: #26231d;
+  --color-muted: #6b6357;
+  --color-border: rgba(45, 40, 30, 0.1);
+  --color-border-hover: rgba(45, 40, 30, 0.22);
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #0a0a0a;
-  --color-bg-alt: #0f0f0f;
-  --color-fg: #fafafa;
-  --color-muted: #999999;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.2);
+  --color-bg: #171717;
+  --color-bg-alt: #1f1f1f;
+  --color-fg: #f0eee8;
+  --color-muted: #a39a89;
+  --color-border: rgba(241, 233, 217, 0.09);
+  --color-border-hover: rgba(241, 233, 217, 0.22);
   color-scheme: dark;
 }
 

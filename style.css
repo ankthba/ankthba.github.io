@@ -1029,6 +1029,16 @@ section {
   .home__right .page-title {
     text-align: center;
   }
+
+  .home__left .hero__nav {
+    flex-wrap: nowrap;
+    gap: var(--space-xs);
+  }
+
+  .home__left .hero__nav-link {
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -1037,8 +1047,8 @@ section {
 
 .hero__nav {
   display: flex;
-  gap: var(--space-md);
-  flex-wrap: wrap;
+  gap: var(--space-sm);
+  flex-wrap: nowrap;
   justify-content: center;
   margin-top: var(--space-md);
 }

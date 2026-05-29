@@ -1024,6 +1024,12 @@ section {
 
   .home__right {
     padding: var(--space-xl) var(--space-sm) var(--space-xl);
+    text-align: center;
+  }
+
+  .home__right .project-item__header {
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -1110,8 +1116,10 @@ section {
   padding: 0;
 }
 
-.home__right .photos__links {
-  justify-content: flex-start;
+@media (min-width: 769px) {
+  .home__right .photos__links {
+    justify-content: flex-start;
+  }
 }
 
 /* Home page: copyright + sun/moon toggle sit inline at the right of the socials */

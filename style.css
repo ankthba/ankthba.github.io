@@ -1024,12 +1024,10 @@ section {
 
   .home__right {
     padding: var(--space-xl) var(--space-sm) var(--space-xl);
-    text-align: center;
   }
 
-  .home__right .project-item__header {
-    justify-content: center;
-    align-items: center;
+  .home__right .page-title {
+    text-align: center;
   }
 }
 

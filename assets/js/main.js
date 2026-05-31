@@ -155,56 +155,84 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---------------------------------------------------------
 
 document.addEventListener('DOMContentLoaded', () => {
-  const photosGrid = document.querySelector('.photos__grid');
-  if (!photosGrid) return;
+  const grid = document.querySelector('.photos__grid');
+  if (!grid) return;
 
-  const photos = photosGrid.querySelectorAll('.photo-item');
-  let hoveredPhoto = null;
+  const photos = Array.from(grid.querySelectorAll('.photo-item'));
+  if (!photos.length) return;
 
-  photos.forEach(photo => {
-    photo.addEventListener('mouseenter', () => {
-      hoveredPhoto = photo;
+  // Respect reduced-motion: leave the grid completely static.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // Tunables
+  const RADIUS = 320;    // influence distance in px
+  const NEAR = 1;        // scale of the photo nearest the cursor
+  const FAR = 0.82;      // scale of photos beyond the radius
+  const HOVER = 1.5;     // scale of the photo directly under the cursor
+  const EASE = 0.2;      // 0..1 easing toward the target each frame
+
+  // Cache geometry so the per-frame work never touches layout.
+  let centers = [];
+  function cacheCenters() {
+    centers = photos.map(p => {
+      const r = p.getBoundingClientRect();
+      return { cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
     });
-    photo.addEventListener('mouseleave', () => {
-      if (hoveredPhoto === photo) hoveredPhoto = null;
-    });
+  }
+  cacheCenters();
+  window.addEventListener('resize', cacheCenters);
+  window.addEventListener('scroll', cacheCenters, { passive: true });
+
+  const scales = photos.map(() => 1);
+  let mouseX = 0, mouseY = 0, inside = false, hovered = -1, rafId = null;
+
+  function start() { if (!rafId) rafId = requestAnimationFrame(tick); }
+
+  photos.forEach((photo, i) => {
+    photo.addEventListener('mouseenter', () => { hovered = i; start(); });
+    photo.addEventListener('mouseleave', () => { if (hovered === i) hovered = -1; });
   });
 
-  photosGrid.addEventListener('mousemove', (e) => {
-    photos.forEach(photo => {
-      const rect = photo.getBoundingClientRect();
-      const photoCenterX = rect.left + rect.width / 2;
-      const photoCenterY = rect.top + rect.height / 2;
+  grid.addEventListener('mouseenter', () => { inside = true; cacheCenters(); start(); });
+  grid.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    inside = true;
+    start();
+  });
+  grid.addEventListener('mouseleave', () => { inside = false; hovered = -1; start(); });
 
-      const distanceX = e.clientX - photoCenterX;
-      const distanceY = e.clientY - photoCenterY;
-      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+  function tick() {
+    rafId = null;
+    let moving = false;
 
-      // Hovered photo gets extra big and on top
-      if (photo === hoveredPhoto) {
-        photo.style.transform = 'scale(1.8)';
-        photo.style.zIndex = '20';
+    for (let i = 0; i < photos.length; i++) {
+      let target;
+      if (!inside) {
+        target = 1;
+      } else if (i === hovered) {
+        target = HOVER;
       } else {
-        // Scale based on distance - closer = slightly bigger, farther = much smaller
-        const maxDistance = 350;
-        const minScale = 0.4;
-        const maxScale = 0.85;
-
-        const normalizedDist = Math.min(distance / maxDistance, 1);
-        const scale = maxScale - (normalizedDist * (maxScale - minScale));
-
-        photo.style.transform = `scale(${scale})`;
-        photo.style.zIndex = '1';
+        const { cx, cy } = centers[i];
+        const dx = mouseX - cx, dy = mouseY - cy;
+        const t = Math.min(Math.sqrt(dx * dx + dy * dy) / RADIUS, 1);
+        target = NEAR + (FAR - NEAR) * t;
       }
-    });
-  });
 
-  photosGrid.addEventListener('mouseleave', () => {
-    photos.forEach(photo => {
-      photo.style.transform = 'scale(1)';
-      photo.style.zIndex = '1';
-    });
-  });
+      const next = scales[i] + (target - scales[i]) * EASE;
+      if (Math.abs(target - next) > 0.001) {
+        scales[i] = next;
+        moving = true;
+      } else {
+        scales[i] = target;
+      }
+
+      photos[i].style.transform = `scale(${scales[i].toFixed(4)})`;
+      photos[i].style.zIndex = i === hovered ? '20' : '1';
+    }
+
+    if (moving) rafId = requestAnimationFrame(tick);
+  }
 });
 
 

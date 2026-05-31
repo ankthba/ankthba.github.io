@@ -508,15 +508,19 @@ section {
   max-width: 720px;
   margin: 0 auto;
   padding: 2rem 0;
+  /* Sit above the fixed grain canvas (z-index 9997) so the static
+     texture doesn't overlay the photographs. */
+  position: relative;
+  z-index: 9998;
 }
 
 .photo-item {
   aspect-ratio: 1;
   border-radius: 4px;
   overflow: hidden;
-  transition: transform 0.15s ease-out;
   cursor: pointer;
   position: relative;
+  will-change: transform;
 }
 
 .photo-item img {

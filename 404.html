@@ -14,47 +14,25 @@
   <style>
     .error-code {
       font-family: var(--font-serif);
-      font-size: clamp(4rem, 12vw, 8rem);
+      font-size: clamp(5rem, 18vw, 11rem);
       font-weight: 400;
-      line-height: 1;
-      letter-spacing: -0.02em;
-      margin: 0 0 0.5rem;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      margin: 0 0 var(--space-sm);
       color: var(--color-fg);
     }
 
-    .error-message {
-      font-family: var(--font-serif);
-      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      margin: 0 0 1.5rem;
-      color: var(--color-fg);
-    }
-
-    .ascii-cat {
-      font-family: "Courier New", monospace;
-      font-size: clamp(0.85rem, 2vw, 1.15rem);
-      line-height: 1.2;
-      white-space: pre;
-      overflow-x: auto;
-      margin: 1.5rem 0;
+    .error-lead {
+      max-width: 42ch;
+      margin: 0 0 var(--space-md);
+      line-height: 1.6;
       color: var(--color-muted);
     }
 
-    .redirect-info {
-      font-size: 0.95rem;
-      font-style: italic;
-      margin: 1rem 0 1.5rem;
-      color: var(--color-muted);
-    }
-
-    .countdown {
-      font-weight: 600;
-      color: var(--color-fg);
-    }
-
-    @media (max-width: 600px) {
-      .ascii-cat { font-size: 0.8rem; }
+    /* Mobile: center the block to match the centered header + page title */
+    @media (max-width: 768px) {
+      .home__right { text-align: center; }
+      .error-lead { margin-left: auto; margin-right: auto; }
     }
   </style>
 </head>
@@ -73,26 +51,11 @@
       </div>
 
       <div class="home__right">
-        <h1 class="error-code">404</h1>
-        <h2 class="error-message">The page you're looking for can't be found</h2>
-
-        <div class="ascii-cat" aria-hidden="true">
-    /\_/\
-   ( o.o )
-    > ^ <
-   /|   |\
-  (_|   |_)
-
-  "this page
-   doesn't exist..."
-        </div>
-
-        <p class="redirect-info">
-          Redirecting you home in <span class="countdown" id="countdown">5</span> seconds...
-        </p>
-
+        <p class="error-code">404</p>
+        <h2 class="page-title">Page not found</h2>
+        <p class="error-lead">The page you're looking for doesn't exist or may have been moved.</p>
         <a href="/" class="btn">
-          Take Me Home Now
+          Back to home
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
       </div>
@@ -103,20 +66,6 @@
     // Apply saved theme before paint to avoid a flash
     (function () {
       document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'auto');
-    })();
-
-    // Auto-redirect countdown
-    (function () {
-      let seconds = 5;
-      const el = document.getElementById('countdown');
-      const timer = setInterval(() => {
-        seconds--;
-        if (el) el.textContent = seconds;
-        if (seconds <= 0) {
-          clearInterval(timer);
-          window.location.href = '/';
-        }
-      }, 1000);
     })();
   </script>
   <script src="/assets/js/main.js" defer></script>

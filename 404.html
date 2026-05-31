@@ -11,6 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/png" href="/assets/img/anikethFavicon.jpg">
+  <style>
+    /* Center the whole block on mobile; left-aligned only on desktop */
+    @media (max-width: 768px) {
+      #error .home__right { text-align: center; }
+    }
+  </style>
 </head>
 <body>
   <main>
@@ -29,7 +35,7 @@
       <div class="home__right">
         <h1 class="page-title">Page not found</h1>
         <p class="contact__text" style="margin-left: 0; margin-right: 0;">The page you're looking for doesn't exist or may have been moved.</p>
-        <a href="/" class="btn">
+        <a href="/" class="project-item__link">
           Back to home
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>

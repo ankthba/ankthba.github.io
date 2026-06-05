@@ -18,8 +18,8 @@
       <div class="home__left home__left--centered">
         <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
         <nav class="hero__nav">
-          <a href="/projects/" class="hero__nav-link">Projects</a>
           <a href="/work/" class="hero__nav-link active">Experience</a>
+          <a href="/projects/" class="hero__nav-link">Projects</a>
           <a href="/photos/" class="hero__nav-link">Photography</a>
           <a href="/writing/" class="hero__nav-link">Writing</a>
           <a href="/contact/" class="hero__nav-link">Contact</a>
@@ -28,64 +28,80 @@
 
       <div class="home__right">
         <h1 class="page-title">Experience</h1>
-        <div class="projects__list">
+        <div class="experience-section">
+          <p class="label experience-section__label">Education</p>
+          <div class="projects__list">
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">University of Virginia</h3>
+                <span class="project-item__role">Computer Science &amp; Applied Mathematics</span>
+              </div>
+              <p class="project-item__description">Incoming student in the School of Engineering and Applied Science, studying computer science and applied mathematics.</p>
+            </article>
+          </div>
+        </div>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Pragmatic</h3>
-              <span class="project-item__role">Founder</span>
-            </div>
-            <p class="project-item__description">Engineering symbolic computation systems to transform unstructured financial data into the future of verifiably correct, formula-consistent models for real-world financial workflows.</p>
-            <a href="https://aniketh.net/pragmatic" class="project-item__link">
-              Visit site
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </article>
+        <div class="experience-section">
+          <p class="label experience-section__label">Work</p>
+          <div class="projects__list">
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Alarm.com</h3>
-              <span class="project-item__role">Engineering Intern · May 2026</span>
-            </div>
-            <p class="project-item__description">Supported hardware QA for home security systems by configuring and integrating devices (locks, sensors, lighting) into automated testing workflows. Performed hands-on lab work including soldering buck converters and embedded boards, assembling RJ45 Ethernet cables, and provisioning Raspberry Pi units for test automation. Built an internal software tool for lab device management.</p>
-            <a href="https://www.alarm.com" target="_blank" rel="noopener" class="project-item__link">
-              Visit site
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </article>
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">Pragmatic</h3>
+                <span class="project-item__role">Founder</span>
+              </div>
+              <p class="project-item__description">Engineering symbolic computation systems to transform unstructured financial data into the future of verifiably correct, formula-consistent models for real-world financial workflows.</p>
+              <a href="https://aniketh.net/pragmatic" class="project-item__link">
+                Visit site
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">OCRadar</h3>
-              <span class="project-item__role">Founder & President</span>
-            </div>
-            <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
-            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">
-              Visit site
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </article>
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">Alarm.com</h3>
+                <span class="project-item__role">Engineering Intern · May 2026</span>
+              </div>
+              <p class="project-item__description">Supported hardware QA for home security systems by configuring and integrating devices (locks, sensors, lighting) into automated testing workflows. Performed hands-on lab work including soldering buck converters and embedded boards, assembling RJ45 Ethernet cables, and provisioning Raspberry Pi units for test automation. Built an internal software tool for lab device management.</p>
+              <a href="https://www.alarm.com" target="_blank" rel="noopener" class="project-item__link">
+                Visit site
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">FRC Robotics</h3>
-              <span class="project-item__role">Software Lead</span>
-            </div>
-            <p class="project-item__description">Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions.</p>
-            <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-item__link">
-              View repo
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-          </article>
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">OCRadar</h3>
+                <span class="project-item__role">Founder & President</span>
+              </div>
+              <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
+              <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">
+                Visit site
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">FTC Robotics</h3>
-              <span class="project-item__role">R&amp;D Captain / Software Lead</span>
-            </div>
-            <p class="project-item__description">Served as R&amp;D captain and software lead, driving robot design, code, and FTC programming while mentoring and managing STEM workshops and outreach.</p>
-          </article>
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">FRC Robotics</h3>
+                <span class="project-item__role">Software Lead</span>
+              </div>
+              <p class="project-item__description">Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions.</p>
+              <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-item__link">
+                View repo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+            </article>
 
+            <article class="project-item">
+              <div class="project-item__header">
+                <h3 class="project-item__title">FTC Robotics</h3>
+                <span class="project-item__role">R&amp;D Captain / Software Lead</span>
+              </div>
+              <p class="project-item__description">Served as R&amp;D captain and software lead, driving robot design, code, and FTC programming while mentoring and managing STEM workshops and outreach.</p>
+            </article>
+
+          </div>
         </div>
       </div>
     </section>

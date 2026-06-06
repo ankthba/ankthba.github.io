@@ -421,33 +421,31 @@ section {
 .projects__list {
   max-width: 720px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
 }
 
 .experience-section + .experience-section {
-  margin-top: var(--space-md);
+  margin-top: var(--space-lg);
 }
 
 .experience-section__label {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .project-item {
-  display: block;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.project-item:first-child {
-  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .project-item__header {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  margin-bottom: 0.15rem;
 }
 
 .project-item__title {
@@ -461,7 +459,6 @@ section {
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  flex-shrink: 0;
 }
 
 .project-item__description {
@@ -479,7 +476,7 @@ section {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--color-muted);
-  margin-top: 0.75rem;
+  margin-top: 0.25rem;
   transition: color var(--transition-fast), text-shadow var(--transition-base);
 }
 
@@ -932,7 +929,7 @@ section {
   }
 
   .project-item {
-    padding: 1.25rem 0;
+    gap: 0.4rem;
   }
 
   .project-item__title {

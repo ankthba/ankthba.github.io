@@ -14,10 +14,10 @@
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #f4efe4;
-  --color-bg-alt: #fdfaf3;
-  --color-fg: #26231d;
-  --color-muted: #6b6357;
+  --color-bg: #f3f2ee;
+  --color-bg-alt: #fcfbf8;
+  --color-fg: #232220;
+  --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
 
@@ -41,8 +41,8 @@
   :root, :root[data-theme="auto"] {
     --color-bg: #171717;
     --color-bg-alt: #1f1f1f;
-    --color-fg: #f0eee8;
-    --color-muted: #a39a89;
+    --color-fg: #eeede9;
+    --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
     --color-border-hover: rgba(241, 233, 217, 0.22);
     color-scheme: dark;
@@ -50,10 +50,10 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #f4efe4;
-  --color-bg-alt: #fdfaf3;
-  --color-fg: #26231d;
-  --color-muted: #6b6357;
+  --color-bg: #f3f2ee;
+  --color-bg-alt: #fcfbf8;
+  --color-fg: #232220;
+  --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
   color-scheme: light;
@@ -62,8 +62,8 @@
 :root[data-theme="dark"] {
   --color-bg: #171717;
   --color-bg-alt: #1f1f1f;
-  --color-fg: #f0eee8;
-  --color-muted: #a39a89;
+  --color-fg: #eeede9;
+  --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);
   --color-border-hover: rgba(241, 233, 217, 0.22);
   color-scheme: dark;
@@ -1257,10 +1257,18 @@ section {
     grid-template-areas:
       "left  right"
       "extras right";
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
+  /* Pin the name/nav column to the viewport center so it sits at the same
+     height as the sub-pages, independent of the bio column's length. */
   #home .home__left {
     grid-area: left;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
     justify-content: center;
   }
 
@@ -1269,6 +1277,8 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
   }
 
   #home .home__extras {

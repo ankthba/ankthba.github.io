@@ -85,7 +85,7 @@ function supportsViewTransitions() {
   return 'startViewTransition' in document;
 }
 
-// Nav link click — view transition navigation
+// Nav link click - view transition navigation
 const navLinks = document.querySelectorAll('.navbar-links a');
 
 navLinks.forEach(link => {

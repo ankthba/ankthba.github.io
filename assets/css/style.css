@@ -1,5 +1,5 @@
 /* =========================================================
-   style.css — Clean & Classy Portfolio
+   style.css - Clean & Classy Portfolio
    ========================================================= */
 
 /* ---------------------------------------------------------
@@ -319,7 +319,7 @@ section {
   display: block;
 }
 
-/* Name is a link on sub-pages (not home) — glow on hover */
+/* Name is a link on sub-pages (not home) - glow on hover */
 .hero__title a {
   cursor: pointer;
   transition: text-shadow var(--transition-base);

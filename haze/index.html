@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haze — Beautiful, Accurate Weather</title>
+  <meta name="description" content="Haze is a beautifully minimal weather app for iPhone — big serif numerals, a living sky that shifts with the day, and accurate forecasts. No ads. No accounts.">
+  <link rel="canonical" href="https://aniketh.net/haze/">
+  <meta name="author" content="Aniketh Bandlamudi">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Haze — Beautiful, Accurate Weather">
+  <meta property="og:description" content="A calm, editorial weather app for iPhone — big serif numerals, soft skies that shift with the day, and accurate forecasts. No ads. No accounts.">
+  <meta property="og:url" content="https://aniketh.net/haze/">
+  <meta property="og:image" content="https://aniketh.net/assets/img/haze-icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Haze — Beautiful, Accurate Weather">
+  <meta name="twitter:description" content="A calm, editorial weather app for iPhone — big serif numerals, soft skies that shift with the day, and accurate forecasts.">
+  <meta name="twitter:image" content="https://aniketh.net/assets/img/haze-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Haze",
+    "applicationCategory": "Weather",
+    "operatingSystem": "iOS 18+",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "url": "https://aniketh.net/haze/",
+    "image": "https://aniketh.net/assets/img/haze-icon.png",
+    "author": { "@type": "Person", "name": "Aniketh Bandlamudi", "url": "https://aniketh.net/" }
+  }
+  </script>
+
+  <style>
+    /* Haze product page — app-store-style header + feature list */
+    .haze__head {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      margin-bottom: var(--space-md);
+    }
+    .haze__icon {
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(45, 40, 30, 0.14);
+      flex-shrink: 0;
+    }
+    .haze__headtext { display: flex; flex-direction: column; gap: 0.15rem; }
+    .haze__headtext .page-title { margin-bottom: 0; text-align: left; }
+    .haze__subtitle {
+      font-size: 0.95rem;
+      color: var(--color-muted);
+      letter-spacing: 0.01em;
+    }
+    .haze__lede {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--color-fg);
+      max-width: none;
+      margin-bottom: 1rem;
+    }
+    .haze__body { color: var(--color-muted); line-height: 1.75; max-width: none; margin-bottom: var(--space-md); }
+
+    .haze__features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem 1.5rem;
+      margin: 0 0 var(--space-md);
+      padding: var(--space-md) 0;
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .haze__features li {
+      position: relative;
+      padding-left: 1.1rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--color-muted);
+    }
+    .haze__features li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--color-muted);
+      opacity: 0.55;
+    }
+
+    .haze__links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .haze__meta {
+      margin-top: var(--space-md);
+      font-size: 0.78rem;
+      color: var(--color-muted);
+      opacity: 0.8;
+    }
+    .haze__meta a { text-decoration: underline; text-underline-offset: 2px; }
+
+    @media (max-width: 640px) {
+      .haze__features { grid-template-columns: 1fr; }
+      .haze__head { gap: 0.9rem; }
+      .haze__icon { width: 72px; height: 72px; border-radius: 16px; }
+    }
+    @media (max-width: 768px) {
+      #haze .home__right { text-align: left; }
+      .haze__head { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="home" id="haze">
+      <div class="home__left home__left--centered">
+        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
+        <nav class="hero__nav">
+          <a href="/work/" class="hero__nav-link">Experience</a>
+          <a href="/projects/" class="hero__nav-link">Projects</a>
+          <a href="/photos/" class="hero__nav-link">Photography</a>
+          <a href="/writing/" class="hero__nav-link">Writing</a>
+          <a href="/contact/" class="hero__nav-link">Contact</a>
+        </nav>
+        <div class="hero__socials">
+          <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="hero__nav-link">LinkedIn</a>
+          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="hero__nav-link">GitHub</a>
+          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="hero__nav-link">Twitter</a>
+          <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="hero__nav-link">Instagram</a>
+          <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="hero__nav-link">Spotify</a>
+          <span class="home__controls">
+            <span class="home__copy">&copy;</span>
+            <button class="theme-icon" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
+              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <div class="home__right">
+        <div class="haze__head">
+          <img class="haze__icon" src="/assets/img/haze-icon.png" alt="Haze app icon" width="88" height="88">
+          <div class="haze__headtext">
+            <h1 class="page-title">Haze</h1>
+            <span class="haze__subtitle">Beautiful, Accurate Weather</span>
+          </div>
+        </div>
+
+        <p class="haze__lede">A calm, editorial weather app for iPhone — big serif numerals, soft skies that shift with the day, and accurate forecasts. No ads. No accounts.</p>
+
+        <p class="haze__body">Every screen moves with the sky: the background drifts from dawn to day to dusk to night, tinted by the current conditions, with a soft atmospheric haze along the horizon. Data comes from Open-Meteo — a blend of the ECMWF, GFS, and ICON models — with nothing to clutter the view.</p>
+
+        <ul class="haze__features">
+          <li>A living sky that matches the exact moment, dawn to night</li>
+          <li>Current conditions with feels-like and daily high &amp; low</li>
+          <li>Hourly forecast and a 72-hour trend you can scrub</li>
+          <li>10-day outlook with hour-by-hour detail</li>
+          <li>A sunrise &amp; sunset arc you can drag across the day</li>
+          <li>Wind, UV, humidity, pressure, cloud cover &amp; dew point</li>
+          <li>US air quality and precipitation</li>
+          <li>A home-screen widget that refreshes on its own</li>
+          <li>Saved locations and your current location</li>
+          <li>Switch between °F/°C and mph/km·h</li>
+        </ul>
+
+        <div class="haze__links">
+          <span class="project-item__link project-item__link--disabled" aria-disabled="true">
+            App Store (soon)
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          <a href="/haze/support/" class="project-item__link">
+            Support
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="/haze/privacy/" class="project-item__link">
+            Privacy Policy
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+
+        <p class="haze__meta">Free · iPhone &amp; iPad on iOS 18+ · Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/js/main.js" defer></script>
+</body>
+</html>

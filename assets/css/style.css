@@ -894,7 +894,7 @@ section {
   }
 
   .hero__nav {
-    gap: var(--space-sm);
+    gap: 0.35rem 0.5rem;
   }
 
   .hero__image {
@@ -1055,13 +1055,20 @@ section {
   }
 
   .home__left .hero__nav {
-    flex-wrap: nowrap;
-    gap: var(--space-xs);
+    flex-wrap: wrap;
+    gap: 0.35rem 0.55rem;
+    justify-content: center;
   }
 
   .home__left .hero__nav-link {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     white-space: nowrap;
+  }
+
+  .hero__socials {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.65rem;
+    justify-content: center;
   }
 }
 

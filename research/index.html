@@ -3,33 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Aniketh Bandlamudi</title>
-  <meta name="description" content="Get in touch with Aniketh Bandlamudi.">
+  <title>Research | Aniketh Bandlamudi</title>
+  <meta name="description" content="Research by Aniketh Bandlamudi.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/png" href="/assets/img/anikethFavicon.jpg">
-  <style>
-    /* Center the whole block on mobile; left-aligned only on desktop */
-    @media (max-width: 768px) {
-      #contact .home__right { text-align: center; }
-    }
-  </style>
 </head>
 <body>
   <main>
-    <section class="home" id="contact">
+    <section class="home" id="research">
       <div class="home__left home__left--centered">
         <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
         <nav class="hero__nav">
           <a href="/work/" class="hero__nav-link">Experience</a>
           <a href="/projects/" class="hero__nav-link">Projects</a>
-          <a href="/research/" class="hero__nav-link">Research</a>
+          <a href="/research/" class="hero__nav-link active">Research</a>
           <a href="/photos/" class="hero__nav-link">Photography</a>
           <a href="/writing/" class="hero__nav-link">Writing</a>
-          <a href="/contact/" class="hero__nav-link active">Contact</a>
+          <a href="/contact/" class="hero__nav-link">Contact</a>
         </nav>
         <div class="hero__socials">
           <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="hero__nav-link">LinkedIn</a>
@@ -48,12 +42,33 @@
       </div>
 
       <div class="home__right">
-        <h1 class="page-title">Contact</h1>
-        <p class="contact__text" style="margin-left: 0; margin-right: 0;">Have a project in mind, a question, or just want to say hello? I'd love to hear from you.</p>
-        <a href="mailto:me@aniketh.net" class="project-item__link">
-          Send Message
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
+        <h1 class="page-title">Research</h1>
+        <div class="projects__list">
+
+          <article class="project-item">
+            <div class="project-item__header">
+              <h3 class="project-item__title">A Probabilistic Process Calculus for Durable Multi-Agent LLM Systems</h3>
+              <span class="project-item__role">Formal Methods &middot; 2026</span>
+            </div>
+            <p class="project-item__description">A probabilistic process calculus that models each LLM invocation as a first-class measurable distribution over continuations rather than a deterministic function. Built on six primitives with a probabilistic small-step operational semantics, the calculus enables formal proofs of replay soundness under nondeterminism, compositional probability bounds across concurrent agents, and information-flow guarantees for multi-agent memory access. Accompanied by a zero-dependency Rust reference implementation whose modules mirror the calculus one-to-one.</p>
+            <span class="project-item__link" style="opacity: 0.45; cursor: default;">
+              Coming soon
+            </span>
+          </article>
+
+          <article class="project-item">
+            <div class="project-item__header">
+              <h3 class="project-item__title">CNN OCSCC Detection</h3>
+              <span class="project-item__role">Machine Learning &middot; 2024</span>
+            </div>
+            <p class="project-item__description">Published paper presenting a CNN trained for high-accuracy oral cancer detection, with custom hardware for optimal image capture and an open-access application.</p>
+            <a href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener" class="project-item__link">
+              View paper
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+          </article>
+
+        </div>
       </div>
     </section>
   </main>

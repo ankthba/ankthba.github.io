@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pragmatic</title>
 
-    <meta name="description" content="Turn any filing or data room into a complete, source-cited financial model in minutes.">
+    <meta name="description" content="The first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects.">
     <meta name="author" content="Aniketh Bandlamudi">
 
-    <meta property="og:title" content="Pragmatic: AI Financial Modeling for Investment Banking">
-    <meta property="og:description" content="Turn any filing or data room into a complete, source-cited financial model in minutes.">
+    <meta property="og:title" content="Pragmatic: An operating system for AI agents">
+    <meta property="og:description" content="The first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects.">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -298,32 +298,6 @@
             border: 1px solid var(--border-2);
         }
         .btn-ghost:hover { background: rgba(26,24,22,0.04); border-color: var(--text-muted); }
-
-        /* ─── DEMO VIDEO ──────────────────────────────────────────────── */
-        .demo-video {
-            position: relative;
-            background: var(--bg);
-            padding: 0 64px 120px;
-        }
-
-        .demo-video-inner {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 20px 60px -20px rgba(26,24,22,0.18);
-        }
-
-        .demo-video video {
-            display: block;
-            width: 100%;
-            height: auto;
-            background: #000;
-            pointer-events: none;
-        }
 
         /* ─── QUOTE ───────────────────────────────────────────────────── */
         .intro {
@@ -770,8 +744,6 @@
             .hero-foot { grid-template-columns: 1fr; gap: 28px; }
             .hero-actions { justify-content: flex-start; }
 
-            .demo-video { padding: 0 24px 80px; }
-
             .intro { padding: 80px 24px; }
             .intro blockquote { font-size: clamp(28px, 7vw, 48px); }
 
@@ -811,6 +783,81 @@
             .specs-grid { grid-template-columns: 1fr 1fr; }
             .section-title { letter-spacing: -0.015em; }
         }
+
+        /* ─── RESEARCH ────────────────────────────────────────────────── */
+        .research-section {
+            padding: 128px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .research-lead {
+            font-size: 14.5px;
+            color: var(--text-2);
+            line-height: 1.8;
+            max-width: 760px;
+        }
+
+        .research-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 14px;
+            letter-spacing: 0.01em;
+        }
+
+        .research-block { margin-top: 104px; }
+
+        .research-block .section-header { margin-bottom: 40px; }
+
+        .research-sub {
+            font-family: var(--serif);
+            font-size: clamp(26px, 3.2vw, 38px);
+            font-weight: 400;
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+        }
+
+        .research-statement {
+            font-family: var(--serif);
+            font-size: clamp(24px, 3vw, 36px);
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            font-style: italic;
+            max-width: 940px;
+        }
+        .research-statement span { color: var(--text-muted); }
+
+        .three-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border);
+        }
+
+        .prim-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border);
+            border-left: 1px solid var(--border);
+            margin-top: 36px;
+        }
+
+        @media (max-width: 1080px) {
+            .research-section { padding-left: 40px; padding-right: 40px; }
+        }
+
+        @media (max-width: 860px) {
+            .research-section { padding: 96px 24px; }
+            .three-grid { grid-template-columns: 1fr; }
+            .three-grid .arch-item,
+            .three-grid .arch-item + .arch-item {
+                padding: 36px 0 !important;
+                border-right: none !important;
+                border-top: 1px solid var(--border);
+            }
+            .three-grid .arch-item:first-child { border-top: none; }
+            .prim-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -824,6 +871,7 @@
             <a href="#how">How it works</a>
             <a href="#architecture">Architecture</a>
             <a href="#cases">Use cases</a>
+            <a href="#research">Research</a>
             <a href="mailto:me@aniketh.net?subject=Pragmatic Access Request" class="nav-cta">Request Access</a>
         </div>
     </nav>
@@ -833,9 +881,9 @@
         <div class="hero-wrap" id="hero-wrap">
             <div class="hero">
                 <div class="hero-status">Development</div>
-                <h1>Extraction,<br><span id="hero-cycle"><em>not estimation.</em></span></h1>
+                <h1>Built for agents,<br><span id="hero-cycle"><em>not bolted on.</em></span></h1>
                 <div class="hero-foot">
-                    <p class="hero-desc">Pragmatic reads any CIM, 10-K, or data room and returns a complete, source-cited model in minutes: every figure pulled straight from the document, never invented.</p>
+                    <p class="hero-desc">Pragmatic is the first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects, not processes bolted onto an OS made for humans.</p>
                     <div class="hero-actions">
                         <a href="mailto:me@aniketh.net?subject=Pragmatic Access Request" class="btn btn-ink">Request Access</a>
                         <a href="#how" class="btn btn-ghost">Learn more</a>
@@ -845,28 +893,10 @@
         </div>
     </div>
 
-    <!-- ── DEMO VIDEO ────────────────────────────────────────────────── -->
-    <section class="demo-video" id="demo-video">
-        <div class="demo-video-inner">
-            <video
-                id="demo-video-el"
-                src="/assets/media/Pragmatic%20(1).mp4"
-                muted
-                defaultMuted
-                loop
-                playsinline
-                preload="auto"
-                disablepictureinpicture
-                disableremoteplayback
-                aria-hidden="true"
-                tabindex="-1"></video>
-        </div>
-    </section>
-
     <!-- ── QUOTE ─────────────────────────────────────────────────────── -->
     <div class="intro" id="intro">
         <div class="intro-inner">
-            <blockquote>The model is never the insight. <span>It is the cost of getting to the insight.</span></blockquote>
+            <blockquote>Operating systems were built for humans running programs. <span>Agents are not programs.</span></blockquote>
         </div>
     </div>
 
@@ -874,16 +904,16 @@
     <div class="stats-wrap" id="stats-wrap">
         <div class="stats">
             <div class="stat fade-in">
-                <div class="stat-value">Minutes</div>
-                <div class="stat-label">Document to model</div>
+                <div class="stat-value">Bare metal</div>
+                <div class="stat-label">No Linux, no hypervisor, no GC</div>
             </div>
             <div class="stat fade-in">
-                <div class="stat-value">Every figure</div>
-                <div class="stat-label">Cited to source</div>
+                <div class="stat-value">Zero-trust</div>
+                <div class="stat-label">Capabilities enforced by the MMU</div>
             </div>
             <div class="stat fade-in">
-                <div class="stat-value">3-statement</div>
-                <div class="stat-label">+ DCF &amp; scenarios</div>
+                <div class="stat-value">Goal-aware</div>
+                <div class="stat-label">Scheduling built on objectives</div>
             </div>
         </div>
     </div>
@@ -896,30 +926,30 @@
             <div class="how-content">
                 <div class="section-header">
                     <p class="section-label">How it works</p>
-                    <h2 class="section-title">How a filing becomes a model</h2>
+                    <h2 class="section-title">How an agent lives in the kernel</h2>
                 </div>
-                <p>Drop in your documents and Pragmatic returns a structured, source-cited model: three statements, plus DCF, debt schedule, and scenarios wherever the filing supports them.</p>
+                <p>Agents aren't processes or containers. On Pragmatic they're first-class kernel objects with persistent identity, cryptographic capabilities, and cognitive state the kernel tracks natively.</p>
             </div>
             <div class="how-list">
                 <div class="how-item fade-in">
                     <div class="how-number">i</div>
                     <div>
-                        <h3>Document ingestion</h3>
-                        <p>Drop in any CIM, 10-K, data room, or management presentation as a PDF. Pragmatic reads the full document (financial statements, footnotes, and supporting tables) and identifies the figures it needs to build the model.</p>
+                        <h3>Bare-metal boot</h3>
+                        <p>A microkernel written entirely in Rust runs directly on ARM64 hardware. No Linux, no hypervisor, no garbage collector, and none of the abstraction tax that comes from bolting agent infrastructure onto an operating system designed for humans.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
                     <div class="how-number">ii</div>
                     <div>
-                        <h3>Model generation</h3>
-                        <p>Pragmatic sends your documents to an LLM in a single tool-use call. The model extracts the figures reported in the filing, never invented, and structures them into Income Statement, Balance Sheet, and Cash Flow tabs, plus DCF, debt schedule, and scenarios where the source supports them, across historical (A) and projected (E) periods.</p>
+                        <h3>Agents as kernel objects</h3>
+                        <p>Each agent is a first-class kernel object with its own persistent identity, cryptographic capabilities, and cognitive state. Not a process, not a container, but an entity the kernel understands and carries across sessions.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
                     <div class="how-number">iii</div>
                     <div>
-                        <h3>Review and deliver</h3>
-                        <p>Every key line item carries a citation: the source page, a verbatim excerpt, and a confidence score, all surfaced in the app. Export the finished model to CSV and open it in any spreadsheet. Your team reviews the numbers against their sources instead of rebuilding them.</p>
+                        <h3>Goal-aware execution</h3>
+                        <p>The scheduler allocates resources toward objectives, not just CPU cycles. It reasons about agent goals, progress, and priority, while every syscall and state transition is cryptographically signed and written to an immutable audit trail.</p>
                     </div>
                 </div>
             </div>
@@ -930,28 +960,28 @@
     <div class="arch-section" id="architecture">
         <div class="section-header">
             <p class="section-label">Architecture</p>
-            <h2 class="section-title">What matters in a live deal</h2>
+            <h2 class="section-title">Designed at the kernel level</h2>
         </div>
         <div class="arch-grid">
             <div class="arch-item fade-in">
-                <div class="arch-tag">Speed</div>
-                <h4>Minutes, not days</h4>
-                <p>What takes a junior analyst three days takes Pragmatic minutes. A two-person team covers the deal flow of ten.</p>
+                <div class="arch-tag">Kernel</div>
+                <h4>Bare-metal microkernel</h4>
+                <p>Written entirely in Rust, running directly on ARM64 with no Linux, no hypervisor, and no garbage collector. The agent runtime is the operating system, not a layer sitting on top of one.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Accuracy</div>
-                <h4>Extracted, never invented</h4>
-                <p>The AI extracts the numbers reported in your filing and never invents them. Every key line item is grounded in the source, with the page, a verbatim excerpt, and a confidence score, so you can check each figure against the document it came from.</p>
+                <div class="arch-tag">Security</div>
+                <h4>Zero-trust capabilities</h4>
+                <p>Every resource access requires an unforgeable capability token with cryptographic provenance. Agents run at strict least-privilege, enforced in hardware by the ARM64 MMU. There is no ambient authority, and agents physically cannot touch memory they don't own.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Completeness</div>
-                <h4>Full three-statement coverage</h4>
-                <p>Income statement, balance sheet, and cash flow, plus DCF, debt schedule, and scenario tabs wherever the source supports them, across historical and projected periods. Exported as a CSV you can open in any spreadsheet.</p>
+                <div class="arch-tag">Scheduler</div>
+                <h4>Goal-aware, not time-aware</h4>
+                <p>Rather than treating CPU time as the primitive, the scheduler understands objectives, progress metrics, and priority hierarchies, allocating resources toward completing goals instead of merely running cycles.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Trust</div>
-                <h4>Cited, line by line</h4>
-                <p>Every key number is cited to its origin: the source page, the exact text it came from, and a confidence score. Models you can defend at IC, figure by figure.</p>
+                <div class="arch-tag">Memory</div>
+                <h4>Cognitive primitives</h4>
+                <p>Working, episodic, semantic, and procedural memory are first-class kernel abstractions rather than external databases. Agents manage state across sessions natively, and every transition is signed into an immutable audit log.</p>
             </div>
         </div>
     </div>
@@ -960,24 +990,24 @@
     <div class="cases-section" id="cases">
         <div class="section-header">
             <p class="section-label">Use cases</p>
-            <h2 class="section-title">Built for active deal flow</h2>
+            <h2 class="section-title">Where kernel-level guarantees matter</h2>
         </div>
         <div class="cases-grid">
             <div class="case-card fade-in">
-                <h3>Boutique IB</h3>
-                <p>M&A and capital markets advisors running five to fifteen live mandates. A two-person team does the modeling work that used to require a full analyst pool.</p>
+                <h3>Financial services</h3>
+                <p>Agents that trade and underwrite with kernel-enforced risk limits and cryptographically signed decisions. Every action is provable and every limit is enforced below the application layer, not promised by it.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Private Equity</h3>
-                <p>Buy-side teams spreading financials from CIMs under deadline. Stand up an LBO from any data room in minutes, with every figure traced back to its source page.</p>
+                <h3>Healthcare</h3>
+                <p>HIPAA-compliant diagnostic agents with hardware-enforced data isolation. Patient data lives behind capability boundaries the MMU enforces, not behind policy an application asks you to trust.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Private Credit</h3>
-                <p>Underwriting teams that need fast financial spreading. Pull the figures you underwrite on straight from the filing, each one cited to its source page and excerpt.</p>
+                <h3>Critical infrastructure</h3>
+                <p>Autonomous control systems with hardware kill switches and least-privilege by construction. Agents operate physical systems without ambient authority over anything they don't explicitly own.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Hedge Funds</h3>
-                <p>Fundamental analysts building company models for long/short research. Complete three-statement models from any filing or transcript, in minutes.</p>
+                <h3>Enterprise AI</h3>
+                <p>Multi-agent orchestration with full provenance tracking. Every syscall and state transition is signed and logged, so compliance is architectural rather than procedural.</p>
             </div>
         </div>
     </div>
@@ -990,45 +1020,165 @@
         </div>
         <div class="specs-grid">
             <div class="spec-item">
-                <div class="spec-value">LLM</div>
-                <div class="spec-label">Engine</div>
+                <div class="spec-value">Rust</div>
+                <div class="spec-label">Kernel language</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">CSV</div>
-                <div class="spec-label">Output</div>
+                <div class="spec-value">ARM64</div>
+                <div class="spec-label">Target architecture</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Minutes</div>
-                <div class="spec-label">Build time</div>
+                <div class="spec-value">Microkernel</div>
+                <div class="spec-label">Kernel design</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">3-statement</div>
-                <div class="spec-label">Model type</div>
+                <div class="spec-value">Bare metal</div>
+                <div class="spec-label">No hypervisor</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">DCF / LBO / Merger</div>
-                <div class="spec-label">Deal types</div>
+                <div class="spec-value">No GC</div>
+                <div class="spec-label">Deterministic memory</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">A + E</div>
-                <div class="spec-label">Historical + projected</div>
+                <div class="spec-value">Capabilities</div>
+                <div class="spec-label">Access model</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">PDF</div>
-                <div class="spec-label">Inputs</div>
+                <div class="spec-value">MMU</div>
+                <div class="spec-label">Hardware isolation</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Confidence</div>
-                <div class="spec-label">Scored per figure</div>
+                <div class="spec-value">4 memories</div>
+                <div class="spec-label">Working · episodic · semantic · procedural</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Source-cited</div>
-                <div class="spec-label">Every number</div>
+                <div class="spec-value">Signed</div>
+                <div class="spec-label">Every syscall</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Excerpt + page</div>
-                <div class="spec-label">Citations</div>
+                <div class="spec-value">Immutable</div>
+                <div class="spec-label">Audit log</div>
             </div>
+        </div>
+    </div>
+
+    <!-- ── RESEARCH ──────────────────────────────────────────────────── -->
+    <div class="research-section" id="research">
+        <div class="section-header">
+            <p class="section-label">Research</p>
+            <h2 class="section-title">Agentical</h2>
+        </div>
+        <p class="research-lead">A probabilistic process calculus for durable multi-agent LLM systems. Distributed-systems guarantees assume programs are deterministic; LLMs aren't. Agentical is the formal groundwork for reasoning about agent systems anyway, with replay, recovery, and information-flow guarantees that hold despite a nondeterministic model.</p>
+        <p class="research-meta">Preliminary research paper · Aniketh Bandlamudi · University of Virginia · programming-language theory and formal methods</p>
+
+        <!-- The gap -->
+        <div class="research-block">
+            <div class="how-grid">
+                <div class="how-content">
+                    <div class="section-header">
+                        <p class="section-label">The gap</p>
+                        <h3 class="research-sub">Guarantees assume determinism</h3>
+                    </div>
+                    <p>Replay, crash-recovery, debugging, and information-flow reasoning all assume programs are deterministic. Frontier models show only 50–96% determinism even at temperature 0, so LLM agent systems lose those guarantees. Prior formal work each gives up one of three needed properties.</p>
+                </div>
+                <div class="how-list">
+                    <div class="how-item fade-in">
+                        <div class="how-number">i</div>
+                        <div>
+                            <h3>LLMbda / FIDES</h3>
+                            <p>Precise single-agent calculi, but they assume the model is deterministic.</p>
+                        </div>
+                    </div>
+                    <div class="how-item fade-in">
+                        <div class="how-number">ii</div>
+                        <div>
+                            <h3>MSC calculus</h3>
+                            <p>Multi-agent and Lean-mechanized, but it treats the LLM as a black box and cannot state quantitative or probabilistic guarantees.</p>
+                        </div>
+                    </div>
+                    <div class="how-item fade-in">
+                        <div class="how-number">iii</div>
+                        <div>
+                            <h3>Durable execution (Temporal)</h3>
+                            <p>Crash-recovery in practice, but it requires determinism to work.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The idea -->
+        <div class="research-block">
+            <p class="section-label">The idea</p>
+            <p class="research-statement">Model each LLM call as a first-class probability distribution, the <span>Oracle</span>, and journal every realized outcome to an append-only log, the <span>Journal</span>. Recovery becomes replay: read back recorded outcomes instead of re-sampling.</p>
+            <p class="research-lead" style="margin-top: 28px;">Two nondeterminisms are kept cleanly separate: probabilistic (the Oracle) and adversarial scheduling (resolved by a scheduler), the standard probabilistic-automata / MDP-with-schedulers setup.</p>
+        </div>
+
+        <!-- The calculus -->
+        <div class="research-block">
+            <div class="section-header">
+                <p class="section-label">The calculus</p>
+                <h3 class="research-sub">Six primitives, two modes</h3>
+            </div>
+            <p class="research-lead">A π-calculus-style process calculus with a probabilistic small-step operational semantics in record and replay modes. A configuration is the 5-tuple &lt;P;H;J;K;t&gt;: agent pool, shared store, journal, channel state, and logical clock.</p>
+            <div class="prim-grid">
+                <div class="spec-item"><div class="spec-value">Agent</div><div class="spec-label">Goal-directed process</div></div>
+                <div class="spec-item"><div class="spec-value">Oracle</div><div class="spec-label">LLM as distribution</div></div>
+                <div class="spec-item"><div class="spec-value">Channel</div><div class="spec-label">Inter-agent message</div></div>
+                <div class="spec-item"><div class="spec-value">Memory</div><div class="spec-label">Shared store</div></div>
+                <div class="spec-item"><div class="spec-value">Journal</div><div class="spec-label">Append-only log</div></div>
+                <div class="spec-item"><div class="spec-value">Supervisor</div><div class="spec-label">Recovery + control</div></div>
+            </div>
+        </div>
+
+        <!-- Three theorems -->
+        <div class="research-block">
+            <div class="section-header">
+                <p class="section-label">Three theorems</p>
+                <h3 class="research-sub">Stated with honest scope</h3>
+            </div>
+            <div class="three-grid">
+                <div class="arch-item fade-in">
+                    <div class="arch-tag">T1 · Fully proved</div>
+                    <h4>Replay soundness</h4>
+                    <p>The flagship result: replaying the recorded journal reproduces the original run's trace exactly, with probability 1, proved via a coupling on the shared oracle-randomness space. Equiprobability follows.</p>
+                </div>
+                <div class="arch-item fade-in">
+                    <div class="arch-tag">T2 · Pen-and-paper</div>
+                    <h4>Probabilistic noninterference</h4>
+                    <p>Secret (High) inputs don't affect public (Low) observations, proved as termination-insensitive noninterference, conditional on named assumptions: per-label oracle partitioning and a label-filtered scheduler.</p>
+                </div>
+                <div class="arch-item fade-in">
+                    <div class="arch-tag">T3 · Pen-and-paper</div>
+                    <h4>Compositional bounds</h4>
+                    <p>Local per-agent probability contracts compose to a global bound, an assumption-free union bound. The product form holds only under independence, with a Fréchet–Hoeffding fallback otherwise.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verified / built -->
+        <div class="research-block">
+            <div class="section-header">
+                <p class="section-label">Verified / built</p>
+                <h3 class="research-sub">From proof to running code</h3>
+            </div>
+            <div class="cases-grid">
+                <div class="case-card fade-in">
+                    <h3>Lean 4 mechanization</h3>
+                    <p>lean/AgenticalT1.lean covers T1's operational core (the oracle fragment), trace-equivalence, crash-resume (C1), no-orphaned-effect (L4), and cursor-determinism (L1), all sorry-free. Axioms are propext, plus Quot.sound for L4. Not yet mechanized: channels, the measure-theoretic layer, or T2/T3.</p>
+                </div>
+                <div class="case-card fade-in">
+                    <h3>Rust runtime</h3>
+                    <p>A zero-dependency reference implementation. Six integration tests pass demonstrating T1, C1, and L4. Measured: 1000/1000 replay-determinism; ~230 ns O(1) append latency, flat to 1M entries; and a ~1500× replay speedup under a 1 ms/draw latency-injected oracle, since replay performs zero oracle calls.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Novelty -->
+        <div class="research-block">
+            <p class="section-label">Novelty</p>
+            <p class="research-statement">The defensible claim is the intersection: <span>probabilistic-operational semantics × multi-agent × durable-replay</span>, backed by a reference implementation. No prior work occupies all three.</p>
+            <p class="research-lead" style="margin-top: 28px;">The closest, Semantic Fusion (arXiv:2601.12580), does probabilistic bisimulation, but over ontology-validated structured proposals rather than raw LLM output, and has no replay.</p>
         </div>
     </div>
 
@@ -1036,7 +1186,7 @@
     <div class="cta-wrap" id="cta-wrap">
         <div class="cta-inner">
             <div class="cta-eyebrow">Development</div>
-            <h2>Review,<br><em>not rebuild.</em></h2>
+            <h2>Run agents,<br><em>natively.</em></h2>
             <a href="mailto:me@aniketh.net?subject=Pragmatic Inquiry" class="btn btn-chalk">Get in touch</a>
         </div>
     </div>
@@ -1067,11 +1217,11 @@
 
         // ─── Phrase cycling ───────────────────────────────────────────
         const PHRASES = [
-            'not estimation.',
-            'cited to the page.',
-            'sourced, not guessed.',
-            'grounded in the filing.',
-            'not estimation.'
+            'not bolted on.',
+            'down to the kernel.',
+            'on bare metal.',
+            'with zero trust.',
+            'not bolted on.'
         ];
 
         let cycleIdx = 0;
@@ -1134,33 +1284,6 @@
         }, { passive: true });
 
         updateNav();
-
-        // ─── Demo video autoplay on scroll ────────────────────────────
-        const demoVideo = document.getElementById('demo-video-el');
-        if (demoVideo) {
-            const forceMute = () => {
-                demoVideo.muted = true;
-                demoVideo.defaultMuted = true;
-                demoVideo.volume = 0;
-                demoVideo.setAttribute('muted', '');
-            };
-            forceMute();
-            demoVideo.addEventListener('volumechange', forceMute);
-            demoVideo.addEventListener('loadedmetadata', forceMute);
-            demoVideo.addEventListener('play', forceMute);
-
-            const videoObs = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const p = demoVideo.play();
-                        if (p && typeof p.catch === 'function') p.catch(() => {});
-                    } else {
-                        demoVideo.pause();
-                    }
-                });
-            }, { threshold: 0.25 });
-            videoObs.observe(demoVideo);
-        }
 
         // ─── Fade-in observer ─────────────────────────────────────────
         const fadeObs = new IntersectionObserver((entries) => {

@@ -1069,7 +1069,6 @@
             <h2 class="section-title">Agentical</h2>
         </div>
         <p class="research-lead">A probabilistic process calculus for durable multi-agent LLM systems. Distributed-systems guarantees assume programs are deterministic; LLMs aren't. Agentical is the formal groundwork for reasoning about agent systems anyway, with replay, recovery, and information-flow guarantees that hold despite a nondeterministic model.</p>
-        <p class="research-meta">Preliminary research paper · Aniketh Bandlamudi · University of Virginia · programming-language theory and formal methods</p>
 
         <!-- The gap -->
         <div class="research-block">
@@ -1079,28 +1078,28 @@
                         <p class="section-label">The gap</p>
                         <h3 class="research-sub">Guarantees assume determinism</h3>
                     </div>
-                    <p>Replay, crash-recovery, debugging, and information-flow reasoning all assume programs are deterministic. Frontier models show only 50–96% determinism even at temperature 0, so LLM agent systems lose those guarantees. Prior formal work each gives up one of three needed properties.</p>
+                    <p>Replay, crash-recovery, debugging, and information-flow reasoning all assume programs are deterministic. Frontier models show only 50–96% determinism even at temperature 0, so LLM agent systems lose those guarantees. Agentical sets out to preserve them anyway, holding three properties together.</p>
                 </div>
                 <div class="how-list">
                     <div class="how-item fade-in">
                         <div class="how-number">i</div>
                         <div>
-                            <h3>LLMbda / FIDES</h3>
-                            <p>Precise single-agent calculi, but they assume the model is deterministic.</p>
+                            <h3>Durable replay</h3>
+                            <p>Re-run a system from its recorded log and reproduce the same outcome, exactly.</p>
                         </div>
                     </div>
                     <div class="how-item fade-in">
                         <div class="how-number">ii</div>
                         <div>
-                            <h3>MSC calculus</h3>
-                            <p>Multi-agent and Lean-mechanized, but it treats the LLM as a black box and cannot state quantitative or probabilistic guarantees.</p>
+                            <h3>Crash recovery</h3>
+                            <p>Resume after a failure without re-sampling the model or losing prior work.</p>
                         </div>
                     </div>
                     <div class="how-item fade-in">
                         <div class="how-number">iii</div>
                         <div>
-                            <h3>Durable execution (Temporal)</h3>
-                            <p>Crash-recovery in practice, but it requires determinism to work.</p>
+                            <h3>Information-flow reasoning</h3>
+                            <p>Reason about how secret inputs can, and cannot, influence public observations.</p>
                         </div>
                     </div>
                 </div>
@@ -1174,11 +1173,10 @@
             </div>
         </div>
 
-        <!-- Novelty -->
+        <!-- Contribution -->
         <div class="research-block">
-            <p class="section-label">Novelty</p>
-            <p class="research-statement">The defensible claim is the intersection: <span>probabilistic-operational semantics × multi-agent × durable-replay</span>, backed by a reference implementation. No prior work occupies all three.</p>
-            <p class="research-lead" style="margin-top: 28px;">The closest, Semantic Fusion (arXiv:2601.12580), does probabilistic bisimulation, but over ontology-validated structured proposals rather than raw LLM output, and has no replay.</p>
+            <p class="section-label">The contribution</p>
+            <p class="research-statement">Agentical brings together <span>probabilistic-operational semantics, multi-agent coordination, and durable replay</span> in a single calculus, backed by a reference implementation.</p>
         </div>
     </div>
 

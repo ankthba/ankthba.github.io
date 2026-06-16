@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pragmatic</title>
 
-    <meta name="description" content="The first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects.">
+    <meta name="description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
     <meta name="author" content="Aniketh Bandlamudi">
 
-    <meta property="og:title" content="Pragmatic: An operating system for AI agents">
-    <meta property="og:description" content="The first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects.">
+    <meta property="og:title" content="Pragmatic: The durable execution runtime for AI agents">
+    <meta property="og:description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
 
@@ -39,6 +39,7 @@
 
             --serif: 'Instrument Serif', Georgia, serif;
             --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono:  'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -858,6 +859,293 @@
             .three-grid .arch-item:first-child { border-top: none; }
             .prim-grid { grid-template-columns: repeat(2, 1fr); }
         }
+
+        /* ─── TRUST BAND ──────────────────────────────────────────────── */
+        .trust {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .trust-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 64px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .trust-item {
+            padding: 40px 32px 40px 0;
+            border-right: 1px solid var(--border);
+        }
+        .trust-item + .trust-item { padding-left: 32px; }
+        .trust-item:last-child { border-right: none; padding-right: 0; }
+        .trust-value {
+            font-family: var(--serif);
+            font-size: 28px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        .trust-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ─── CODE SECTION ────────────────────────────────────────────── */
+        .code-section {
+            padding: 128px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .code-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 80px;
+            align-items: start;
+        }
+        .code-grid .section-header { margin-bottom: 28px; }
+        .code-grid > .code-copy p {
+            font-size: 14.5px;
+            color: var(--text-2);
+            line-height: 1.8;
+        }
+        .code-copy .code-note {
+            margin-top: 24px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        .code-card {
+            background: #0a0908;
+            border: 1px solid var(--border-2);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .code-bar {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 13px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .code-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.13); }
+        .code-file {
+            margin-left: 10px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: rgba(240,237,232,0.4);
+        }
+        .code-card pre {
+            margin: 0;
+            padding: 24px 26px;
+            font-family: var(--mono);
+            font-size: 12.5px;
+            line-height: 1.85;
+            color: rgba(240,237,232,0.9);
+            overflow-x: auto;
+        }
+        .code-card .c-com  { color: rgba(240,237,232,0.34); }
+        .code-card .c-kw   { color: #c4a47c; }
+        .code-card .c-fn   { color: #e6c9a3; }
+        .code-card .c-str  { color: #9db89b; }
+        .code-card .c-macro{ color: #b9a3c4; }
+
+        /* ─── WHY / COMPARISON ────────────────────────────────────────── */
+        .why-section {
+            padding: 128px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 56px;
+        }
+        .compare-col { padding: 44px 44px 48px; }
+        .compare-col.them { background: transparent; }
+        .compare-col.us {
+            background: rgba(196,164,124,0.06);
+            border-left: 1px solid var(--border);
+        }
+        .compare-head {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .compare-col h4 {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            margin-bottom: 28px;
+        }
+        .compare-col.us h4 { color: var(--text); }
+        .compare-row {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-2);
+            line-height: 1.6;
+        }
+        .compare-mark {
+            flex-shrink: 0;
+            font-family: var(--serif);
+            font-size: 15px;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+        .compare-col.us .compare-mark { color: var(--gold); }
+
+        /* ─── ARCH DIAGRAM ────────────────────────────────────────────── */
+        .diagram-wrap {
+            margin-top: 88px;
+            padding-top: 64px;
+            border-top: 1px solid var(--border);
+        }
+        .diagram {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            display: block;
+        }
+        .diagram text { font-family: var(--sans); }
+        .dg-box { fill: var(--bg-card); stroke: var(--border-2); }
+        .dg-accent { fill: rgba(196,164,124,0.08); stroke: var(--gold); }
+        .dg-title { fill: var(--text); font-size: 13px; font-weight: 600; }
+        .dg-sub { fill: var(--text-muted); font-size: 10.5px; }
+        .dg-line { stroke: var(--border-2); stroke-width: 1.5; fill: none; }
+        .dg-flow { stroke: var(--gold); stroke-width: 1.5; fill: none; stroke-dasharray: 4 4; }
+        .dg-lab { fill: var(--text-muted); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+        /* ─── DEPLOYMENT TIERS ────────────────────────────────────────── */
+        .deploy-section {
+            padding: 128px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .deploy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .tier {
+            padding: 44px 38px 40px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+        .tier:last-child { border-right: none; }
+        .tier.featured { background: rgba(196,164,124,0.06); }
+        .tier-name {
+            font-family: var(--serif);
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+        }
+        .tier-tag {
+            font-size: 9.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--gold);
+            margin-bottom: 18px;
+        }
+        .tier-desc {
+            font-size: 13px;
+            color: var(--text-2);
+            line-height: 1.7;
+            margin-bottom: 26px;
+        }
+        .tier-list { list-style: none; margin: 0 0 32px; flex-grow: 1; }
+        .tier-list li {
+            font-size: 12.5px;
+            color: var(--text-2);
+            padding: 9px 0 9px 20px;
+            position: relative;
+            border-top: 1px solid var(--border);
+        }
+        .tier-list li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 16px;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--gold);
+            opacity: 0.6;
+        }
+        .tier .btn { text-align: center; }
+
+        /* ─── FAQ ─────────────────────────────────────────────────────── */
+        .faq-section {
+            padding: 128px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 5fr 7fr;
+            gap: 80px;
+            align-items: start;
+        }
+        .faq-list { border-top: 1px solid var(--border); }
+        .faq-item {
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .faq-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 0.005em;
+        }
+        .faq-item p {
+            font-size: 13px;
+            color: var(--text-2);
+            line-height: 1.72;
+        }
+
+        @media (max-width: 1080px) {
+            .trust-inner, .code-section, .why-section, .deploy-section, .faq-section {
+                padding-left: 40px; padding-right: 40px;
+            }
+        }
+        @media (max-width: 860px) {
+            .trust-inner { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+            .trust-item, .trust-item + .trust-item { padding: 28px 0; border-right: none; }
+            .trust-item:nth-child(odd) { border-right: 1px solid var(--border); padding-right: 24px; }
+            .trust-item:nth-child(even) { padding-left: 24px; }
+
+            .code-section { padding: 96px 24px; }
+            .code-grid { grid-template-columns: 1fr; gap: 40px; }
+            .code-card pre { font-size: 11.5px; }
+
+            .why-section { padding: 96px 24px; }
+            .compare { grid-template-columns: 1fr; }
+            .compare-col.us { border-left: none; border-top: 1px solid var(--border); }
+
+            .diagram-wrap { margin-top: 56px; }
+
+            .deploy-section { padding: 96px 24px; }
+            .deploy-grid { grid-template-columns: 1fr; }
+            .tier { border-right: none; border-bottom: 1px solid var(--border); }
+            .tier:last-child { border-bottom: none; }
+
+            .faq-section { padding: 96px 24px; }
+            .faq-grid { grid-template-columns: 1fr; gap: 48px; }
+        }
     </style>
 </head>
 <body>
@@ -869,10 +1157,10 @@
         </a>
         <div class="nav-links">
             <a href="#how">How it works</a>
-            <a href="#architecture">Architecture</a>
-            <a href="#cases">Use cases</a>
+            <a href="#why">Why Pragmatic</a>
+            <a href="#deploy">Deployment</a>
             <a href="#research">Research</a>
-            <a href="mailto:me@aniketh.net?subject=Pragmatic Access Request" class="nav-cta">Request Access</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="nav-cta">Request early access</a>
         </div>
     </nav>
 
@@ -880,15 +1168,37 @@
     <div class="hero-pin" id="hero-pin">
         <div class="hero-wrap" id="hero-wrap">
             <div class="hero">
-                <div class="hero-status">Development</div>
-                <h1>Built for agents,<br><span id="hero-cycle"><em>not bolted on.</em></span></h1>
+                <div class="hero-status">Private beta</div>
+                <h1>Durable execution<br>for agents that<br><span id="hero-cycle"><em>don't run deterministically.</em></span></h1>
                 <div class="hero-foot">
-                    <p class="hero-desc">Pragmatic is the first operating system built from the ground up for autonomous AI agents. A bare-metal microkernel in Rust where agents are first-class kernel objects, not processes bolted onto an OS made for humans.</p>
+                    <p class="hero-desc">Pragmatic is a Rust runtime that journals every step of an agent's run, so your agents survive any crash and replay faithfully, nondeterministic LLM behavior included. Crash. Recover. Replay, exactly. Run it on your own infrastructure or on Pragmatic Cloud.</p>
                     <div class="hero-actions">
-                        <a href="mailto:me@aniketh.net?subject=Pragmatic Access Request" class="btn btn-ink">Request Access</a>
-                        <a href="#how" class="btn btn-ghost">Learn more</a>
+                        <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="btn btn-ink">Request early access</a>
+                        <a href="#how" class="btn btn-ghost">See how it works</a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TRUST BAND ────────────────────────────────────────────────── -->
+    <div class="trust">
+        <div class="trust-inner">
+            <div class="trust-item">
+                <div class="trust-value">Proved</div>
+                <div class="trust-label">Replay soundness mechanized in Lean 4, not assumed</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-value">1000 / 1000</div>
+                <div class="trust-label">Replay determinism across the reference test suite</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-value">~230 ns</div>
+                <div class="trust-label">O(1) journal append, flat to one million entries</div>
+            </div>
+            <div class="trust-item">
+                <div class="trust-value">Zero deps</div>
+                <div class="trust-label">Rust core that links into the agent you already run</div>
             </div>
         </div>
     </div>
@@ -896,7 +1206,7 @@
     <!-- ── QUOTE ─────────────────────────────────────────────────────── -->
     <div class="intro" id="intro">
         <div class="intro-inner">
-            <blockquote>Operating systems were built for humans running programs. <span>Agents are not programs.</span></blockquote>
+            <blockquote>Durable execution made software reliable. <span>But its replay model assumes determinism, and LLM agents are not deterministic. Everyone else caches around that. We modeled it.</span></blockquote>
         </div>
     </div>
 
@@ -904,16 +1214,16 @@
     <div class="stats-wrap" id="stats-wrap">
         <div class="stats">
             <div class="stat fade-in">
-                <div class="stat-value">Bare metal</div>
-                <div class="stat-label">No Linux, no hypervisor, no GC</div>
+                <div class="stat-value">Crash-safe</div>
+                <div class="stat-label">Resume exactly where you stopped</div>
             </div>
             <div class="stat fade-in">
-                <div class="stat-value">Zero-trust</div>
-                <div class="stat-label">Capabilities enforced by the MMU</div>
+                <div class="stat-value">Faithful replay</div>
+                <div class="stat-label">Reproduce any run, exactly</div>
             </div>
             <div class="stat fade-in">
-                <div class="stat-value">Goal-aware</div>
-                <div class="stat-label">Scheduling built on objectives</div>
+                <div class="stat-value">Provable</div>
+                <div class="stat-label">Built for LLM behavior, not cached around it</div>
             </div>
         </div>
     </div>
@@ -926,32 +1236,97 @@
             <div class="how-content">
                 <div class="section-header">
                     <p class="section-label">How it works</p>
-                    <h2 class="section-title">How an agent lives in the kernel</h2>
+                    <h2 class="section-title">Three guarantees, every run</h2>
                 </div>
-                <p>Agents aren't processes or containers. On Pragmatic they're first-class kernel objects with persistent identity, cryptographic capabilities, and cognitive state the kernel tracks natively.</p>
+                <p>Pragmatic wraps your agent and records what it does. Every LLM call's realized outcome lands in an append-only log, so a crash is no longer a lost run and a replay is no longer a guess.</p>
             </div>
             <div class="how-list">
                 <div class="how-item fade-in">
                     <div class="how-number">i</div>
                     <div>
-                        <h3>Bare-metal boot</h3>
-                        <p>A microkernel written entirely in Rust runs directly on ARM64 hardware. No Linux, no hypervisor, no garbage collector, and none of the abstraction tax that comes from bolting agent infrastructure onto an operating system designed for humans.</p>
+                        <h3>Journal every step</h3>
+                        <p>Each LLM call's realized outcome is recorded to an append-only log as the run proceeds. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
                     <div class="how-number">ii</div>
                     <div>
-                        <h3>Agents as kernel objects</h3>
-                        <p>Each agent is a first-class kernel object with its own persistent identity, cryptographic capabilities, and cognitive state. Not a process, not a container, but an entity the kernel understands and carries across sessions.</p>
+                        <h3>Recover from any crash</h3>
+                        <p>Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no divergent paths, and no lost work after a failure.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
                     <div class="how-number">iii</div>
                     <div>
-                        <h3>Goal-aware execution</h3>
-                        <p>The scheduler allocates resources toward objectives, not just CPU cycles. It reasons about agent goals, progress, and priority, while every syscall and state transition is cryptographically signed and written to an immutable audit trail.</p>
+                        <h3>Replay faithfully</h3>
+                        <p>Reproduce the entire run exactly for debugging and audit, nondeterministic LLM behavior included. This is T1, replay soundness: replaying the journal reproduces the original trace, exactly, every time.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CODE ──────────────────────────────────────────────────────── -->
+    <div class="code-section" id="code">
+        <div class="code-grid">
+            <div class="code-copy">
+                <div class="section-header">
+                    <p class="section-label">In your code</p>
+                    <h2 class="section-title">Durable in one wrapper</h2>
+                </div>
+                <p>Keep writing agents the way you already do. Wrap the run, route model calls through the Oracle, and Pragmatic journals every realized outcome as the agent executes.</p>
+                <p class="code-note">Crash on step nine of a thousand and the agent resumes on step nine, reading every prior call back from the Journal instead of paying for it again. Replay the whole run later and it reproduces exactly, T1, model behavior included.</p>
+            </div>
+            <div class="code-card">
+                <div class="code-bar">
+                    <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
+                    <span class="code-file">research_agent.rs</span>
+                </div>
+<pre><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-macro">#[pragmatic::durable]</span>
+<span class="c-kw">async fn</span> <span class="c-fn">research</span>(task: Task, llm: &Oracle) -&gt; Report {
+    <span class="c-kw">let</span> plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(&task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
+    <span class="c-kw">let mut</span> out = Vec::new();
+    <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps {
+        out.<span class="c-fn">push</span>(llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)).<span class="c-kw">await</span>); <span class="c-com">// journaled</span>
+    }
+    <span class="c-fn">synthesize</span>(out)
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">let</span> report = rt.<span class="c-fn">resume</span>(run_id).<span class="c-kw">await</span>;
+
+<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
+<span class="c-kw">let</span> trace  = rt.<span class="c-fn">replay</span>(run_id).<span class="c-kw">await</span>;   <span class="c-com">// T1</span></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── WHY / COMPARISON ──────────────────────────────────────────── -->
+    <div class="why-section" id="why">
+        <div class="section-header">
+            <p class="section-label">Why Pragmatic</p>
+            <h2 class="section-title">A model, not a cache</h2>
+        </div>
+        <p class="research-lead">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run. That model is what a cache cannot give you.</p>
+        <div class="compare">
+            <div class="compare-col them">
+                <div class="compare-head">Generic durable execution</div>
+                <h4>LLM as an opaque activity</h4>
+                <div class="compare-row"><span class="compare-mark">&minus;</span><span>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</span></div>
+                <div class="compare-row"><span class="compare-mark">&minus;</span><span>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</span></div>
+                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No way to reason about the probability a run meets its spec.</span></div>
+                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No guarantee about how secret inputs flow to public outputs.</span></div>
+            </div>
+            <div class="compare-col us">
+                <div class="compare-head">Pragmatic</div>
+                <h4>LLM as a first-class Oracle</h4>
+                <div class="compare-row"><span class="compare-mark">+</span><span>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</span></div>
+                <div class="compare-row"><span class="compare-mark">+</span><span>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</span></div>
+                <div class="compare-row"><span class="compare-mark">+</span><span>Compositional probability bounds let you reason about whether a multi-agent system meets its spec.</span></div>
+                <div class="compare-row"><span class="compare-mark">+</span><span>Provable noninterference: secret inputs cannot leak into public observations.</span></div>
             </div>
         </div>
     </div>
@@ -960,29 +1335,71 @@
     <div class="arch-section" id="architecture">
         <div class="section-header">
             <p class="section-label">Architecture</p>
-            <h2 class="section-title">Designed at the kernel level</h2>
+            <h2 class="section-title">A runtime, not an operating system</h2>
         </div>
         <div class="arch-grid">
             <div class="arch-item fade-in">
-                <div class="arch-tag">Kernel</div>
-                <h4>Bare-metal microkernel</h4>
-                <p>Written entirely in Rust, running directly on ARM64 with no Linux, no hypervisor, and no garbage collector. The agent runtime is the operating system, not a layer sitting on top of one.</p>
+                <div class="arch-tag">Runtime</div>
+                <h4>A library, on your infra</h4>
+                <p>Pragmatic is a Rust runtime that runs on the infrastructure you already have: Linux, containers, any cloud. It links into your agent as a library. There is nothing new to provision and no operating system to adopt.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Security</div>
-                <h4>Zero-trust capabilities</h4>
-                <p>Every resource access requires an unforgeable capability token with cryptographic provenance. Agents run at strict least-privilege, enforced in hardware by the ARM64 MMU. There is no ambient authority, and agents physically cannot touch memory they don't own.</p>
+                <div class="arch-tag">Core</div>
+                <h4>Oracle and Journal</h4>
+                <p>Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back from the Journal instead of re-sampling the model, which is what makes recovery faithful.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Scheduler</div>
-                <h4>Goal-aware, not time-aware</h4>
-                <p>Rather than treating CPU time as the primitive, the scheduler understands objectives, progress metrics, and priority hierarchies, allocating resources toward completing goals instead of merely running cycles.</p>
+                <div class="arch-tag">Trust</div>
+                <h4>Capabilities and signed log</h4>
+                <p>Every effect carries a capability token, and the Journal is a signed, immutable record of the run. You get idempotency, provenance, and a tamper-evident audit trail at the runtime level, without rebuilding any of it yourself.</p>
             </div>
             <div class="arch-item fade-in">
-                <div class="arch-tag">Memory</div>
-                <h4>Cognitive primitives</h4>
-                <p>Working, episodic, semantic, and procedural memory are first-class kernel abstractions rather than external databases. Agents manage state across sessions natively, and every transition is signed into an immutable audit log.</p>
+                <div class="arch-tag">Control</div>
+                <h4>Supervisor</h4>
+                <p>The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It is the control plane that turns a crashed run into a resumed one without re-sampling or lost work.</p>
             </div>
+        </div>
+
+        <div class="diagram-wrap fade-in">
+            <svg class="diagram" viewBox="0 0 960 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pragmatic data flow: agent calls the Oracle, outcomes are journaled, the Supervisor replays the Journal to recover.">
+                <!-- Agent -->
+                <rect class="dg-box" x="20" y="96" width="150" height="88" rx="6"/>
+                <text class="dg-title" x="95" y="132" text-anchor="middle">Agent</text>
+                <text class="dg-sub" x="95" y="152" text-anchor="middle">your run, unchanged</text>
+
+                <!-- Oracle -->
+                <rect class="dg-box" x="262" y="96" width="150" height="88" rx="6"/>
+                <text class="dg-title" x="337" y="132" text-anchor="middle">Oracle</text>
+                <text class="dg-sub" x="337" y="152" text-anchor="middle">LLM as distribution</text>
+
+                <!-- Journal -->
+                <rect class="dg-accent" x="504" y="96" width="150" height="88" rx="6"/>
+                <text class="dg-title" x="579" y="132" text-anchor="middle">Journal</text>
+                <text class="dg-sub" x="579" y="152" text-anchor="middle">append-only, signed</text>
+
+                <!-- Supervisor -->
+                <rect class="dg-box" x="746" y="96" width="150" height="88" rx="6"/>
+                <text class="dg-title" x="821" y="132" text-anchor="middle">Supervisor</text>
+                <text class="dg-sub" x="821" y="152" text-anchor="middle">recover + replay</text>
+
+                <!-- forward arrows -->
+                <path class="dg-line" d="M170 140 L256 140"/>
+                <path class="dg-line" d="M250 140 l-8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
+                <path class="dg-line" d="M412 140 L498 140"/>
+                <path class="dg-line" d="M492 140 l-8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
+                <text class="dg-lab" x="213" y="128" text-anchor="middle">call</text>
+                <text class="dg-lab" x="455" y="128" text-anchor="middle">record</text>
+
+                <!-- supervisor reads journal -->
+                <path class="dg-line" d="M746 140 L660 140"/>
+                <path class="dg-line" d="M666 140 l8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
+                <text class="dg-lab" x="703" y="128" text-anchor="middle">read</text>
+
+                <!-- replay loop: journal back to agent -->
+                <path class="dg-flow" d="M579 184 L579 244 L95 244 L95 188"/>
+                <path class="dg-flow" d="M95 194 l-4 -8 h8 z" fill="var(--gold)" stroke="none"/>
+                <text class="dg-lab" x="337" y="236" text-anchor="middle" style="fill:var(--gold)">replay: read outcomes back, no re-sampling</text>
+            </svg>
         </div>
     </div>
 
@@ -990,24 +1407,24 @@
     <div class="cases-section" id="cases">
         <div class="section-header">
             <p class="section-label">Use cases</p>
-            <h2 class="section-title">Where kernel-level guarantees matter</h2>
+            <h2 class="section-title">What you build on it</h2>
         </div>
         <div class="cases-grid">
             <div class="case-card fade-in">
-                <h3>Financial services</h3>
-                <p>Agents that trade and underwrite with kernel-enforced risk limits and cryptographically signed decisions. Every action is provable and every limit is enforced below the application layer, not promised by it.</p>
+                <h3>Long-running agents</h3>
+                <p>Agents that run for hours or days survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. No re-sampling, no half-finished work, no babysitting.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Healthcare</h3>
-                <p>HIPAA-compliant diagnostic agents with hardware-enforced data isolation. Patient data lives behind capability boundaries the MMU enforces, not behind policy an application asks you to trust.</p>
+                <h3>Time-travel debugging</h3>
+                <p>Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Stop guessing at heisenbugs you cannot reproduce and replay the real thing.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Critical infrastructure</h3>
-                <p>Autonomous control systems with hardware kill switches and least-privilege by construction. Agents operate physical systems without ambient authority over anything they don't explicitly own.</p>
+                <h3>Reproducible, auditable runs</h3>
+                <p>Every run has a signed, replayable record of what the agent actually did. That reproducibility matters most for regulated and high-stakes teams, and it ships in the box rather than being bolted on later.</p>
             </div>
             <div class="case-card fade-in">
-                <h3>Enterprise AI</h3>
-                <p>Multi-agent orchestration with full provenance tracking. Every syscall and state transition is signed and logged, so compliance is architectural rather than procedural.</p>
+                <h3>Multi-agent recovery</h3>
+                <p>When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
             </div>
         </div>
     </div>
@@ -1021,43 +1438,89 @@
         <div class="specs-grid">
             <div class="spec-item">
                 <div class="spec-value">Rust</div>
-                <div class="spec-label">Kernel language</div>
+                <div class="spec-label">Runtime language</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">ARM64</div>
-                <div class="spec-label">Target architecture</div>
+                <div class="spec-value">Linux, any cloud</div>
+                <div class="spec-label">Runs on your infra</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Microkernel</div>
-                <div class="spec-label">Kernel design</div>
+                <div class="spec-value">~230 ns</div>
+                <div class="spec-label">O(1) journal append</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">Bare metal</div>
-                <div class="spec-label">No hypervisor</div>
+                <div class="spec-value">1M entries</div>
+                <div class="spec-label">Flat append latency</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">No GC</div>
-                <div class="spec-label">Deterministic memory</div>
+                <div class="spec-value">1000 / 1000</div>
+                <div class="spec-label">Replay determinism</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">~1500&times;</div>
+                <div class="spec-label">Replay speedup</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">Oracle + Journal</div>
+                <div class="spec-label">Execution model</div>
+            </div>
+            <div class="spec-item">
+                <div class="spec-value">6 primitives</div>
+                <div class="spec-label">Formal core</div>
             </div>
             <div class="spec-item">
                 <div class="spec-value">Capabilities</div>
-                <div class="spec-label">Access model</div>
+                <div class="spec-label">Per-effect access</div>
             </div>
             <div class="spec-item">
-                <div class="spec-value">MMU</div>
-                <div class="spec-label">Hardware isolation</div>
+                <div class="spec-value">Signed log</div>
+                <div class="spec-label">Immutable audit trail</div>
             </div>
-            <div class="spec-item">
-                <div class="spec-value">4 memories</div>
-                <div class="spec-label">Working · episodic · semantic · procedural</div>
+        </div>
+    </div>
+
+    <!-- ── DEPLOYMENT ────────────────────────────────────────────────── -->
+    <div class="deploy-section" id="deploy">
+        <div class="section-header">
+            <p class="section-label">Deployment</p>
+            <h2 class="section-title">Run it your way</h2>
+        </div>
+        <div class="deploy-grid">
+            <div class="tier">
+                <div class="tier-name">Self-hosted</div>
+                <div class="tier-tag">The runtime</div>
+                <p class="tier-desc">The Pragmatic runtime on your own infrastructure. Your data and Journals never leave your environment.</p>
+                <ul class="tier-list">
+                    <li>Rust runtime, links as a library</li>
+                    <li>Runs on Linux, containers, any cloud</li>
+                    <li>Append-only Journal you own</li>
+                    <li>Recovery and faithful replay</li>
+                </ul>
+                <a href="mailto:me@aniketh.net?subject=Pragmatic self-hosted" class="btn btn-ghost">Request early access</a>
             </div>
-            <div class="spec-item">
-                <div class="spec-value">Signed</div>
-                <div class="spec-label">Every syscall</div>
+            <div class="tier featured">
+                <div class="tier-name">Pragmatic Cloud</div>
+                <div class="tier-tag">Managed</div>
+                <p class="tier-desc">The runtime, fully managed. Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
+                <ul class="tier-list">
+                    <li>Hosted, durable journaling at scale</li>
+                    <li>Replay console and run timeline</li>
+                    <li>Observability and alerting</li>
+                    <li>Usage-based, scales to zero</li>
+                </ul>
+                <a href="mailto:me@aniketh.net?subject=Pragmatic Cloud early access" class="btn btn-ink">Request early access</a>
             </div>
-            <div class="spec-item">
-                <div class="spec-value">Immutable</div>
-                <div class="spec-label">Audit log</div>
+            <div class="tier">
+                <div class="tier-name">Enterprise</div>
+                <div class="tier-tag">Regulated and high-stakes</div>
+                <p class="tier-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
+                <ul class="tier-list">
+                    <li>Signed, immutable audit log</li>
+                    <li>Information-flow guarantees</li>
+                    <li>SSO, on-prem, and dedicated support</li>
+                    <li>Design-partner roadmap access</li>
+                </ul>
+                <a href="mailto:me@aniketh.net?subject=Pragmatic Enterprise" class="btn btn-ghost">Talk to us</a>
             </div>
         </div>
     </div>
@@ -1066,9 +1529,9 @@
     <div class="research-section" id="research">
         <div class="section-header">
             <p class="section-label">Research</p>
-            <h2 class="section-title">Agentical</h2>
+            <h2 class="section-title">Agentical, the theory behind the runtime</h2>
         </div>
-        <p class="research-lead">A probabilistic process calculus for durable multi-agent LLM systems. Distributed-systems guarantees assume programs are deterministic; LLMs aren't. Agentical is the formal groundwork for reasoning about agent systems anyway, with replay, recovery, and information-flow guarantees that hold despite a nondeterministic model.</p>
+        <p class="research-lead">Pragmatic's guarantees are real because they are proved. Agentical is the probabilistic process calculus underneath the runtime: the reason crash recovery and faithful replay hold even when the model underneath is nondeterministic. This is the engine room, not a separate paper.</p>
 
         <!-- The gap -->
         <div class="research-block">
@@ -1076,9 +1539,9 @@
                 <div class="how-content">
                     <div class="section-header">
                         <p class="section-label">The gap</p>
-                        <h3 class="research-sub">Guarantees assume determinism</h3>
+                        <h3 class="research-sub">Durable execution assumes determinism</h3>
                     </div>
-                    <p>Replay, crash-recovery, debugging, and information-flow reasoning all assume programs are deterministic. Frontier models show only 50–96% determinism even at temperature 0, so LLM agent systems lose those guarantees. Agentical sets out to preserve them anyway, holding three properties together.</p>
+                    <p>Durable execution is the proven substrate for reliable software: Temporal, Restate, Inngest, and DBOS all build on it. But its replay model assumes code is deterministic, so every engine hacks around LLMs by caching model outputs as opaque activities. Frontier models show only 50 to 96 percent determinism even at temperature 0. Pragmatic is durable execution built for nondeterminism from the ground up, holding three properties together.</p>
                 </div>
                 <div class="how-list">
                     <div class="how-item fade-in">
@@ -1180,12 +1643,49 @@
         </div>
     </div>
 
+    <!-- ── FAQ ───────────────────────────────────────────────────────── -->
+    <div class="faq-section" id="faq">
+        <div class="faq-grid">
+            <div class="faq-content">
+                <div class="section-header">
+                    <p class="section-label">FAQ</p>
+                    <h2 class="section-title">The hard questions</h2>
+                </div>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <h4>Why not just use Temporal?</h4>
+                    <p>General durable execution engines cache a model call as an opaque activity and replay the stored value. That works, but the engine has no model of the call, so you get no probabilistic reasoning and no information-flow guarantees, and replay holds only while you keep the surrounding code deterministic by hand. Pragmatic is built for nondeterminism from the ground up, with the replay guarantee mechanically proved.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>How can replay be faithful if LLMs are nondeterministic?</h4>
+                    <p>Pragmatic does not re-sample the model on replay. The first run records each realized outcome to the Journal, and replay reads those outcomes back. Reproducing a run reads from the log rather than calling the model again, which is what makes it exact. This is T1, proved by a coupling on the shared oracle-randomness space.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Do I have to rewrite my agent?</h4>
+                    <p>No. Keep your agent logic and route model calls through the Oracle. The runtime links in as a library and journals outcomes as the agent runs. There is no new operating system and no new orchestration language to learn.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Is it production-ready?</h4>
+                    <p>Pragmatic is in private beta with design partners. The replay guarantee (T1) is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery tests today. The probabilistic and information-flow results (T2, T3) are proved pen-and-paper and not yet mechanized. We are honest about that scope.</p>
+                </div>
+                <div class="faq-item">
+                    <h4>Where does my data live?</h4>
+                    <p>With self-hosted, the runtime and your Journals stay entirely in your environment. Pragmatic Cloud manages durable journaling and replay for you. Enterprise adds a signed, immutable audit trail and information-flow guarantees for regulated teams.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ── CTA ───────────────────────────────────────────────────────── -->
     <div class="cta-wrap" id="cta-wrap">
         <div class="cta-inner">
-            <div class="cta-eyebrow">Development</div>
-            <h2>Run agents,<br><em>natively.</em></h2>
-            <a href="mailto:me@aniketh.net?subject=Pragmatic Inquiry" class="btn btn-chalk">Get in touch</a>
+            <div class="cta-eyebrow">Private beta</div>
+            <h2>Crash. Recover.<br><em>Replay, exactly.</em></h2>
+            <div class="hero-actions" style="justify-content:flex-start; gap:10px;">
+                <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="btn btn-chalk">Request early access</a>
+                <a href="mailto:me@aniketh.net?subject=Pragmatic design partner" class="btn btn-ghost-dark">Talk to us</a>
+            </div>
         </div>
     </div>
 
@@ -1215,11 +1715,11 @@
 
         // ─── Phrase cycling ───────────────────────────────────────────
         const PHRASES = [
-            'not bolted on.',
-            'down to the kernel.',
-            'on bare metal.',
-            'with zero trust.',
-            'not bolted on.'
+            "don't run deterministically.",
+            'crash and come back.',
+            'you can replay.',
+            'you can put in production.',
+            "don't run deterministically."
         ];
 
         let cycleIdx = 0;

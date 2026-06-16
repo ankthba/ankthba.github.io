@@ -69,7 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---------------------------------------------------------
 // 5. Elastic Name Effect (Reactive to mouse anywhere)
 // ---------------------------------------------------------
-
+// DISABLED: the name now stays still. Hover effect is a CRT flicker
+// handled in CSS (.hero__title:hover .hero__name-*).
+/*
 document.addEventListener('DOMContentLoaded', () => {
   const nameFirst = document.querySelector('.hero__name-first');
   const nameLast = document.querySelector('.hero__name-last');
@@ -148,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+*/
 
 
 // ---------------------------------------------------------

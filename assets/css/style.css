@@ -34,6 +34,9 @@
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Scanline stripe colour (faint dark line on light; flips to light on dark) */
+  --scanline: rgba(0, 0, 0, 0.045);
+
   color-scheme: light;
 }
 
@@ -45,6 +48,7 @@
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
     --color-border-hover: rgba(241, 233, 217, 0.22);
+    --scanline: rgba(255, 255, 255, 0.05);
     color-scheme: dark;
   }
 }
@@ -66,6 +70,7 @@
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);
   --color-border-hover: rgba(241, 233, 217, 0.22);
+  --scanline: rgba(255, 255, 255, 0.05);
   color-scheme: dark;
 }
 
@@ -316,7 +321,7 @@ section {
 
 .hero__name-first,
 .hero__name-last {
-  display: block;
+  display: inline-block;
 }
 
 /* Name is a link on sub-pages (not home) - glow on hover */
@@ -326,7 +331,89 @@ section {
 }
 
 .hero__title a:hover {
-  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+  text-shadow: 0 0 5px currentColor;
+}
+
+/* CRT effect on name hover (replaces the cursor-reactive elastic effect).
+   Layered for realism: a soft phosphor flicker, gentle chromatic fringing
+   with a bloom, and faint rolling scanlines over the glyphs. */
+.hero__name-first,
+.hero__name-last {
+  position: relative;
+}
+
+/* Mostly stable with occasional soft dips — eased, not stepped, so it reads
+   as a phosphor shimmer rather than a strobe. */
+@keyframes crt-flicker {
+  0%   { opacity: 1; }
+  8%   { opacity: 0.985; }
+  9%   { opacity: 0.9; }
+  10%  { opacity: 0.99; }
+  24%  { opacity: 1; }
+  25%  { opacity: 0.95; }
+  26%  { opacity: 1; }
+  43%  { opacity: 0.99; }
+  44%  { opacity: 0.87; }
+  45%  { opacity: 1; }
+  62%  { opacity: 0.985; }
+  70%  { opacity: 1; }
+  71%  { opacity: 0.93; }
+  72%  { opacity: 1; }
+  89%  { opacity: 0.99; }
+  90%  { opacity: 0.89; }
+  91%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Chromatic fringe + phosphor bloom that breathes smoothly. */
+@keyframes crt-chroma {
+  0%   { text-shadow: 0.4px 0 0 rgba(255,45,85,0.32), -0.4px 0 0 rgba(45,200,255,0.32), 0 0 6px currentColor; }
+  50%  { text-shadow: 0.85px 0 0 rgba(255,45,85,0.4), -0.85px 0 0 rgba(45,200,255,0.4), 0 0 11px currentColor; }
+  100% { text-shadow: 0.4px 0 0 rgba(255,45,85,0.32), -0.4px 0 0 rgba(45,200,255,0.32), 0 0 6px currentColor; }
+}
+
+/* Same chromatic fringe + bloom for SVG icons (filter-based). */
+@keyframes crt-chroma-filter {
+  0%   { filter: drop-shadow(0.4px 0 0 rgba(255,45,85,0.5)) drop-shadow(-0.4px 0 0 rgba(45,200,255,0.5)) drop-shadow(0 0 4px currentColor); }
+  50%  { filter: drop-shadow(0.8px 0 0 rgba(255,45,85,0.55)) drop-shadow(-0.8px 0 0 rgba(45,200,255,0.55)) drop-shadow(0 0 8px currentColor); }
+  100% { filter: drop-shadow(0.4px 0 0 rgba(255,45,85,0.5)) drop-shadow(-0.4px 0 0 rgba(45,200,255,0.5)) drop-shadow(0 0 4px currentColor); }
+}
+
+.hero__title:hover .hero__name-first,
+.hero__title:hover .hero__name-last {
+  animation: crt-flicker 5s ease-in-out infinite,
+             crt-chroma 2.4s ease-in-out infinite;
+  will-change: opacity, text-shadow;
+}
+
+/* Desync the two lines so they don't flicker in lockstep. */
+.hero__title:hover .hero__name-last {
+  animation-delay: -1.7s, -0.9s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title:hover .hero__name-first,
+  .hero__title:hover .hero__name-last { animation: none; }
+}
+
+/* ---------------------------------------------------------
+   Global scanlines — evenly spaced, single colour, moving
+   --------------------------------------------------------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10000;
+  /* fine, evenly spaced CRT scanlines — a 1px line every 3px, kept low
+     contrast and static so it reads as texture, not a gimmick */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--scanline) 0,
+    var(--scanline) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
 .hero__subtitle {
@@ -354,6 +441,26 @@ section {
 
 .hero__socials .hero__nav-link:hover {
   opacity: 1;
+}
+
+/* Social icons: sized and styled to match the © and the sun/moon toggle */
+.hero__social {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-muted);
+  opacity: 0.65;
+  transition: color var(--transition-fast), opacity var(--transition-fast), filter var(--transition-base);
+}
+
+.hero__social svg {
+  width: 15px;
+  height: 15px;
+}
+
+.hero__social:hover {
+  color: var(--color-fg);
+  animation: crt-flicker 5s ease-in-out infinite,
+             crt-chroma-filter 2.4s ease-in-out infinite;
 }
 
 @media (min-width: 769px) {
@@ -478,6 +585,19 @@ section {
   color: var(--color-muted);
   margin-top: 0.25rem;
   transition: color var(--transition-fast), text-shadow var(--transition-base);
+}
+
+/* Stacked links (e.g. Learn more + App Store) */
+.project-item__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.project-item__links .project-item__link {
+  margin-top: 0;
 }
 
 .project-item__link:hover {
@@ -1010,15 +1130,29 @@ section {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+    /* shrink the column to the name so the nav + socials can span its width */
+    width: max-content;
+    max-width: 100%;
   }
 
   .home__left .hero__title {
-    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-size: clamp(3.75rem, 7.2vw, 5.5rem);
     text-align: left;
   }
 
+  /* nav links and social icons stretch edge-to-edge across the name's width */
   .home__left .hero__nav {
-    justify-content: flex-start;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .home__left .hero__socials {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .home__left .home__controls {
+    margin-left: 0;
   }
 
   .home__right .about__text p {
@@ -1054,21 +1188,30 @@ section {
     text-align: center;
   }
 
+  .home__left .hero__title {
+    font-size: clamp(2.75rem, 13vw, 3.75rem);
+  }
+
   .home__left .hero__nav {
-    flex-wrap: wrap;
-    gap: 0.35rem 0.55rem;
+    width: auto;
     justify-content: center;
+    column-gap: 1.75rem;
+    row-gap: 0.5rem;
   }
 
   .home__left .hero__nav-link {
-    font-size: 0.78rem;
+    font-size: 0.85rem;
     white-space: nowrap;
   }
 
-  .hero__socials {
-    flex-wrap: wrap;
-    gap: 0.35rem 0.65rem;
+  .home__left .hero__socials {
+    width: auto;
     justify-content: center;
+    gap: 0.9rem;
+  }
+
+  .home__left .home__controls {
+    margin-left: 0;
   }
 }
 
@@ -1077,10 +1220,12 @@ section {
    --------------------------------------------------------- */
 
 .hero__nav {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  column-gap: 1.75rem;
+  row-gap: 0.55rem;
   justify-content: center;
+  justify-items: start;
   margin-top: var(--space-md);
 }
 
@@ -1093,7 +1238,8 @@ section {
 
 .hero__nav-link:hover {
   color: var(--color-fg);
-  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor, 0 0 32px currentColor;
+  animation: crt-flicker 5s ease-in-out infinite,
+             crt-chroma 2.4s ease-in-out infinite;
 }
 
 .hero__nav-link.active {
@@ -1179,19 +1325,30 @@ section {
 .theme-icon {
   background: none;
   border: none;
-  padding: 0;
+  /* Padding (cancelled by the negative margin) enlarges the button's box so the
+     hover glow has room and isn't clipped at the edge of the controls row. */
+  padding: 6px;
+  margin: -6px;
   cursor: pointer;
   color: var(--color-muted);
   opacity: 0.65;
   display: inline-flex;
   align-items: center;
+  position: relative;
+  z-index: 2;
   transition: color var(--transition-fast), opacity var(--transition-fast), filter var(--transition-base);
 }
 
 .theme-icon:hover {
   color: var(--color-fg);
-  opacity: 1;
-  filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 16px currentColor);
+  animation: crt-flicker 5s ease-in-out infinite,
+             crt-chroma-filter 2.4s ease-in-out infinite;
+}
+
+/* Keep the glow from being clipped by the controls / socials containers */
+.home__controls,
+.hero__socials {
+  overflow: visible;
 }
 
 .theme-icon svg {

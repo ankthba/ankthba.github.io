@@ -957,122 +957,49 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        .compare {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 56px;
-        }
-        .compare-col { padding: 44px 44px 48px; }
-        .compare-col.them { background: transparent; }
-        .compare-col.us {
-            background: rgba(196,164,124,0.06);
-            border-left: 1px solid var(--border);
-        }
-        .compare-head {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .compare-col h4 {
-            font-family: var(--serif);
-            font-size: 24px;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            margin-bottom: 28px;
-        }
-        .compare-col.us h4 { color: var(--text); }
-        .compare-row {
-            display: flex;
-            gap: 12px;
-            padding: 14px 0;
+        .contrast {
+            margin-top: 48px;
             border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.6;
         }
-        .compare-mark {
-            flex-shrink: 0;
-            font-family: var(--serif);
-            font-size: 15px;
-            line-height: 1.4;
+        .contrast-row {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 56px;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .contrast-k {
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
             color: var(--text-muted);
+            padding-top: 2px;
         }
-        .compare-col.us .compare-mark { color: var(--gold); }
+        .contrast-row.us .contrast-k { color: var(--gold); }
+        .contrast-row p {
+            font-size: 15px;
+            line-height: 1.72;
+            color: var(--text-2);
+            max-width: 660px;
+        }
+        .contrast-row.us p { color: var(--text); }
 
-        /* ─── DEPLOYMENT TIERS ────────────────────────────────────────── */
+        /* ─── DEPLOYMENT ──────────────────────────────────────────────── */
         .deploy-section {
             padding: 128px 64px;
             max-width: 1200px;
             margin: 0 auto;
         }
-        .deploy-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .tier {
-            padding: 44px 38px 40px;
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-        .tier:last-child { border-right: none; }
-        .tier.featured { background: rgba(196,164,124,0.06); }
-        .tier-name {
+        .deploy-statement {
             font-family: var(--serif);
-            font-size: 24px;
-            font-weight: 400;
+            font-size: clamp(24px, 3vw, 36px);
+            line-height: 1.3;
             letter-spacing: -0.01em;
-            margin-bottom: 10px;
+            color: var(--text);
+            max-width: 880px;
         }
-        .tier-tag {
-            font-size: 9.5px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--gold);
-            margin-bottom: 18px;
-        }
-        .tier-desc {
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.7;
-            margin-bottom: 26px;
-        }
-        .tier-list { list-style: none; margin: 0 0 32px; flex-grow: 1; }
-        .tier-list li {
-            font-size: 12.5px;
-            color: var(--text-2);
-            padding: 9px 0 9px 20px;
-            position: relative;
-            border-top: 1px solid var(--border);
-        }
-        .tier-list li::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 16px;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--gold);
-            opacity: 0.6;
-        }
-        .tier .btn { text-align: center; }
-        .btn-soon {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            cursor: default;
-            pointer-events: none;
-        }
+        .deploy-statement span { color: var(--text-muted); }
+        .deploy-cta { margin-top: 36px; }
 
         /* ─── FAQ ─────────────────────────────────────────────────────── */
         .faq-section {
@@ -1119,13 +1046,10 @@
             .code-card pre { font-size: 11.5px; }
 
             .why-section { padding: 96px 24px; }
-            .compare { grid-template-columns: 1fr; }
-            .compare-col.us { border-left: none; border-top: 1px solid var(--border); }
+            .contrast-row { grid-template-columns: 1fr; gap: 12px; padding: 32px 0; }
+            .contrast-row p { font-size: 14px; }
 
             .deploy-section { padding: 96px 24px; }
-            .deploy-grid { grid-template-columns: 1fr; }
-            .tier { border-right: none; border-bottom: 1px solid var(--border); }
-            .tier:last-child { border-bottom: none; }
 
             .faq-section { padding: 96px 24px; }
             .faq-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -1142,8 +1066,8 @@
         <div class="nav-links">
             <a href="#how">How it works</a>
             <a href="#why">Why Pragmatic</a>
-            <a href="#deploy">Deployment</a>
             <a href="#research">Research</a>
+            <a href="#faq">FAQ</a>
             <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="nav-cta">Request early access</a>
         </div>
     </nav>
@@ -1276,23 +1200,14 @@
             <p class="section-label">Why Pragmatic</p>
             <h2 class="section-title">A model, not a cache</h2>
         </div>
-        <p class="research-lead">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run. That model is what a cache cannot give you.</p>
-        <div class="compare">
-            <div class="compare-col them">
-                <div class="compare-head">Generic durable execution</div>
-                <h4>LLM as an opaque activity</h4>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No way to reason about the probability a run meets its spec.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No guarantee about how secret inputs flow to public outputs.</span></div>
+        <div class="contrast">
+            <div class="contrast-row">
+                <div class="contrast-k">The common approach</div>
+                <p>Durable execution engines treat a model call as an opaque step: run it once, store the output, replay the stored value. The engine never understands the call, so replay holds only while the surrounding code stays deterministic, and there is nothing to reason about probabilities or how secret inputs reach public outputs.</p>
             </div>
-            <div class="compare-col us">
-                <div class="compare-head">Pragmatic</div>
-                <h4>LLM as a first-class Oracle</h4>
-                <div class="compare-row"><span class="compare-mark">+</span><span>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>Compositional probability bounds let you reason about whether a multi-agent system meets its spec.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>Provable noninterference: secret inputs cannot leak into public observations.</span></div>
+            <div class="contrast-row us">
+                <div class="contrast-k">Pragmatic</div>
+                <p>We model the call itself as a probability distribution and prove that replay reproduces the run. Because the model is first-class, you get what a cache cannot: faithful replay across nondeterministic behavior, compositional probability bounds across agents, and provable control over how secret inputs flow to public outputs.</p>
             </div>
         </div>
     </div>
@@ -1405,48 +1320,9 @@
 
     <!-- ── DEPLOYMENT ────────────────────────────────────────────────── -->
     <div class="deploy-section" id="deploy">
-        <div class="section-header">
-            <p class="section-label">Deployment</p>
-            <h2 class="section-title">Run it your way</h2>
-        </div>
-        <div class="deploy-grid">
-            <div class="tier">
-                <div class="tier-name">Self-hosted</div>
-                <div class="tier-tag">The runtime</div>
-                <p class="tier-desc">The Pragmatic runtime on your own infrastructure. Your data and Journals never leave your environment.</p>
-                <ul class="tier-list">
-                    <li>Rust runtime, links as a library</li>
-                    <li>Runs on Linux, containers, any cloud</li>
-                    <li>Append-only Journal you own</li>
-                    <li>Recovery and faithful replay</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-            <div class="tier featured">
-                <div class="tier-name">Pragmatic Cloud</div>
-                <div class="tier-tag">Managed</div>
-                <p class="tier-desc">The runtime, fully managed. Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
-                <ul class="tier-list">
-                    <li>Hosted, durable journaling at scale</li>
-                    <li>Replay console and run timeline</li>
-                    <li>Observability and alerting</li>
-                    <li>Usage-based, scales to zero</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-            <div class="tier">
-                <div class="tier-name">Enterprise</div>
-                <div class="tier-tag">Regulated and high-stakes</div>
-                <p class="tier-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
-                <ul class="tier-list">
-                    <li>Signed, immutable audit log</li>
-                    <li>Information-flow guarantees</li>
-                    <li>SSO, on-prem, and dedicated support</li>
-                    <li>Design-partner roadmap access</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-        </div>
+        <p class="section-label">Deployment</p>
+        <p class="deploy-statement">A self-hosted runtime and a managed cloud are coming. <span>We are onboarding a small group of design partners now.</span></p>
+        <a href="mailto:me@aniketh.net?subject=Pragmatic design partner" class="btn btn-ghost deploy-cta">Talk to us</a>
     </div>
 
     <!-- ── RESEARCH ──────────────────────────────────────────────────── -->

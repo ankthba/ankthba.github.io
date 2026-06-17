@@ -936,6 +936,34 @@
             font-size: 11px;
             color: rgba(240,237,232,0.4);
         }
+        .lang-tabs {
+            display: flex;
+            gap: 2px;
+            margin-left: auto;
+        }
+        .lang-tab {
+            font-family: var(--mono);
+            font-size: 10.5px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            color: rgba(240,237,232,0.35);
+            background: transparent;
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s, border-color 0.15s;
+            line-height: 1.6;
+        }
+        .lang-tab:hover {
+            color: rgba(240,237,232,0.7);
+            background: rgba(255,255,255,0.05);
+        }
+        .lang-tab.active {
+            color: rgba(240,237,232,0.9);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.1);
+        }
+        .code-snippet { display: none; }
+        .code-snippet.active { display: block; }
         .code-card pre {
             margin: 0;
             padding: 24px 26px;
@@ -1246,14 +1274,20 @@
             <div class="code-card">
                 <div class="code-bar">
                     <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
-                    <span class="code-file">research_agent.rs</span>
+                    <span class="code-file" id="code-filename">research_agent.rs</span>
+                    <div class="lang-tabs">
+                        <button class="lang-tab active" data-lang="rust">Rust</button>
+                        <button class="lang-tab" data-lang="python">Python</button>
+                        <button class="lang-tab" data-lang="java">Java</button>
+                        <button class="lang-tab" data-lang="cpp">C++</button>
+                    </div>
                 </div>
-<pre><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
+<pre class="code-snippet active" data-lang="rust"><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
 
 <span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
 <span class="c-macro">#[pragmatic::durable]</span>
-<span class="c-kw">async fn</span> <span class="c-fn">research</span>(task: Task, llm: &Oracle) -&gt; Report {
-    <span class="c-kw">let</span> plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(&task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
+<span class="c-kw">async fn</span> <span class="c-fn">research</span>(task: Task, llm: &amp;Oracle) -&gt; Report {
+    <span class="c-kw">let</span> plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(&amp;task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
     <span class="c-kw">let mut</span> out = Vec::new();
     <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps {
         out.<span class="c-fn">push</span>(llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)).<span class="c-kw">await</span>); <span class="c-com">// journaled</span>
@@ -1266,6 +1300,60 @@
 
 <span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
 <span class="c-kw">let</span> trace  = rt.<span class="c-fn">replay</span>(run_id).<span class="c-kw">await</span>;   <span class="c-com">// T1</span></pre>
+<pre class="code-snippet" data-lang="python"><span class="c-kw">from</span> pragmatic <span class="c-kw">import</span> Oracle, runtime
+
+<span class="c-com"># Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-macro">@pragmatic.durable</span>
+<span class="c-kw">async def</span> <span class="c-fn">research</span>(task: Task, llm: Oracle) -&gt; Report:
+    plan = <span class="c-kw">await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task))     <span class="c-com"># journaled</span>
+    out = []
+    <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps:
+        out.<span class="c-fn">append</span>(<span class="c-kw">await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)))  <span class="c-com"># journaled</span>
+    <span class="c-kw">return</span> <span class="c-fn">synthesize</span>(out)
+
+<span class="c-com"># Crash anywhere. Resume exactly, no re-sampling.</span>
+report = <span class="c-kw">await</span> rt.<span class="c-fn">resume</span>(run_id)
+
+<span class="c-com"># Replay the whole run, bit for bit, for audit.</span>
+trace  = <span class="c-kw">await</span> rt.<span class="c-fn">replay</span>(run_id)   <span class="c-com"># T1</span></pre>
+<pre class="code-snippet" data-lang="java"><span class="c-kw">import</span> pragmatic.Oracle;
+<span class="c-kw">import</span> pragmatic.Runtime;
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-macro">@Pragmatic.Durable</span>
+CompletableFuture&lt;Report&gt; <span class="c-fn">research</span>(Task task, Oracle llm) {
+    Plan plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task)).<span class="c-fn">join</span>();     <span class="c-com">// journaled</span>
+    List&lt;Output&gt; out = <span class="c-kw">new</span> ArrayList&lt;&gt;();
+    <span class="c-kw">for</span> (Step step : plan.<span class="c-fn">getSteps</span>()) {
+        out.<span class="c-fn">add</span>(llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)).<span class="c-fn">join</span>());   <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">return</span> <span class="c-fn">synthesize</span>(out);
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+Report report = rt.<span class="c-fn">resume</span>(runId).<span class="c-fn">join</span>();
+
+<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
+Trace trace  = rt.<span class="c-fn">replay</span>(runId).<span class="c-fn">join</span>();   <span class="c-com">// T1</span></pre>
+<pre class="code-snippet" data-lang="cpp"><span class="c-macro">#include</span> <span class="c-str">&lt;pragmatic/oracle.hpp&gt;</span>
+<span class="c-macro">#include</span> <span class="c-str">&lt;pragmatic/runtime.hpp&gt;</span>
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-macro">PRAGMATIC_DURABLE</span>
+<span class="c-kw">auto</span> <span class="c-fn">research</span>(Task task, Oracle&amp; llm) -&gt; Task::future&lt;Report&gt; {
+    <span class="c-kw">auto</span> plan = <span class="c-kw">co_await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task));     <span class="c-com">// journaled</span>
+    std::vector&lt;Output&gt; out;
+    <span class="c-kw">for</span> (<span class="c-kw">auto</span>&amp; step : plan.steps) {
+        out.<span class="c-fn">push_back</span>(<span class="c-kw">co_await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)));  <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">co_return</span> <span class="c-fn">synthesize</span>(out);
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">auto</span> report = <span class="c-kw">co_await</span> rt.<span class="c-fn">resume</span>(run_id);
+
+<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
+<span class="c-kw">auto</span> trace  = <span class="c-kw">co_await</span> rt.<span class="c-fn">replay</span>(run_id);   <span class="c-com">// T1</span></pre>
             </div>
         </div>
     </div>
@@ -1775,6 +1863,19 @@
             });
         }, { threshold: 0.6 });
         document.querySelectorAll('.stat-value').forEach(el => countObs.observe(el));
+
+        // ─── Language tab switcher ────────────────────────────────────
+        const FILENAMES = { rust: 'research_agent.rs', python: 'research_agent.py', java: 'ResearchAgent.java', cpp: 'research_agent.cpp' };
+        document.querySelectorAll('.lang-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.code-snippet').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelector(`.code-snippet[data-lang="${lang}"]`).classList.add('active');
+                document.getElementById('code-filename').textContent = FILENAMES[lang];
+            });
+        });
     </script>
 
 </body>

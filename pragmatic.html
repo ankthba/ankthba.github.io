@@ -203,10 +203,10 @@
 
         .hero h1 {
             font-family: var(--serif);
-            font-size: clamp(68px, 11.5vw, 152px);
+            font-size: clamp(38px, 5.2vw, 70px);
             font-weight: 400;
-            line-height: 0.95;
-            letter-spacing: 0.01em;
+            line-height: 1.06;
+            letter-spacing: 0.005em;
             color: var(--text);
             margin-bottom: 0;
             opacity: 0;
@@ -587,7 +587,7 @@
 
         .cta-inner h2 {
             font-family: var(--serif);
-            font-size: clamp(52px, 9vw, 120px);
+            font-size: clamp(40px, 6.2vw, 84px);
             font-weight: 400;
             letter-spacing: -0.035em;
             line-height: 0.95;
@@ -741,7 +741,7 @@
             .hero-wrap { position: relative; height: auto; }
             .hero { height: auto; min-height: 100vh; padding: 140px 24px 72px; }
             .hero-status { left: 24px; top: 68px; }
-            .hero h1 { font-size: clamp(52px, 12vw, 88px); }
+            .hero h1 { font-size: clamp(34px, 8vw, 50px); }
             .hero-foot { grid-template-columns: 1fr; gap: 28px; }
             .hero-actions { justify-content: flex-start; }
 
@@ -770,7 +770,7 @@
             .specs-grid { grid-template-columns: repeat(2, 1fr); }
 
             .cta-inner { padding: 112px 24px; }
-            .cta-inner h2 { font-size: clamp(44px, 12vw, 80px); }
+            .cta-inner h2 { font-size: clamp(34px, 9vw, 52px); }
 
             footer { padding: 32px 24px; }
             .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -778,7 +778,7 @@
 
         @media (max-width: 560px) {
             .nav-cta { padding: 6px 14px; font-size: 11px; }
-            .hero h1 { font-size: clamp(44px, 13vw, 68px); }
+            .hero h1 { font-size: clamp(30px, 9vw, 42px); }
             .hero-actions { flex-direction: column; width: 100%; }
             .btn { width: 100%; text-align: center; padding: 13px 20px; }
             .specs-grid { grid-template-columns: 1fr 1fr; }
@@ -1005,32 +1005,6 @@
         }
         .compare-col.us .compare-mark { color: var(--gold); }
 
-        /* ─── ARCH DIAGRAM ────────────────────────────────────────────── */
-        .diagram-wrap {
-            margin-top: 88px;
-            padding-top: 64px;
-            border-top: 1px solid var(--border);
-        }
-        .diagram {
-            width: 100%;
-            max-width: 980px;
-            margin: 0 auto;
-            display: block;
-        }
-        .dg-name   { fill: var(--text); font-family: var(--serif); font-size: 22px; }
-        .dg-sub    { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; }
-        .dg-jtitle { fill: var(--text); font-family: var(--serif); font-size: 19px; }
-        .dg-cap    { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; }
-        .dg-cell      { fill: rgba(196,164,124,0.06); stroke: var(--border-2); }
-        .dg-cell-next { fill: none; stroke: var(--border-2); stroke-dasharray: 3 3; }
-        .dg-idx    { fill: var(--gold); fill-opacity: 0.7; font-family: var(--mono); font-size: 9px; }
-        .dg-line   { stroke: var(--border-2); stroke-width: 1.25; fill: none; }
-        .dg-arrow  { fill: var(--border-2); }
-        .dg-flow   { stroke: var(--gold); stroke-width: 1.5; fill: none; }
-        .dg-farrow { fill: var(--gold); }
-        .dg-rtag   { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; }
-        .dg-ftag   { fill: var(--gold); font-family: var(--mono); font-size: 9px; letter-spacing: 0.13em; }
-
         /* ─── DEPLOYMENT TIERS ────────────────────────────────────────── */
         .deploy-section {
             padding: 128px 64px;
@@ -1148,8 +1122,6 @@
             .compare { grid-template-columns: 1fr; }
             .compare-col.us { border-left: none; border-top: 1px solid var(--border); }
 
-            .diagram-wrap { margin-top: 56px; }
-
             .deploy-section { padding: 96px 24px; }
             .deploy-grid { grid-template-columns: 1fr; }
             .tier { border-right: none; border-bottom: 1px solid var(--border); }
@@ -1183,7 +1155,7 @@
                 <div class="hero-status">Private beta</div>
                 <h1>Durable execution<br>for agents that<br><span id="hero-cycle"><em>don't run deterministically.</em></span></h1>
                 <div class="hero-foot">
-                    <p class="hero-desc">Pragmatic is a Rust runtime that journals every step of an agent's run, so your agents survive any crash and replay faithfully, nondeterministic LLM behavior included. Crash. Recover. Replay, exactly. Run it on your own infrastructure or on Pragmatic Cloud.</p>
+                    <p class="hero-desc">A Rust runtime that journals every step an agent takes, so it survives any crash and replays exactly, nondeterministic model behavior included.</p>
                     <div class="hero-actions">
                         <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="btn btn-ink">Request early access</a>
                         <a href="#how" class="btn btn-ghost">See how it works</a>
@@ -1219,24 +1191,6 @@
     <div class="intro" id="intro">
         <div class="intro-inner">
             <blockquote>Durable execution made software reliable. <span>But its replay model assumes determinism, and LLM agents are not deterministic. Everyone else caches around that. We modeled it.</span></blockquote>
-        </div>
-    </div>
-
-    <!-- ── STATS ─────────────────────────────────────────────────────── -->
-    <div class="stats-wrap" id="stats-wrap">
-        <div class="stats">
-            <div class="stat fade-in">
-                <div class="stat-value">Crash-safe</div>
-                <div class="stat-label">Resume exactly where you stopped</div>
-            </div>
-            <div class="stat fade-in">
-                <div class="stat-value">Faithful replay</div>
-                <div class="stat-label">Reproduce any run, exactly</div>
-            </div>
-            <div class="stat fade-in">
-                <div class="stat-value">Provable</div>
-                <div class="stat-label">Built for LLM behavior, not cached around it</div>
-            </div>
         </div>
     </div>
 
@@ -1370,48 +1324,6 @@
                 <h4>Supervisor</h4>
                 <p>The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It is the control plane that turns a crashed run into a resumed one without re-sampling or lost work.</p>
             </div>
-        </div>
-
-        <div class="diagram-wrap fade-in">
-            <svg class="diagram" viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Record and replay over an append-only journal. On the first run the agent calls the Oracle, samples once, and appends each outcome to the Journal. On recovery the Supervisor replays the Journal, reading outcomes back to the agent without re-sampling.">
-                <!-- record pass (top) -->
-                <text class="dg-rtag" x="420" y="26" text-anchor="middle">RECORD · CALL THE ORACLE, SAMPLE ONCE, APPEND THE OUTCOME</text>
-                <line class="dg-line" x1="150" y1="44" x2="690" y2="44"/>
-                <polygon class="dg-arrow" points="690,44 681,39.5 681,48.5"/>
-
-                <!-- agent -->
-                <text class="dg-name" x="40" y="120">Agent</text>
-                <text class="dg-sub"  x="41" y="138">your run, unchanged</text>
-
-                <!-- journal -->
-                <text class="dg-jtitle" x="456" y="84" text-anchor="middle">Journal</text>
-                <rect class="dg-cell" x="220" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell" x="290" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell" x="360" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell" x="430" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell" x="500" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell" x="570" y="100" width="62" height="48" rx="2"/>
-                <rect class="dg-cell-next" x="640" y="100" width="52" height="48" rx="2"/>
-                <text class="dg-idx" x="251" y="128" text-anchor="middle">#1</text>
-                <text class="dg-idx" x="321" y="128" text-anchor="middle">#2</text>
-                <text class="dg-idx" x="391" y="128" text-anchor="middle">#3</text>
-                <text class="dg-idx" x="461" y="128" text-anchor="middle">#4</text>
-                <text class="dg-idx" x="531" y="128" text-anchor="middle">#5</text>
-                <text class="dg-idx" x="601" y="128" text-anchor="middle">#6</text>
-                <text class="dg-sub" x="666" y="128" text-anchor="middle">next</text>
-                <text class="dg-cap" x="456" y="172" text-anchor="middle">APPEND-ONLY · SIGNED</text>
-
-                <!-- supervisor -->
-                <text class="dg-name" x="840" y="120" text-anchor="end">Supervisor</text>
-                <text class="dg-sub"  x="839" y="138" text-anchor="end">recover + replay</text>
-
-                <!-- replay pass (bottom, gold) -->
-                <line class="dg-flow" x1="772" y1="148" x2="772" y2="202"/>
-                <line class="dg-flow" x1="772" y1="202" x2="90"  y2="202"/>
-                <line class="dg-flow" x1="90"  y1="202" x2="90"  y2="140"/>
-                <polygon class="dg-farrow" points="90,134 85.5,143 94.5,143"/>
-                <text class="dg-ftag" x="431" y="224" text-anchor="middle">REPLAY · READ OUTCOMES BACK, NO RE-SAMPLING</text>
-            </svg>
         </div>
     </div>
 

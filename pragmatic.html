@@ -965,6 +965,25 @@
         .code-snippet { display: none; }
         .code-snippet.active { display: block; }
         .code-card pre {
+            -webkit-overflow-scrolling: touch;
+        }
+        @media (max-width: 600px) {
+            .code-bar { flex-wrap: wrap; row-gap: 0; }
+            .lang-tabs {
+                margin-left: 0;
+                width: 100%;
+                border-top: 1px solid rgba(255,255,255,0.07);
+                padding: 8px 0 2px;
+                gap: 4px;
+            }
+            .lang-tab {
+                flex: 1;
+                text-align: center;
+                padding: 7px 4px;
+                font-size: 11px;
+            }
+        }
+        .code-card pre {
             margin: 0;
             padding: 24px 26px;
             font-family: var(--mono);

@@ -1017,14 +1017,19 @@
             margin: 0 auto;
             display: block;
         }
-        .diagram text { font-family: var(--sans); }
-        .dg-box { fill: var(--bg-card); stroke: var(--border-2); }
-        .dg-accent { fill: rgba(196,164,124,0.08); stroke: var(--gold); }
-        .dg-title { fill: var(--text); font-size: 13px; font-weight: 600; }
-        .dg-sub { fill: var(--text-muted); font-size: 10.5px; }
-        .dg-line { stroke: var(--border-2); stroke-width: 1.5; fill: none; }
-        .dg-flow { stroke: var(--gold); stroke-width: 1.5; fill: none; stroke-dasharray: 4 4; }
-        .dg-lab { fill: var(--text-muted); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+        .dg-name   { fill: var(--text); font-family: var(--serif); font-size: 22px; }
+        .dg-sub    { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; }
+        .dg-jtitle { fill: var(--text); font-family: var(--serif); font-size: 19px; }
+        .dg-cap    { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; }
+        .dg-cell      { fill: rgba(196,164,124,0.06); stroke: var(--border-2); }
+        .dg-cell-next { fill: none; stroke: var(--border-2); stroke-dasharray: 3 3; }
+        .dg-idx    { fill: var(--gold); fill-opacity: 0.7; font-family: var(--mono); font-size: 9px; }
+        .dg-line   { stroke: var(--border-2); stroke-width: 1.25; fill: none; }
+        .dg-arrow  { fill: var(--border-2); }
+        .dg-flow   { stroke: var(--gold); stroke-width: 1.5; fill: none; }
+        .dg-farrow { fill: var(--gold); }
+        .dg-rtag   { fill: var(--text-muted); font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; }
+        .dg-ftag   { fill: var(--gold); font-family: var(--mono); font-size: 9px; letter-spacing: 0.13em; }
 
         /* ─── DEPLOYMENT TIERS ────────────────────────────────────────── */
         .deploy-section {
@@ -1087,6 +1092,13 @@
             opacity: 0.6;
         }
         .tier .btn { text-align: center; }
+        .btn-soon {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            cursor: default;
+            pointer-events: none;
+        }
 
         /* ─── FAQ ─────────────────────────────────────────────────────── */
         .faq-section {
@@ -1361,44 +1373,44 @@
         </div>
 
         <div class="diagram-wrap fade-in">
-            <svg class="diagram" viewBox="0 0 960 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pragmatic data flow: agent calls the Oracle, outcomes are journaled, the Supervisor replays the Journal to recover.">
-                <!-- Agent -->
-                <rect class="dg-box" x="20" y="96" width="150" height="88" rx="6"/>
-                <text class="dg-title" x="95" y="132" text-anchor="middle">Agent</text>
-                <text class="dg-sub" x="95" y="152" text-anchor="middle">your run, unchanged</text>
+            <svg class="diagram" viewBox="0 0 880 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Record and replay over an append-only journal. On the first run the agent calls the Oracle, samples once, and appends each outcome to the Journal. On recovery the Supervisor replays the Journal, reading outcomes back to the agent without re-sampling.">
+                <!-- record pass (top) -->
+                <text class="dg-rtag" x="420" y="26" text-anchor="middle">RECORD · CALL THE ORACLE, SAMPLE ONCE, APPEND THE OUTCOME</text>
+                <line class="dg-line" x1="150" y1="44" x2="690" y2="44"/>
+                <polygon class="dg-arrow" points="690,44 681,39.5 681,48.5"/>
 
-                <!-- Oracle -->
-                <rect class="dg-box" x="262" y="96" width="150" height="88" rx="6"/>
-                <text class="dg-title" x="337" y="132" text-anchor="middle">Oracle</text>
-                <text class="dg-sub" x="337" y="152" text-anchor="middle">LLM as distribution</text>
+                <!-- agent -->
+                <text class="dg-name" x="40" y="120">Agent</text>
+                <text class="dg-sub"  x="41" y="138">your run, unchanged</text>
 
-                <!-- Journal -->
-                <rect class="dg-accent" x="504" y="96" width="150" height="88" rx="6"/>
-                <text class="dg-title" x="579" y="132" text-anchor="middle">Journal</text>
-                <text class="dg-sub" x="579" y="152" text-anchor="middle">append-only, signed</text>
+                <!-- journal -->
+                <text class="dg-jtitle" x="456" y="84" text-anchor="middle">Journal</text>
+                <rect class="dg-cell" x="220" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell" x="290" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell" x="360" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell" x="430" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell" x="500" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell" x="570" y="100" width="62" height="48" rx="2"/>
+                <rect class="dg-cell-next" x="640" y="100" width="52" height="48" rx="2"/>
+                <text class="dg-idx" x="251" y="128" text-anchor="middle">#1</text>
+                <text class="dg-idx" x="321" y="128" text-anchor="middle">#2</text>
+                <text class="dg-idx" x="391" y="128" text-anchor="middle">#3</text>
+                <text class="dg-idx" x="461" y="128" text-anchor="middle">#4</text>
+                <text class="dg-idx" x="531" y="128" text-anchor="middle">#5</text>
+                <text class="dg-idx" x="601" y="128" text-anchor="middle">#6</text>
+                <text class="dg-sub" x="666" y="128" text-anchor="middle">next</text>
+                <text class="dg-cap" x="456" y="172" text-anchor="middle">APPEND-ONLY · SIGNED</text>
 
-                <!-- Supervisor -->
-                <rect class="dg-box" x="746" y="96" width="150" height="88" rx="6"/>
-                <text class="dg-title" x="821" y="132" text-anchor="middle">Supervisor</text>
-                <text class="dg-sub" x="821" y="152" text-anchor="middle">recover + replay</text>
+                <!-- supervisor -->
+                <text class="dg-name" x="840" y="120" text-anchor="end">Supervisor</text>
+                <text class="dg-sub"  x="839" y="138" text-anchor="end">recover + replay</text>
 
-                <!-- forward arrows -->
-                <path class="dg-line" d="M170 140 L256 140"/>
-                <path class="dg-line" d="M250 140 l-8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
-                <path class="dg-line" d="M412 140 L498 140"/>
-                <path class="dg-line" d="M492 140 l-8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
-                <text class="dg-lab" x="213" y="128" text-anchor="middle">call</text>
-                <text class="dg-lab" x="455" y="128" text-anchor="middle">record</text>
-
-                <!-- supervisor reads journal -->
-                <path class="dg-line" d="M746 140 L660 140"/>
-                <path class="dg-line" d="M666 140 l8 -4 v8 z" fill="var(--border-2)" stroke="none"/>
-                <text class="dg-lab" x="703" y="128" text-anchor="middle">read</text>
-
-                <!-- replay loop: journal back to agent -->
-                <path class="dg-flow" d="M579 184 L579 244 L95 244 L95 188"/>
-                <path class="dg-flow" d="M95 194 l-4 -8 h8 z" fill="var(--gold)" stroke="none"/>
-                <text class="dg-lab" x="337" y="236" text-anchor="middle" style="fill:var(--gold)">replay: read outcomes back, no re-sampling</text>
+                <!-- replay pass (bottom, gold) -->
+                <line class="dg-flow" x1="772" y1="148" x2="772" y2="202"/>
+                <line class="dg-flow" x1="772" y1="202" x2="90"  y2="202"/>
+                <line class="dg-flow" x1="90"  y1="202" x2="90"  y2="140"/>
+                <polygon class="dg-farrow" points="90,134 85.5,143 94.5,143"/>
+                <text class="dg-ftag" x="431" y="224" text-anchor="middle">REPLAY · READ OUTCOMES BACK, NO RE-SAMPLING</text>
             </svg>
         </div>
     </div>
@@ -1496,7 +1508,7 @@
                     <li>Append-only Journal you own</li>
                     <li>Recovery and faithful replay</li>
                 </ul>
-                <a href="mailto:me@aniketh.net?subject=Pragmatic self-hosted" class="btn btn-ghost">Request early access</a>
+                <span class="btn btn-soon">Coming soon</span>
             </div>
             <div class="tier featured">
                 <div class="tier-name">Pragmatic Cloud</div>
@@ -1508,7 +1520,7 @@
                     <li>Observability and alerting</li>
                     <li>Usage-based, scales to zero</li>
                 </ul>
-                <a href="mailto:me@aniketh.net?subject=Pragmatic Cloud early access" class="btn btn-ink">Request early access</a>
+                <span class="btn btn-soon">Coming soon</span>
             </div>
             <div class="tier">
                 <div class="tier-name">Enterprise</div>
@@ -1520,7 +1532,7 @@
                     <li>SSO, on-prem, and dedicated support</li>
                     <li>Design-partner roadmap access</li>
                 </ul>
-                <a href="mailto:me@aniketh.net?subject=Pragmatic Enterprise" class="btn btn-ghost">Talk to us</a>
+                <span class="btn btn-soon">Coming soon</span>
             </div>
         </div>
     </div>
@@ -1654,8 +1666,8 @@
             </div>
             <div class="faq-list">
                 <div class="faq-item">
-                    <h4>Why not just use Temporal?</h4>
-                    <p>General durable execution engines cache a model call as an opaque activity and replay the stored value. That works, but the engine has no model of the call, so you get no probabilistic reasoning and no information-flow guarantees, and replay holds only while you keep the surrounding code deterministic by hand. Pragmatic is built for nondeterminism from the ground up, with the replay guarantee mechanically proved.</p>
+                    <h4>How is this different from a general durable execution engine?</h4>
+                    <p>General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and we build on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee, which is what nondeterministic agents need.</p>
                 </div>
                 <div class="faq-item">
                     <h4>How can replay be faithful if LLMs are nondeterministic?</h4>

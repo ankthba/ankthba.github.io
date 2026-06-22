@@ -14,8 +14,8 @@
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #f3f2ee;
-  --color-bg-alt: #fcfbf8;
+  --color-bg: #faf9f5;
+  --color-bg-alt: #fffefb;
   --color-fg: #232220;
   --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
@@ -42,8 +42,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #171717;
-    --color-bg-alt: #1f1f1f;
+    --color-bg: #262624;
+    --color-bg-alt: #30302e;
     --color-fg: #eeede9;
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
@@ -54,8 +54,8 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #f3f2ee;
-  --color-bg-alt: #fcfbf8;
+  --color-bg: #faf9f5;
+  --color-bg-alt: #fffefb;
   --color-fg: #232220;
   --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
@@ -64,8 +64,8 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #171717;
-  --color-bg-alt: #1f1f1f;
+  --color-bg: #262624;
+  --color-bg-alt: #30302e;
   --color-fg: #eeede9;
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);

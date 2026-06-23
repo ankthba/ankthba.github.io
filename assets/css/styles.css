@@ -7,19 +7,19 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-.instrument-serif-regular {
-  font-family: "Instrument Serif", serif;
+.playfair-display-regular {
+  font-family: "Playfair Display", serif;
   font-weight: 400;
   font-style: normal;
   font-stretch: condensed;
   letter-spacing: -0.02em;
 }
 
-.instrument-serif-regular-italic {
-  font-family: "Instrument Serif", serif;
+.playfair-display-regular-italic {
+  font-family: "Playfair Display", serif;
   font-weight: 400;
   font-style: italic;
   font-stretch: condensed;
@@ -43,7 +43,7 @@
   --color-muted: #d1d5db;
   --color-border: #fff;
   --transition: 0.2s cubic-bezier(.4, 0, .2, 1);
-  --font-serif: "Instrument Serif", serif;
+  --font-serif: "Playfair Display", serif;
   --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   color-scheme: dark;
 }

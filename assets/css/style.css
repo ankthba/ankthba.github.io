@@ -6,7 +6,7 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 /* ---------------------------------------------------------
@@ -21,7 +21,7 @@
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
 
-  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 
   --space-xs: 0.5rem;

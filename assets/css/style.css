@@ -1142,7 +1142,7 @@ section {
   justify-content: center;
   column-gap: 1.5rem;
   row-gap: 0.6rem;
-  max-width: 23rem;
+  max-width: 28rem;
   margin: var(--space-md) auto 0;
 }
 

@@ -33,9 +33,11 @@ if (themeToggle) {
       setTheme(e.target.value);
     });
   } else {
-    // Icon button: simple light/dark toggle
+    // Icon button: cycle light → dark → auto (system)
     themeToggle.addEventListener('click', () => {
-      setTheme(effectiveTheme(getTheme()) === 'dark' ? 'light' : 'dark');
+      const current = getTheme();
+      const next = current === 'light' ? 'dark' : current === 'dark' ? 'auto' : 'light';
+      setTheme(next);
     });
   }
 }

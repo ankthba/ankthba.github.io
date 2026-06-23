@@ -14,8 +14,8 @@
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #faf9f5;
-  --color-bg-alt: #fffefb;
+  --color-bg: #fdfdfc;
+  --color-bg-alt: #ffffff;
   --color-fg: #232220;
   --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
@@ -39,8 +39,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #262624;
-    --color-bg-alt: #30302e;
+    --color-bg: #1f1f1e;
+    --color-bg-alt: #2a2a29;
     --color-fg: #eeede9;
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
@@ -50,8 +50,8 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #faf9f5;
-  --color-bg-alt: #fffefb;
+  --color-bg: #fdfdfc;
+  --color-bg-alt: #ffffff;
   --color-fg: #232220;
   --color-muted: #6a665f;
   --color-border: rgba(45, 40, 30, 0.1);
@@ -60,8 +60,8 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #262624;
-  --color-bg-alt: #30302e;
+  --color-bg: #1f1f1e;
+  --color-bg-alt: #2a2a29;
   --color-fg: #eeede9;
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);
@@ -1275,29 +1275,16 @@ section {
 }
 
 .theme-icon .icon-sun,
-.theme-icon .icon-moon {
+.theme-icon .icon-moon,
+.theme-icon .icon-system {
   display: none;
 }
 
-:root[data-theme="light"] .theme-icon .icon-sun {
-  display: block;
-}
-
-:root[data-theme="dark"] .theme-icon .icon-moon {
-  display: block;
-}
-
-@media (prefers-color-scheme: light) {
-  :root[data-theme="auto"] .theme-icon .icon-sun {
-    display: block;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root[data-theme="auto"] .theme-icon .icon-moon {
-    display: block;
-  }
-}
+:root[data-theme="light"] .theme-icon .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon .icon-moon { display: block; }
+:root[data-theme="auto"] .theme-icon .icon-sun,
+:root[data-theme="auto"] .theme-icon .icon-moon { display: none; }
+:root[data-theme="auto"] .theme-icon .icon-system { display: block; }
 
 /* Home page: Featured scroller + copyright/theme live in their own block
    (bottom of the left column on desktop, below everything on mobile) */

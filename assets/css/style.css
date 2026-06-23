@@ -2,6 +2,8 @@
    style.css - Clean & Classy Portfolio
    ========================================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
 /* ---------------------------------------------------------
    1. Fonts
    --------------------------------------------------------- */
@@ -22,7 +24,7 @@
   --color-border-hover: rgba(45, 40, 30, 0.22);
 
   --font-serif: "EB Garamond", Georgia, serif;
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: "Cormorant Garamond", Georgia, serif;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;

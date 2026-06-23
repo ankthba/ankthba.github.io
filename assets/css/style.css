@@ -2,24 +2,21 @@
    style.css - Clean & Classy Portfolio
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
-
 /* ---------------------------------------------------------
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 /* ---------------------------------------------------------
    2. CSS Variables & Theme
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #fdfdfc;
-  --color-bg-alt: #ffffff;
-  --color-fg: #232220;
-  --color-muted: #6a665f;
+  --color-bg: #faf8f5;
+  --color-bg-alt: #f5f2ee;
+  --color-fg: #1e1c1a;
+  --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
 
@@ -41,8 +38,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #1f1f1e;
-    --color-bg-alt: #2a2a29;
+    --color-bg: #1f1d1b;
+    --color-bg-alt: #2a2825;
     --color-fg: #eeede9;
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
@@ -52,18 +49,18 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #fdfdfc;
-  --color-bg-alt: #ffffff;
-  --color-fg: #232220;
-  --color-muted: #6a665f;
+  --color-bg: #faf8f5;
+  --color-bg-alt: #f5f2ee;
+  --color-fg: #1e1c1a;
+  --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #1f1f1e;
-  --color-bg-alt: #2a2a29;
+  --color-bg: #1f1d1b;
+  --color-bg-alt: #2a2825;
   --color-fg: #eeede9;
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);

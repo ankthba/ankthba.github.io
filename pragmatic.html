@@ -1270,21 +1270,21 @@
             </div>
             <div class="how-list">
                 <div class="how-item fade-in">
-                    <div class="how-number">i</div>
+                    <div class="how-number">01</div>
                     <div>
                         <h3>Journal every step</h3>
                         <p>Each LLM call's realized outcome is recorded to an append-only log as the run proceeds. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
-                    <div class="how-number">ii</div>
+                    <div class="how-number">02</div>
                     <div>
                         <h3>Recover from any crash</h3>
                         <p>Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no divergent paths, and no lost work after a failure.</p>
                     </div>
                 </div>
                 <div class="how-item fade-in">
-                    <div class="how-number">iii</div>
+                    <div class="how-number">03</div>
                     <div>
                         <h3>Replay faithfully</h3>
                         <p>Reproduce the entire run exactly for debugging and audit, nondeterministic LLM behavior included. This is T1, replay soundness: replaying the journal reproduces the original trace, exactly, every time.</p>
@@ -1591,21 +1591,21 @@ Trace trace  = rt.<span class="c-fn">replay</span>(runId).<span class="c-fn">joi
                 </div>
                 <div class="how-list">
                     <div class="how-item fade-in">
-                        <div class="how-number">i</div>
+                        <div class="how-number">01</div>
                         <div>
                             <h3>Durable replay</h3>
                             <p>Re-run a system from its recorded log and reproduce the same outcome, exactly.</p>
                         </div>
                     </div>
                     <div class="how-item fade-in">
-                        <div class="how-number">ii</div>
+                        <div class="how-number">02</div>
                         <div>
                             <h3>Crash recovery</h3>
                             <p>Resume after a failure without re-sampling the model or losing prior work.</p>
                         </div>
                     </div>
                     <div class="how-item fade-in">
-                        <div class="how-number">iii</div>
+                        <div class="how-number">03</div>
                         <div>
                             <h3>Information-flow reasoning</h3>
                             <p>Reason about how secret inputs can, and cannot, influence public observations.</p>

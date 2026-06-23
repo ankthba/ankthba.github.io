@@ -6,22 +6,22 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 /* ---------------------------------------------------------
    2. CSS Variables & Theme
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #f9f8f6;
-  --color-bg-alt: #f3f2ef;
+  --color-bg: #fdfdfc;
+  --color-bg-alt: #f5f4f2;
   --color-fg: #1e1d1b;
   --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
 
   --font-serif: "EB Garamond", Georgia, serif;
-  --font-sans: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "EB Garamond", Georgia, serif;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -38,8 +38,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #1f1e1c;
-    --color-bg-alt: #2a2927;
+    --color-bg: #1f1f1e;
+    --color-bg-alt: #292928;
     --color-fg: #eeede9;
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
@@ -49,8 +49,8 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #f9f8f6;
-  --color-bg-alt: #f3f2ef;
+  --color-bg: #fdfdfc;
+  --color-bg-alt: #f5f4f2;
   --color-fg: #1e1d1b;
   --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
@@ -59,8 +59,8 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #1f1e1c;
-  --color-bg-alt: #2a2927;
+  --color-bg: #1f1f1e;
+  --color-bg-alt: #292928;
   --color-fg: #eeede9;
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);

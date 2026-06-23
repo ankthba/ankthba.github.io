@@ -13,9 +13,9 @@
    --------------------------------------------------------- */
 
 :root {
-  --color-bg: #faf8f5;
-  --color-bg-alt: #f5f2ee;
-  --color-fg: #1e1c1a;
+  --color-bg: #f9f8f6;
+  --color-bg-alt: #f3f2ef;
+  --color-fg: #1e1d1b;
   --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
@@ -38,8 +38,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root, :root[data-theme="auto"] {
-    --color-bg: #1f1d1b;
-    --color-bg-alt: #2a2825;
+    --color-bg: #1f1e1c;
+    --color-bg-alt: #2a2927;
     --color-fg: #eeede9;
     --color-muted: #9a958c;
     --color-border: rgba(241, 233, 217, 0.09);
@@ -49,9 +49,9 @@
 }
 
 :root[data-theme="light"] {
-  --color-bg: #faf8f5;
-  --color-bg-alt: #f5f2ee;
-  --color-fg: #1e1c1a;
+  --color-bg: #f9f8f6;
+  --color-bg-alt: #f3f2ef;
+  --color-fg: #1e1d1b;
   --color-muted: #6b6459;
   --color-border: rgba(45, 40, 30, 0.1);
   --color-border-hover: rgba(45, 40, 30, 0.22);
@@ -59,8 +59,8 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #1f1d1b;
-  --color-bg-alt: #2a2825;
+  --color-bg: #1f1e1c;
+  --color-bg-alt: #2a2927;
   --color-fg: #eeede9;
   --color-muted: #9a958c;
   --color-border: rgba(241, 233, 217, 0.09);
@@ -91,8 +91,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: 1.05rem;
+  font-weight: 500;
   line-height: 1.6;
   color: var(--color-fg);
   background-color: var(--color-bg);

@@ -485,7 +485,7 @@ section {
 }
 
 .project-item__role {
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   color: var(--color-muted);
   letter-spacing: 0.01em;
 }

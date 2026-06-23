@@ -307,48 +307,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ---------------------------------------------------------
-// 10. Animated Grain / Static Effect
-// ---------------------------------------------------------
-
-(function () {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const canvas = document.createElement('canvas');
-  canvas.setAttribute('aria-hidden', 'true');
-  canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9997;opacity:0.06;filter:blur(0.6px);';
-  document.body.appendChild(canvas);
-
-  const ctx = canvas.getContext('2d');
-  let w = 0, h = 0;
-
-  function resize() {
-    // Lower scale stretches fewer pixels over the viewport -> larger grain specks
-    const scale = 1.0;
-    w = canvas.width = Math.ceil(window.innerWidth * scale);
-    h = canvas.height = Math.ceil(window.innerHeight * scale);
-  }
-
-  let last = 0;
-  function tick(now) {
-    requestAnimationFrame(tick);
-    if (reduced) return;
-    if (now - last < 60) return; // ~16 fps
-    last = now;
-
-    const img = ctx.createImageData(w, h);
-    const d = img.data;
-    for (let i = 0; i < d.length; i += 4) {
-      const v = (Math.random() * 255) | 0;
-      d[i] = d[i + 1] = d[i + 2] = v;
-      d[i + 3] = 255;
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-
-  window.addEventListener('resize', resize);
-  resize();
-  requestAnimationFrame(tick);
-})();
 
 

@@ -7,11 +7,11 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 .playfair-display-regular {
-  font-family: "EB Garamond", serif;
+  font-family: "Sorts Mill Goudy", serif;
   font-weight: 400;
   font-style: normal;
   font-stretch: condensed;
@@ -19,7 +19,7 @@
 }
 
 .playfair-display-regular-italic {
-  font-family: "EB Garamond", serif;
+  font-family: "Sorts Mill Goudy", serif;
   font-weight: 400;
   font-style: italic;
   font-stretch: condensed;
@@ -43,7 +43,7 @@
   --color-muted: #d1d5db;
   --color-border: #fff;
   --transition: 0.2s cubic-bezier(.4, 0, .2, 1);
-  --font-serif: "EB Garamond", serif;
+  --font-serif: "Sorts Mill Goudy", serif;
   --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   color-scheme: dark;
 }

@@ -12,15 +12,17 @@ const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
 const mql = window.matchMedia('(prefers-color-scheme: dark)');
 
+let _theme = 'auto';
+
 function setTheme(theme) {
+  _theme = theme;
   root.setAttribute('data-theme', theme);
   const effective = theme === 'auto' ? (mql.matches ? 'dark' : 'light') : theme;
   root.style.colorScheme = effective;
-  localStorage.setItem('theme', theme);
 }
 
 function getTheme() {
-  return localStorage.getItem('theme') || 'auto';
+  return _theme;
 }
 
 function effectiveTheme(theme) {
@@ -48,11 +50,10 @@ if (mql.addEventListener) {
   });
 }
 
-// Initialize theme on load
+// Initialize theme on load — always start as auto (system)
 document.addEventListener('DOMContentLoaded', () => {
-  const initial = getTheme();
-  setTheme(initial);
-  if (themeToggle && themeToggle.tagName === 'SELECT') themeToggle.value = initial;
+  setTheme('auto');
+  if (themeToggle && themeToggle.tagName === 'SELECT') themeToggle.value = 'auto';
 });
 
 

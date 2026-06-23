@@ -1062,10 +1062,8 @@ section {
     text-align: left;
   }
 
-  /* nav links and social icons stretch edge-to-edge across the name's width */
   .home__left .hero__nav {
-    width: 100%;
-    justify-content: space-between;
+    align-items: flex-start;
   }
 
   .home__left .hero__socials {
@@ -1115,10 +1113,7 @@ section {
   }
 
   .home__left .hero__nav {
-    width: auto;
-    justify-content: center;
-    column-gap: 1.75rem;
-    row-gap: 0.5rem;
+    align-items: center;
   }
 
   .home__left .hero__nav-link {
@@ -1142,12 +1137,9 @@ section {
    --------------------------------------------------------- */
 
 .hero__nav {
-  display: grid;
-  grid-template-columns: repeat(4, max-content);
-  column-gap: 1.75rem;
-  row-gap: 0.55rem;
-  justify-content: center;
-  justify-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
   margin-top: var(--space-md);
 }
 

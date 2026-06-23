@@ -313,6 +313,7 @@ section {
   cursor: default;
   text-align: center;
   line-height: 1;
+  padding-left: 0.06em;
 }
 
 .hero__name-first,
@@ -486,8 +487,7 @@ section {
 .project-item__role {
   font-size: 0.75rem;
   color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
 }
 
 .project-item__description {

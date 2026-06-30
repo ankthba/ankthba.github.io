@@ -364,22 +364,28 @@ section {
   opacity: 1;
 }
 
-/* Social icons: sized and styled to match the © and the sun/moon toggle */
+/* Social links: typographic wordmarks (label comes from aria-label) to match
+   the serif nav aesthetic rather than UI-style icon glyphs. */
 .hero__social {
   display: inline-flex;
   align-items: center;
+  font-size: 0.8rem;
   color: var(--color-muted);
   opacity: 0.65;
-  transition: color var(--transition-fast), opacity var(--transition-fast), filter var(--transition-base);
+  transition: color var(--transition-fast), opacity var(--transition-fast);
 }
 
 .hero__social svg {
-  width: 15px;
-  height: 15px;
+  display: none;
+}
+
+.hero__social::after {
+  content: attr(aria-label);
 }
 
 .hero__social:hover {
   color: var(--color-fg);
+  opacity: 1;
 }
 
 @media (min-width: 769px) {

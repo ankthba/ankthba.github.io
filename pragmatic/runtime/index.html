@@ -18,19 +18,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/pragmatic/pragmatic.css">
 
-    <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticfavicon.png">
 </head>
 <body>
 
     <header>
         <nav class="left">
-            <a href="/pragmatic/runtime/">the runtime</a>
-            <a href="/pragmatic/research/">research</a>
+            <a href="/pragmatic/runtime/">The runtime</a>
+            <a href="/pragmatic/research/">Research</a>
         </nav>
         <a href="/pragmatic/" class="masthead">Pragmatic</a>
         <nav class="right">
-            <a href="/pragmatic/questions/">questions</a>
-            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">early access</a>
+            <a href="/pragmatic/questions/">Questions</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
 
@@ -171,14 +171,14 @@ Trace trace = rt.replay(runId).join();</pre>
         <div class="facing-cols">
             <div class="facing-col">
                 <h3>The LLM as an opaque activity</h3>
-                <p class="who">elsewhere</p>
+                <p class="who">Elsewhere</p>
                 <p>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</p>
                 <p>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</p>
                 <p>No way to reason about the probability a run meets its spec, and no guarantee about how secret inputs flow to public outputs.</p>
             </div>
             <div class="facing-col">
                 <h3>The LLM as a first-class Oracle</h3>
-                <p class="who">at Pragmatic</p>
+                <p class="who">At Pragmatic</p>
                 <p>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</p>
                 <p>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</p>
                 <p>Compositional probability bounds let you reason about whether a multi-agent system meets its spec, and noninterference is provable.</p>
@@ -191,22 +191,22 @@ Trace trace = rt.replay(runId).join();</pre>
         <div class="running-head"><em>Anatomy</em></div>
         <h2 class="book-lede">A runtime, <em>not an operating system.</em></h2>
         <div class="book-entry">
-            <span class="caption">the runtime</span>
+            <span class="caption">The runtime</span>
             <h3>A library, on your infrastructure.</h3>
             <p class="prose">Pragmatic runs on the infrastructure you already have: Linux, containers, any cloud. It links into your agent as a library. There is nothing new to provision and no operating system to adopt.</p>
         </div>
         <div class="book-entry">
-            <span class="caption">the core</span>
+            <span class="caption">The core</span>
             <h3>Oracle and Journal.</h3>
             <p class="prose">Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back instead of re-sampling the model, which is what makes recovery faithful.</p>
         </div>
         <div class="book-entry">
-            <span class="caption">trust</span>
+            <span class="caption">Trust</span>
             <h3>Capabilities and a signed log.</h3>
             <p class="prose">Every effect carries a capability token, and the Journal is a signed, immutable record of the run. Idempotency, provenance, and a tamper-evident audit trail, at the runtime level.</p>
         </div>
         <div class="book-entry">
-            <span class="caption">control</span>
+            <span class="caption">Control</span>
             <h3>The Supervisor.</h3>
             <p class="prose">The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It turns a crashed run into a resumed one without re-sampling or lost work.</p>
         </div>
@@ -236,30 +236,30 @@ Trace trace = rt.replay(runId).join();</pre>
 
     <section class="editions" id="editions">
         <div class="running-head"><em>Three ways to run it</em></div>
-        <p class="editions-note caption">all in private beta</p>
+        <p class="editions-note caption">All in private beta</p>
         <div class="edition">
             <h3>Self-hosted.</h3>
-            <span class="caption">the runtime, on your infrastructure</span>
+            <span class="caption">The runtime, on your infrastructure</span>
             <p class="ed-desc">Your data and Journals never leave your environment.</p>
-            <p class="materials">links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
+            <p class="materials">Links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
         </div>
         <div class="edition">
             <h3>Pragmatic Cloud.</h3>
-            <span class="caption">fully managed</span>
+            <span class="caption">Fully managed</span>
             <p class="ed-desc">Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
-            <p class="materials">hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
+            <p class="materials">Hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
         </div>
         <div class="edition">
             <h3>Enterprise.</h3>
-            <span class="caption">for regulated &amp; high-stakes teams</span>
+            <span class="caption">For regulated &amp; high-stakes teams</span>
             <p class="ed-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
-            <p class="materials">signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
+            <p class="materials">Signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
         </div>
     </section>
 
 
     <section class="page-next">
-        <span class="caption">continue</span>
+        <span class="caption">Continue</span>
         <a href="/pragmatic/research/">Research</a>
     </section>
 

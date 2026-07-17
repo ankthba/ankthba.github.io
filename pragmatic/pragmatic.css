@@ -726,3 +726,31 @@ body.dark .dark-section { background: transparent; }
     transition: border-color 0.25s;
 }
 .page-next a:hover { border-color: var(--ink); }
+
+/* ── Reveal animations ── */
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1.1s cubic-bezier(0.2, 0.6, 0.2, 1),
+                transform 1.1s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.reveal.on { opacity: 1; transform: none; }
+
+.running-head.reveal::after {
+    width: 0;
+    transition: width 1s ease 0.35s;
+}
+.running-head.reveal.on::after { width: 44px; }
+
+@keyframes qa-fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+.qa-item[open] .answer { animation: qa-fade 0.6s cubic-bezier(0.2, 0.6, 0.2, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .running-head.reveal::after { width: 44px; transition: none; }
+    .qa-item[open] .answer { animation: none; }
+    html { scroll-behavior: auto; }
+}

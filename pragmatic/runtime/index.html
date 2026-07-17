@@ -25,10 +25,11 @@
     <header>
         <nav class="left">
             <a href="/pragmatic/runtime/">The runtime</a>
-            <a href="/pragmatic/research/">Research</a>
+            <a href="/pragmatic/practice/">In practice</a>
         </nav>
         <a href="/pragmatic/" class="masthead">Pragmatic</a>
         <nav class="right">
+            <a href="/pragmatic/research/">Research</a>
             <a href="/pragmatic/questions/">Questions</a>
             <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
@@ -38,7 +39,7 @@
     <section class="page-cover">
         <span class="caption">Pragmatic</span>
         <h1>The <em>runtime.</em></h1>
-        <p class="page-deck">What Pragmatic does in your code and on your infrastructure, why it is a model rather than a cache, and the three ways to run it.</p>
+        <p class="page-deck">One wrapper in your code, a journal underneath it, and a proof that replay is exact.</p>
     </section>
 
     <section class="dark-section atelier" id="code">
@@ -163,7 +164,6 @@ Trace trace = rt.replay(runId).join();</pre>
         </div>
     </section>
 
-
     <section class="facing" id="why">
         <div class="running-head"><em>Why Pragmatic</em></div>
         <h2 class="facing-lede">A model, <em>not a cache.</em></h2>
@@ -185,7 +185,6 @@ Trace trace = rt.replay(runId).join();</pre>
             </div>
         </div>
     </section>
-
 
     <section class="book" id="anatomy">
         <div class="running-head"><em>Anatomy</em></div>
@@ -212,55 +211,9 @@ Trace trace = rt.replay(runId).join();</pre>
         </div>
     </section>
 
-
-    <section id="uses">
-        <div class="running-head"><em>What you build on it</em></div>
-        <div class="look">
-            <h3>Agents that run <em>for days.</em></h3>
-            <p class="prose">Long-running agents survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. No re-sampling and no half-finished work.</p>
-        </div>
-        <div class="look">
-            <h3>Bugs you can <em>finally replay.</em></h3>
-            <p class="prose">Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Bugs you could never reproduce become runs you can replay.</p>
-        </div>
-        <div class="look">
-            <h3>Runs you can <em>prove.</em></h3>
-            <p class="prose">Every run has a signed, replayable record of what the agent actually did. That reproducibility matters most for regulated and high-stakes teams, and it is built into the runtime.</p>
-        </div>
-        <div class="look">
-            <h3>Fleets that fail <em>gracefully.</em></h3>
-            <p class="prose">When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
-        </div>
-    </section>
-
-
-    <section class="editions" id="editions">
-        <div class="running-head"><em>Three ways to run it</em></div>
-        <p class="editions-note caption">All in private beta</p>
-        <div class="edition">
-            <h3>Self-hosted.</h3>
-            <span class="caption">The runtime, on your infrastructure</span>
-            <p class="ed-desc">Your data and Journals never leave your environment.</p>
-            <p class="materials">Links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
-        </div>
-        <div class="edition">
-            <h3>Pragmatic Cloud.</h3>
-            <span class="caption">Fully managed</span>
-            <p class="ed-desc">Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
-            <p class="materials">Hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
-        </div>
-        <div class="edition">
-            <h3>Enterprise.</h3>
-            <span class="caption">For regulated &amp; high-stakes teams</span>
-            <p class="ed-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
-            <p class="materials">Signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
-        </div>
-    </section>
-
-
     <section class="page-next">
         <span class="caption">Continue</span>
-        <a href="/pragmatic/research/">Research</a>
+        <a href="/pragmatic/practice/">In practice</a>
     </section>
 
     <script>

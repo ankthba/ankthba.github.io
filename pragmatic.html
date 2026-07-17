@@ -14,32 +14,26 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
 
     <style>
         :root {
-            --dark:        #0d0c0b;
-            --dark-2:      #131210;
-            --dark-border: rgba(255,255,255,0.07);
-            --warm-white:  #f0ede8;
-            --warm-dim:    rgba(240,237,232,0.5);
-            --warm-faint:  rgba(240,237,232,0.18);
+            --ivory:  #f1ede4;
+            --ink:    #1f1b15;
+            --ink-70: rgba(31,27,21,0.7);
+            --ink-52: rgba(31,27,21,0.52);
+            --ink-30: rgba(31,27,21,0.3);
+            --ink-12: rgba(31,27,21,0.12);
+            --ivory-75: rgba(241,237,228,0.75);
+            --ivory-45: rgba(241,237,228,0.45);
+            --ivory-25: rgba(241,237,228,0.25);
+            --ivory-15: rgba(241,237,228,0.15);
 
-            --bg:          #f9f8f6;
-            --bg-card:     #ffffff;
-            --text:        #1a1816;
-            --text-2:      #5a5450;
-            --text-muted:  #a09890;
-            --border:      #e8e5e1;
-            --border-2:    #d4d0cb;
-
-            --gold:        #c4a47c;
-
-            --serif: 'EB Garamond', Georgia, serif;
-            --sans:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --mono:  'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+            --display: 'Instrument Serif', Georgia, serif;
+            --text:    'Newsreader', Georgia, serif;
+            --mono:    'IBM Plex Mono', ui-monospace, Menlo, monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,1870 +41,1066 @@
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: var(--sans);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 15px;
-            line-height: 1.6;
+            font-family: var(--text);
+            font-weight: 300;
+            background: var(--ivory);
+            color: var(--ink);
+            font-size: 18px;
+            line-height: 1.65;
+            overflow-x: hidden;
         }
 
-        ::selection { background: var(--text); color: var(--bg); }
+        ::selection { background: var(--ink); color: var(--ivory); }
 
-        /* Grain overlay - fixed, entire page */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.028;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)'/%3E%3C/svg%3E");
-            background-size: 400px 400px;
+        a { color: inherit; }
+
+        img { max-width: 100%; }
+
+        /* ── Primitives ── */
+        .measure { max-width: 60ch; margin-left: auto; margin-right: auto; }
+
+        .prose {
+            text-align: justify;
+            text-justify: inter-word;
+            hyphens: auto;
+            -webkit-hyphens: auto;
         }
 
-        /* ─── NAV ─────────────────────────────────────────────────────── */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 200;
-            height: 60px;
-            padding: 0 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.5s ease, border-color 0.5s ease;
-            background: rgba(13,12,11,0.72);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-        }
-
-        nav.on-light {
-            background: rgba(249,248,246,0.88);
-            border-bottom-color: var(--border);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: var(--warm-white);
-            transition: color 0.5s;
-        }
-        nav.on-light .logo { color: var(--text); }
-
-        .logo img {
-            height: 20px;
-            width: auto;
-            filter: invert(0);
-            transition: filter 0.5s;
-        }
-        nav.on-light .logo img { filter: invert(1); }
-
-        .logo span {
-            font-family: var(--serif);
+        .caption {
             font-style: italic;
-            font-size: 19px;
+            font-size: 16px;
+            color: var(--ink-52);
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-        }
-
-        .nav-links a {
-            font-size: 12.5px;
-            color: var(--warm-dim);
-            text-decoration: none;
-            transition: color 0.2s;
-            letter-spacing: 0.01em;
-        }
-        nav.on-light .nav-links a { color: var(--text-2); }
-        .nav-links a:hover { color: var(--warm-white); }
-        nav.on-light .nav-links a:hover { color: var(--text); }
-
-        .nav-cta {
-            padding: 7px 20px;
-            background: var(--warm-faint);
-            border: 1px solid rgba(255,255,255,0.18);
-            color: var(--warm-white) !important;
-            font-size: 12px;
-            font-weight: 500;
-            border-radius: 2px;
-            text-decoration: none;
-            transition: background 0.3s, border-color 0.3s, color 0.5s;
-            letter-spacing: 0.015em;
-        }
-        nav.on-light .nav-cta {
-            background: var(--text);
-            border-color: var(--text);
-            color: #fff !important;
-        }
-        .nav-cta:hover { background: rgba(255,255,255,0.22) !important; border-color: rgba(255,255,255,0.3) !important; }
-        nav.on-light .nav-cta:hover { opacity: 0.85 !important; background: var(--text) !important; }
-
-        /* ─── HERO ────────────────────────────────────────────────────── */
-        .hero-pin {
-            position: relative;
-            height: 300vh;
-        }
-
-        .hero-wrap {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            background: var(--bg);
-            overflow: hidden;
-        }
-
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 0 64px 88px;
-        }
-
-        .hero-status {
-            position: absolute;
-            top: 80px;
-            left: 64px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-        }
-
-        .hero-status::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #22c55e;
-            border-radius: 50%;
-            animation: blink 2.5s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50%       { opacity: 0.25; }
-        }
-
-        .hero h1 {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(72px, 7vw, 100px);
-            font-weight: 400;
-            line-height: 1.06;
-            letter-spacing: -0.02em;
-            color: var(--text);
-            margin-bottom: 0;
-            opacity: 0;
-            transform: translateY(36px);
-            animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-        }
-
-        .hero h1 em {
-            font-style: italic;
-            color: var(--text-muted);
-        }
-
-        /* Cycling phrase wrapper */
-        #hero-cycle {
-            display: inline-block;
-        }
-
-        #hero-cycle em {
-            display: inline-block;
-            will-change: transform, opacity;
-        }
-
-        @keyframes rise {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-foot {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            margin-top: 56px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border);
-            opacity: 0;
-            animation: rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
-        }
-
-        .hero-desc {
-            font-size: 14.5px;
-            color: var(--text-2);
-            line-height: 1.8;
-            max-width: 440px;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 12px 28px;
-            font-size: 12.5px;
-            font-weight: 500;
-            border-radius: 2px;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            letter-spacing: 0.01em;
-            display: inline-block;
-        }
-
-        .btn-chalk {
-            background: var(--warm-white);
-            color: var(--dark);
-        }
-        .btn-chalk:hover { opacity: 0.88; }
-
-        .btn-ghost-dark {
-            background: transparent;
-            color: rgba(240,237,232,0.6);
-            border: 1px solid rgba(255,255,255,0.14);
-        }
-        .btn-ghost-dark:hover {
-            border-color: rgba(255,255,255,0.28);
-            color: var(--warm-white);
-        }
-
-        .btn-ink {
-            background: var(--text);
-            color: #fff;
-        }
-        .btn-ink:hover { opacity: 0.85; }
-
-        .btn-ghost {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border-2);
-        }
-        .btn-ghost:hover { background: rgba(26,24,22,0.04); border-color: var(--text-muted); }
-
-        /* ─── QUOTE ───────────────────────────────────────────────────── */
-        .intro {
-            padding: 120px 64px;
-            background: var(--bg);
-        }
-
-        .intro-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .intro blockquote {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(34px, 5vw, 66px);
-            line-height: 1.18;
-            letter-spacing: -0.025em;
-            color: var(--text);
-        }
-
-        .intro blockquote span {
-            color: var(--text-muted);
-        }
-
-        /* ─── STATS ───────────────────────────────────────────────────── */
-        .stats-wrap {
-            background: var(--bg);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 64px;
-        }
-
-        .stat {
-            padding: 96px 0;
-            border-right: 1px solid var(--border);
-            padding-right: 72px;
-        }
-        .stat + .stat {
-            padding-left: 72px;
-        }
-        .stat:last-child { border-right: none; }
-
-        .stat-value {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(56px, 7.5vw, 96px);
-            line-height: 1;
-            letter-spacing: -0.035em;
-            color: var(--text);
-            margin-bottom: 12px;
-        }
-
-        .stat-label {
-            font-size: 10.5px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-        }
-
-        /* ─── HOW ─────────────────────────────────────────────────────── */
-        .how-section {
-            padding: 128px 64px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .how-grid {
-            display: grid;
-            grid-template-columns: 5fr 7fr;
-            gap: 128px;
-            align-items: start;
-        }
-
-        .how-content .section-header { margin-bottom: 28px; }
-
-        .how-content p {
-            font-size: 14.5px;
-            color: var(--text-2);
-            line-height: 1.8;
-        }
-
-        .how-list { display: flex; flex-direction: column; }
-
-        .how-item {
-            padding: 30px 0;
-            display: grid;
-            grid-template-columns: 52px 1fr;
-            gap: 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .how-item:first-child { border-top: 1px solid var(--border); }
-
-        .how-number {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 12px;
-            color: var(--text-muted);
-            padding-top: 3px;
-        }
-
-        .how-item h3 {
-            font-size: 13.5px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: 0.01em;
-        }
-
-        .how-item p {
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.7;
-        }
-
-        /* ─── SHARED SECTION LABELS ───────────────────────────────────── */
-        .section-label {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(32px, 4.5vw, 52px);
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-        }
-
-        .section-header { margin-bottom: 72px; }
-
-        /* ─── ARCHITECTURE ────────────────────────────────────────────── */
-        .arch-section {
-            padding: 128px 64px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .arch-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            border-top: 1px solid var(--border);
-        }
-
-        .arch-item {
-            padding: 48px 40px 48px 0;
-            border-right: 1px solid var(--border);
-        }
-        .arch-item + .arch-item { padding-left: 40px; }
-        .arch-item:last-child { border-right: none; padding-right: 0; }
-
-        .arch-tag {
-            font-size: 9.5px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .arch-item h4 {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 19px;
-            font-weight: 400;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
-            line-height: 1.3;
-        }
-
-        .arch-item p {
-            font-size: 12.5px;
-            color: var(--text-2);
-            line-height: 1.72;
-        }
-
-        /* ─── USE CASES ───────────────────────────────────────────────── */
-        .cases-section {
-            padding: 128px 64px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .case-card {
-            padding: 48px 64px 48px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .case-card:nth-child(even) {
-            padding-left: 64px;
-            padding-right: 0;
-            border-left: 1px solid var(--border);
-        }
-        .case-card:nth-last-child(-n+2) { border-bottom: none; }
-
-        .case-card h3 {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 22px;
-            font-weight: 400;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
-        }
-
-        .case-card p {
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.72;
-        }
-
-        /* ─── SPECS ───────────────────────────────────────────────────── */
-        .specs-section {
-            padding: 128px 64px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            border-top: 1px solid var(--border);
-            border-left: 1px solid var(--border);
-        }
-
-        .spec-item {
-            padding: 30px 28px;
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .spec-value {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 17px;
-            margin-bottom: 5px;
-            letter-spacing: -0.01em;
-        }
-
-        .spec-label {
-            font-size: 9.5px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-        }
-
-        /* ─── CTA ─────────────────────────────────────────────────────── */
-        .cta-wrap {
-            background: var(--dark);
-        }
-
-        .cta-inner {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 152px 64px;
-        }
-
-        .cta-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: rgba(240,237,232,0.35);
-            margin-bottom: 40px;
-        }
-
-        .cta-eyebrow::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #22c55e;
-            border-radius: 50%;
-            animation: blink 2.5s ease-in-out infinite;
-        }
-
-        .cta-inner h2 {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(40px, 6.2vw, 84px);
-            font-weight: 400;
-            letter-spacing: -0.035em;
-            line-height: 0.95;
-            color: var(--warm-white);
-            margin-bottom: 56px;
-        }
-
-        .cta-inner h2 em {
-            font-style: italic;
-            color: rgba(240,237,232,0.32);
-        }
-
-        /* ─── FOOTER ──────────────────────────────────────────────────── */
-        footer {
-            padding: 40px 64px;
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-left {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        .footer-logo {
-            font-family: var(--serif);
+        .lnk {
             font-style: italic;
             font-size: 18px;
-            color: var(--text);
             text-decoration: none;
+            border-bottom: 1px solid var(--ink-30);
+            padding-bottom: 1px;
+            transition: border-color 0.25s;
         }
+        .lnk:hover { border-color: var(--ink); }
 
-        .footer-links { display: flex; gap: 24px; }
-
-        .footer-links a {
-            font-size: 12.5px;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
+        /* Section head, styled like the text links */
+        .running-head {
+            text-align: center;
+            margin: 0 auto 10vh;
+            padding: 0 24px;
         }
-        .footer-links a:hover { color: var(--text); }
-
-        .footer-right {
-            font-size: 11.5px;
-            color: var(--text-muted);
-        }
-
-        /* Thin scrollbar */
-        ::-webkit-scrollbar { width: 2px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border-2); }
-
-/* ─── WORD REVEAL ─────────────────────────────────────────────── */
-        .word {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .word.on { opacity: 1; transform: translateY(0); }
-
-        /* ─── DARK LOWER HALF ────────────────────────────────────────── */
-        .dark-below {
-            --text:       #f0ede8;
-            --text-2:     rgba(240,237,232,0.52);
-            --text-muted: rgba(240,237,232,0.28);
-            --border:     rgba(255,255,255,0.07);
-            --border-2:   rgba(255,255,255,0.13);
-            --bg:         #0d0c0b;
-            --bg-card:    #131210;
-            background: #0d0c0b;
-            color: #f0ede8;
-        }
-
-        .dark-below .spec-item:hover   { background: rgba(255,255,255,0.04); }
-        .dark-below .how-number        { color: rgba(240,237,232,0.13) !important; }
-        .dark-below .case-card:hover   { background: transparent; }
-
-        /* ─── STAGGERED DELAYS ────────────────────────────────────────── */
-        .how-item:nth-child(1).fade-in  { transition-delay: 0.00s; }
-        .how-item:nth-child(2).fade-in  { transition-delay: 0.12s; }
-        .how-item:nth-child(3).fade-in  { transition-delay: 0.24s; }
-
-        .arch-item:nth-child(1).fade-in { transition-delay: 0.00s; }
-        .arch-item:nth-child(2).fade-in { transition-delay: 0.10s; }
-        .arch-item:nth-child(3).fade-in { transition-delay: 0.20s; }
-        .arch-item:nth-child(4).fade-in { transition-delay: 0.30s; }
-
-        .case-card:nth-child(1).fade-in { transition-delay: 0.00s; }
-        .case-card:nth-child(2).fade-in { transition-delay: 0.10s; }
-        .case-card:nth-child(3).fade-in { transition-delay: 0.20s; }
-        .case-card:nth-child(4).fade-in { transition-delay: 0.30s; }
-
-        .stat:nth-child(1).fade-in { transition-delay: 0.00s; }
-        .stat:nth-child(2).fade-in { transition-delay: 0.12s; }
-        .stat:nth-child(3).fade-in { transition-delay: 0.24s; }
-
-        /* ─── SPEC HOVER ──────────────────────────────────────────────── */
-        .spec-item { transition: background 0.25s; }
-        .spec-item:hover { background: rgba(26,24,22,0.03); }
-
-        /* ─── BIGGER HOW-NUMBERS ──────────────────────────────────────── */
-        .how-number {
-            font-family: var(--serif);
+        .running-head em {
+            font-family: var(--display);
             font-style: italic;
-            font-size: 30px !important;
-            color: rgba(160,152,144,0.22) !important;
-            font-style: italic !important;
-            padding-top: 0 !important;
-            line-height: 1 !important;
+            font-size: clamp(26px, 2.8vw, 34px);
+            color: var(--ink);
+        }
+        .running-head::after {
+            content: '';
+            display: block;
+            width: 44px;
+            height: 1px;
+            background: var(--ink-30);
+            margin: 26px auto 0;
         }
 
-        /* ─── ANIMATIONS ──────────────────────────────────────────────── */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        section { margin-top: 24vh; }
 
-        /* ─── RESPONSIVE ──────────────────────────────────────────────── */
-        @media (max-width: 1080px) {
-            nav, .hero, .intro, .stats, .how-section, .arch-section, .cases-section, .specs-section, .cta-inner, footer {
-                padding-left: 40px;
-                padding-right: 40px;
-            }
-            .hero-status { left: 40px; }
-            .arch-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .arch-item:nth-child(2) { border-right: none; padding-right: 0; }
-            .arch-item:nth-child(3) { padding-left: 0; border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
-            .arch-item:nth-child(4) { border-right: none; padding-right: 0; border-top: 1px solid var(--border); }
-        }
-
-        @media (max-width: 860px) {
-            nav { padding: 0 24px; height: 56px; }
-            .nav-links a:not(.nav-cta) { display: none; }
-            .nav-links { gap: 0; }
-
-            /* Disable scroll-pin on mobile */
-            .hero-pin { height: auto; }
-            .hero-wrap { position: relative; height: auto; }
-            .hero { height: auto; min-height: 100vh; padding: 140px 24px 72px; }
-            .hero-status { left: 24px; top: 68px; }
-            .hero h1 { font-size: clamp(52px, 12vw, 90px); }
-            .hero-foot { grid-template-columns: 1fr; gap: 28px; }
-            .hero-actions { justify-content: flex-start; }
-
-            .intro { padding: 80px 24px; }
-            .intro blockquote { font-size: clamp(28px, 7vw, 48px); }
-
-            .stats { padding: 0 24px; grid-template-columns: 1fr; }
-            .stat { border-right: none; border-bottom: 1px solid var(--border); padding: 64px 0; }
-            .stat + .stat { padding-left: 0; }
-            .stat:last-child { border-bottom: none; }
-
-            .how-section { padding: 96px 24px; }
-            .how-grid { grid-template-columns: 1fr; gap: 56px; }
-
-            .arch-section { padding: 96px 24px; }
-            .arch-grid { grid-template-columns: 1fr; }
-            .arch-item, .arch-item + .arch-item { padding: 36px 0 !important; border-right: none !important; border-top: 1px solid var(--border); }
-            .arch-item:first-child { border-top: none; }
-
-            .cases-section { padding: 96px 24px; }
-            .cases-grid { grid-template-columns: 1fr; }
-            .case-card, .case-card:nth-child(even) { padding: 36px 0; border-left: none; }
-            .case-card:last-child { border-bottom: none; }
-
-            .specs-section { padding: 96px 24px; }
-            .specs-grid { grid-template-columns: repeat(2, 1fr); }
-
-            .cta-inner { padding: 112px 24px; }
-            .cta-inner h2 { font-size: clamp(34px, 9vw, 52px); }
-
-            footer { padding: 32px 24px; }
-            .footer-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
-        }
-
-        @media (max-width: 560px) {
-            .nav-cta { padding: 6px 14px; font-size: 11px; }
-            .hero h1 { font-size: clamp(44px, 13vw, 72px); }
-            .hero-actions { flex-direction: column; width: 100%; }
-            .btn { width: 100%; text-align: center; padding: 13px 20px; }
-            .specs-grid { grid-template-columns: 1fr 1fr; }
-            .section-title { letter-spacing: -0.015em; }
-        }
-
-        /* ─── RESEARCH ────────────────────────────────────────────────── */
-        .research-section {
-            padding: 128px 64px;
-            max-width: 1200px;
+        /* ── Header ── */
+        header {
+            padding: 26px 5vw 0;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: baseline;
+            max-width: 1500px;
             margin: 0 auto;
         }
-
-        .research-lead {
-            font-size: 14.5px;
-            color: var(--text-2);
-            line-height: 1.8;
-            max-width: 760px;
-        }
-
-        .research-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 14px;
-            letter-spacing: 0.01em;
-        }
-
-        .research-block { margin-top: 104px; }
-
-        .research-block .section-header { margin-bottom: 40px; }
-
-        .research-sub {
-            font-family: var(--serif);
+        header nav.left { display: flex; gap: 30px; }
+        header nav.right { display: flex; gap: 30px; justify-content: flex-end; }
+        header nav a {
             font-style: italic;
-            font-size: clamp(26px, 3.2vw, 38px);
-            font-weight: 400;
-            line-height: 1.12;
-            letter-spacing: -0.02em;
+            font-size: 15.5px;
+            color: var(--ink-52);
+            text-decoration: none;
+            transition: color 0.25s;
         }
-
-        .research-statement {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: clamp(24px, 3vw, 36px);
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-            color: var(--text);
-            max-width: 940px;
-        }
-        .research-statement span { color: var(--text-muted); }
-
-        .three-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-top: 1px solid var(--border);
-        }
-
-        .prim-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            border-top: 1px solid var(--border);
-            border-left: 1px solid var(--border);
-            margin-top: 36px;
-        }
-
-        @media (max-width: 1080px) {
-            .research-section { padding-left: 40px; padding-right: 40px; }
-        }
-
-        @media (max-width: 860px) {
-            .research-section { padding: 96px 24px; }
-            .three-grid { grid-template-columns: 1fr; }
-            .three-grid .arch-item,
-            .three-grid .arch-item + .arch-item {
-                padding: 36px 0 !important;
-                border-right: none !important;
-                border-top: 1px solid var(--border);
-            }
-            .three-grid .arch-item:first-child { border-top: none; }
-            .prim-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        /* ─── TRUST BAND ──────────────────────────────────────────────── */
-        .trust {
-            background: var(--bg);
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-        .trust-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 64px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-        }
-        .trust-item {
-            padding: 40px 32px 40px 0;
-            border-right: 1px solid var(--border);
-        }
-        .trust-item + .trust-item { padding-left: 32px; }
-        .trust-item:last-child { border-right: none; padding-right: 0; }
-        .trust-value {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 28px;
+        header nav a:hover { color: var(--ink); }
+        .masthead {
+            font-family: var(--display);
+            font-size: 34px;
+            text-decoration: none;
             line-height: 1;
-            letter-spacing: -0.02em;
-            margin-bottom: 8px;
-        }
-        .trust-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.5;
         }
 
-        /* ─── CODE SECTION ────────────────────────────────────────────── */
-        .code-section {
-            padding: 128px 64px;
-            max-width: 1200px;
+        /* ── Cover ── */
+        .cover {
+            min-height: 82vh;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8vh 24px 6vh;
+        }
+        .cover h1 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(46px, 7vw, 118px);
+            line-height: 1.02;
+            letter-spacing: -0.01em;
+            max-width: 16ch;
+        }
+        .cover h1 em { font-style: italic; }
+        .cover img.cover-mark {
+            width: 44px;
+            height: 44px;
+            margin-top: 8vh;
+        }
+        .cover .cover-links {
+            margin-top: 7vh;
+            display: flex;
+            gap: 40px;
+            align-items: baseline;
+        }
+
+        /* ── Deck ── */
+        .deck {
+            margin-top: 0;
+            text-align: center;
+            padding: 0 24px;
+        }
+        .deck p {
+            font-size: 20px;
+            line-height: 1.75;
+            color: var(--ink-70);
+            max-width: 44ch;
             margin: 0 auto;
         }
-        .code-grid {
-            display: grid;
-            grid-template-columns: 5fr 7fr;
-            gap: 80px;
-            align-items: start;
+
+        /* ── Statement ── */
+        .spread { padding: 0 24px; text-align: center; }
+        .spread .statement {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(32px, 4.4vw, 68px);
+            line-height: 1.14;
+            max-width: 24ch;
+            margin: 0 auto;
         }
-        .code-grid .section-header { margin-bottom: 28px; }
-        .code-grid > .code-copy p {
-            font-size: 14.5px;
-            color: var(--text-2);
-            line-height: 1.8;
-        }
-        .code-copy .code-note {
-            margin-top: 24px;
-            font-size: 12.5px;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-        .code-card {
-            background: #0a0908;
-            border: 1px solid var(--border-2);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .code-bar {
+        .spread .statement em { font-style: italic; }
+        .spread .statement span { color: var(--ink-30); }
+
+        /* ── Index ── */
+        .index { padding: 0 24px; }
+        .index-inner { max-width: 620px; margin: 0 auto; }
+        .index-row {
             display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 13px 18px;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            align-items: baseline;
+            gap: 14px;
+            padding: 15px 0;
         }
-        .code-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.13); }
-        .code-file {
-            margin-left: 10px;
-            font-family: var(--mono);
-            font-size: 11px;
-            color: rgba(240,237,232,0.4);
+        .index-row .t { font-size: 16.5px; color: var(--ink-70); }
+        .index-row .dots {
+            flex: 1;
+            border-bottom: 1px dotted var(--ink-30);
+            transform: translateY(-4px);
+            min-width: 40px;
+        }
+        .index-row .v {
+            font-family: var(--display);
+            font-size: 25px;
+            white-space: nowrap;
+        }
+
+        /* ── Looks ── */
+        .look { padding: 0 24px; }
+        .look + .look { margin-top: 14vh; }
+        .look h3 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(32px, 3.8vw, 56px);
+            line-height: 1.05;
+            text-align: center;
+        }
+        .look h3 em { font-style: italic; }
+        .look p {
+            margin: 26px auto 0;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--ink-70);
+            max-width: 46ch;
+        }
+
+        /* ── Dark sections ── */
+        .dark-section {
+            background: var(--ink);
+            color: var(--ivory);
+            padding: 16vh 24px;
+        }
+        .dark-section .running-head::after { background: var(--ivory-45); }
+        .dark-section .running-head em { color: var(--ivory); }
+        .dark-section .caption { color: var(--ivory-45); }
+
+        /* ── Atelier (code) ── */
+        .atelier { text-align: center; }
+        .atelier h2 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(36px, 4.6vw, 70px);
+            line-height: 1.05;
+        }
+        .atelier h2 em { font-style: italic; }
+        .atelier .at-copy {
+            margin: 5vh auto 0;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--ivory-75);
+            max-width: 46ch;
+            text-align: justify;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+        }
+        .atelier .at-note {
+            margin: 18px auto 0;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--ivory-45);
+            max-width: 46ch;
+        }
+        .atelier .code-wrap {
+            max-width: 720px;
+            margin: 9vh auto 0;
         }
         .lang-tabs {
             display: flex;
-            gap: 2px;
-            margin-left: auto;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 26px;
+            margin-bottom: 30px;
         }
         .lang-tab {
-            font-family: var(--mono);
-            font-size: 10.5px;
-            padding: 3px 10px;
-            border-radius: 4px;
-            border: 1px solid transparent;
-            color: rgba(240,237,232,0.35);
-            background: transparent;
+            font-family: var(--text);
+            font-style: italic;
+            font-size: 17px;
+            color: var(--ivory-45);
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: color 0.15s, background 0.15s, border-color 0.15s;
-            line-height: 1.6;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: color 0.25s, border-color 0.25s;
         }
-        .lang-tab:hover {
-            color: rgba(240,237,232,0.7);
-            background: rgba(255,255,255,0.05);
-        }
+        .lang-tab:hover { color: var(--ivory-75); }
         .lang-tab.active {
-            color: rgba(240,237,232,0.9);
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.1);
+            color: var(--ivory);
+            border-bottom-color: var(--ivory-45);
         }
         .code-snippet { display: none; }
         .code-snippet.active { display: block; }
-        .code-card pre {
-            -webkit-overflow-scrolling: touch;
+        .atelier .file {
+            font-style: italic;
+            font-size: 15.5px;
+            color: var(--ivory-45);
+            margin-bottom: 20px;
         }
-        @media (max-width: 600px) {
-            .code-bar { flex-wrap: wrap; row-gap: 0; }
-            .lang-tabs {
-                margin-left: 0;
-                width: 100%;
-                border-top: 1px solid rgba(255,255,255,0.07);
-                padding: 8px 0 2px;
-                gap: 4px;
-            }
-            .lang-tab {
-                flex: 1;
-                text-align: center;
-                padding: 7px 4px;
-                font-size: 11px;
-            }
-        }
-        .code-card pre {
-            margin: 0;
-            padding: 24px 26px;
+        .atelier pre {
             font-family: var(--mono);
             font-size: 12.5px;
-            line-height: 1.85;
-            color: rgba(240,237,232,0.9);
-            overflow-x: auto;
-        }
-        .code-card .c-com  { color: rgba(240,237,232,0.34); }
-        .code-card .c-kw   { color: #c4a47c; }
-        .code-card .c-fn   { color: #e6c9a3; }
-        .code-card .c-str  { color: #9db89b; }
-        .code-card .c-macro{ color: #b9a3c4; }
-
-        /* ─── WHY / COMPARISON ────────────────────────────────────────── */
-        .why-section {
-            padding: 128px 64px;
-            max-width: 1200px;
+            line-height: 2.05;
+            color: var(--ivory-75);
+            text-align: left;
             margin: 0 auto;
+            display: block;
+            width: fit-content;
+            max-width: 100%;
+            white-space: pre-wrap;
+            word-break: break-word;
+            counter-reset: line;
         }
-        .compare {
+        .code-line {
+            display: block;
+            position: relative;
+            padding-left: 3em;
+            counter-increment: line;
+        }
+        .code-line::before {
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.6em;
+            text-align: right;
+            color: var(--ivory-25);
+            font-size: 0.8em;
+            line-height: 2.55;
+            user-select: none;
+        }
+        .c-com { color: var(--ivory-45); }
+        .c-kw  { color: var(--ivory); }
+
+        /* ── Facing columns ── */
+        .facing { padding: 0 24px; }
+        .facing-lede {
+            text-align: center;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(34px, 4.2vw, 62px);
+            line-height: 1.06;
+            margin-bottom: 5vh;
+        }
+        .facing-lede em { font-style: italic; }
+        .facing-body {
+            font-size: 18px;
+            line-height: 1.78;
+            color: var(--ink-70);
+            max-width: 52ch;
+            margin: 0 auto 12vh;
+        }
+        .facing-cols {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            margin-top: 56px;
-        }
-        .compare-col { padding: 44px 44px 48px; }
-        .compare-col.them { background: transparent; }
-        .compare-col.us {
-            background: rgba(196,164,124,0.06);
-            border-left: 1px solid var(--border);
-        }
-        .compare-head {
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-        .compare-col h4 {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 24px;
-            font-weight: 400;
-            letter-spacing: -0.01em;
-            margin-bottom: 28px;
-        }
-        .compare-col.us h4 { color: var(--text); }
-        .compare-row {
-            display: flex;
-            gap: 12px;
-            padding: 14px 0;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.6;
-        }
-        .compare-mark {
-            flex-shrink: 0;
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 15px;
-            line-height: 1.4;
-            color: var(--text-muted);
-        }
-        .compare-col.us .compare-mark { color: var(--gold); }
-
-        /* ─── DEPLOYMENT TIERS ────────────────────────────────────────── */
-        .deploy-section {
-            padding: 128px 64px;
-            max-width: 1200px;
+            max-width: 980px;
             margin: 0 auto;
+            column-gap: 0;
         }
-        .deploy-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .tier {
-            padding: 44px 38px 40px;
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-        .tier:last-child { border-right: none; }
-        .tier.featured { background: rgba(196,164,124,0.06); }
-        .tier-name {
-            font-family: var(--serif);
-            font-style: italic;
-            font-size: 24px;
+        .facing-col { padding: 0 6%; }
+        .facing-col + .facing-col { border-left: 1px solid var(--ink-12); }
+        .facing-col h3 {
+            font-family: var(--display);
             font-weight: 400;
-            letter-spacing: -0.01em;
-            margin-bottom: 10px;
+            font-size: 27px;
+            line-height: 1.15;
+            text-align: center;
         }
-        .tier-tag {
-            font-size: 9.5px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--gold);
+        .facing-col .who {
+            text-align: center;
+            font-style: italic;
+            font-size: 15.5px;
+            color: var(--ink-52);
+            margin: 10px 0 32px;
+        }
+        .facing-col p:not(.who) {
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--ink-70);
+            padding: 18px 0;
+            text-align: justify;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+        }
+        .facing-col p:not(.who) + p:not(.who) { border-top: 1px solid var(--ink-12); }
+
+        /* ── Book list ── */
+        .book { padding: 0 24px; }
+        .book-lede {
+            text-align: center;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(34px, 4.2vw, 62px);
+            line-height: 1.06;
+            margin-bottom: 12vh;
+        }
+        .book-lede em { font-style: italic; }
+        .book-entry + .book-entry { margin-top: 11vh; }
+        .book-entry .caption { display: block; margin-bottom: 14px; text-align: center; }
+        .book-entry h3 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(28px, 3vw, 42px);
+            line-height: 1.1;
+            text-align: center;
+        }
+        .book-entry p {
+            margin: 20px auto 0;
+            font-size: 16.5px;
+            line-height: 1.75;
+            color: var(--ink-70);
+            max-width: 48ch;
+        }
+
+        /* ── Editions ── */
+        .editions { padding: 0 24px; }
+        .editions-note {
+            text-align: center;
+            margin: -6vh auto 10vh;
+        }
+        .edition + .edition { margin-top: 13vh; }
+        .edition h3 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(30px, 3.4vw, 48px);
+            line-height: 1.08;
+            text-align: center;
+        }
+        .edition .caption { display: block; margin-top: 8px; text-align: center; }
+        .edition p.ed-desc {
+            margin: 22px auto 0;
+            font-size: 16.5px;
+            line-height: 1.75;
+            color: var(--ink-70);
+            max-width: 46ch;
+            text-align: center;
+        }
+        .edition .materials {
+            margin: 24px auto 0;
+            font-style: italic;
+            font-size: 15.5px;
+            color: var(--ink-52);
+            max-width: 60ch;
+            text-align: center;
+        }
+
+        /* ── Essay (research, dark) ── */
+        .essay h2 {
+            text-align: center;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(34px, 4.2vw, 62px);
+            line-height: 1.06;
+            margin-bottom: 8vh;
+        }
+        .essay h2 em { font-style: italic; }
+        .essay .measure p {
+            font-size: 17.5px;
+            line-height: 1.82;
+            color: var(--ivory-75);
+        }
+        .essay .measure p + p { margin-top: 22px; }
+        .essay .pull {
+            text-align: center;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(26px, 3vw, 44px);
+            line-height: 1.2;
+            color: var(--ivory);
+            max-width: 26ch;
+            margin: 11vh auto;
+        }
+        .essay .pull em { font-style: italic; }
+        .essay h3 {
+            text-align: center;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: 30px;
+            margin: 11vh 0 5vh;
+            color: var(--ivory);
+        }
+        .essay .thm { margin-top: 34px; }
+        .essay .thm .caption { display: block; text-align: center; margin-bottom: 8px; }
+
+        /* ── Questions (collapsible) ── */
+        .qa { padding: 0 24px; }
+        .qa-item {
+            max-width: 60ch;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--ink-12);
+        }
+        .qa-item:first-of-type { border-top: 1px solid var(--ink-12); }
+        .qa-item summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 5vh 0;
+            text-align: center;
+        }
+        .qa-item summary::-webkit-details-marker { display: none; }
+        .qa-item summary h3 {
+            display: inline;
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(24px, 2.6vw, 34px);
+            line-height: 1.2;
+        }
+        .qa-item summary h3 em { font-style: italic; }
+        .qa-item summary .q-mark {
+            display: block;
+            margin-top: 14px;
+            font-family: var(--display);
+            font-size: 22px;
+            color: var(--ink-30);
+            transition: color 0.25s;
+        }
+        .qa-item summary:hover .q-mark { color: var(--ink); }
+        .qa-item[open] summary { padding-bottom: 0; }
+        .qa-item[open] summary .q-mark { display: none; }
+        .qa-item .answer {
+            padding: 3.5vh 0 6vh;
+            font-size: 16.5px;
+            line-height: 1.78;
+            color: var(--ink-70);
+        }
+
+        /* ── Finale ── */
+        .finale {
+            background: var(--ink);
+            color: var(--ivory);
+            margin-top: 24vh;
+            padding: 22vh 24px;
+            text-align: center;
+        }
+        .finale img { width: 30px; height: 30px; filter: invert(1); opacity: 0.9; margin-bottom: 7vh; }
+        .finale h2 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(44px, 6.6vw, 108px);
+            line-height: 1.02;
+        }
+        .finale h2 em { font-style: italic; color: var(--ivory-45); }
+        .finale .aside {
+            margin: 5vh auto 0;
+            font-style: italic;
+            font-size: 16.5px;
+            color: var(--ivory-45);
+            max-width: 44ch;
+        }
+        .finale .finale-links {
+            margin-top: 6vh;
+            display: flex;
+            justify-content: center;
+            gap: 44px;
+            align-items: baseline;
+        }
+        .finale .lnk { color: var(--ivory); border-color: var(--ivory-45); font-size: 19px; }
+        .finale .lnk:hover { border-color: var(--ivory); }
+
+        /* ── Footer ── */
+        footer { padding: 52px 24px 56px; text-align: center; }
+        footer .fm {
+            display: flex;
+            justify-content: center;
+            gap: 34px;
             margin-bottom: 18px;
         }
-        .tier-desc {
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.7;
-            margin-bottom: 26px;
+        footer a {
+            font-style: italic;
+            font-size: 15px;
+            color: var(--ink-52);
+            text-decoration: none;
         }
-        .tier-list { list-style: none; margin: 0 0 32px; flex-grow: 1; }
-        .tier-list li {
-            font-size: 12.5px;
-            color: var(--text-2);
-            padding: 9px 0 9px 20px;
-            position: relative;
-            border-top: 1px solid var(--border);
-        }
-        .tier-list li::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 16px;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--gold);
-            opacity: 0.6;
-        }
-        .tier .btn { text-align: center; }
-        .btn-soon {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            cursor: default;
-            pointer-events: none;
-        }
+        footer a:hover { color: var(--ink); }
+        footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
 
-        /* ─── FAQ ─────────────────────────────────────────────────────── */
-        .faq-section {
-            padding: 128px 64px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .faq-grid {
-            display: grid;
-            grid-template-columns: 5fr 7fr;
-            gap: 80px;
-            align-items: start;
-        }
-        .faq-list { border-top: 1px solid var(--border); }
-        .faq-item {
-            padding: 30px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .faq-item h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: 0.005em;
-        }
-        .faq-item p {
-            font-size: 13px;
-            color: var(--text-2);
-            line-height: 1.72;
-        }
-
-        @media (max-width: 1080px) {
-            .trust-inner, .code-section, .why-section, .deploy-section, .faq-section {
-                padding-left: 40px; padding-right: 40px;
-            }
-        }
+        /* ── Responsive ── */
         @media (max-width: 860px) {
-            .trust-inner { grid-template-columns: 1fr 1fr; padding: 0 24px; }
-            .trust-item, .trust-item + .trust-item { padding: 28px 0; border-right: none; }
-            .trust-item:nth-child(odd) { border-right: 1px solid var(--border); padding-right: 24px; }
-            .trust-item:nth-child(even) { padding-left: 24px; }
+            section { margin-top: 14vh; }
 
-            .code-section { padding: 96px 24px; }
-            .code-grid { grid-template-columns: 1fr; gap: 40px; }
-            .code-card pre { font-size: 11.5px; }
+            header {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: baseline;
+                gap: 12px 26px;
+                padding: 22px 20px 0;
+            }
+            header nav.left, header nav.right { display: contents; }
+            .masthead { width: 100%; text-align: center; font-size: 30px; margin-bottom: 2px; order: -1; }
 
-            .why-section { padding: 96px 24px; }
-            .compare { grid-template-columns: 1fr; }
-            .compare-col.us { border-left: none; border-top: 1px solid var(--border); }
+            .cover { min-height: 0; padding: 12vh 20px 4vh; }
+            .cover .cover-links { gap: 34px; }
+            .cover img.cover-mark { margin-top: 6vh; width: 36px; height: 36px; }
 
-            .deploy-section { padding: 96px 24px; }
-            .deploy-grid { grid-template-columns: 1fr; }
-            .tier { border-right: none; border-bottom: 1px solid var(--border); }
-            .tier:last-child { border-bottom: none; }
+            .running-head { margin-bottom: 7vh; }
+            .running-head::after { margin-top: 20px; }
 
-            .faq-section { padding: 96px 24px; }
-            .faq-grid { grid-template-columns: 1fr; gap: 48px; }
+            .look + .look { margin-top: 9vh; }
+
+            .dark-section { padding: 11vh 20px; }
+
+            .facing-cols { grid-template-columns: 1fr; row-gap: 7vh; }
+            .facing-col { padding: 0; }
+            .facing-col + .facing-col { border-left: none; }
+            .facing-body { margin-bottom: 7vh; }
+
+            .book-lede { margin-bottom: 7vh; }
+            .book-entry + .book-entry { margin-top: 7vh; }
+            .edition + .edition { margin-top: 8vh; }
+            .editions-note { margin: -4vh auto 6vh; }
+
+            .essay h3 { margin: 8vh 0 4vh; }
+
+            .qa-item summary { padding: 4vh 0; }
+            .qa-item .answer { padding: 2.5vh 0 5vh; }
+
+            .finale { margin-top: 14vh; padding: 13vh 20px; }
+            .finale .finale-links { gap: 34px; }
+            .finale img { margin-bottom: 5vh; }
+
+            footer { padding: 40px 20px 44px; }
+            footer .fm { flex-wrap: wrap; gap: 14px 26px; }
+        }
+
+        @media (max-width: 520px) {
+            body { font-size: 16.5px; line-height: 1.62; }
+            section { margin-top: 12vh; }
+
+            header nav a { font-size: 14.5px; }
+            .masthead { font-size: 27px; }
+
+            .cover { padding-top: 9vh; }
+            .cover h1 { font-size: clamp(34px, 10.6vw, 48px); line-height: 1.06; }
+            .lnk { font-size: 17px; }
+
+            .deck p { font-size: 16.5px; max-width: 100%; }
+
+            .spread .statement { font-size: clamp(25px, 7.2vw, 32px); line-height: 1.22; }
+
+            .running-head em { font-size: 24px; }
+
+            .index { padding: 0 20px; }
+            .index-row { gap: 8px; padding: 13px 0; }
+            .index-row .t { font-size: 13.5px; line-height: 1.5; }
+            .index-row .v { font-size: 18px; }
+
+            .look { padding: 0 20px; }
+            .look h3 { font-size: clamp(26px, 8vw, 33px); line-height: 1.12; }
+            .look p, .book-entry p, .edition p.ed-desc { font-size: 15px; line-height: 1.7; }
+
+            .atelier h2 { font-size: clamp(28px, 8.6vw, 36px); }
+            .atelier .at-copy { font-size: 15.5px; }
+            .atelier .at-note { font-size: 14.5px; }
+            .lang-tabs { gap: 20px; }
+            .lang-tab { font-size: 15.5px; }
+            .atelier pre { font-size: 10.5px; line-height: 1.85; width: 100%; }
+
+            .facing { padding: 0 20px; }
+            .facing-lede, .book-lede { font-size: clamp(28px, 8.2vw, 35px); line-height: 1.12; }
+            .facing-body { font-size: 15.5px; }
+            .facing-col h3 { font-size: 23px; }
+            .facing-col p:not(.who) { font-size: 15px; }
+
+            .book, .editions, .qa { padding: 0 20px; }
+            .book-entry h3 { font-size: clamp(24px, 7.4vw, 30px); }
+            .edition h3 { font-size: clamp(26px, 7.8vw, 32px); }
+            .edition .materials { font-size: 14px; }
+            .caption { font-size: 14.5px; }
+
+            .essay h2 { font-size: clamp(28px, 8.2vw, 35px); line-height: 1.12; }
+            .essay .measure p { font-size: 15px; }
+            .essay .pull { font-size: clamp(21px, 6.4vw, 27px); }
+            .essay h3 { font-size: 25px; }
+
+            .qa-item summary h3 { font-size: clamp(21px, 6.2vw, 25px); line-height: 1.25; }
+            .qa-item summary .q-mark { margin-top: 10px; font-size: 19px; }
+            .qa-item .answer { font-size: 15px; }
+
+            .finale h2 { font-size: clamp(32px, 10.4vw, 44px); }
+            .finale .aside { font-size: 15px; }
+            .finale .lnk { font-size: 17px; }
         }
     </style>
 </head>
 <body>
 
-    <nav id="nav">
-        <a href="pragmatic.html" class="logo">
-            <img src="/assets/img/pragmaticicon.png" alt="Pragmatic">
-            <span>Pragmatic</span>
-        </a>
-        <div class="nav-links">
-            <a href="#how">How it works</a>
-            <a href="#why">Why Pragmatic</a>
-            <a href="#deploy">Deployment</a>
-            <a href="#research">Research</a>
-            <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="nav-cta">Request early access</a>
+    <header>
+        <nav class="left">
+            <a href="#runtime">the runtime</a>
+            <a href="#why">why</a>
+        </nav>
+        <a href="pragmatic.html" class="masthead">Pragmatic</a>
+        <nav class="right">
+            <a href="#research">research</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">early access</a>
+        </nav>
+    </header>
+
+    <!-- Cover -->
+    <section class="cover">
+        <h1>Durable execution for agents that <em>don't run deterministically.</em></h1>
+        <img class="cover-mark" src="/assets/img/pragmaticicon.png" alt="">
+        <div class="cover-links">
+            <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic early access">Request early access</a>
+            <a class="lnk" href="#runtime">Read on</a>
         </div>
-    </nav>
+    </section>
 
-    <!-- ── HERO ─────────────────────────────────────────────────────── -->
-    <div class="hero-pin" id="hero-pin">
-        <div class="hero-wrap" id="hero-wrap">
-            <div class="hero">
-                <div class="hero-status">Private beta</div>
-                <h1>Durable execution<br>for agents that<br><span id="hero-cycle"><em>don't run deterministically.</em></span></h1>
-                <div class="hero-foot">
-                    <p class="hero-desc">A Rust runtime that journals every step an agent takes, so it survives any crash and replays exactly, nondeterministic model behavior included.</p>
-                    <div class="hero-actions">
-                        <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="btn btn-ink">Request early access</a>
-                        <a href="#how" class="btn btn-ghost">See how it works</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Deck -->
+    <section class="deck">
+        <p>A Rust runtime that journals every step an agent takes, so it survives any crash and replays exactly, nondeterministic model behavior included.</p>
+    </section>
 
-    <!-- ── TRUST BAND ────────────────────────────────────────────────── -->
-    <div class="trust">
-        <div class="trust-inner">
-            <div class="trust-item">
-                <div class="trust-value">Proved</div>
-                <div class="trust-label">Replay soundness mechanized in Lean 4, not assumed</div>
-            </div>
-            <div class="trust-item">
-                <div class="trust-value">1000 / 1000</div>
-                <div class="trust-label">Replay determinism across the reference test suite</div>
-            </div>
-            <div class="trust-item">
-                <div class="trust-value">~230 ns</div>
-                <div class="trust-label">O(1) journal append, flat to one million entries</div>
-            </div>
-            <div class="trust-item">
-                <div class="trust-value">Zero deps</div>
-                <div class="trust-label">Rust core that links into the agent you already run</div>
-            </div>
-        </div>
-    </div>
+    <!-- Statement -->
+    <section class="spread">
+        <p class="statement"><em>Durable execution made software reliable.</em> <span>But its replay model assumes determinism, and LLM agents are not deterministic. Everyone else caches around that. We modeled it.</span></p>
+    </section>
 
-    <!-- ── QUOTE ─────────────────────────────────────────────────────── -->
-    <div class="intro" id="intro">
-        <div class="intro-inner">
-            <blockquote>Durable execution made software reliable. <span>But its replay model assumes determinism, and LLM agents are not deterministic. Everyone else caches around that. We modeled it.</span></blockquote>
-        </div>
-    </div>
-
-    <div class="dark-below" id="dark-below">
-
-    <!-- ── HOW ───────────────────────────────────────────────────────── -->
-    <div class="how-section" id="how">
-        <div class="how-grid">
-            <div class="how-content">
-                <div class="section-header">
-                    <p class="section-label">How it works</p>
-                    <h2 class="section-title">Three guarantees, every run</h2>
-                </div>
-                <p>Pragmatic wraps your agent and records what it does. Every LLM call's realized outcome lands in an append-only log, so a crash is no longer a lost run and a replay is no longer a guess.</p>
+    <!-- Index -->
+    <section class="index">
+        <div class="running-head"><em>By the numbers</em></div>
+        <div class="index-inner">
+            <div class="index-row">
+                <span class="t">Replay soundness, mechanized in Lean&nbsp;4</span>
+                <span class="dots"></span>
+                <span class="v">proved</span>
             </div>
-            <div class="how-list">
-                <div class="how-item fade-in">
-                    <div class="how-number">01</div>
-                    <div>
-                        <h3>Journal every step</h3>
-                        <p>Each LLM call's realized outcome is recorded to an append-only log as the run proceeds. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
-                    </div>
-                </div>
-                <div class="how-item fade-in">
-                    <div class="how-number">02</div>
-                    <div>
-                        <h3>Recover from any crash</h3>
-                        <p>Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no divergent paths, and no lost work after a failure.</p>
-                    </div>
-                </div>
-                <div class="how-item fade-in">
-                    <div class="how-number">03</div>
-                    <div>
-                        <h3>Replay faithfully</h3>
-                        <p>Reproduce the entire run exactly for debugging and audit, nondeterministic LLM behavior included. This is T1, replay soundness: replaying the journal reproduces the original trace, exactly, every time.</p>
-                    </div>
-                </div>
+            <div class="index-row">
+                <span class="t">Replay determinism, reference suite</span>
+                <span class="dots"></span>
+                <span class="v">1000 of 1000</span>
+            </div>
+            <div class="index-row">
+                <span class="t">Journal append, flat to a million entries</span>
+                <span class="dots"></span>
+                <span class="v">230 ns</span>
+            </div>
+            <div class="index-row">
+                <span class="t">Dependencies in the Rust core</span>
+                <span class="dots"></span>
+                <span class="v">none</span>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ── CODE ──────────────────────────────────────────────────────── -->
-    <div class="code-section" id="code">
-        <div class="code-grid">
-            <div class="code-copy">
-                <div class="section-header">
-                    <p class="section-label">In your code</p>
-                    <h2 class="section-title">Durable in one wrapper</h2>
-                </div>
-                <p>Keep writing agents the way you already do. Wrap the run, route model calls through the Oracle, and Pragmatic journals every realized outcome as the agent executes.</p>
-                <p class="code-note">Crash on step nine of a thousand and the agent resumes on step nine, reading every prior call back from the Journal instead of paying for it again. Replay the whole run later and it reproduces exactly, T1, model behavior included.</p>
+    <!-- The runtime -->
+    <section id="runtime">
+        <div class="running-head"><em>Three guarantees, every run</em></div>
+        <div class="look">
+            <h3>Journal <em>every step.</em></h3>
+            <p class="prose">Each LLM call's realized outcome is recorded to an append-only log as the run proceeds. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
+        </div>
+        <div class="look">
+            <h3>Recover <em>from any crash.</em></h3>
+            <p class="prose">Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no divergent paths, and no lost work after a failure.</p>
+        </div>
+        <div class="look">
+            <h3>Replay <em>faithfully.</em></h3>
+            <p class="prose">Reproduce the entire run exactly for debugging and audit, nondeterministic LLM behavior included. Replaying the journal reproduces the original trace, exactly, every time.</p>
+        </div>
+    </section>
+
+    <!-- In your code -->
+    <section class="dark-section atelier" id="code">
+        <div class="running-head"><em>In your code</em></div>
+        <h2>Durable in <em>one wrapper.</em></h2>
+        <p class="at-copy">Keep writing agents the way you already do. Wrap the run, route model calls through the Oracle, and Pragmatic journals every realized outcome as the agent executes.</p>
+        <p class="at-note">Crash on step nine of a thousand and the agent resumes on step nine, reading every prior call back from the Journal instead of paying for it again.</p>
+        <div class="code-wrap">
+            <div class="lang-tabs">
+                <button class="lang-tab active" data-lang="rust">Rust</button>
+                <button class="lang-tab" data-lang="python">Python</button>
+                <button class="lang-tab" data-lang="typescript">TypeScript</button>
+                <button class="lang-tab" data-lang="java">Java</button>
+                <button class="lang-tab" data-lang="cpp">C++</button>
             </div>
-            <div class="code-card">
-                <div class="code-bar">
-                    <span class="code-dot"></span><span class="code-dot"></span><span class="code-dot"></span>
-                    <span class="code-file" id="code-filename">research_agent.rs</span>
-                    <div class="lang-tabs">
-                        <button class="lang-tab active" data-lang="rust">Rust</button>
-                        <button class="lang-tab" data-lang="python">Python</button>
-                        <button class="lang-tab" data-lang="java">Java</button>
-                        <button class="lang-tab" data-lang="cpp">C++</button>
-                    </div>
-                </div>
-<pre class="code-snippet active" data-lang="rust"><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
+            <div class="code-snippet active" data-lang="rust">
+                <p class="file">research_agent.rs</p>
+<pre><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
 
 <span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
-<span class="c-macro">#[pragmatic::durable]</span>
-<span class="c-kw">async fn</span> <span class="c-fn">research</span>(task: Task, llm: &amp;Oracle) -&gt; Report {
-    <span class="c-kw">let</span> plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(&amp;task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
+<span class="c-com">#[pragmatic::durable]</span>
+<span class="c-kw">async fn</span> research(task: Task, llm: &amp;Oracle) -&gt; Report {
+    <span class="c-kw">let</span> plan = llm.call(plan(&amp;task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
     <span class="c-kw">let mut</span> out = Vec::new();
     <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps {
-        out.<span class="c-fn">push</span>(llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)).<span class="c-kw">await</span>); <span class="c-com">// journaled</span>
+        out.push(llm.call(probe(step)).<span class="c-kw">await</span>); <span class="c-com">// journaled</span>
     }
-    <span class="c-fn">synthesize</span>(out)
+    synthesize(out)
 }
 
 <span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
-<span class="c-kw">let</span> report = rt.<span class="c-fn">resume</span>(run_id).<span class="c-kw">await</span>;
+<span class="c-kw">let</span> report = rt.resume(run_id).<span class="c-kw">await</span>;
 
-<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
-<span class="c-kw">let</span> trace  = rt.<span class="c-fn">replay</span>(run_id).<span class="c-kw">await</span>;   <span class="c-com">// T1</span></pre>
-<pre class="code-snippet" data-lang="python"><span class="c-kw">from</span> pragmatic <span class="c-kw">import</span> Oracle, runtime
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">let</span> trace  = rt.replay(run_id).<span class="c-kw">await</span>;</pre>
+            </div>
+            <div class="code-snippet" data-lang="python">
+                <p class="file">research_agent.py</p>
+<pre><span class="c-kw">from</span> pragmatic <span class="c-kw">import</span> Oracle, runtime
 
 <span class="c-com"># Wrap the run. Every Oracle call is journaled once.</span>
-<span class="c-macro">@pragmatic.durable</span>
-<span class="c-kw">async def</span> <span class="c-fn">research</span>(task: Task, llm: Oracle) -&gt; Report:
-    plan = <span class="c-kw">await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task))     <span class="c-com"># journaled</span>
+<span class="c-com">@pragmatic.durable</span>
+<span class="c-kw">async def</span> research(task: Task, llm: Oracle) -&gt; Report:
+    plan = <span class="c-kw">await</span> llm.call(plan(task))      <span class="c-com"># journaled</span>
     out = []
     <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps:
-        out.<span class="c-fn">append</span>(<span class="c-kw">await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)))  <span class="c-com"># journaled</span>
-    <span class="c-kw">return</span> <span class="c-fn">synthesize</span>(out)
+        out.append(<span class="c-kw">await</span> llm.call(probe(step)))  <span class="c-com"># journaled</span>
+    <span class="c-kw">return</span> synthesize(out)
 
 <span class="c-com"># Crash anywhere. Resume exactly, no re-sampling.</span>
-report = <span class="c-kw">await</span> rt.<span class="c-fn">resume</span>(run_id)
+report = <span class="c-kw">await</span> rt.resume(run_id)
 
-<span class="c-com"># Replay the whole run, bit for bit, for audit.</span>
-trace  = <span class="c-kw">await</span> rt.<span class="c-fn">replay</span>(run_id)   <span class="c-com"># T1</span></pre>
-<pre class="code-snippet" data-lang="java"><span class="c-kw">import</span> pragmatic.Oracle;
+<span class="c-com"># Replay the whole run for audit.</span>
+trace = <span class="c-kw">await</span> rt.replay(run_id)</pre>
+            </div>
+            <div class="code-snippet" data-lang="typescript">
+                <p class="file">research_agent.ts</p>
+<pre><span class="c-kw">import</span> { Oracle, Runtime } <span class="c-kw">from</span> "pragmatic";
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-kw">const</span> research = pragmatic.durable(
+  <span class="c-kw">async</span> (task: Task, llm: Oracle): Promise&lt;Report&gt; =&gt; {
+    <span class="c-kw">const</span> plan = <span class="c-kw">await</span> llm.call(planFor(task));  <span class="c-com">// journaled</span>
+    <span class="c-kw">const</span> out = [];
+    <span class="c-kw">for</span> (<span class="c-kw">const</span> step <span class="c-kw">of</span> plan.steps) {
+      out.push(<span class="c-kw">await</span> llm.call(probe(step)));     <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">return</span> synthesize(out);
+  }
+);
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">const</span> report = <span class="c-kw">await</span> rt.resume(runId);
+
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">const</span> trace = <span class="c-kw">await</span> rt.replay(runId);</pre>
+            </div>
+            <div class="code-snippet" data-lang="java">
+                <p class="file">ResearchAgent.java</p>
+<pre><span class="c-kw">import</span> pragmatic.Oracle;
 <span class="c-kw">import</span> pragmatic.Runtime;
 
 <span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
-<span class="c-macro">@Pragmatic.Durable</span>
-CompletableFuture&lt;Report&gt; <span class="c-fn">research</span>(Task task, Oracle llm) {
-    Plan plan = llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task)).<span class="c-fn">join</span>();     <span class="c-com">// journaled</span>
+<span class="c-com">@Pragmatic.Durable</span>
+CompletableFuture&lt;Report&gt; research(Task task, Oracle llm) {
+    Plan plan = llm.call(plan(task)).join();     <span class="c-com">// journaled</span>
     List&lt;Output&gt; out = <span class="c-kw">new</span> ArrayList&lt;&gt;();
-    <span class="c-kw">for</span> (Step step : plan.<span class="c-fn">getSteps</span>()) {
-        out.<span class="c-fn">add</span>(llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)).<span class="c-fn">join</span>());   <span class="c-com">// journaled</span>
+    <span class="c-kw">for</span> (Step step : plan.getSteps()) {
+        out.add(llm.call(probe(step)).join());   <span class="c-com">// journaled</span>
     }
-    <span class="c-kw">return</span> <span class="c-fn">synthesize</span>(out);
+    <span class="c-kw">return</span> synthesize(out);
 }
 
 <span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
-Report report = rt.<span class="c-fn">resume</span>(runId).<span class="c-fn">join</span>();
+Report report = rt.resume(runId).join();
 
-<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
-Trace trace  = rt.<span class="c-fn">replay</span>(runId).<span class="c-fn">join</span>();   <span class="c-com">// T1</span></pre>
-<pre class="code-snippet" data-lang="cpp"><span class="c-macro">#include</span> <span class="c-str">&lt;pragmatic/oracle.hpp&gt;</span>
-<span class="c-macro">#include</span> <span class="c-str">&lt;pragmatic/runtime.hpp&gt;</span>
+<span class="c-com">// Replay the whole run for audit.</span>
+Trace trace = rt.replay(runId).join();</pre>
+            </div>
+            <div class="code-snippet" data-lang="cpp">
+                <p class="file">research_agent.cpp</p>
+<pre><span class="c-com">#include</span> &lt;pragmatic/oracle.hpp&gt;
+<span class="c-com">#include</span> &lt;pragmatic/runtime.hpp&gt;
 
 <span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
-<span class="c-macro">PRAGMATIC_DURABLE</span>
-<span class="c-kw">auto</span> <span class="c-fn">research</span>(Task task, Oracle&amp; llm) -&gt; Task::future&lt;Report&gt; {
-    <span class="c-kw">auto</span> plan = <span class="c-kw">co_await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">plan</span>(task));     <span class="c-com">// journaled</span>
+<span class="c-com">PRAGMATIC_DURABLE</span>
+<span class="c-kw">auto</span> research(Task task, Oracle&amp; llm) -&gt; Future&lt;Report&gt; {
+    <span class="c-kw">auto</span> plan = <span class="c-kw">co_await</span> llm.call(plan_for(task));   <span class="c-com">// journaled</span>
     std::vector&lt;Output&gt; out;
     <span class="c-kw">for</span> (<span class="c-kw">auto</span>&amp; step : plan.steps) {
-        out.<span class="c-fn">push_back</span>(<span class="c-kw">co_await</span> llm.<span class="c-fn">call</span>(<span class="c-fn">probe</span>(step)));  <span class="c-com">// journaled</span>
+        out.push_back(<span class="c-kw">co_await</span> llm.call(probe(step))); <span class="c-com">// journaled</span>
     }
-    <span class="c-kw">co_return</span> <span class="c-fn">synthesize</span>(out);
+    <span class="c-kw">co_return</span> synthesize(out);
 }
 
 <span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
-<span class="c-kw">auto</span> report = <span class="c-kw">co_await</span> rt.<span class="c-fn">resume</span>(run_id);
+<span class="c-kw">auto</span> report = <span class="c-kw">co_await</span> rt.resume(run_id);
 
-<span class="c-com">// Replay the whole run, bit for bit, for audit.</span>
-<span class="c-kw">auto</span> trace  = <span class="c-kw">co_await</span> rt.<span class="c-fn">replay</span>(run_id);   <span class="c-com">// T1</span></pre>
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">auto</span> trace = <span class="c-kw">co_await</span> rt.replay(run_id);</pre>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ── WHY / COMPARISON ──────────────────────────────────────────── -->
-    <div class="why-section" id="why">
-        <div class="section-header">
-            <p class="section-label">Why Pragmatic</p>
-            <h2 class="section-title">A model, not a cache</h2>
-        </div>
-        <p class="research-lead">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run. That model is what a cache cannot give you.</p>
-        <div class="compare">
-            <div class="compare-col them">
-                <div class="compare-head">Generic durable execution</div>
-                <h4>LLM as an opaque activity</h4>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No way to reason about the probability a run meets its spec.</span></div>
-                <div class="compare-row"><span class="compare-mark">&minus;</span><span>No guarantee about how secret inputs flow to public outputs.</span></div>
+    <!-- Why -->
+    <section class="facing" id="why">
+        <div class="running-head"><em>Why Pragmatic</em></div>
+        <h2 class="facing-lede">A model, <em>not a cache.</em></h2>
+        <p class="facing-body prose">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run.</p>
+        <div class="facing-cols">
+            <div class="facing-col">
+                <h3>The LLM as an opaque activity</h3>
+                <p class="who">elsewhere</p>
+                <p>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</p>
+                <p>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</p>
+                <p>No way to reason about the probability a run meets its spec, and no guarantee about how secret inputs flow to public outputs.</p>
             </div>
-            <div class="compare-col us">
-                <div class="compare-head">Pragmatic</div>
-                <h4>LLM as a first-class Oracle</h4>
-                <div class="compare-row"><span class="compare-mark">+</span><span>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>Compositional probability bounds let you reason about whether a multi-agent system meets its spec.</span></div>
-                <div class="compare-row"><span class="compare-mark">+</span><span>Provable noninterference: secret inputs cannot leak into public observations.</span></div>
+            <div class="facing-col">
+                <h3>The LLM as a first-class Oracle</h3>
+                <p class="who">at Pragmatic</p>
+                <p>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</p>
+                <p>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</p>
+                <p>Compositional probability bounds let you reason about whether a multi-agent system meets its spec, and noninterference is provable.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- ── ARCHITECTURE ──────────────────────────────────────────────── -->
-    <div class="arch-section" id="architecture">
-        <div class="section-header">
-            <p class="section-label">Architecture</p>
-            <h2 class="section-title">A runtime, not an operating system</h2>
+    <!-- Anatomy -->
+    <section class="book" id="anatomy">
+        <div class="running-head"><em>Anatomy</em></div>
+        <h2 class="book-lede">A runtime, <em>not an operating system.</em></h2>
+        <div class="book-entry">
+            <span class="caption">the runtime</span>
+            <h3>A library, on your infrastructure.</h3>
+            <p class="prose">Pragmatic runs on the infrastructure you already have: Linux, containers, any cloud. It links into your agent as a library. There is nothing new to provision and no operating system to adopt.</p>
         </div>
-        <div class="arch-grid">
-            <div class="arch-item fade-in">
-                <div class="arch-tag">Runtime</div>
-                <h4>A library, on your infra</h4>
-                <p>Pragmatic is a Rust runtime that runs on the infrastructure you already have: Linux, containers, any cloud. It links into your agent as a library. There is nothing new to provision and no operating system to adopt.</p>
-            </div>
-            <div class="arch-item fade-in">
-                <div class="arch-tag">Core</div>
-                <h4>Oracle and Journal</h4>
-                <p>Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back from the Journal instead of re-sampling the model, which is what makes recovery faithful.</p>
-            </div>
-            <div class="arch-item fade-in">
-                <div class="arch-tag">Trust</div>
-                <h4>Capabilities and signed log</h4>
-                <p>Every effect carries a capability token, and the Journal is a signed, immutable record of the run. You get idempotency, provenance, and a tamper-evident audit trail at the runtime level, without rebuilding any of it yourself.</p>
-            </div>
-            <div class="arch-item fade-in">
-                <div class="arch-tag">Control</div>
-                <h4>Supervisor</h4>
-                <p>The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It is the control plane that turns a crashed run into a resumed one without re-sampling or lost work.</p>
-            </div>
+        <div class="book-entry">
+            <span class="caption">the core</span>
+            <h3>Oracle and Journal.</h3>
+            <p class="prose">Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back instead of re-sampling the model, which is what makes recovery faithful.</p>
         </div>
-    </div>
+        <div class="book-entry">
+            <span class="caption">trust</span>
+            <h3>Capabilities and a signed log.</h3>
+            <p class="prose">Every effect carries a capability token, and the Journal is a signed, immutable record of the run. Idempotency, provenance, and a tamper-evident audit trail, at the runtime level.</p>
+        </div>
+        <div class="book-entry">
+            <span class="caption">control</span>
+            <h3>The Supervisor.</h3>
+            <p class="prose">The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It turns a crashed run into a resumed one without re-sampling or lost work.</p>
+        </div>
+    </section>
 
-    <!-- ── USE CASES ─────────────────────────────────────────────────── -->
-    <div class="cases-section" id="cases">
-        <div class="section-header">
-            <p class="section-label">Use cases</p>
-            <h2 class="section-title">What you build on it</h2>
+    <!-- Uses -->
+    <section id="uses">
+        <div class="running-head"><em>What you build on it</em></div>
+        <div class="look">
+            <h3>Agents that run <em>for days.</em></h3>
+            <p class="prose">Long-running agents survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. No re-sampling and no half-finished work.</p>
         </div>
-        <div class="cases-grid">
-            <div class="case-card fade-in">
-                <h3>Long-running agents</h3>
-                <p>Agents that run for hours or days survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. No re-sampling, no half-finished work, no babysitting.</p>
-            </div>
-            <div class="case-card fade-in">
-                <h3>Time-travel debugging</h3>
-                <p>Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Stop guessing at heisenbugs you cannot reproduce and replay the real thing.</p>
-            </div>
-            <div class="case-card fade-in">
-                <h3>Reproducible, auditable runs</h3>
-                <p>Every run has a signed, replayable record of what the agent actually did. That reproducibility matters most for regulated and high-stakes teams, and it ships in the box rather than being bolted on later.</p>
-            </div>
-            <div class="case-card fade-in">
-                <h3>Multi-agent recovery</h3>
-                <p>When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
-            </div>
+        <div class="look">
+            <h3>Bugs you can <em>finally replay.</em></h3>
+            <p class="prose">Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Bugs you could never reproduce become runs you can replay.</p>
         </div>
-    </div>
+        <div class="look">
+            <h3>Runs you can <em>prove.</em></h3>
+            <p class="prose">Every run has a signed, replayable record of what the agent actually did. That reproducibility matters most for regulated and high-stakes teams, and it is built into the runtime.</p>
+        </div>
+        <div class="look">
+            <h3>Fleets that fail <em>gracefully.</em></h3>
+            <p class="prose">When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
+        </div>
+    </section>
 
-    <!-- ── SPECS ──────────────────────────────────────────────────────── -->
-    <div class="specs-section">
-        <div class="section-header">
-            <p class="section-label">Specifications</p>
-            <h2 class="section-title">Technical details</h2>
+    <!-- Editions -->
+    <section class="editions" id="editions">
+        <div class="running-head"><em>Three ways to run it</em></div>
+        <p class="editions-note caption">all in private beta</p>
+        <div class="edition">
+            <h3>Self-hosted.</h3>
+            <span class="caption">the runtime, on your infrastructure</span>
+            <p class="ed-desc">Your data and Journals never leave your environment.</p>
+            <p class="materials">links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
         </div>
-        <div class="specs-grid">
-            <div class="spec-item">
-                <div class="spec-value">Rust</div>
-                <div class="spec-label">Runtime language</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">Linux, any cloud</div>
-                <div class="spec-label">Runs on your infra</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">~230 ns</div>
-                <div class="spec-label">O(1) journal append</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">1M entries</div>
-                <div class="spec-label">Flat append latency</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">1000 / 1000</div>
-                <div class="spec-label">Replay determinism</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">~1500&times;</div>
-                <div class="spec-label">Replay speedup</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">Oracle + Journal</div>
-                <div class="spec-label">Execution model</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">6 primitives</div>
-                <div class="spec-label">Formal core</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">Capabilities</div>
-                <div class="spec-label">Per-effect access</div>
-            </div>
-            <div class="spec-item">
-                <div class="spec-value">Signed log</div>
-                <div class="spec-label">Immutable audit trail</div>
-            </div>
+        <div class="edition">
+            <h3>Pragmatic Cloud.</h3>
+            <span class="caption">fully managed</span>
+            <p class="ed-desc">Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
+            <p class="materials">hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
         </div>
-    </div>
+        <div class="edition">
+            <h3>Enterprise.</h3>
+            <span class="caption">for regulated &amp; high-stakes teams</span>
+            <p class="ed-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
+            <p class="materials">signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
+        </div>
+    </section>
 
-    <!-- ── DEPLOYMENT ────────────────────────────────────────────────── -->
-    <div class="deploy-section" id="deploy">
-        <div class="section-header">
-            <p class="section-label">Deployment</p>
-            <h2 class="section-title">Run it your way</h2>
+    <!-- Research -->
+    <section class="dark-section essay" id="research">
+        <div class="running-head"><em>Research</em></div>
+        <h2>Agentical, <em>the theory behind the runtime.</em></h2>
+        <div class="measure">
+            <p class="prose">Pragmatic's guarantees are real because they are proved. Agentical is the probabilistic process calculus underneath the runtime: the reason crash recovery and faithful replay hold even when the model underneath is nondeterministic.</p>
+            <p class="prose">Durable execution is the proven substrate for reliable software: Temporal, Restate, Inngest, and DBOS all build on it. But its replay model assumes code is deterministic, so every engine works around LLMs by caching model outputs as opaque activities. Frontier models show only 50 to 96 percent determinism even at temperature 0. Pragmatic is durable execution built for nondeterminism from the ground up, holding durable replay, crash recovery, and information-flow reasoning together.</p>
         </div>
-        <div class="deploy-grid">
-            <div class="tier">
-                <div class="tier-name">Self-hosted</div>
-                <div class="tier-tag">The runtime</div>
-                <p class="tier-desc">The Pragmatic runtime on your own infrastructure. Your data and Journals never leave your environment.</p>
-                <ul class="tier-list">
-                    <li>Rust runtime, links as a library</li>
-                    <li>Runs on Linux, containers, any cloud</li>
-                    <li>Append-only Journal you own</li>
-                    <li>Recovery and faithful replay</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-            <div class="tier featured">
-                <div class="tier-name">Pragmatic Cloud</div>
-                <div class="tier-tag">Managed</div>
-                <p class="tier-desc">The runtime, fully managed. Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
-                <ul class="tier-list">
-                    <li>Hosted, durable journaling at scale</li>
-                    <li>Replay console and run timeline</li>
-                    <li>Observability and alerting</li>
-                    <li>Usage-based, scales to zero</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-            <div class="tier">
-                <div class="tier-name">Enterprise</div>
-                <div class="tier-tag">Regulated and high-stakes</div>
-                <p class="tier-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
-                <ul class="tier-list">
-                    <li>Signed, immutable audit log</li>
-                    <li>Information-flow guarantees</li>
-                    <li>SSO, on-prem, and dedicated support</li>
-                    <li>Design-partner roadmap access</li>
-                </ul>
-                <span class="btn btn-soon">Coming soon</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- ── RESEARCH ──────────────────────────────────────────────────── -->
-    <div class="research-section" id="research">
-        <div class="section-header">
-            <p class="section-label">Research</p>
-            <h2 class="section-title">Agentical, the theory behind the runtime</h2>
-        </div>
-        <p class="research-lead">Pragmatic's guarantees are real because they are proved. Agentical is the probabilistic process calculus underneath the runtime: the reason crash recovery and faithful replay hold even when the model underneath is nondeterministic. This is the engine room, not a separate paper.</p>
+        <p class="pull">Model each LLM call as a probability distribution. Journal every realized outcome. <em>Recovery becomes replay.</em></p>
 
-        <!-- The gap -->
-        <div class="research-block">
-            <div class="how-grid">
-                <div class="how-content">
-                    <div class="section-header">
-                        <p class="section-label">The gap</p>
-                        <h3 class="research-sub">Durable execution assumes determinism</h3>
-                    </div>
-                    <p>Durable execution is the proven substrate for reliable software: Temporal, Restate, Inngest, and DBOS all build on it. But its replay model assumes code is deterministic, so every engine hacks around LLMs by caching model outputs as opaque activities. Frontier models show only 50 to 96 percent determinism even at temperature 0. Pragmatic is durable execution built for nondeterminism from the ground up, holding three properties together.</p>
-                </div>
-                <div class="how-list">
-                    <div class="how-item fade-in">
-                        <div class="how-number">01</div>
-                        <div>
-                            <h3>Durable replay</h3>
-                            <p>Re-run a system from its recorded log and reproduce the same outcome, exactly.</p>
-                        </div>
-                    </div>
-                    <div class="how-item fade-in">
-                        <div class="how-number">02</div>
-                        <div>
-                            <h3>Crash recovery</h3>
-                            <p>Resume after a failure without re-sampling the model or losing prior work.</p>
-                        </div>
-                    </div>
-                    <div class="how-item fade-in">
-                        <div class="how-number">03</div>
-                        <div>
-                            <h3>Information-flow reasoning</h3>
-                            <p>Reason about how secret inputs can, and cannot, influence public observations.</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="measure">
+            <p class="prose">Two nondeterminisms are kept cleanly separate: probabilistic, resolved by the Oracle, and adversarial scheduling, resolved by a scheduler, the standard probabilistic-automata setup. The calculus itself is &pi;-calculus-style, with a probabilistic small-step operational semantics in record and replay modes, over six primitives: Agent, Oracle, Channel, Memory, Journal, and Supervisor. A configuration is the 5-tuple &lt;P;H;J;K;t&gt;: agent pool, shared store, journal, channel state, and logical clock.</p>
+        </div>
+
+        <h3>Three theorems, honest scope</h3>
+        <div class="measure">
+            <div class="thm">
+                <span class="caption">T1, proved and mechanized in Lean 4</span>
+                <p class="prose">Replay soundness, the flagship result: replaying the recorded journal reproduces the original run's trace exactly, with probability 1, via a coupling on the shared oracle-randomness space.</p>
+            </div>
+            <div class="thm">
+                <span class="caption">T2, proved on paper</span>
+                <p class="prose">Probabilistic noninterference: secret inputs don't affect public observations, conditional on per-label oracle partitioning and a label-filtered scheduler.</p>
+            </div>
+            <div class="thm">
+                <span class="caption">T3, proved on paper</span>
+                <p class="prose">Compositional bounds: local per-agent probability contracts compose to a global union bound, with a Fr&eacute;chet&ndash;Hoeffding fallback when independence fails.</p>
             </div>
         </div>
 
-        <!-- The idea -->
-        <div class="research-block">
-            <p class="section-label">The idea</p>
-            <p class="research-statement">Model each LLM call as a first-class probability distribution, the <span>Oracle</span>, and journal every realized outcome to an append-only log, the <span>Journal</span>. Recovery becomes replay: read back recorded outcomes instead of re-sampling.</p>
-            <p class="research-lead" style="margin-top: 28px;">Two nondeterminisms are kept cleanly separate: probabilistic (the Oracle) and adversarial scheduling (resolved by a scheduler), the standard probabilistic-automata / MDP-with-schedulers setup.</p>
+        <h3>From proof to running code</h3>
+        <div class="measure">
+            <p class="prose">The Lean 4 mechanization covers T1's operational core, trace-equivalence, crash-resume, no-orphaned-effect, and cursor-determinism, all sorry-free. Channels, the measure-theoretic layer, and T2/T3 are not yet mechanized, and we say so.</p>
+            <p class="prose">The Rust runtime is a zero-dependency reference implementation. Six integration tests demonstrate the three properties. Measured: 1000 of 1000 replay-determinism runs; ~230&nbsp;ns constant-time journal append, flat to a million entries; and a ~1500&times; replay speedup under a latency-injected oracle, since replay performs zero model calls.</p>
         </div>
+    </section>
 
-        <!-- The calculus -->
-        <div class="research-block">
-            <div class="section-header">
-                <p class="section-label">The calculus</p>
-                <h3 class="research-sub">Six primitives, two modes</h3>
-            </div>
-            <p class="research-lead">A π-calculus-style process calculus with a probabilistic small-step operational semantics in record and replay modes. A configuration is the 5-tuple &lt;P;H;J;K;t&gt;: agent pool, shared store, journal, channel state, and logical clock.</p>
-            <div class="prim-grid">
-                <div class="spec-item"><div class="spec-value">Agent</div><div class="spec-label">Goal-directed process</div></div>
-                <div class="spec-item"><div class="spec-value">Oracle</div><div class="spec-label">LLM as distribution</div></div>
-                <div class="spec-item"><div class="spec-value">Channel</div><div class="spec-label">Inter-agent message</div></div>
-                <div class="spec-item"><div class="spec-value">Memory</div><div class="spec-label">Shared store</div></div>
-                <div class="spec-item"><div class="spec-value">Journal</div><div class="spec-label">Append-only log</div></div>
-                <div class="spec-item"><div class="spec-value">Supervisor</div><div class="spec-label">Recovery + control</div></div>
-            </div>
+    <!-- Questions -->
+    <section class="qa" id="faq">
+        <div class="running-head"><em>Questions</em></div>
+        <details class="qa-item">
+            <summary>
+                <h3>How is this different from a general <em>durable execution engine?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and we build on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>How can replay be faithful if LLMs <em>are nondeterministic?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Pragmatic does not re-sample the model on replay. The first run records each realized outcome to the Journal, and replay reads those outcomes back. Reproducing a run reads from the log rather than calling the model again, which is what makes it exact.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Do I have to <em>rewrite my agent?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">No. Keep your agent logic and route model calls through the Oracle. The runtime links in as a library and journals outcomes as the agent runs. There is no new operating system and no new orchestration language to learn.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Is it <em>production-ready?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Pragmatic is in private beta with design partners. The replay guarantee is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery tests today. The probabilistic and information-flow results are proved on paper and not yet mechanized.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Where does <em>my data live?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">With self-hosted, the runtime and your Journals stay entirely in your environment. Pragmatic Cloud manages durable journaling and replay for you. Enterprise adds a signed, immutable audit trail and information-flow guarantees for regulated teams.</p>
+        </details>
+    </section>
+
+    <!-- Finale -->
+    <section class="finale">
+        <img src="/assets/img/pragmaticicon.png" alt="">
+        <h2>Crash. Recover.<br><em>Replay, exactly.</em></h2>
+        <p class="aside">Tell us what you're building.</p>
+        <div class="finale-links">
+            <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic early access">Request early access</a>
+            <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic design partner">Talk to us</a>
         </div>
-
-        <!-- Three theorems -->
-        <div class="research-block">
-            <div class="section-header">
-                <p class="section-label">Three theorems</p>
-                <h3 class="research-sub">Stated with honest scope</h3>
-            </div>
-            <div class="three-grid">
-                <div class="arch-item fade-in">
-                    <div class="arch-tag">T1 · Fully proved</div>
-                    <h4>Replay soundness</h4>
-                    <p>The flagship result: replaying the recorded journal reproduces the original run's trace exactly, with probability 1, proved via a coupling on the shared oracle-randomness space. Equiprobability follows.</p>
-                </div>
-                <div class="arch-item fade-in">
-                    <div class="arch-tag">T2 · Pen-and-paper</div>
-                    <h4>Probabilistic noninterference</h4>
-                    <p>Secret (High) inputs don't affect public (Low) observations, proved as termination-insensitive noninterference, conditional on named assumptions: per-label oracle partitioning and a label-filtered scheduler.</p>
-                </div>
-                <div class="arch-item fade-in">
-                    <div class="arch-tag">T3 · Pen-and-paper</div>
-                    <h4>Compositional bounds</h4>
-                    <p>Local per-agent probability contracts compose to a global bound, an assumption-free union bound. The product form holds only under independence, with a Fréchet–Hoeffding fallback otherwise.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Verified / built -->
-        <div class="research-block">
-            <div class="section-header">
-                <p class="section-label">Verified / built</p>
-                <h3 class="research-sub">From proof to running code</h3>
-            </div>
-            <div class="cases-grid">
-                <div class="case-card fade-in">
-                    <h3>Lean 4 mechanization</h3>
-                    <p>lean/AgenticalT1.lean covers T1's operational core (the oracle fragment), trace-equivalence, crash-resume (C1), no-orphaned-effect (L4), and cursor-determinism (L1), all sorry-free. Axioms are propext, plus Quot.sound for L4. Not yet mechanized: channels, the measure-theoretic layer, or T2/T3.</p>
-                </div>
-                <div class="case-card fade-in">
-                    <h3>Rust runtime</h3>
-                    <p>A zero-dependency reference implementation. Six integration tests pass demonstrating T1, C1, and L4. Measured: 1000/1000 replay-determinism; ~230 ns O(1) append latency, flat to 1M entries; and a ~1500× replay speedup under a 1 ms/draw latency-injected oracle, since replay performs zero oracle calls.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contribution -->
-        <div class="research-block">
-            <p class="section-label">The contribution</p>
-            <p class="research-statement">Agentical brings together <span>probabilistic-operational semantics, multi-agent coordination, and durable replay</span> in a single calculus, backed by a reference implementation.</p>
-        </div>
-    </div>
-
-    <!-- ── FAQ ───────────────────────────────────────────────────────── -->
-    <div class="faq-section" id="faq">
-        <div class="faq-grid">
-            <div class="faq-content">
-                <div class="section-header">
-                    <p class="section-label">FAQ</p>
-                    <h2 class="section-title">The hard questions</h2>
-                </div>
-            </div>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <h4>How is this different from a general durable execution engine?</h4>
-                    <p>General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and we build on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee, which is what nondeterministic agents need.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>How can replay be faithful if LLMs are nondeterministic?</h4>
-                    <p>Pragmatic does not re-sample the model on replay. The first run records each realized outcome to the Journal, and replay reads those outcomes back. Reproducing a run reads from the log rather than calling the model again, which is what makes it exact. This is T1, proved by a coupling on the shared oracle-randomness space.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Do I have to rewrite my agent?</h4>
-                    <p>No. Keep your agent logic and route model calls through the Oracle. The runtime links in as a library and journals outcomes as the agent runs. There is no new operating system and no new orchestration language to learn.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Is it production-ready?</h4>
-                    <p>Pragmatic is in private beta with design partners. The replay guarantee (T1) is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery tests today. The probabilistic and information-flow results (T2, T3) are proved pen-and-paper and not yet mechanized. We are honest about that scope.</p>
-                </div>
-                <div class="faq-item">
-                    <h4>Where does my data live?</h4>
-                    <p>With self-hosted, the runtime and your Journals stay entirely in your environment. Pragmatic Cloud manages durable journaling and replay for you. Enterprise adds a signed, immutable audit trail and information-flow guarantees for regulated teams.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── CTA ───────────────────────────────────────────────────────── -->
-    <div class="cta-wrap" id="cta-wrap">
-        <div class="cta-inner">
-            <div class="cta-eyebrow">Private beta</div>
-            <h2>Crash. Recover.<br><em>Replay, exactly.</em></h2>
-            <div class="hero-actions" style="justify-content:flex-start; gap:10px;">
-                <a href="mailto:me@aniketh.net?subject=Pragmatic early access" class="btn btn-chalk">Request early access</a>
-                <a href="mailto:me@aniketh.net?subject=Pragmatic design partner" class="btn btn-ghost-dark">Talk to us</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
-    <footer>
-        <div class="footer-inner">
-            <div class="footer-left">
-                <a href="pragmatic.html" class="footer-logo">Pragmatic</a>
-                <div class="footer-links">
-                    <a href="mailto:me@aniketh.net">Email</a>
-                    <a href="https://github.com/vayusys" target="_blank" rel="noopener">GitHub</a>
-                    <a href="https://www.linkedin.com/company/vayusystems" target="_blank" rel="noopener">LinkedIn</a>
-                </div>
-            </div>
-            <div class="footer-right">&copy; 2026 Pragmatic</div>
-        </div>
-    </footer>
-
-    </div><!-- /.dark-below -->
+    </section>
 
     <script>
-        // ─── Elements ────────────────────────────────────────────────
-        const nav         = document.getElementById('nav');
-        const heroPin     = document.getElementById('hero-pin');
-        const darkBelow   = document.getElementById('dark-below');
-        const heroCycleEl = document.getElementById('hero-cycle');
+        document.querySelectorAll('.atelier pre').forEach(function (pre) {
+            pre.innerHTML = pre.innerHTML.split('\n').map(function (line) {
+                return '<span class="code-line">' + (line === '' ? '&nbsp;' : line) + '</span>';
+            }).join('');
+        });
 
-        // ─── Phrase cycling ───────────────────────────────────────────
-        const PHRASES = [
-            "don't run deterministically.",
-            'crash and come back.',
-            'you can replay.',
-            'you can put in production.',
-            "don't run deterministically."
-        ];
-
-        let cycleIdx = 0;
-        let scrollDir = 1;
-        let lastY = window.scrollY;
-
-        function getPinProgress() {
-            const r = heroPin.getBoundingClientRect();
-            const scrollable = heroPin.offsetHeight - window.innerHeight;
-            return Math.max(0, Math.min(1, -r.top / scrollable));
-        }
-
-        function transitionPhrase(idx) {
-            if (idx === cycleIdx) return;
-            cycleIdx = idx;
-
-            const em     = heroCycleEl.querySelector('em');
-            const exitY  = scrollDir >= 0 ? '-28px' : '28px';
-            const enterY = scrollDir >= 0 ?  '28px' : '-28px';
-
-            // Quick exit, then swap and enter, no blocking flag
-            em.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
-            em.style.opacity    = '0';
-            em.style.transform  = `translateY(${exitY})`;
-
-            setTimeout(() => {
-                em.textContent      = PHRASES[idx];
-                em.style.transition = 'none';
-                em.style.opacity    = '0';
-                em.style.transform  = `translateY(${enterY})`;
-                requestAnimationFrame(() => requestAnimationFrame(() => {
-                    em.style.transition = 'opacity 0.45s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-                    em.style.opacity    = '1';
-                    em.style.transform  = 'translateY(0)';
-                }));
-            }, 160);
-        }
-
-        // ─── Adaptive nav ─────────────────────────────────────────────
-        const NAV_H = 60;
-        function updateNav() {
-            const r = darkBelow.getBoundingClientRect();
-            const overDark = r.top <= NAV_H && r.bottom > NAV_H;
-            nav.classList.toggle('on-light', !overDark);
-        }
-
-        // ─── Main scroll handler ──────────────────────────────────────
-        window.addEventListener('scroll', () => {
-            scrollDir = window.scrollY >= lastY ? 1 : -1;
-            lastY     = window.scrollY;
-
-            updateNav();
-
-            // Only cycle if the pin is active (desktop)
-            if (heroPin.offsetHeight > window.innerHeight * 1.5) {
-                const prog   = getPinProgress();
-                const target = Math.min(Math.floor(prog * PHRASES.length), PHRASES.length - 1);
-                transitionPhrase(target);
-            }
-        }, { passive: true });
-
-        updateNav();
-
-        // ─── Fade-in observer ─────────────────────────────────────────
-        const fadeObs = new IntersectionObserver((entries) => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.08, rootMargin: '0px 0px -48px 0px' });
-        document.querySelectorAll('.fade-in').forEach(el => fadeObs.observe(el));
-
-        // ─── Quote word reveal ────────────────────────────────────────
-        const blockquote = document.querySelector('.intro blockquote');
-        if (blockquote) {
-            function wrapWords(node) {
-                [...node.childNodes].forEach(child => {
-                    if (child.nodeType === Node.TEXT_NODE) {
-                        const frag = document.createDocumentFragment();
-                        child.textContent.split(/(\s+)/).forEach(token => {
-                            if (/\s+/.test(token)) {
-                                frag.appendChild(document.createTextNode(token));
-                            } else if (token) {
-                                const s = document.createElement('span');
-                                s.className = 'word';
-                                s.textContent = token;
-                                frag.appendChild(s);
-                            }
-                        });
-                        child.replaceWith(frag);
-                    } else if (child.nodeType === Node.ELEMENT_NODE) {
-                        wrapWords(child);
-                    }
+        document.querySelectorAll('.lang-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var lang = tab.dataset.lang;
+                document.querySelectorAll('.lang-tab').forEach(function (t) {
+                    t.classList.toggle('active', t === tab);
                 });
-            }
-            wrapWords(blockquote);
-
-            const quoteObs = new IntersectionObserver(([entry]) => {
-                if (!entry.isIntersecting) return;
-                blockquote.querySelectorAll('.word').forEach((w, i) => {
-                    setTimeout(() => w.classList.add('on'), i * 38);
+                document.querySelectorAll('.code-snippet').forEach(function (s) {
+                    s.classList.toggle('active', s.dataset.lang === lang);
                 });
-                quoteObs.disconnect();
-            }, { threshold: 0.25 });
-            quoteObs.observe(blockquote);
-        }
-
-        // ─── Animated number counters ─────────────────────────────────
-        function parseStatValue(text) {
-            const t = text.trim();
-            if (t === '100%') return { prefix: '', value: 100, suffix: '%', decimals: 0 };
-            return null;
-        }
-
-        const countObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const el     = entry.target;
-                const parsed = parseStatValue(el.textContent);
-                if (!parsed) return;
-                countObs.unobserve(el);
-
-                const { prefix, value, suffix, decimals } = parsed;
-                const start = performance.now();
-
-                (function tick(now) {
-                    const t    = Math.min((now - start) / 1800, 1);
-                    const ease = 1 - Math.pow(1 - t, 4);
-                    el.textContent = prefix + (decimals ? (value * ease).toFixed(decimals) : Math.round(value * ease)) + suffix;
-                    if (t < 1) requestAnimationFrame(tick);
-                })(performance.now());
-            });
-        }, { threshold: 0.6 });
-        document.querySelectorAll('.stat-value').forEach(el => countObs.observe(el));
-
-        // ─── Language tab switcher ────────────────────────────────────
-        const FILENAMES = { rust: 'research_agent.rs', python: 'research_agent.py', java: 'ResearchAgent.java', cpp: 'research_agent.cpp' };
-        document.querySelectorAll('.lang-tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const lang = btn.dataset.lang;
-                document.querySelectorAll('.lang-tab').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.code-snippet').forEach(p => p.classList.remove('active'));
-                btn.classList.add('active');
-                document.querySelector(`.code-snippet[data-lang="${lang}"]`).classList.add('active');
-                document.getElementById('code-filename').textContent = FILENAMES[lang];
             });
         });
     </script>
+
+    <!-- Footer -->
+    <footer>
+        <div class="fm">
+            <a href="mailto:me@aniketh.net">Email</a>
+            <a href="https://github.com/vayusys" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/company/vayusystems" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <span class="copy">&copy; 2026 Pragmatic</span>
+    </footer>
 
 </body>
 </html>

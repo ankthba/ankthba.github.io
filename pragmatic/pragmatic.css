@@ -671,6 +671,19 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
     .finale .lnk { font-size: 17px; }
 }
 
+/* ── Dark pages (technical) ── */
+body.dark {
+    background: #1f1b15;
+    color: #f1ede4;
+    --ink:    #f1ede4;
+    --ink-70: rgba(241,237,228,0.75);
+    --ink-52: rgba(241,237,228,0.55);
+    --ink-30: rgba(241,237,228,0.35);
+    --ink-12: rgba(241,237,228,0.14);
+}
+body.dark ::selection { background: #f1ede4; color: #1f1b15; }
+body.dark .dark-section { background: transparent; }
+
 /* ── Page cover (subpages) ── */
 .page-cover {
     margin-top: 0;

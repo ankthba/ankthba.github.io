@@ -64,7 +64,7 @@ img { max-width: 100%; }
 /* Section head, styled like the text links */
 .running-head {
     text-align: center;
-    margin: 0 auto 10vh;
+    margin: 0 auto 8vh;
     padding: 0 24px;
 }
 .running-head em {
@@ -82,7 +82,7 @@ img { max-width: 100%; }
     margin: 26px auto 0;
 }
 
-section { margin-top: 24vh; }
+section { margin-top: 16vh; }
 
 /* ── Header ── */
 header {
@@ -193,7 +193,7 @@ header nav a:hover { color: var(--ink); }
 
 /* ── Looks ── */
 .look { padding: 0 24px; }
-.look + .look { margin-top: 14vh; }
+.look + .look { margin-top: 11vh; }
 .look h3 {
     font-family: var(--display);
     font-weight: 400;
@@ -214,7 +214,7 @@ header nav a:hover { color: var(--ink); }
 .dark-section {
     background: var(--ink);
     color: var(--ivory);
-    padding: 16vh 24px;
+    padding: 12vh 24px;
 }
 .dark-section .running-head::after { background: var(--ivory-45); }
 .dark-section .running-head em { color: var(--ivory); }
@@ -333,7 +333,7 @@ header nav a:hover { color: var(--ink); }
     line-height: 1.78;
     color: var(--ink-70);
     max-width: 52ch;
-    margin: 0 auto 12vh;
+    margin: 0 auto 9vh;
 }
 .facing-cols {
     display: grid;
@@ -377,10 +377,10 @@ header nav a:hover { color: var(--ink); }
     font-weight: 400;
     font-size: clamp(34px, 4.2vw, 62px);
     line-height: 1.06;
-    margin-bottom: 12vh;
+    margin-bottom: 9vh;
 }
 .book-lede em { font-style: italic; }
-.book-entry + .book-entry { margin-top: 11vh; }
+.book-entry + .book-entry { margin-top: 9vh; }
 .book-entry .caption { display: block; margin-bottom: 14px; text-align: center; }
 .book-entry h3 {
     font-family: var(--display);
@@ -403,7 +403,7 @@ header nav a:hover { color: var(--ink); }
     text-align: center;
     margin: -6vh auto 10vh;
 }
-.edition + .edition { margin-top: 13vh; }
+.edition + .edition { margin-top: 10vh; }
 .edition h3 {
     font-family: var(--display);
     font-weight: 400;
@@ -453,7 +453,7 @@ header nav a:hover { color: var(--ink); }
     line-height: 1.2;
     color: var(--ivory);
     max-width: 26ch;
-    margin: 11vh auto;
+    margin: 9vh auto;
 }
 .essay .pull em { font-style: italic; }
 .essay h3 {
@@ -461,7 +461,7 @@ header nav a:hover { color: var(--ink); }
     font-family: var(--display);
     font-weight: 400;
     font-size: 30px;
-    margin: 11vh 0 5vh;
+    margin: 9vh 0 4vh;
     color: var(--ivory);
 }
 .essay .thm { margin-top: 34px; }
@@ -512,8 +512,8 @@ header nav a:hover { color: var(--ink); }
 .finale {
     background: var(--ink);
     color: var(--ivory);
-    margin-top: 24vh;
-    padding: 22vh 24px;
+    margin-top: 16vh;
+    padding: 16vh 24px;
     text-align: center;
 }
 .finale img { width: 30px; height: 30px; filter: invert(1); opacity: 0.9; margin-bottom: 7vh; }
@@ -560,7 +560,7 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
 
 /* ── Responsive ── */
 @media (max-width: 860px) {
-    section { margin-top: 14vh; }
+    section { margin-top: 12vh; }
 
     header {
         display: flex;
@@ -582,7 +582,7 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
 
     .look + .look { margin-top: 9vh; }
 
-    .dark-section { padding: 11vh 20px; }
+    .dark-section { padding: 9vh 20px; }
 
     .facing-cols { grid-template-columns: 1fr; row-gap: 7vh; }
     .facing-col { padding: 0; }
@@ -599,7 +599,7 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
     .qa-item summary { padding: 4vh 0; }
     .qa-item .answer { padding: 2.5vh 0 5vh; }
 
-    .finale { margin-top: 14vh; padding: 13vh 20px; }
+    .finale { margin-top: 12vh; padding: 12vh 20px; }
     .finale .finale-links { gap: 34px; }
     .finale img { margin-bottom: 5vh; }
 
@@ -610,10 +610,10 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
 @media (max-width: 520px) {
     body { font-size: 16.5px; line-height: 1.62; }
 
-    .page-cover { min-height: 38vh; padding-top: 9vh; }
+    .page-cover { min-height: 28vh; padding-top: 7vh; }
     .page-cover h1 { font-size: clamp(32px, 9.6vw, 44px); }
     .page-cover .page-deck { font-size: 16.5px; }
-    section { margin-top: 12vh; }
+    section { margin-top: 10vh; }
 
     header nav a { font-size: 14.5px; }
     .masthead { font-size: 27px; }
@@ -681,20 +681,20 @@ body.dark {
     --ink-12: rgba(241,237,228,0.14);
 }
 body.dark ::selection { background: #f1ede4; color: #1f1b15; }
-body.dark .dark-section { background: transparent; }
+body.dark .dark-section { background: transparent; padding-top: 0; padding-bottom: 0; }
 
 /* ── Page cover (subpages) ── */
 .page-cover {
     margin-top: 0;
-    min-height: 48vh;
+    min-height: 34vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 13vh 24px 2vh;
+    padding: 10vh 24px 0;
 }
-.page-cover .caption { display: block; margin-bottom: 4.5vh; }
+.page-cover .caption { display: block; margin-bottom: 3.5vh; }
 .page-cover h1 {
     font-family: var(--display);
     font-weight: 400;
@@ -705,7 +705,7 @@ body.dark .dark-section { background: transparent; }
 }
 .page-cover h1 em { font-style: italic; }
 .page-cover .page-deck {
-    margin-top: 4.5vh;
+    margin-top: 3.5vh;
     max-width: 46ch;
     font-size: 19px;
     line-height: 1.75;

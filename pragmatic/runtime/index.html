@@ -216,26 +216,6 @@ Trace trace = rt.replay(runId).join();</pre>
         <a href="/pragmatic/practice/">In practice</a>
     </section>
 
-    <script>
-        document.querySelectorAll('.atelier pre').forEach(function (pre) {
-            pre.innerHTML = pre.innerHTML.split('\n').map(function (line) {
-                return '<span class="code-line">' + (line === '' ? '&nbsp;' : line) + '</span>';
-            }).join('');
-        });
-
-        document.querySelectorAll('.lang-tab').forEach(function (tab) {
-            tab.addEventListener('click', function () {
-                var lang = tab.dataset.lang;
-                document.querySelectorAll('.lang-tab').forEach(function (t) {
-                    t.classList.toggle('active', t === tab);
-                });
-                document.querySelectorAll('.code-snippet').forEach(function (s) {
-                    s.classList.toggle('active', s.dataset.lang === lang);
-                });
-            });
-        });
-    </script>
-
     <footer>
         <div class="fm">
             <a href="mailto:me@aniketh.net">Email</a>
@@ -245,5 +225,6 @@ Trace trace = rt.replay(runId).join();</pre>
         <span class="copy">&copy; 2026 Pragmatic</span>
     </footer>
 
+    <script src="/pragmatic/pragmatic.js" defer></script>
 </body>
 </html>

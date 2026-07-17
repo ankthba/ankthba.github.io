@@ -29,7 +29,7 @@
         '.facing-lede', '.facing-body', '.facing-col',
         '.book-lede', '.book-entry', '.edition', '.editions-note',
         '.essay .measure > p', '.essay .pull', '.essay h3', '.thm',
-        '.qa-item', '.page-next > *', '.finale > *'
+        '.qa-item', '.finale > *'
     ];
     var els = Array.prototype.slice.call(document.querySelectorAll(selectors.join(',')));
     var perParent = new Map();

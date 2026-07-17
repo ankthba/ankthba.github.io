@@ -613,7 +613,6 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
     .page-cover { min-height: 38vh; padding-top: 9vh; }
     .page-cover h1 { font-size: clamp(32px, 9.6vw, 44px); }
     .page-cover .page-deck { font-size: 16.5px; }
-    .page-next a { font-size: clamp(25px, 7.2vw, 32px); }
     section { margin-top: 12vh; }
 
     header nav a { font-size: 14.5px; }
@@ -712,20 +711,6 @@ body.dark .dark-section { background: transparent; }
     line-height: 1.75;
     color: var(--ink-70);
 }
-
-/* ── Page close (continue link) ── */
-.page-next { text-align: center; margin-top: 22vh; }
-.page-next .caption { display: block; margin-bottom: 20px; }
-.page-next a {
-    font-family: var(--display);
-    font-style: italic;
-    font-size: clamp(30px, 3.4vw, 46px);
-    text-decoration: none;
-    border-bottom: 1px solid var(--ink-30);
-    padding-bottom: 4px;
-    transition: border-color 0.25s;
-}
-.page-next a:hover { border-color: var(--ink); }
 
 /* ── Reveal animations ── */
 .reveal {

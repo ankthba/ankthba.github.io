@@ -34,9 +34,14 @@
         </nav>
     </header>
 
+    <!-- Page cover -->
+    <section class="page-cover">
+        <span class="caption">Research</span>
+        <h1>Agentical, <em>the theory behind the runtime.</em></h1>
+        <p class="page-deck">The guarantees are proved before they are shipped. This is the calculus underneath Pragmatic, stated with honest scope.</p>
+    </section>
+
     <section class="dark-section essay" id="research">
-        <div class="running-head"><em>Research</em></div>
-        <h2>Agentical, <em>the theory behind the runtime.</em></h2>
         <div class="measure">
             <p class="prose">Pragmatic's guarantees are real because they are proved. Agentical is the probabilistic process calculus underneath the runtime: the reason crash recovery and faithful replay hold even when the model underneath is nondeterministic.</p>
             <p class="prose">Durable execution is the proven substrate for reliable software: Temporal, Restate, Inngest, and DBOS all build on it. But its replay model assumes code is deterministic, so every engine works around LLMs by caching model outputs as opaque activities. Frontier models show only 50 to 96 percent determinism even at temperature 0. Pragmatic is durable execution built for nondeterminism from the ground up, holding durable replay, crash recovery, and information-flow reasoning together.</p>
@@ -72,8 +77,9 @@
     </section>
 
 
-    <section class="next">
-        <a class="lnk" href="/pragmatic/questions/">Continue: questions</a>
+    <section class="page-next">
+        <span class="caption">continue</span>
+        <a href="/pragmatic/questions/">Questions</a>
     </section>
 
     <footer>

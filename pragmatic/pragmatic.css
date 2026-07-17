@@ -609,6 +609,11 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
 
 @media (max-width: 520px) {
     body { font-size: 16.5px; line-height: 1.62; }
+
+    .page-cover { min-height: 38vh; padding-top: 9vh; }
+    .page-cover h1 { font-size: clamp(32px, 9.6vw, 44px); }
+    .page-cover .page-deck { font-size: 16.5px; }
+    .page-next a { font-size: clamp(25px, 7.2vw, 32px); }
     section { margin-top: 12vh; }
 
     header nav a { font-size: 14.5px; }
@@ -666,5 +671,45 @@ footer .copy { font-style: italic; font-size: 14.5px; color: var(--ink-30); }
     .finale .lnk { font-size: 17px; }
 }
 
-/* ── Next link ── */
-.next { text-align: center; margin-top: 20vh; }
+/* ── Page cover (subpages) ── */
+.page-cover {
+    margin-top: 0;
+    min-height: 48vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 13vh 24px 2vh;
+}
+.page-cover .caption { display: block; margin-bottom: 4.5vh; }
+.page-cover h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(42px, 5.8vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+}
+.page-cover h1 em { font-style: italic; }
+.page-cover .page-deck {
+    margin-top: 4.5vh;
+    max-width: 46ch;
+    font-size: 19px;
+    line-height: 1.75;
+    color: var(--ink-70);
+}
+
+/* ── Page close (continue link) ── */
+.page-next { text-align: center; margin-top: 22vh; }
+.page-next .caption { display: block; margin-bottom: 20px; }
+.page-next a {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(30px, 3.4vw, 46px);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink-30);
+    padding-bottom: 4px;
+    transition: border-color 0.25s;
+}
+.page-next a:hover { border-color: var(--ink); }

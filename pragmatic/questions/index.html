@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions · Pragmatic</title>
+
+    <meta name="description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <meta property="og:title" content="Questions · Pragmatic">
+    <meta property="og:description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/questions/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/pragmatic/pragmatic.css">
+
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
+</head>
+<body>
+
+    <header>
+        <nav class="left">
+            <a href="/pragmatic/runtime/">the runtime</a>
+            <a href="/pragmatic/research/">research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead">Pragmatic</a>
+        <nav class="right">
+            <a href="/pragmatic/questions/">questions</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">early access</a>
+        </nav>
+    </header>
+
+    <section class="qa" id="faq">
+        <div class="running-head"><em>Questions</em></div>
+        <details class="qa-item">
+            <summary>
+                <h3>How is this different from a general <em>durable execution engine?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and we build on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>How can replay be faithful if LLMs <em>are nondeterministic?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Pragmatic does not re-sample the model on replay. The first run records each realized outcome to the Journal, and replay reads those outcomes back. Reproducing a run reads from the log rather than calling the model again, which is what makes it exact.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Do I have to <em>rewrite my agent?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">No. Keep your agent logic and route model calls through the Oracle. The runtime links in as a library and journals outcomes as the agent runs. There is no new operating system and no new orchestration language to learn.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Is it <em>production-ready?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Pragmatic is in private beta with design partners. The replay guarantee is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery tests today. The probabilistic and information-flow results are proved on paper and not yet mechanized.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>Where does <em>my data live?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">With self-hosted, the runtime and your Journals stay entirely in your environment. Pragmatic Cloud manages durable journaling and replay for you. Enterprise adds a signed, immutable audit trail and information-flow guarantees for regulated teams.</p>
+        </details>
+    </section>
+
+
+    <section class="next">
+        <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic early access">Request early access</a>
+    </section>
+
+    <footer>
+        <div class="fm">
+            <a href="mailto:me@aniketh.net">Email</a>
+            <a href="https://github.com/vayusys" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/company/vayusystems" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <span class="copy">&copy; 2026 Pragmatic</span>
+    </footer>
+
+</body>
+</html>

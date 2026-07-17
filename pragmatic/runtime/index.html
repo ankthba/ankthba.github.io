@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The runtime · Pragmatic</title>
+
+    <meta name="description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <meta property="og:title" content="The runtime · Pragmatic">
+    <meta property="og:description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/runtime/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/pragmatic/pragmatic.css">
+
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
+</head>
+<body>
+
+    <header>
+        <nav class="left">
+            <a href="/pragmatic/runtime/">the runtime</a>
+            <a href="/pragmatic/research/">research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead">Pragmatic</a>
+        <nav class="right">
+            <a href="/pragmatic/questions/">questions</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">early access</a>
+        </nav>
+    </header>
+
+    <section class="dark-section atelier" id="code">
+        <div class="running-head"><em>In your code</em></div>
+        <h2>Durable in <em>one wrapper.</em></h2>
+        <p class="at-copy">Keep writing agents the way you already do. Wrap the run, route model calls through the Oracle, and Pragmatic journals every realized outcome as the agent executes.</p>
+        <p class="at-note">Crash on step nine of a thousand and the agent resumes on step nine, reading every prior call back from the Journal instead of paying for it again.</p>
+        <div class="code-wrap">
+            <div class="lang-tabs">
+                <button class="lang-tab active" data-lang="rust">Rust</button>
+                <button class="lang-tab" data-lang="python">Python</button>
+                <button class="lang-tab" data-lang="typescript">TypeScript</button>
+                <button class="lang-tab" data-lang="java">Java</button>
+                <button class="lang-tab" data-lang="cpp">C++</button>
+            </div>
+            <div class="code-snippet active" data-lang="rust">
+                <p class="file">research_agent.rs</p>
+<pre><span class="c-kw">use</span> pragmatic::{Oracle, Runtime};
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-com">#[pragmatic::durable]</span>
+<span class="c-kw">async fn</span> research(task: Task, llm: &amp;Oracle) -&gt; Report {
+    <span class="c-kw">let</span> plan = llm.call(plan(&amp;task)).<span class="c-kw">await</span>;     <span class="c-com">// journaled</span>
+    <span class="c-kw">let mut</span> out = Vec::new();
+    <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps {
+        out.push(llm.call(probe(step)).<span class="c-kw">await</span>); <span class="c-com">// journaled</span>
+    }
+    synthesize(out)
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">let</span> report = rt.resume(run_id).<span class="c-kw">await</span>;
+
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">let</span> trace  = rt.replay(run_id).<span class="c-kw">await</span>;</pre>
+            </div>
+            <div class="code-snippet" data-lang="python">
+                <p class="file">research_agent.py</p>
+<pre><span class="c-kw">from</span> pragmatic <span class="c-kw">import</span> Oracle, runtime
+
+<span class="c-com"># Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-com">@pragmatic.durable</span>
+<span class="c-kw">async def</span> research(task: Task, llm: Oracle) -&gt; Report:
+    plan = <span class="c-kw">await</span> llm.call(plan(task))      <span class="c-com"># journaled</span>
+    out = []
+    <span class="c-kw">for</span> step <span class="c-kw">in</span> plan.steps:
+        out.append(<span class="c-kw">await</span> llm.call(probe(step)))  <span class="c-com"># journaled</span>
+    <span class="c-kw">return</span> synthesize(out)
+
+<span class="c-com"># Crash anywhere. Resume exactly, no re-sampling.</span>
+report = <span class="c-kw">await</span> rt.resume(run_id)
+
+<span class="c-com"># Replay the whole run for audit.</span>
+trace = <span class="c-kw">await</span> rt.replay(run_id)</pre>
+            </div>
+            <div class="code-snippet" data-lang="typescript">
+                <p class="file">research_agent.ts</p>
+<pre><span class="c-kw">import</span> { Oracle, Runtime } <span class="c-kw">from</span> "pragmatic";
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-kw">const</span> research = pragmatic.durable(
+  <span class="c-kw">async</span> (task: Task, llm: Oracle): Promise&lt;Report&gt; =&gt; {
+    <span class="c-kw">const</span> plan = <span class="c-kw">await</span> llm.call(planFor(task));  <span class="c-com">// journaled</span>
+    <span class="c-kw">const</span> out = [];
+    <span class="c-kw">for</span> (<span class="c-kw">const</span> step <span class="c-kw">of</span> plan.steps) {
+      out.push(<span class="c-kw">await</span> llm.call(probe(step)));     <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">return</span> synthesize(out);
+  }
+);
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">const</span> report = <span class="c-kw">await</span> rt.resume(runId);
+
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">const</span> trace = <span class="c-kw">await</span> rt.replay(runId);</pre>
+            </div>
+            <div class="code-snippet" data-lang="java">
+                <p class="file">ResearchAgent.java</p>
+<pre><span class="c-kw">import</span> pragmatic.Oracle;
+<span class="c-kw">import</span> pragmatic.Runtime;
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-com">@Pragmatic.Durable</span>
+CompletableFuture&lt;Report&gt; research(Task task, Oracle llm) {
+    Plan plan = llm.call(plan(task)).join();     <span class="c-com">// journaled</span>
+    List&lt;Output&gt; out = <span class="c-kw">new</span> ArrayList&lt;&gt;();
+    <span class="c-kw">for</span> (Step step : plan.getSteps()) {
+        out.add(llm.call(probe(step)).join());   <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">return</span> synthesize(out);
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+Report report = rt.resume(runId).join();
+
+<span class="c-com">// Replay the whole run for audit.</span>
+Trace trace = rt.replay(runId).join();</pre>
+            </div>
+            <div class="code-snippet" data-lang="cpp">
+                <p class="file">research_agent.cpp</p>
+<pre><span class="c-com">#include</span> &lt;pragmatic/oracle.hpp&gt;
+<span class="c-com">#include</span> &lt;pragmatic/runtime.hpp&gt;
+
+<span class="c-com">// Wrap the run. Every Oracle call is journaled once.</span>
+<span class="c-com">PRAGMATIC_DURABLE</span>
+<span class="c-kw">auto</span> research(Task task, Oracle&amp; llm) -&gt; Future&lt;Report&gt; {
+    <span class="c-kw">auto</span> plan = <span class="c-kw">co_await</span> llm.call(plan_for(task));   <span class="c-com">// journaled</span>
+    std::vector&lt;Output&gt; out;
+    <span class="c-kw">for</span> (<span class="c-kw">auto</span>&amp; step : plan.steps) {
+        out.push_back(<span class="c-kw">co_await</span> llm.call(probe(step))); <span class="c-com">// journaled</span>
+    }
+    <span class="c-kw">co_return</span> synthesize(out);
+}
+
+<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
+<span class="c-kw">auto</span> report = <span class="c-kw">co_await</span> rt.resume(run_id);
+
+<span class="c-com">// Replay the whole run for audit.</span>
+<span class="c-kw">auto</span> trace = <span class="c-kw">co_await</span> rt.replay(run_id);</pre>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="facing" id="why">
+        <div class="running-head"><em>Why Pragmatic</em></div>
+        <h2 class="facing-lede">A model, <em>not a cache.</em></h2>
+        <p class="facing-body prose">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run.</p>
+        <div class="facing-cols">
+            <div class="facing-col">
+                <h3>The LLM as an opaque activity</h3>
+                <p class="who">elsewhere</p>
+                <p>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</p>
+                <p>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</p>
+                <p>No way to reason about the probability a run meets its spec, and no guarantee about how secret inputs flow to public outputs.</p>
+            </div>
+            <div class="facing-col">
+                <h3>The LLM as a first-class Oracle</h3>
+                <p class="who">at Pragmatic</p>
+                <p>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</p>
+                <p>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</p>
+                <p>Compositional probability bounds let you reason about whether a multi-agent system meets its spec, and noninterference is provable.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="book" id="anatomy">
+        <div class="running-head"><em>Anatomy</em></div>
+        <h2 class="book-lede">A runtime, <em>not an operating system.</em></h2>
+        <div class="book-entry">
+            <span class="caption">the runtime</span>
+            <h3>A library, on your infrastructure.</h3>
+            <p class="prose">Pragmatic runs on the infrastructure you already have: Linux, containers, any cloud. It links into your agent as a library. There is nothing new to provision and no operating system to adopt.</p>
+        </div>
+        <div class="book-entry">
+            <span class="caption">the core</span>
+            <h3>Oracle and Journal.</h3>
+            <p class="prose">Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back instead of re-sampling the model, which is what makes recovery faithful.</p>
+        </div>
+        <div class="book-entry">
+            <span class="caption">trust</span>
+            <h3>Capabilities and a signed log.</h3>
+            <p class="prose">Every effect carries a capability token, and the Journal is a signed, immutable record of the run. Idempotency, provenance, and a tamper-evident audit trail, at the runtime level.</p>
+        </div>
+        <div class="book-entry">
+            <span class="caption">control</span>
+            <h3>The Supervisor.</h3>
+            <p class="prose">The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It turns a crashed run into a resumed one without re-sampling or lost work.</p>
+        </div>
+    </section>
+
+
+    <section id="uses">
+        <div class="running-head"><em>What you build on it</em></div>
+        <div class="look">
+            <h3>Agents that run <em>for days.</em></h3>
+            <p class="prose">Long-running agents survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. No re-sampling and no half-finished work.</p>
+        </div>
+        <div class="look">
+            <h3>Bugs you can <em>finally replay.</em></h3>
+            <p class="prose">Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Bugs you could never reproduce become runs you can replay.</p>
+        </div>
+        <div class="look">
+            <h3>Runs you can <em>prove.</em></h3>
+            <p class="prose">Every run has a signed, replayable record of what the agent actually did. That reproducibility matters most for regulated and high-stakes teams, and it is built into the runtime.</p>
+        </div>
+        <div class="look">
+            <h3>Fleets that fail <em>gracefully.</em></h3>
+            <p class="prose">When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
+        </div>
+    </section>
+
+
+    <section class="editions" id="editions">
+        <div class="running-head"><em>Three ways to run it</em></div>
+        <p class="editions-note caption">all in private beta</p>
+        <div class="edition">
+            <h3>Self-hosted.</h3>
+            <span class="caption">the runtime, on your infrastructure</span>
+            <p class="ed-desc">Your data and Journals never leave your environment.</p>
+            <p class="materials">links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
+        </div>
+        <div class="edition">
+            <h3>Pragmatic Cloud.</h3>
+            <span class="caption">fully managed</span>
+            <p class="ed-desc">Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
+            <p class="materials">hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
+        </div>
+        <div class="edition">
+            <h3>Enterprise.</h3>
+            <span class="caption">for regulated &amp; high-stakes teams</span>
+            <p class="ed-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
+            <p class="materials">signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
+        </div>
+    </section>
+
+
+    <section class="next">
+        <a class="lnk" href="/pragmatic/research/">Continue: research</a>
+    </section>
+
+    <script>
+        document.querySelectorAll('.atelier pre').forEach(function (pre) {
+            pre.innerHTML = pre.innerHTML.split('\n').map(function (line) {
+                return '<span class="code-line">' + (line === '' ? '&nbsp;' : line) + '</span>';
+            }).join('');
+        });
+
+        document.querySelectorAll('.lang-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                var lang = tab.dataset.lang;
+                document.querySelectorAll('.lang-tab').forEach(function (t) {
+                    t.classList.toggle('active', t === tab);
+                });
+                document.querySelectorAll('.code-snippet').forEach(function (s) {
+                    s.classList.toggle('active', s.dataset.lang === lang);
+                });
+            });
+        });
+    </script>
+
+    <footer>
+        <div class="fm">
+            <a href="mailto:me@aniketh.net">Email</a>
+            <a href="https://github.com/vayusys" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/company/vayusystems" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <span class="copy">&copy; 2026 Pragmatic</span>
+    </footer>
+
+</body>
+</html>

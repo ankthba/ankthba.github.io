@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research · Pragmatic</title>
+
+    <meta name="description" content="Agentical, the probabilistic process calculus behind Pragmatic: replay soundness, noninterference, and compositional bounds for nondeterministic agents.">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <meta property="og:title" content="Research · Pragmatic">
+    <meta property="og:description" content="Agentical, the probabilistic process calculus behind Pragmatic: replay soundness, noninterference, and compositional bounds for nondeterministic agents.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/research/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/pragmatic/pragmatic.css">
+
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticicon.png">
+</head>
+<body>
+
+    <header>
+        <nav class="left">
+            <a href="/pragmatic/runtime/">the runtime</a>
+            <a href="/pragmatic/research/">research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead">Pragmatic</a>
+        <nav class="right">
+            <a href="/pragmatic/questions/">questions</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">early access</a>
+        </nav>
+    </header>
+
+    <section class="dark-section essay" id="research">
+        <div class="running-head"><em>Research</em></div>
+        <h2>Agentical, <em>the theory behind the runtime.</em></h2>
+        <div class="measure">
+            <p class="prose">Pragmatic's guarantees are real because they are proved. Agentical is the probabilistic process calculus underneath the runtime: the reason crash recovery and faithful replay hold even when the model underneath is nondeterministic.</p>
+            <p class="prose">Durable execution is the proven substrate for reliable software: Temporal, Restate, Inngest, and DBOS all build on it. But its replay model assumes code is deterministic, so every engine works around LLMs by caching model outputs as opaque activities. Frontier models show only 50 to 96 percent determinism even at temperature 0. Pragmatic is durable execution built for nondeterminism from the ground up, holding durable replay, crash recovery, and information-flow reasoning together.</p>
+        </div>
+
+        <p class="pull">Model each LLM call as a probability distribution. Journal every realized outcome. <em>Recovery becomes replay.</em></p>
+
+        <div class="measure">
+            <p class="prose">Two nondeterminisms are kept cleanly separate: probabilistic, resolved by the Oracle, and adversarial scheduling, resolved by a scheduler, the standard probabilistic-automata setup. The calculus itself is &pi;-calculus-style, with a probabilistic small-step operational semantics in record and replay modes, over six primitives: Agent, Oracle, Channel, Memory, Journal, and Supervisor. A configuration is the 5-tuple &lt;P;H;J;K;t&gt;: agent pool, shared store, journal, channel state, and logical clock.</p>
+        </div>
+
+        <h3>Three theorems, honest scope</h3>
+        <div class="measure">
+            <div class="thm">
+                <span class="caption">T1, proved and mechanized in Lean 4</span>
+                <p class="prose">Replay soundness, the flagship result: replaying the recorded journal reproduces the original run's trace exactly, with probability 1, via a coupling on the shared oracle-randomness space.</p>
+            </div>
+            <div class="thm">
+                <span class="caption">T2, proved on paper</span>
+                <p class="prose">Probabilistic noninterference: secret inputs don't affect public observations, conditional on per-label oracle partitioning and a label-filtered scheduler.</p>
+            </div>
+            <div class="thm">
+                <span class="caption">T3, proved on paper</span>
+                <p class="prose">Compositional bounds: local per-agent probability contracts compose to a global union bound, with a Fr&eacute;chet&ndash;Hoeffding fallback when independence fails.</p>
+            </div>
+        </div>
+
+        <h3>From proof to running code</h3>
+        <div class="measure">
+            <p class="prose">The Lean 4 mechanization covers T1's operational core, trace-equivalence, crash-resume, no-orphaned-effect, and cursor-determinism, all sorry-free. Channels, the measure-theoretic layer, and T2/T3 are not yet mechanized, and we say so.</p>
+            <p class="prose">The Rust runtime is a zero-dependency reference implementation. Six integration tests demonstrate the three properties. Measured: 1000 of 1000 replay-determinism runs; ~230&nbsp;ns constant-time journal append, flat to a million entries; and a ~1500&times; replay speedup under a latency-injected oracle, since replay performs zero model calls.</p>
+        </div>
+    </section>
+
+
+    <section class="next">
+        <a class="lnk" href="/pragmatic/questions/">Continue: questions</a>
+    </section>
+
+    <footer>
+        <div class="fm">
+            <a href="mailto:me@aniketh.net">Email</a>
+            <a href="https://github.com/vayusys" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/company/vayusystems" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <span class="copy">&copy; 2026 Pragmatic</span>
+    </footer>
+
+</body>
+</html>

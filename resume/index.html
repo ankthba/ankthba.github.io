@@ -3,19 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Aniketh Bandlamudi</title>
-  <meta name="description" content="Get in touch with Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Resume | Aniketh Bandlamudi</title>
+  <meta name="description" content="Resume of Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
   <style>
-    /* Center the whole block on mobile; left-aligned only on desktop */
+    .resume__frame {
+      display: block;
+      width: 100%;
+      max-width: 44rem;
+      height: auto;
+      margin-top: var(--space-md);
+      border: 1px solid var(--color-border, rgba(128, 128, 128, 0.25));
+      border-radius: 6px;
+      background: #fff;
+    }
+    .resume__download {
+      margin-top: var(--space-sm);
+    }
     @media (max-width: 768px) {
-      #contact .home__right { text-align: center; }
+      #resume .home__right { text-align: center; }
+      .resume__frame { margin-left: auto; margin-right: auto; }
     }
   </style>
 </head>
 <body>
   <main>
-    <section class="home" id="contact">
+    <section class="home" id="resume">
       <div class="home__left home__left--centered">
         <h1 class="hero__title" id="hero-title"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></h1>
         <nav class="hero__nav">
@@ -23,7 +36,7 @@
             <a href="/" class="hero__nav-link">About</a>          <a href="/work/" class="hero__nav-link">Work</a>          <a href="/education/" class="hero__nav-link">Education</a>          <a href="/projects/" class="hero__nav-link">Projects</a>
           </div>
           <div class="hero__nav-row">
-            <a href="/research/" class="hero__nav-link">Research</a>          <a href="/photos/" class="hero__nav-link">Photography</a>          <a href="/contact/" class="hero__nav-link active">Contact</a>          <a href="/resume/" class="hero__nav-link">Resume</a>
+            <a href="/research/" class="hero__nav-link">Research</a>          <a href="/photos/" class="hero__nav-link">Photography</a>          <a href="/contact/" class="hero__nav-link">Contact</a>          <a href="/resume/" class="hero__nav-link active">Resume</a>
           </div>
         </nav>
         <div class="hero__socials">
@@ -44,10 +57,12 @@
       </div>
 
       <div class="home__right">
-        <h1 class="page-title">Contact</h1>
-        <p class="contact__text" style="margin-left: 0; margin-right: 0;">Have a project in mind, a question, or just want to say hello? I'd love to hear from you.</p>
-        <a href="mailto:me@aniketh.net" class="project-item__link">
-          Send Message
+        <h1 class="page-title">Resume</h1>
+        <a href="/assets/media/resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
+          <img class="resume__frame" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
+        </a>
+        <a href="/assets/media/resume.pdf" target="_blank" rel="noopener" class="project-item__link resume__download">
+          Download PDF
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
       </div>

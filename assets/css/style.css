@@ -413,6 +413,14 @@ a.masthead__name:hover {
     --space-md: 2rem;
   }
 
+  /* Narrow columns read better justified; hyphenation keeps the
+     word spacing even. Desktop stays left-aligned. */
+  .page p {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
   .masthead {
     padding-left: var(--space-sm);
     padding-right: var(--space-sm);

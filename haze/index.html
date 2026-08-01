@@ -123,40 +123,34 @@
       .haze__icon { width: 72px; height: 72px; border-radius: 16px; }
     }
     @media (max-width: 768px) {
-      #haze .home__right { text-align: left; }
       .haze__head { justify-content: flex-start; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <section class="home" id="haze">
-      <div class="home__left home__left--centered">
-        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
-        <nav class="hero__nav">
-          <a href="/work/" class="hero__nav-link">Experience</a>
-          <a href="/projects/" class="hero__nav-link">Projects</a>
-          <a href="/photos/" class="hero__nav-link">Photography</a>
-          <a href="/writing/" class="hero__nav-link">Writing</a>
-          <a href="/contact/" class="hero__nav-link">Contact</a>
-        </nav>
-        <div class="hero__socials">
-          <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="hero__social" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 6.96A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
-          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"></path></svg></a>
-          <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="hero__social" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
-          <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="hero__social" aria-label="Spotify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M7 14.2c3-.9 6.2-.6 8.8.9"></path><path d="M6.4 10.8c3.4-1 7-.6 9.9 1.2"></path><path d="M7 7.6c3.8-1 7.7-.5 10.4 1.4"></path></svg></a>
-          <span class="home__controls">
-            <span class="home__copy">&copy;</span>
-            <button class="theme-icon" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
-              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </button>
-          </span>
-        </div>
-      </div>
+  
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link">About</a>
+      <a href="/work/" class="masthead__nav-link">Work</a>
+      <a href="/education/" class="masthead__nav-link">Education</a>
+      <a href="/projects/" class="masthead__nav-link">Projects</a>
+      <a href="/research/" class="masthead__nav-link">Research</a>
+      <a href="/photos/" class="masthead__nav-link">Photography</a>
+      <a href="/contact/" class="masthead__nav-link">Contact</a>
+      <a href="/resume/" class="masthead__nav-link">Resume</a>
+    </nav>
+    <nav class="masthead__social">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+    </nav>
+  </header>
 
-      <div class="home__right">
+  <main class="page">
         <div class="haze__head">
           <img class="haze__icon" src="/assets/img/haze-icon.png" alt="Haze app icon" width="88" height="88">
           <div class="haze__headtext">
@@ -165,13 +159,13 @@
           </div>
         </div>
 
-        <p class="haze__lede">Haze is a weather app for iPhone that's actually nice to look at. The forecasts are accurate, the design stays out of the way, and there are no ads or accounts.</p>
+        <p class="haze__lede">Haze is a weather app for iPhone that’s actually nice to look at. The forecasts are accurate, the design stays out of the way, and there are no ads or accounts.</p>
 
         <p class="haze__body">The background shifts with the time of day and the current conditions, so the app looks different at dawn than it does at night. Forecasts come from Open-Meteo, which blends the ECMWF, GFS, and ICON models. Nothing else gets in the way.</p>
 
         <ul class="haze__features">
           <li>A sky that changes with the time of day</li>
-          <li>Current conditions, feels-like, and the day's high and low</li>
+          <li>Current conditions, feels-like, and the day’s high and low</li>
           <li>Hourly forecast and a 72-hour trend you can scrub</li>
           <li>10-day outlook with hour-by-hour detail</li>
           <li>A sunrise and sunset arc you can drag across the day</li>
@@ -183,25 +177,18 @@
         </ul>
 
         <div class="haze__links">
-          <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">
-            App Store
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="/haze/support/" class="project-item__link">
-            Support
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
-          <a href="/haze/privacy/" class="project-item__link">
-            Privacy Policy
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </a>
+          <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
+          <a href="/haze/support/" class="project-item__link">Support</a>
+          <a href="/haze/privacy/" class="project-item__link">Privacy Policy</a>
         </div>
 
         <p class="haze__meta">Free · iPhone and iPad · iOS 18+ · Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>
-      </div>
-    </section>
   </main>
 
-  <script src="/assets/js/main.js" defer></script>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; MMXXVI Aniketh Bandlamudi</span>
+    </p>
+  </footer>
 </body>
 </html>

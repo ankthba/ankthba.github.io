@@ -413,17 +413,9 @@ a.masthead__name:hover {
     --space-md: 2rem;
   }
 
-  /* Narrow columns read better justified; hyphenation keeps the
-     word spacing even. Desktop stays left-aligned. */
-  .page p {
-    text-align: justify;
-    -webkit-hyphens: auto;
-    hyphens: auto;
-  }
-
   .masthead {
-    padding-left: var(--space-sm);
-    padding-right: var(--space-sm);
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 
   .masthead__nav {
@@ -431,8 +423,8 @@ a.masthead__name:hover {
   }
 
   .page {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 }
 

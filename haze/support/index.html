@@ -15,50 +15,44 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
-  <style>
-    @media (max-width: 768px) {
-      #haze-support .home__right { text-align: center; }
-    }
-  </style>
   <script>
     // Open the user's mail client immediately; the visible page is the fallback.
     window.location.href = 'mailto:me@aniketh.net?subject=Haze%20Support';
   </script>
 </head>
 <body>
-  <main>
-    <section class="home" id="haze-support">
-      <div class="home__left home__left--centered">
-        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
-        <nav class="hero__nav">
-          <a href="/haze/" class="hero__nav-link">Haze</a>
-          <a href="/projects/" class="hero__nav-link">Projects</a>
-          <a href="/contact/" class="hero__nav-link">Contact</a>
-        </nav>
-        <div class="hero__socials">
-          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 6.96A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
-          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"></path></svg></a>
-          <span class="home__controls">
-            <span class="home__copy">&copy;</span>
-            <button class="theme-icon" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
-              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </button>
-          </span>
-        </div>
-      </div>
+  
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link">About</a>
+      <a href="/work/" class="masthead__nav-link">Work</a>
+      <a href="/education/" class="masthead__nav-link">Education</a>
+      <a href="/projects/" class="masthead__nav-link">Projects</a>
+      <a href="/research/" class="masthead__nav-link">Research</a>
+      <a href="/photos/" class="masthead__nav-link">Photography</a>
+      <a href="/contact/" class="masthead__nav-link">Contact</a>
+      <a href="/resume/" class="masthead__nav-link">Resume</a>
+    </nav>
+    <nav class="masthead__social">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+    </nav>
+  </header>
 
-      <div class="home__right">
+  <main class="page">
         <h1 class="page-title">Support</h1>
-        <p class="contact__text" style="margin-left: 0; margin-right: 0;">Have a question, a bug, or an idea for Haze? Your email app should be opening now. If it didn't, just email me at the address below.</p>
-        <a href="mailto:me@aniketh.net?subject=Haze%20Support" class="project-item__link">
-          me@aniketh.net
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </div>
-    </section>
+        <p class="contact__text">Have a question, a bug, or an idea for Haze? Your email app should be opening now. If it didn’t, just email me at the address below.</p>
+        <a href="mailto:me@aniketh.net?subject=Haze%20Support" class="project-item__link">me@aniketh.net</a>
   </main>
 
-  <script src="/assets/js/main.js" defer></script>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; MMXXVI Aniketh Bandlamudi</span>
+    </p>
+  </footer>
 </body>
 </html>

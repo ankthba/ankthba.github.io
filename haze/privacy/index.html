@@ -16,8 +16,6 @@
     .legal { max-width: none; }
     .legal__updated {
       font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
       color: var(--color-muted);
       opacity: 0.8;
       margin-bottom: var(--space-md);
@@ -44,47 +42,43 @@
       margin-bottom: 0.35rem;
     }
     .legal a { color: var(--color-fg); text-decoration: underline; text-underline-offset: 2px; }
-    @media (max-width: 768px) {
-      #haze-privacy .home__right { text-align: left; }
-      #haze-privacy .home__right .page-title { text-align: left; }
-    }
   </style>
 </head>
 <body>
-  <main>
-    <section class="home" id="haze-privacy">
-      <div class="home__left home__left--centered">
-        <h1 class="hero__title" id="hero-title"><a href="/" style="text-decoration: none; color: inherit;"><span class="hero__name-first">Aniketh</span><br><span class="hero__name-last">Bandlamudi</span></a></h1>
-        <nav class="hero__nav">
-          <a href="/haze/" class="hero__nav-link">Haze</a>
-          <a href="/projects/" class="hero__nav-link">Projects</a>
-          <a href="/contact/" class="hero__nav-link">Contact</a>
-        </nav>
-        <div class="hero__socials">
-          <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 6.96A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
-          <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="hero__social" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"></path></svg></a>
-          <span class="home__controls">
-            <span class="home__copy">&copy;</span>
-            <button class="theme-icon" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
-              <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </button>
-          </span>
-        </div>
-      </div>
+  
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link">About</a>
+      <a href="/work/" class="masthead__nav-link">Work</a>
+      <a href="/education/" class="masthead__nav-link">Education</a>
+      <a href="/projects/" class="masthead__nav-link">Projects</a>
+      <a href="/research/" class="masthead__nav-link">Research</a>
+      <a href="/photos/" class="masthead__nav-link">Photography</a>
+      <a href="/contact/" class="masthead__nav-link">Contact</a>
+      <a href="/resume/" class="masthead__nav-link">Resume</a>
+    </nav>
+    <nav class="masthead__social">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+    </nav>
+  </header>
 
-      <div class="home__right">
+  <main class="page">
         <h1 class="page-title">Privacy Policy</h1>
         <div class="legal">
           <p class="legal__updated">Last updated June 9, 2026</p>
 
-          <p>Haze has no accounts, no ads, and no third-party tracking or analytics. There isn't much data to talk about, but here's exactly how the app handles what it touches.</p>
+          <p>Haze has no accounts, no ads, and no third-party tracking or analytics. There isn’t much data to talk about, but here’s exactly how the app handles what it touches.</p>
 
           <h2>What Haze collects</h2>
-          <p>I don't collect anything. There are no servers of mine, no login, and no analytics. The app doesn't build a profile of you, and nothing is ever sold, shared, or used to make money.</p>
+          <p>I don’t collect anything. There are no servers of mine, no login, and no analytics. The app doesn’t build a profile of you, and nothing is ever sold, shared, or used to make money.</p>
 
           <h2>Location</h2>
-          <p>If you allow location access, Haze uses it <strong>only while the app is open</strong>, and <strong>only</strong> to show the forecast where you are. Your coordinates stay on your device and are sent to the weather provider to load that forecast. They're never stored on any server of mine and never tied to your identity.</p>
+          <p>If you allow location access, Haze uses it <strong>only while the app is open</strong>, and <strong>only</strong> to show the forecast where you are. Your coordinates stay on your device and are sent to the weather provider to load that forecast. They’re never stored on any server of mine and never tied to your identity.</p>
           <p>Location is optional. You can turn it off in iOS Settings and still use everything: tap the search icon and type in any city to see its forecast.</p>
 
           <h2>Saved locations and settings</h2>
@@ -93,11 +87,11 @@
           <h2>Weather data and third parties</h2>
           <p>Forecasts come from <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, a free, open weather API. To load a forecast, the app sends the relevant coordinates (your location, or a city you searched) to Open-Meteo. No API key, account, or personal information is attached. What Open-Meteo does with those requests is covered by its own <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">terms and privacy practices</a>.</p>
 
-          <h2>Apple's privacy label</h2>
+          <h2>Apple’s privacy label</h2>
           <p>To match the App Store privacy label: Haze may use <strong>precise or coarse location</strong> for <strong>app functionality only</strong>. That data is <strong>not linked to your identity</strong> and is <strong>not used to track you</strong>.</p>
 
           <h2>Children</h2>
-          <p>Haze is rated 4+ and fine for all ages. It doesn't knowingly collect personal information from anyone, children included.</p>
+          <p>Haze is rated 4+ and fine for all ages. It doesn’t knowingly collect personal information from anyone, children included.</p>
 
           <h2>Changes</h2>
           <p>If this policy changes, the new version goes up on this page with an updated date at the top.</p>
@@ -105,10 +99,12 @@
           <h2>Contact</h2>
           <p>Questions about privacy? Email <a href="mailto:me@aniketh.net?subject=Haze%20Privacy">me@aniketh.net</a>.</p>
         </div>
-      </div>
-    </section>
   </main>
 
-  <script src="/assets/js/main.js" defer></script>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; MMXXVI Aniketh Bandlamudi</span>
+    </p>
+  </footer>
 </body>
 </html>

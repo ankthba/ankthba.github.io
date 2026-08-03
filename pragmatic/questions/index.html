@@ -11,6 +11,7 @@
     <meta property="og:title" content="Questions · Pragmatic">
     <meta property="og:description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://aniketh.net/assets/img/pragmaticog.png">
     <link rel="canonical" href="https://aniketh.net/pragmatic/questions/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +27,12 @@
         <nav class="left">
             <a href="/pragmatic/runtime/">The runtime</a>
             <a href="/pragmatic/practice/">In practice</a>
-        </nav>
-        <a href="/pragmatic/" class="masthead">Pragmatic</a>
-        <nav class="right">
             <a href="/pragmatic/research/">Research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead masthead-mark"><img src="/assets/img/pragmaticicon.png" alt="Pragmatic" width="30" height="30"></a>
+        <nav class="right">
             <a href="/pragmatic/questions/">Questions</a>
+            <a href="/pragmatic/pricing/">Pricing</a>
             <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
@@ -48,7 +50,7 @@
                 <h3>How is this different from a general <em>durable execution engine?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and we build on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee.</p>
+            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and Pragmatic builds on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee.</p>
         </details>
         <details class="qa-item">
             <summary>
@@ -69,7 +71,7 @@
                 <h3>Is it <em>production-ready?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">Pragmatic is in private beta with design partners. The replay guarantee is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery tests today. The probabilistic and information-flow results are proved on paper and not yet mechanized.</p>
+            <p class="answer prose">Pragmatic is pre-release. The replay guarantee is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery suites today. Early access is open to design partners who want to run it against real workloads and shape what ships.</p>
         </details>
         <details class="qa-item">
             <summary>
@@ -89,7 +91,7 @@
             <div class="f-rule"></div>
             <div class="f-main">
                 <div class="f-brand">
-                    <img src="/assets/img/pragmaticicon.png" alt="">
+                    <img src="/assets/img/pragmaticdiamond.png" alt="">
                     <span>Pragmatic</span>
                 </div>
                 <div class="f-cols">
@@ -100,6 +102,7 @@
                         <a href="/pragmatic/practice/">In practice</a>
                         <a href="/pragmatic/research/">Research</a>
                         <a href="/pragmatic/questions/">Questions</a>
+                        <a href="/pragmatic/pricing/">Pricing</a>
                     </div>
                     <div class="f-col">
                         <span class="f-head">Connect</span>
@@ -107,7 +110,6 @@
                         <a href="https://github.com/pragmaticco" target="_blank" rel="noopener">GitHub</a>
                         <a href="https://www.linkedin.com/company/pragmaticco" target="_blank" rel="noopener">LinkedIn</a>
                         <a href="https://x.com/PragmaticAICo" target="_blank" rel="noopener">X</a>
-                        <a href="https://www.instagram.com/pragmaticinfra" target="_blank" rel="noopener">Instagram</a>
                     </div>
                 </div>
             </div>

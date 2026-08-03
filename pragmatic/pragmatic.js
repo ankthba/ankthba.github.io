@@ -28,6 +28,7 @@
         '.atelier h2', '.at-copy', '.at-note', '.code-wrap',
         '.facing-lede', '.facing-body', '.facing-col',
         '.book-lede', '.book-entry', '.edition', '.editions-note',
+        '.tier', '.tiers-note',
         '.essay .measure > p', '.essay .pull', '.essay h3', '.thm',
         '.qa-item', '.finale > *'
     ];

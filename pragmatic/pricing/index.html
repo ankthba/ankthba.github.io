@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing · Pragmatic</title>
+
+    <meta name="description" content="Pragmatic pricing. Source-available and free to build on; a commercial license when you run it in production at scale.">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <meta property="og:title" content="Pricing · Pragmatic">
+    <meta property="og:description" content="Free to build on. A commercial license when it ships to production.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://aniketh.net/assets/img/pragmaticog.png">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/pricing/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/pragmatic/pragmatic.css">
+
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticfavicon.png">
+
+    <style>
+        /* ── Pricing tiers (page-scoped) ── */
+        .tiers { padding: 0 clamp(16px, 5vw, 40px); }
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+            border: 1px solid var(--ink-12);
+        }
+        .tier {
+            padding: 44px 30px 38px;
+            display: flex;
+            flex-direction: column;
+        }
+        .tier + .tier { border-left: 1px solid var(--ink-12); }
+        .tier .tag {
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-52);
+            margin-bottom: 16px;
+            min-height: 1em;
+        }
+        .tier .tname { font-family: var(--display); font-size: 28px; line-height: 1; }
+        .tier .price {
+            font-family: var(--display);
+            font-size: clamp(38px, 3.3vw, 50px);
+            line-height: 1.04;
+            margin-top: 20px;
+        }
+        .tier .price .per { font-size: 15.5px; font-style: italic; color: var(--ink-52); }
+        .tier .cadence {
+            font-style: italic;
+            font-size: 14px;
+            color: var(--ink-52);
+            margin-top: 8px;
+            min-height: 1.1em;
+        }
+        .tier .tdesc {
+            font-size: 15px;
+            line-height: 1.68;
+            color: var(--ink-70);
+            margin-top: 22px;
+        }
+        .tier .feats { list-style: none; margin: 26px 0 0; border-top: 1px solid var(--ink-12); }
+        .tier .feats li {
+            font-size: 14.5px;
+            line-height: 1.5;
+            color: var(--ink-70);
+            padding: 11px 0;
+            border-bottom: 1px solid var(--ink-12);
+        }
+        .tier .tcta { margin-top: auto; padding-top: 30px; }
+
+        /* featured (dark inset) */
+        .tier.featured { background: var(--ink); color: var(--ivory); }
+        .tier.featured .tname { color: var(--ivory); }
+        .tier.featured .tag { color: var(--ivory-45); }
+        .tier.featured .tdesc, .tier.featured .feats li { color: var(--ivory-75); }
+        .tier.featured .cadence, .tier.featured .price .per { color: var(--ivory-45); }
+        .tier.featured .feats, .tier.featured .feats li { border-color: var(--ivory-15); }
+        .tier.featured .lnk { color: var(--ivory); border-color: var(--ivory-45); }
+        .tier.featured .lnk:hover { border-color: var(--ivory); }
+
+        .tiers-note {
+            text-align: center;
+            margin: 5vh auto 0;
+            max-width: 54ch;
+            font-style: italic;
+            font-size: 15px;
+            color: var(--ink-52);
+            padding: 0 24px;
+        }
+
+        @media (max-width: 980px) {
+            .tiers-grid { grid-template-columns: 1fr 1fr; }
+            .tier + .tier { border-left: none; }
+            .tier:nth-child(even) { border-left: 1px solid var(--ink-12); }
+            .tier:nth-child(n+3) { border-top: 1px solid var(--ink-12); }
+        }
+        @media (max-width: 560px) {
+            .tiers-grid { grid-template-columns: 1fr; }
+            .tier:nth-child(even) { border-left: none; }
+            .tier:nth-child(n+3) { border-top: none; }
+            .tier + .tier { border-top: 1px solid var(--ink-12); }
+            .tier { padding: 38px 26px 34px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="left">
+            <a href="/pragmatic/runtime/">The runtime</a>
+            <a href="/pragmatic/practice/">In practice</a>
+            <a href="/pragmatic/research/">Research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead masthead-mark"><img src="/assets/img/pragmaticicon.png" alt="Pragmatic" width="30" height="30"></a>
+        <nav class="right">
+            <a href="/pragmatic/questions/">Questions</a>
+            <a href="/pragmatic/pricing/">Pricing</a>
+            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
+        </nav>
+    </header>
+
+    <section class="page-cover">
+        <span class="caption">Pricing</span>
+        <h1>Free to build on. <em>Paid when it ships.</em></h1>
+        <p class="page-deck">Pragmatic is source-available. Run the whole runtime for free while you build and at small scale; buy a commercial license when it runs in production at scale.</p>
+    </section>
+
+    <section class="tiers">
+        <div class="tiers-grid">
+
+            <div class="tier">
+                <span class="tag">&nbsp;</span>
+                <span class="tname">Open</span>
+                <div class="price">$0</div>
+                <div class="cadence">source-available, forever</div>
+                <p class="tdesc">The complete runtime under the Business Source License. Free for non-production use, and for organizations under $1M in annual revenue.</p>
+                <ul class="feats">
+                    <li>Full Rust &amp; Python runtime</li>
+                    <li>CLI &amp; local replay console</li>
+                    <li>Journaling, recovery, replay</li>
+                    <li>Community support</li>
+                    <li>Converts to Apache&nbsp;2.0 in 4 years</li>
+                </ul>
+                <div class="tcta"><a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic Open access">Request access</a></div>
+            </div>
+
+            <div class="tier">
+                <span class="tag">&nbsp;</span>
+                <span class="tname">Individual</span>
+                <div class="price">$9 <span class="per">/ month</span></div>
+                <div class="cadence">one developer</div>
+                <p class="tdesc">A commercial production license for a solo developer, plus journals synced to the hosted console.</p>
+                <ul class="feats">
+                    <li>Everything in Open</li>
+                    <li>Production license, 1 developer</li>
+                    <li>Hosted journal history (30 days)</li>
+                    <li>Console from any machine</li>
+                    <li>Email support</li>
+                </ul>
+                <div class="tcta"><a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic Individual early access">Join early access</a></div>
+            </div>
+
+            <div class="tier featured">
+                <span class="tag">&nbsp;</span>
+                <span class="tname">Team</span>
+                <div class="price">$99 <span class="per">/ mo + $25 / seat</span></div>
+                <div class="cadence">2 seats included</div>
+                <p class="tdesc">A commercial license and a shared workspace for a team shipping agents to production.</p>
+                <ul class="feats">
+                    <li>Everything in Individual</li>
+                    <li>Org workspace &amp; roles</li>
+                    <li>Shared console, 90-day retention</li>
+                    <li>Dangling-effect &amp; chain alerts</li>
+                    <li>Priority support</li>
+                </ul>
+                <div class="tcta"><a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic Team early access">Join early access</a></div>
+            </div>
+
+            <div class="tier">
+                <span class="tag">&nbsp;</span>
+                <span class="tname">Enterprise</span>
+                <div class="price">Custom</div>
+                <div class="cadence">annual agreement</div>
+                <p class="tdesc">For regulated and large-scale deployments where the audit trail is the point.</p>
+                <ul class="feats">
+                    <li>Everything in Team</li>
+                    <li>SSO / SAML &amp; RBAC</li>
+                    <li>Self-hosted or air-gapped console</li>
+                    <li>Signed audit attestations</li>
+                    <li>Retention SLAs &amp; dedicated support</li>
+                </ul>
+                <div class="tcta"><a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic Enterprise">Talk to us</a></div>
+            </div>
+
+        </div>
+        <p class="tiers-note">Launch pricing. During early access everything is free; billing begins when the hosted plans ship.</p>
+    </section>
+
+    <section class="facing">
+        <p class="facing-lede">When you <em>actually pay.</em></p>
+        <p class="facing-body">The runtime is source-available under the Business Source License 1.1: read it, modify it, run it. It's free for non-production use, and free in production for organizations under $1M in annual revenue, as long as you're not reselling it to others as a hosted service. Past that, production use needs a commercial license. Every released version turns into Apache&nbsp;2.0 four years after it ships, so nothing is ever locked up for good.</p>
+    </section>
+
+    <section class="qa">
+        <div class="running-head"><em>Common questions</em></div>
+
+        <details class="qa-item">
+            <summary><h3>Is it free to try?</h3><span class="q-mark">&rsaquo;</span></summary>
+            <div class="answer measure">Yes. The entire runtime is free for non-production use, with no license key. It isn't publicly downloadable yet, so request early access and we'll get you the source and set you up.</div>
+        </details>
+
+        <details class="qa-item">
+            <summary><h3>When do I need to pay?</h3><span class="q-mark">&rsaquo;</span></summary>
+            <div class="answer measure">When you run Pragmatic in production and your organization makes over $1M in annual revenue, or when you offer it to third parties as a hosted or managed service. Both cases need a commercial license.</div>
+        </details>
+
+        <details class="qa-item">
+            <summary><h3>What do the paid plans add?</h3><span class="q-mark">&rsaquo;</span></summary>
+            <div class="answer measure">The commercial license itself, plus hosted journals, a shared team console, alerting, and support. The runtime is identical. You're paying for production rights and the operational layer around it, not for a different engine.</div>
+        </details>
+
+        <details class="qa-item">
+            <summary><h3>What happens at the Change Date?</h3><span class="q-mark">&rsaquo;</span></summary>
+            <div class="answer measure">Four years after a version ships, that version automatically relicenses to Apache&nbsp;2.0, fully open source with no restrictions. The Business Source License is a delay on openness, not a permanent enclosure.</div>
+        </details>
+    </section>
+
+    <section class="finale">
+        <img src="/assets/img/pragmaticdiamond.png" alt="">
+        <h2>Build free.<br><em>License when it matters.</em></h2>
+        <p class="aside">Tell us what you're shipping and we'll find the right plan.</p>
+        <div class="finale-links">
+            <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic early access">Request early access</a>
+            <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic commercial license">Commercial license</a>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="f-inner">
+            <div class="f-cta">
+                <p class="f-line">Tell us what <em>you're building.</em></p>
+                <a class="lnk" href="mailto:me@aniketh.net?subject=Pragmatic early access">Request early access</a>
+            </div>
+            <div class="f-rule"></div>
+            <div class="f-main">
+                <div class="f-brand">
+                    <img src="/assets/img/pragmaticdiamond.png" alt="">
+                    <span>Pragmatic</span>
+                </div>
+                <div class="f-cols">
+                    <div class="f-col">
+                        <span class="f-head">Explore</span>
+                        <a href="/pragmatic/">Overview</a>
+                        <a href="/pragmatic/runtime/">The runtime</a>
+                        <a href="/pragmatic/practice/">In practice</a>
+                        <a href="/pragmatic/research/">Research</a>
+                        <a href="/pragmatic/questions/">Questions</a>
+                        <a href="/pragmatic/pricing/">Pricing</a>
+                    </div>
+                    <div class="f-col">
+                        <span class="f-head">Connect</span>
+                        <a href="mailto:me@aniketh.net">Email</a>
+                        <a href="https://github.com/pragmaticco" target="_blank" rel="noopener">GitHub</a>
+                        <a href="https://www.linkedin.com/company/pragmaticco" target="_blank" rel="noopener">LinkedIn</a>
+                        <a href="https://x.com/PragmaticAICo" target="_blank" rel="noopener">X</a>
+                    </div>
+                </div>
+            </div>
+            <p class="f-copy">&copy; 2026 Pragmatic. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/pragmatic/pragmatic.js" defer></script>
+</body>
+</html>

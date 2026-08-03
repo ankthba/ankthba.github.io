@@ -109,6 +109,7 @@ header nav a:hover { color: var(--ink); }
     text-decoration: none;
     line-height: 1;
 }
+.masthead-mark img { width: 30px; height: 30px; display: block; margin: 0 auto; }
 
 /* ── Cover ── */
 .cover {
@@ -274,6 +275,16 @@ header nav a:hover { color: var(--ink); }
     color: var(--ivory);
     border-bottom-color: var(--ivory-45);
 }
+.lang-soon {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ivory-25);
+    vertical-align: super;
+    margin-left: 5px;
+}
 .code-snippet { display: none; }
 .code-snippet.active { display: block; }
 .atelier .file {
@@ -281,6 +292,12 @@ header nav a:hover { color: var(--ink); }
     font-size: 15.5px;
     color: var(--ivory-45);
     margin-bottom: 20px;
+}
+.atelier .snippet-note {
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ivory-45);
+    margin: -6px 0 20px;
 }
 .atelier pre {
     font-family: var(--mono);
@@ -316,6 +333,7 @@ header nav a:hover { color: var(--ink); }
 }
 .c-com { color: var(--ivory-45); }
 .c-kw  { color: var(--ivory); }
+.c-str { color: var(--ivory-75); }
 
 /* ── Facing columns ── */
 .facing { padding: 0 24px; }
@@ -516,7 +534,7 @@ header nav a:hover { color: var(--ink); }
     padding: 16vh 24px;
     text-align: center;
 }
-.finale img { width: 30px; height: 30px; filter: invert(1); opacity: 0.9; margin-bottom: 7vh; }
+.finale img { width: 30px; height: 30px; opacity: 0.9; margin-bottom: 7vh; }
 .finale h2 {
     font-family: var(--display);
     font-weight: 400;
@@ -762,7 +780,7 @@ body.dark .site-footer { margin-top: 14vh; }
     column-gap: 48px;
 }
 .f-brand { display: flex; align-items: center; gap: 12px; }
-.f-brand img { height: 22px; width: 22px; filter: invert(1); opacity: 0.95; }
+.f-brand img { height: 22px; width: 22px; opacity: 0.95; }
 .f-brand span { font-family: var(--display); font-size: 23px; }
 
 .f-cols { display: flex; gap: 110px; text-align: left; }

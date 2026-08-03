@@ -11,6 +11,7 @@
     <meta property="og:title" content="Research · Pragmatic">
     <meta property="og:description" content="Agentical, the probabilistic process calculus behind Pragmatic: replay soundness, noninterference, and compositional bounds for nondeterministic agents.">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://aniketh.net/assets/img/pragmaticog.png">
     <link rel="canonical" href="https://aniketh.net/pragmatic/research/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +27,12 @@
         <nav class="left">
             <a href="/pragmatic/runtime/">The runtime</a>
             <a href="/pragmatic/practice/">In practice</a>
-        </nav>
-        <a href="/pragmatic/" class="masthead">Pragmatic</a>
-        <nav class="right">
             <a href="/pragmatic/research/">Research</a>
+        </nav>
+        <a href="/pragmatic/" class="masthead masthead-mark"><img src="/assets/img/pragmaticdiamond.png" alt="Pragmatic" width="30" height="30"></a>
+        <nav class="right">
             <a href="/pragmatic/questions/">Questions</a>
+            <a href="/pragmatic/pricing/">Pricing</a>
             <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
@@ -72,7 +74,7 @@
 
         <h3>From proof to running code</h3>
         <div class="measure">
-            <p class="prose">The Lean 4 mechanization covers T1's operational core, trace-equivalence, crash-resume, no-orphaned-effect, and cursor-determinism, all sorry-free. Channels, the measure-theoretic layer, and T2/T3 are not yet mechanized, and we say so.</p>
+            <p class="prose">The Lean 4 mechanization covers T1's operational core, trace-equivalence, crash-resume, no-orphaned-effect, and cursor-determinism, all sorry-free. Channels, the measure-theoretic layer, and T2/T3 are not yet mechanized.</p>
             <p class="prose">The Rust runtime is a zero-dependency reference implementation. Six integration tests demonstrate the three properties. Measured: 1000 of 1000 replay-determinism runs; ~230&nbsp;ns constant-time journal append, flat to a million entries; and a ~1500&times; replay speedup under a latency-injected oracle, since replay performs zero model calls.</p>
         </div>
     </section>
@@ -86,7 +88,7 @@
             <div class="f-rule"></div>
             <div class="f-main">
                 <div class="f-brand">
-                    <img src="/assets/img/pragmaticicon.png" alt="">
+                    <img src="/assets/img/pragmaticdiamond.png" alt="">
                     <span>Pragmatic</span>
                 </div>
                 <div class="f-cols">
@@ -97,6 +99,7 @@
                         <a href="/pragmatic/practice/">In practice</a>
                         <a href="/pragmatic/research/">Research</a>
                         <a href="/pragmatic/questions/">Questions</a>
+                        <a href="/pragmatic/pricing/">Pricing</a>
                     </div>
                     <div class="f-col">
                         <span class="f-head">Connect</span>
@@ -104,7 +107,6 @@
                         <a href="https://github.com/pragmaticco" target="_blank" rel="noopener">GitHub</a>
                         <a href="https://www.linkedin.com/company/pragmaticco" target="_blank" rel="noopener">LinkedIn</a>
                         <a href="https://x.com/PragmaticAICo" target="_blank" rel="noopener">X</a>
-                        <a href="https://www.instagram.com/pragmaticinfra" target="_blank" rel="noopener">Instagram</a>
                     </div>
                 </div>
             </div>

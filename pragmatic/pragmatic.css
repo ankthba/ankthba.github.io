@@ -110,6 +110,7 @@ header nav a:hover { color: var(--ink); }
     line-height: 1;
 }
 .masthead-mark img { width: 30px; height: 30px; display: block; margin: 0 auto; }
+body.dark .masthead-mark img { filter: invert(1); }
 
 /* ── Cover ── */
 .cover {
@@ -534,7 +535,7 @@ header nav a:hover { color: var(--ink); }
     padding: 16vh 24px;
     text-align: center;
 }
-.finale img { width: 30px; height: 30px; opacity: 0.9; margin-bottom: 7vh; }
+.finale img { width: 30px; height: 30px; filter: invert(1); opacity: 0.9; margin-bottom: 7vh; }
 .finale h2 {
     font-family: var(--display);
     font-weight: 400;
@@ -780,7 +781,7 @@ body.dark .site-footer { margin-top: 14vh; }
     column-gap: 48px;
 }
 .f-brand { display: flex; align-items: center; gap: 12px; }
-.f-brand img { height: 22px; width: 22px; opacity: 0.95; }
+.f-brand img { height: 22px; width: 22px; filter: invert(1); opacity: 0.95; }
 .f-brand span { font-family: var(--display); font-size: 23px; }
 
 .f-cols { display: flex; gap: 110px; text-align: left; }

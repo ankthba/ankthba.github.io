@@ -117,13 +117,15 @@
     }
     .haze__meta a { text-decoration: underline; text-underline-offset: 2px; }
 
-    @media (max-width: 640px) {
-      .haze__features { grid-template-columns: 1fr; }
-      .haze__head { gap: 0.9rem; }
-      .haze__icon { width: 72px; height: 72px; border-radius: 16px; }
-    }
     @media (max-width: 768px) {
       .haze__head { justify-content: flex-start; }
+    }
+    @media (max-width: 640px) {
+      .haze__features { grid-template-columns: 1fr; }
+      .haze__features li { text-align: left; }
+      .haze__head { gap: 0.9rem; justify-content: center; }
+      .haze__icon { width: 72px; height: 72px; border-radius: 16px; }
+      .haze__links { justify-content: center; }
     }
   </style>
 </head>

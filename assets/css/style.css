@@ -428,6 +428,29 @@ a.masthead__name:hover {
     padding-left: 1.75rem;
     padding-right: 1.75rem;
   }
+
+  /* Center page content to match the centered masthead */
+  .page {
+    text-align: center;
+  }
+
+  .project-item__header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .project-item__links {
+    align-items: center;
+  }
+
+  .contact__text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-label {
+    text-align: center;
+  }
 }
 
 /* ---------------------------------------------------------

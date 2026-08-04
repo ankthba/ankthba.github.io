@@ -129,13 +129,14 @@ a.masthead__name:hover {
   line-height: 1.1;
 }
 
+/* Matches the body text column: measure minus its side padding.
+   Justified like the text; a short last row centers instead of
+   stretching to the edges */
 .masthead__nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.65rem 1.35rem;
-  max-width: 40rem;
+  max-width: calc(var(--measure) - 2 * var(--space-md));
   margin: 1.5rem auto 0;
+  text-align: justify;
+  text-align-last: center;
 }
 
 .masthead--home .masthead__nav {
@@ -144,6 +145,7 @@ a.masthead__name:hover {
 
 .masthead__nav-link {
   display: inline-block;
+  margin: 0 0.45rem 0.65rem;
   text-align: center;
   font-size: 0.95rem;
   color: var(--color-fg);
@@ -292,6 +294,7 @@ a.masthead__name:hover {
 }
 
 .project-item__link:hover {
+  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -346,7 +349,27 @@ a.masthead__name:hover {
 }
 
 .photos__links a:hover {
+  font-style: italic;
   color: var(--color-muted);
+}
+
+/* Same ghost trick as the nav: these two sit side by side,
+   so reserve both widths to keep them still on hover */
+.photos__links a::before,
+.photos__links a::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.photos__links a::before {
+  font-style: normal;
+}
+
+.photos__links a::after {
+  font-style: italic;
 }
 
 @media (max-width: 480px) {
@@ -421,8 +444,8 @@ a.masthead__name:hover {
     padding-right: 1.75rem;
   }
 
-  .masthead__nav {
-    gap: 0.45rem 1.1rem;
+  .masthead__nav-link {
+    margin: 0 0.35rem 0.45rem;
   }
 
   .page {
@@ -430,9 +453,9 @@ a.masthead__name:hover {
     padding-right: 1.75rem;
   }
 
-  /* Center headings and justify body text so the content
-     reads aligned under the centered masthead */
-  .page {
+  /* Center only the page title under the centered masthead;
+     entry titles, roles, and links stay left-aligned */
+  .page-title {
     text-align: center;
   }
 
@@ -442,22 +465,9 @@ a.masthead__name:hover {
     hyphens: auto;
   }
 
-  .project-item__header {
-    align-items: center;
-    text-align: center;
-  }
-
-  .project-item__links {
-    align-items: center;
-  }
-
   .contact__text {
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .section-label {
-    text-align: center;
   }
 }
 

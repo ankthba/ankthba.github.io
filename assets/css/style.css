@@ -150,14 +150,22 @@ a.masthead__name:hover {
   transition: color var(--transition-fast);
 }
 
-/* Invisible italic ghost reserves the widest width so
-   nothing shifts when a link italicizes on hover */
+/* Invisible ghosts reserve both the upright and italic widths
+   (EB Garamond italic runs narrower) so nothing shifts on hover */
+.masthead__nav-link::before,
 .masthead__nav-link::after {
   content: attr(data-text);
   display: block;
   height: 0;
   overflow: hidden;
   visibility: hidden;
+}
+
+.masthead__nav-link::before {
+  font-style: normal;
+}
+
+.masthead__nav-link::after {
   font-style: italic;
 }
 

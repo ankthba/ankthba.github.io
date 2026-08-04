@@ -429,9 +429,16 @@ a.masthead__name:hover {
     padding-right: 1.75rem;
   }
 
-  /* Center page content to match the centered masthead */
+  /* Center headings and justify body text so the content
+     reads aligned under the centered masthead */
   .page {
     text-align: center;
+  }
+
+  .page p {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
   }
 
   .project-item__header {

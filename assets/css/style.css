@@ -142,9 +142,22 @@ a.masthead__name:hover {
 }
 
 .masthead__nav-link {
+  display: inline-block;
+  text-align: center;
   font-size: 0.95rem;
   color: var(--color-fg);
   transition: color var(--transition-fast);
+}
+
+/* Invisible italic ghost reserves the widest width so
+   nothing shifts when a link italicizes on hover */
+.masthead__nav-link::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  font-style: italic;
 }
 
 .masthead__nav-link:hover {
@@ -154,27 +167,6 @@ a.masthead__name:hover {
 
 /* Current page reads quiet, like the reference */
 .masthead__nav-link.active {
-  font-style: italic;
-  color: var(--color-muted);
-}
-
-
-/* Second row: social links, same voice as the nav */
-.masthead__social {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.65rem 1.35rem;
-  margin-top: 0.9rem;
-}
-
-.masthead__social a {
-  font-size: 0.95rem;
-  color: var(--color-fg);
-  transition: color var(--transition-fast);
-}
-
-.masthead__social a:hover {
   font-style: italic;
   color: var(--color-muted);
 }

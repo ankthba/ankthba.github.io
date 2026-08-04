@@ -134,7 +134,8 @@ a.masthead__name:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.65rem 1.35rem;
-  margin-top: 1.5rem;
+  max-width: 40rem;
+  margin: 1.5rem auto 0;
 }
 
 .masthead--home .masthead__nav {

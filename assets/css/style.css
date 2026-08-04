@@ -148,6 +148,7 @@ a.masthead__name:hover {
 }
 
 .masthead__nav-link:hover {
+  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -174,6 +175,7 @@ a.masthead__name:hover {
 }
 
 .masthead__social a:hover {
+  font-style: italic;
   color: var(--color-muted);
 }
 

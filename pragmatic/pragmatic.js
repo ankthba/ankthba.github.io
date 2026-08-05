@@ -1,4 +1,6 @@
 (function () {
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     // Code line numbers
     document.querySelectorAll('.atelier pre').forEach(function (pre) {
         pre.innerHTML = pre.innerHTML.split('\n').map(function (line) {
@@ -19,18 +21,82 @@
         });
     });
 
+    // Hero journal: the runtime playing itself
+    var journal = document.querySelector('.cj-lines');
+    if (journal) {
+        var SCRIPT = [
+            { t: 'run research-42 · begin', hl: false, pause: 0 },
+            { t: 'step 01 · oracle("plan") · journaled', hl: false, pause: 0 },
+            { t: 'step 02 · oracle("probe 0") · journaled', hl: false, pause: 0 },
+            { t: 'step 03 · oracle("probe 1") · journaled', hl: false, pause: 0 },
+            { t: 'step 04 · oracle("probe 2") · journaled', hl: false, pause: 300 },
+            { t: '× process crashed', hl: true, pause: 1100 },
+            { t: 'supervisor · restore from journal', hl: false, pause: 0 },
+            { t: 'resume at step 04 · no re-sampling', hl: true, pause: 300 },
+            { t: 'step 05 · oracle("probe 3") · journaled', hl: false, pause: 0 },
+            { t: 'step 06 · effect("publish") · write-ahead', hl: false, pause: 0 },
+            { t: 'run complete · report(4 findings)', hl: false, pause: 300 },
+            { t: 'replay · trace reproduced exactly', hl: true, pause: 0 }
+        ];
+
+        var makeLine = function (entry) {
+            var line = document.createElement('div');
+            line.className = 'cj-line' + (entry.hl ? ' hl' : '');
+            var d = document.createElement('span');
+            d.className = 'cj-d';
+            var t = document.createElement('span');
+            t.className = 'cj-t';
+            t.textContent = entry.t;
+            line.appendChild(d);
+            line.appendChild(t);
+            return line;
+        };
+
+        if (reducedMotion) {
+            SCRIPT.forEach(function (entry) {
+                var line = makeLine(entry);
+                line.classList.add('on');
+                journal.appendChild(line);
+            });
+        } else {
+            var STEP = 780;
+            var i = 0;
+            var tick = function () {
+                if (i >= SCRIPT.length) {
+                    // hold the finished run, then start over
+                    setTimeout(function () {
+                        journal.innerHTML = '';
+                        i = 0;
+                        setTimeout(tick, 500);
+                    }, 3400);
+                    return;
+                }
+                var entry = SCRIPT[i];
+                var line = makeLine(entry);
+                journal.appendChild(line);
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () { line.classList.add('on'); });
+                });
+                i += 1;
+                setTimeout(tick, STEP + entry.pause);
+            };
+            setTimeout(tick, 900);
+        }
+    }
+
     // Reveal on scroll
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (reducedMotion) return;
 
     var selectors = [
-        '.cover > *', '.page-cover > *', '.deck p', '.spread .statement',
+        '.cover-copy > *', '.cover-journal', '.page-cover > *', '.spread .statement',
         '.index-title', '.index-row', '.running-head', '.look',
         '.atelier h2', '.at-copy', '.at-note', '.code-wrap',
         '.facing-lede', '.facing-body', '.facing-col',
         '.book-lede', '.book-entry', '.edition', '.editions-note',
         '.tier', '.tiers-note',
         '.essay .measure > p', '.essay .pull', '.essay h3', '.thm',
-        '.qa-item', '.finale > *'
+        '.qa-item', '.news-item', '.news-empty',
+        '.article > *', '.finale > *'
     ];
     var els = Array.prototype.slice.call(document.querySelectorAll(selectors.join(',')));
     var perParent = new Map();

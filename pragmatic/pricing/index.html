@@ -16,18 +16,17 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/pragmatic/pragmatic.css">
 
     <link rel="icon" type="image/png" href="/assets/img/pragmaticfavicon.png">
 
     <style>
         /* ── Pricing tiers (page-scoped) ── */
-        .tiers { padding: 0 clamp(16px, 5vw, 40px); }
         .tiers-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            max-width: 1200px;
+            max-width: var(--line);
             margin: 0 auto;
             align-items: stretch;
             border: 1px solid var(--ink-12);
@@ -39,15 +38,13 @@
         }
         .tier + .tier { border-left: 1px solid var(--ink-12); }
         .tier .tag {
-            font-family: var(--mono);
-            font-size: 9px;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+            font-style: italic;
+            font-size: 14.5px;
             color: var(--ink-52);
             margin-bottom: 16px;
             min-height: 1em;
         }
-        .tier .tname { font-family: var(--display); font-size: 28px; line-height: 1; }
+        .tier .tname { font-family: var(--display); font-size: 29px; line-height: 1; }
         .tier .price {
             font-family: var(--display);
             font-size: clamp(38px, 3.3vw, 50px);
@@ -90,12 +87,11 @@
 
         .tiers-note {
             text-align: center;
-            margin: 5vh auto 0;
-            max-width: 54ch;
+            margin: 4vh auto 0;
+            max-width: 58ch;
             font-style: italic;
             font-size: 15px;
             color: var(--ink-52);
-            padding: 0 24px;
         }
 
         @media (max-width: 980px) {
@@ -116,21 +112,22 @@
 <body>
 
     <header>
-        <nav class="left">
+        <a href="/pragmatic/" class="masthead">
+            <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><rect class="sq" width="100" height="100"/><rect class="dm" x="30" y="30" width="40" height="40" transform="rotate(45 50 50)"/></svg>
+            <span>Pragmatic</span>
+        </a>
+        <nav>
             <a href="/pragmatic/runtime/">The runtime</a>
             <a href="/pragmatic/practice/">In practice</a>
             <a href="/pragmatic/research/">Research</a>
-        </nav>
-        <a href="/pragmatic/" class="masthead masthead-mark"><img src="/assets/img/pragmaticicon.png" alt="Pragmatic" width="30" height="30"></a>
-        <nav class="right">
+            <a href="/pragmatic/newsroom/">Newsroom</a>
             <a href="/pragmatic/questions/">Questions</a>
-            <a href="/pragmatic/pricing/">Pricing</a>
-            <a href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
+            <a class="active" href="/pragmatic/pricing/">Pricing</a>
+            <a class="cta" href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
 
     <section class="page-cover">
-        <span class="caption">Pricing</span>
         <h1>Free to build on. <em>Paid when it ships.</em></h1>
         <p class="page-deck">Pragmatic is source-available. Run the whole runtime for free while you build and at small scale; buy a commercial license when it runs in production at scale.</p>
     </section>
@@ -139,7 +136,7 @@
         <div class="tiers-grid">
 
             <div class="tier">
-                <span class="tag">&nbsp;</span>
+                <span class="tag">the runtime &middot; early access</span>
                 <span class="tname">Open</span>
                 <div class="price">$0</div>
                 <div class="cadence">source-available, forever</div>
@@ -155,11 +152,11 @@
             </div>
 
             <div class="tier">
-                <span class="tag">&nbsp;</span>
+                <span class="tag">planned &middot; console in development</span>
                 <span class="tname">Individual</span>
-                <div class="price">$9 <span class="per">/ month</span></div>
-                <div class="cadence">one developer</div>
-                <p class="tdesc">A commercial production license for a solo developer, plus journals synced to the hosted console.</p>
+                <div class="price">TBD</div>
+                <div class="cadence">one developer &middot; pricing to be announced</div>
+                <p class="tdesc">A commercial production license for a solo developer, plus journals synced to the hosted console once it ships.</p>
                 <ul class="feats">
                     <li>Everything in Open</li>
                     <li>Production license, 1 developer</li>
@@ -171,10 +168,10 @@
             </div>
 
             <div class="tier featured">
-                <span class="tag">&nbsp;</span>
+                <span class="tag">planned &middot; console in development</span>
                 <span class="tname">Team</span>
-                <div class="price">$99 <span class="per">/ mo + $25 / seat</span></div>
-                <div class="cadence">2 seats included</div>
+                <div class="price">TBD</div>
+                <div class="cadence">per seat &middot; pricing to be announced</div>
                 <p class="tdesc">A commercial license and a shared workspace for a team shipping agents to production.</p>
                 <ul class="feats">
                     <li>Everything in Individual</li>
@@ -187,7 +184,7 @@
             </div>
 
             <div class="tier">
-                <span class="tag">&nbsp;</span>
+                <span class="tag">design partners</span>
                 <span class="tname">Enterprise</span>
                 <div class="price">Custom</div>
                 <div class="cadence">annual agreement</div>
@@ -203,7 +200,7 @@
             </div>
 
         </div>
-        <p class="tiers-note">Launch pricing. During early access everything is free; billing begins when the hosted plans ship.</p>
+        <p class="tiers-note">Pricing is still being worked out. During early access everything is free; numbers will be announced before billing ever begins.</p>
     </section>
 
     <section class="facing">
@@ -236,7 +233,7 @@
     </section>
 
     <section class="finale">
-        <img src="/assets/img/pragmaticicon.png" alt="">
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><rect class="sq" width="100" height="100"/><rect class="dm" x="30" y="30" width="40" height="40" transform="rotate(45 50 50)"/></svg>
         <h2>Build free.<br><em>License when it matters.</em></h2>
         <p class="aside">Tell us what you're shipping and we'll find the right plan.</p>
         <div class="finale-links">
@@ -254,7 +251,7 @@
             <div class="f-rule"></div>
             <div class="f-main">
                 <div class="f-brand">
-                    <img src="/assets/img/pragmaticicon.png" alt="">
+                    <svg class="mark" viewBox="0 0 100 100" aria-hidden="true"><rect class="sq" width="100" height="100"/><rect class="dm" x="30" y="30" width="40" height="40" transform="rotate(45 50 50)"/></svg>
                     <span>Pragmatic</span>
                 </div>
                 <div class="f-cols">
@@ -264,6 +261,7 @@
                         <a href="/pragmatic/runtime/">The runtime</a>
                         <a href="/pragmatic/practice/">In practice</a>
                         <a href="/pragmatic/research/">Research</a>
+                        <a href="/pragmatic/newsroom/">Newsroom</a>
                         <a href="/pragmatic/questions/">Questions</a>
                         <a href="/pragmatic/pricing/">Pricing</a>
                     </div>
@@ -272,7 +270,8 @@
                         <a href="mailto:me@aniketh.net">Email</a>
                         <a href="https://github.com/pragmaticco" target="_blank" rel="noopener">GitHub</a>
                         <a href="https://www.linkedin.com/company/pragmaticco" target="_blank" rel="noopener">LinkedIn</a>
-                        <a href="https://x.com/PragmaticAICo" target="_blank" rel="noopener">X</a>
+                        <a href="https://x.com/pragmaticsys" target="_blank" rel="noopener">X</a>
+                        <a href="https://www.instagram.com/pragmaticsystems" target="_blank" rel="noopener">Instagram</a>
                     </div>
                 </div>
             </div>

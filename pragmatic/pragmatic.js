@@ -2,7 +2,7 @@
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Code line numbers
-    document.querySelectorAll('.atelier pre').forEach(function (pre) {
+    document.querySelectorAll('.atelier pre, .doc-code pre').forEach(function (pre) {
         pre.innerHTML = pre.innerHTML.split('\n').map(function (line) {
             return '<span class="code-line">' + (line === '' ? '&nbsp;' : line) + '</span>';
         }).join('');
@@ -96,6 +96,7 @@
         '.tier', '.tiers-note',
         '.essay .measure > p', '.essay .pull', '.essay h3', '.thm',
         '.qa-item', '.news-item', '.news-empty',
+        '.doc-sub', '.doc .measure > *', '.doc-code', '.doc-table', '.doc-note',
         '.article > *', '.finale > *'
     ];
     var els = Array.prototype.slice.call(document.querySelectorAll(selectors.join(',')));

@@ -194,6 +194,13 @@ a.masthead__name:hover {
   padding: var(--space-lg) var(--space-md) var(--space-xl);
 }
 
+/* Body text justifies to both column edges, like the nav */
+.page p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 .page-title {
   font-family: var(--font-display);
   font-weight: 400;
@@ -525,12 +532,6 @@ a.masthead__name:hover {
      entry titles, roles, and links stay left-aligned */
   .page-title {
     text-align: center;
-  }
-
-  .page p {
-    text-align: justify;
-    -webkit-hyphens: auto;
-    hyphens: auto;
   }
 
   .contact__text {

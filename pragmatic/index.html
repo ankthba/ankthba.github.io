@@ -79,6 +79,11 @@
                 <span class="v">~230 ns</span>
             </div>
             <div class="index-row">
+                <span class="t">Tool executions across crash, resume, and replay</span>
+                <span class="dots"></span>
+                <span class="v">Exactly one</span>
+            </div>
+            <div class="index-row">
                 <span class="t">Dependencies in the Rust core</span>
                 <span class="dots"></span>
                 <span class="v">None</span>
@@ -96,11 +101,11 @@
         <div class="running-head"><em>Three guarantees, every run</em></div>
         <div class="look">
             <h3>Journal <em>every step.</em></h3>
-            <p class="prose">Each LLM call's realized outcome is recorded to an append-only log as the run proceeds. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
+            <p class="prose">Each model turn's realized outcome is recorded to an append-only log as the run proceeds, tool calls and token usage included. The journal is the source of truth for what the agent actually did, not a reconstruction after the fact.</p>
         </div>
         <div class="look">
             <h3>Recover <em>from any crash.</em></h3>
-            <p class="prose">Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no divergent paths, and no lost work after a failure.</p>
+            <p class="prose">Resume exactly where the agent stopped. Recorded outcomes are read back instead of re-sampled, so there are no duplicate model calls, no re-executed tools, and no lost work after a failure.</p>
         </div>
         <div class="look">
             <h3>Replay <em>faithfully.</em></h3>

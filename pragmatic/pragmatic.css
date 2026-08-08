@@ -722,6 +722,13 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     font-size: 17px;
     color: var(--ink-52);
 }
+.article .art-sign a {
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink-30);
+    padding-bottom: 1px;
+    transition: color 0.25s, border-color 0.25s;
+}
+.article .art-sign a:hover { color: var(--ink); border-color: var(--ink); }
 .article .art-back { margin-top: 8vh; }
 
 /* ── Finale (centered display moment) ── */

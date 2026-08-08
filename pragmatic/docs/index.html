@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>In practice · Pragmatic</title>
+    <title>Docs · Pragmatic</title>
 
-    <meta name="description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta name="description" content="The Pragmatic documentation: a five-minute quickstart, a hands-on guide, and the concepts underneath. The same pages ship as markdown in the repository.">
     <meta name="author" content="Aniketh Bandlamudi">
 
-    <meta property="og:title" content="In practice · Pragmatic">
-    <meta property="og:description" content="Crash recovery and faithful replay for nondeterministic LLM agents, in Rust. The durable execution runtime for AI agents in production.">
+    <meta property="og:title" content="Docs · Pragmatic">
+    <meta property="og:description" content="The Pragmatic documentation: a five-minute quickstart, a hands-on guide, and the concepts underneath. The same pages ship as markdown in the repository.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://aniketh.net/assets/img/pragmaticog.png">
-    <link rel="canonical" href="https://aniketh.net/pragmatic/practice/">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/docs/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,8 +31,8 @@
         <nav>
             <a href="/pragmatic/runtime/">The runtime</a>
             <a href="/pragmatic/product/">The product</a>
-            <a href="/pragmatic/docs/">Docs</a>
-            <a class="active" href="/pragmatic/practice/">In practice</a>
+            <a class="active" href="/pragmatic/docs/">Docs</a>
+            <a href="/pragmatic/practice/">In practice</a>
             <a href="/pragmatic/research/">Research</a>
             <a href="/pragmatic/newsroom/">Newsroom</a>
             <a href="/pragmatic/questions/">Questions</a>
@@ -43,51 +43,52 @@
 
     <!-- Page cover -->
     <section class="page-cover">
-        <h1>In <em>practice.</em></h1>
-        <p class="page-deck">What you build on Pragmatic, and the three ways to run it.</p>
+        <h1>The <em>documentation.</em></h1>
+        <p class="page-deck">How to install the runtime, write a durable agent, and understand the model underneath. These pages mirror the markdown in the repository, and the repository stays the source of truth.</p>
+        <nav class="doc-sub" aria-label="Documentation pages">
+            <a class="here" href="/pragmatic/docs/">Overview</a>
+            <a href="/pragmatic/docs/quickstart/">Quickstart</a>
+            <a href="/pragmatic/docs/guide/">The guide</a>
+            <a href="/pragmatic/docs/concepts/">Concepts</a>
+        </nav>
     </section>
 
-    <section id="uses">
-        <div class="running-head"><em>What you build on it</em></div>
-        <div class="look">
-            <h3>Agents that run <em>for days.</em></h3>
-            <p class="prose">Long-running agents survive process restarts, deploys, and infrastructure failures, then resume exactly where they stopped. A run that dies nine hundred steps in does not re-bill nine hundred model calls; it picks up at step nine hundred and one, with every tool executed exactly once.</p>
+    <section class="book" id="pages">
+        <div class="running-head"><em>Three pages</em></div>
+        <div class="book-entry">
+            <span class="caption">Start here</span>
+            <h3>Quickstart.</h3>
+            <p class="prose">Five minutes from cargo add to a crash-proof, replayable agent: install two crates, write one function, run it, kill it, resume it, and replay it bit for bit. Async and Python included. <a class="lnk" href="/pragmatic/docs/quickstart/">Read the quickstart</a></p>
         </div>
-        <div class="look">
-            <h3>Bugs you can <em>finally replay.</em></h3>
-            <p class="prose">Reproduce the exact run that failed, step by step, including the nondeterministic model behavior that caused it. Bugs you could never reproduce become runs you can replay.</p>
+        <div class="book-entry">
+            <span class="caption">The full tour</span>
+            <h3>The guide.</h3>
+            <p class="prose">Everything in the order you'll actually hit it: run the examples with no API key, install in your own project, swap in a real model, get side effects done exactly once, and inspect your runs from the terminal or the browser. <a class="lnk" href="/pragmatic/docs/guide/">Read the guide</a></p>
         </div>
-        <div class="look">
-            <h3>Runs you can <em>prove.</em></h3>
-            <p class="prose">Every run has a replayable, tamper-evident record of what the agent actually did: every model turn, every tool call, and what each cost in tokens, signed when a runtime key is configured. When an auditor asks what the agent did, the answer is the Journal.</p>
-        </div>
-        <div class="look">
-            <h3>Fleets that fail <em>gracefully.</em></h3>
-            <p class="prose">When one agent in a system crashes, recover it from its Journal without unwinding the others. Coordinated multi-agent runs stay consistent through partial failure.</p>
+        <div class="book-entry">
+            <span class="caption">The model</span>
+            <h3>Concepts.</h3>
+            <p class="prose">The execution model underneath the API: the Oracle, the Journal, record and replay, durable effects and the crash window, program identity, faults, capabilities, and information flow. <a class="lnk" href="/pragmatic/docs/concepts/">Read the concepts</a></p>
         </div>
     </section>
 
-    <section class="editions" id="editions">
-        <div class="running-head"><em>Three ways to run it</em></div>
-        <p class="editions-note caption">The runtime works today; the hosted console is in development &middot; <a href="/pragmatic/pricing/">see pricing</a></p>
-        <div class="edition">
-            <h3>Self-hosted.</h3>
-            <span class="caption">The runtime, on your infrastructure &middot; early access</span>
-            <p class="ed-desc">Your data and Journals never leave your environment.</p>
-            <p class="materials">Links as a library &middot; Linux, containers, any cloud &middot; a Journal you own &middot; recovery &amp; faithful replay</p>
+    <section class="dark-section atelier" id="repo">
+        <div class="running-head"><em>Also in the repository</em></div>
+        <h2>The docs live <em>next to the code.</em></h2>
+        <p class="at-copy">Every page here ships as markdown in the repository's docs directory, beside four runnable examples that need no API key. If this site and the repository ever disagree, believe the repository.</p>
+        <div class="code-wrap">
+            <div class="code-snippet active" data-lang="shell">
+                <p class="file">your terminal</p>
+<pre><span class="c-com"># the same pages, as markdown, next to the code</span>
+git clone https://github.com/pragmaticco/pragmaticMain
+cd pragmaticMain
+ls docs/          <span class="c-com"># quickstart.md · usage.md · concepts.md</span>
+
+<span class="c-com"># the whole value proposition, no model and no key required</span>
+cargo run --example research_agent</pre>
+            </div>
         </div>
-        <div class="edition">
-            <h3>Pragmatic Cloud.</h3>
-            <span class="caption">Fully managed &middot; in development</span>
-            <p class="ed-desc">Durable journaling, recovery, and a replay console for time-travel debugging, without operating any of it.</p>
-            <p class="materials">Hosted journaling at scale &middot; replay console &amp; run timeline &middot; observability &amp; alerting &middot; usage-based, scales to zero</p>
-        </div>
-        <div class="edition">
-            <h3>Enterprise.</h3>
-            <span class="caption">For regulated &amp; high-stakes teams &middot; design partners</span>
-            <p class="ed-desc">For teams that have to prove what their agents did. The signed, replayable record becomes your audit trail.</p>
-            <p class="materials">Signed, immutable audit log &middot; information-flow guarantees &middot; SSO, on-prem, dedicated support &middot; design-partner roadmap access</p>
-        </div>
+        <p class="at-note">The repository: <a href="https://github.com/pragmaticco/pragmaticMain" target="_blank" rel="noopener">github.com/pragmaticco/pragmaticMain</a>.</p>
     </section>
 
     <footer class="site-footer">

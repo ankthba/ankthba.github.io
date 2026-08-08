@@ -42,7 +42,6 @@
     <!-- Page cover -->
     <section class="page-cover">
         <h1>Asked, <em>answered.</em></h1>
-        <p class="page-deck">The questions every engineering team asks before putting an agent runtime in production.</p>
     </section>
 
     <section class="qa" id="faq">
@@ -62,6 +61,13 @@
         </details>
         <details class="qa-item">
             <summary>
+                <h3>Does it handle real <em>tool-use agents?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Yes. The Claude adapter journals the full multi-turn loop: the model asks for a tool, the tool executes as a write-ahead journaled effect, and the result goes back into the conversation. Crash anywhere in the loop and the run resumes with every tool executed exactly once; replay reproduces the whole loop without calling the model at all. A wire test proves this end to end over real TCP sockets, down to the bytes on the wire. Plain prompts behave exactly as before, so existing journals still replay.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
                 <h3>Do I have to <em>rewrite my agent?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
@@ -72,7 +78,7 @@
                 <h3>Is it <em>production-ready?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">Pragmatic is pre-release. The replay guarantee is mechanized in Lean 4 and the Rust reference runtime passes its determinism and recovery suites today. Early access is open to design partners who want to run it against real workloads and shape what ships.</p>
+            <p class="answer prose">Pragmatic is pre-release. The replay guarantee is mechanized in Lean 4, and the Rust reference runtime passes its determinism and recovery suites today, including a full Claude tool-use loop recorded, resumed, and replayed over live sockets. Early access is open to design partners who want to run it against real workloads and shape what ships.</p>
         </details>
         <details class="qa-item">
             <summary>

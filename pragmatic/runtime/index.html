@@ -48,7 +48,7 @@
     <section class="dark-section atelier" id="code">
         <div class="running-head"><em>In your code</em></div>
         <h2>Durable in <em>one wrapper.</em></h2>
-        <p class="at-copy">Keep writing agents the way you already do. Wrap the run, route model calls through the Oracle, and Pragmatic journals every realized outcome as the agent executes.</p>
+        <p class="at-copy">Keep writing agents the way you already do. Wrap the run, route model turns through the Oracle, run tools as journaled effects, and Pragmatic records every realized outcome as the agent executes.</p>
         <p class="at-note">Crash on step nine of a thousand and the agent resumes on step nine, reading every prior call back from the Journal instead of paying for it again.</p>
         <div class="code-wrap">
             <div class="lang-tabs">
@@ -56,28 +56,35 @@
                 <button class="lang-tab" data-lang="python">Python</button>
             </div>
             <div class="code-snippet active" data-lang="rust">
-                <p class="file">research_agent.rs</p>
-<pre><span class="c-kw">use</span> pragmatic::{Runtime, SeededOracle, Ctx, Fault, Value};
+                <p class="file">tool_loop.rs</p>
+<pre><span class="c-kw">use</span> pragmatic::{Runtime, Ctx, Fault, Value};
+<span class="c-kw">use</span> pragmatic_anthropic::{Conversation, Turn};
 
-<span class="c-com">// Wrap the run. Every ctx.oracle call is journaled once.</span>
+<span class="c-com">// A real tool-use agent. Every model turn and tool call is journaled once.</span>
 <span class="c-com">#[pragmatic::durable]</span>
-<span class="c-kw">fn</span> research(ctx: &amp;<span class="c-kw">mut</span> Ctx) -&gt; Result&lt;Value, Fault&gt; {
-    <span class="c-kw">let</span> plan = ctx.oracle(<span class="c-str">"plan the task"</span>)?;            <span class="c-com">// journaled</span>
-    <span class="c-kw">let mut</span> out = Vec::new();
-    <span class="c-kw">for</span> step <span class="c-kw">in</span> 0..3 {
-        out.push(ctx.oracle(format!(<span class="c-str">"probe {step}: {plan}"</span>))?); <span class="c-com">// journaled</span>
+<span class="c-kw">fn</span> agent(ctx: &amp;<span class="c-kw">mut</span> Ctx) -&gt; Result&lt;Value, Fault&gt; {
+    <span class="c-kw">let mut</span> conv = Conversation::user(<span class="c-str">"What is 481 * 1063?"</span>);
+    <span class="c-kw">loop</span> {
+        <span class="c-kw">let</span> turn = Turn::parse(&amp;ctx.oracle(conv.prompt())?)?;  <span class="c-com">// journaled</span>
+        conv.push_assistant(&amp;turn);
+        <span class="c-kw">if</span> !turn.wants_tools() {
+            <span class="c-kw">return</span> Ok(Value::from(turn.text()));
+        }
+        <span class="c-kw">for</span> call <span class="c-kw">in</span> turn.tool_uses() {
+            <span class="c-kw">let</span> out = ctx.effect(<span class="c-str">"calculator"</span>, &amp;call.input, calculator)?; <span class="c-com">// write-ahead</span>
+            conv.push_tool_result(&amp;call.id, out);
+        }
     }
-    Ok(Value::from(format!(<span class="c-str">"report({} findings)"</span>, out.len())))
 }
 
-<span class="c-kw">let mut</span> rt = Runtime::in_memory(oracle);
-<span class="c-kw">let</span> report = rt.run(<span class="c-str">"research-42"</span>, research).unwrap();
+<span class="c-kw">let mut</span> rt = Runtime::in_memory(oracle);  <span class="c-com">// oracle declares the tools</span>
+<span class="c-kw">let</span> answer = rt.run(<span class="c-str">"agent-7"</span>, agent).unwrap();
 
-<span class="c-com">// Crash anywhere. Resume exactly, no re-sampling.</span>
-<span class="c-kw">let</span> resumed = rt.resume(<span class="c-str">"research-42"</span>, research).unwrap();
+<span class="c-com">// Crash anywhere in the loop. Resume exactly; no tool runs twice.</span>
+<span class="c-kw">let</span> resumed = rt.resume(<span class="c-str">"agent-7"</span>, agent).unwrap();
 
-<span class="c-com">// Replay the whole run, bit for bit, for audit (T1).</span>
-<span class="c-kw">let</span> audit = rt.replay(<span class="c-str">"research-42"</span>, research).unwrap();</pre>
+<span class="c-com">// Replay the whole run, bit for bit, with zero model calls (T1).</span>
+<span class="c-kw">let</span> audit = rt.replay(<span class="c-str">"agent-7"</span>, agent).unwrap();</pre>
             </div>
             <div class="code-snippet" data-lang="python">
                 <p class="file">research_agent.py</p>
@@ -99,7 +106,7 @@ report = rt.resume(<span class="c-str">"research-42"</span>, research)
 audit = rt.replay(<span class="c-str">"research-42"</span>, research)</pre>
             </div>
         </div>
-        <p class="at-note">Available in Rust and Python. TypeScript, Java, and C++ bindings are on the roadmap.</p>
+        <p class="at-note">Available in Rust and Python, with stable C++, Java, Go, and Node bindings. A first-class TypeScript SDK is next on the roadmap.</p>
     </section>
 
     <section class="facing" id="why">
@@ -136,6 +143,11 @@ audit = rt.replay(<span class="c-str">"research-42"</span>, research)</pre>
             <span class="caption">The core</span>
             <h3>Oracle and Journal.</h3>
             <p class="prose">Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back instead of re-sampling the model, which is what makes recovery faithful.</p>
+        </div>
+        <div class="book-entry">
+            <span class="caption">The tool loop</span>
+            <h3>Tools run exactly once.</h3>
+            <p class="prose">The Claude adapter journals the full multi-turn loop: the model asks for a tool, the tool executes as a write-ahead journaled effect, and the result goes back into the conversation. Each turn is recorded with its tool requests, stop reason, and token usage intact, so the Journal doubles as a cost record. Crash anywhere in the loop and the run resumes with no tool re-executed; replay reproduces the loop without calling the model at all.</p>
         </div>
         <div class="book-entry">
             <span class="caption">Trust</span>

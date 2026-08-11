@@ -25,7 +25,7 @@
     var journal = document.querySelector('.cj-lines');
     if (journal) {
         var SCRIPT = [
-            { t: 'run research-42 · begin', hl: false, pause: 0 },
+            { t: 'run agent-42 · begin', hl: false, pause: 0 },
             { t: 'step 01 · oracle("plan") · journaled', hl: false, pause: 0 },
             { t: 'step 02 · oracle("probe 0") · journaled', hl: false, pause: 0 },
             { t: 'step 03 · oracle("probe 1") · journaled', hl: false, pause: 0 },

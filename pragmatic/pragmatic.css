@@ -52,8 +52,8 @@ img { max-width: 100%; }
 .measure { max-width: 62ch; margin-left: auto; margin-right: auto; }
 
 .cover h1, .page-cover h1, .spread .statement, .look h3,
-.atelier h2, .facing-lede, .book-lede, .book-entry h3,
-.edition h3, .essay h2, .essay .pull, .finale h2,
+.atelier h2, .book-lede, .book-entry h3,
+.finale h2,
 .article h1, .news-item h3 { text-wrap: balance; }
 .cover-deck, .page-cover .page-deck, .finale .aside { text-wrap: balance; }
 
@@ -435,56 +435,6 @@ section .look:last-of-type { border-bottom: 1px solid var(--ink-12); }
 .c-kw  { color: var(--ivory); }
 .c-str { color: var(--ivory-75); }
 
-/* ── Facing columns ── */
-.facing-lede {
-    text-align: center;
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(34px, 4vw, 58px);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    margin-bottom: 4vh;
-}
-.facing-lede em { font-style: italic; }
-.facing-body {
-    font-size: 19px;
-    line-height: 1.75;
-    color: var(--ink-70);
-    max-width: 58ch;
-    margin: 0 auto 8vh;
-}
-.facing-cols {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0;
-    border-top: 1px solid var(--ink-12);
-    border-bottom: 1px solid var(--ink-12);
-}
-.facing-col { padding: 5vh 5% 5vh 0; }
-.facing-col + .facing-col { border-left: 1px solid var(--ink-12); padding: 5vh 0 5vh 5%; }
-.facing-col h3 {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 27px;
-    line-height: 1.18;
-    text-align: left;
-}
-.facing-col .who {
-    text-align: left;
-    font-style: italic;
-    font-size: 16.5px;
-    color: var(--ink-52);
-    margin: 8px 0 26px;
-}
-.facing-col p:not(.who) {
-    font-size: 17px;
-    line-height: 1.72;
-    color: var(--ink-70);
-    padding: 16px 0;
-    text-align: left;
-}
-.facing-col p:not(.who) + p:not(.who) { border-top: 1px solid var(--ink-12); }
-
 /* ── Book list (ledger rows) ── */
 .book-lede {
     text-align: center;
@@ -527,89 +477,6 @@ section .book-entry:last-of-type { border-bottom: 1px solid var(--ink-12); }
     max-width: 52ch;
     align-self: center;
 }
-
-/* ── Editions (ledger rows) ── */
-.editions-note {
-    text-align: center;
-    margin: -3vh auto 6vh;
-}
-.edition {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    grid-template-rows: auto 1fr;
-    column-gap: clamp(30px, 5vw, 80px);
-    border-top: 1px solid var(--ink-12);
-    padding: 5vh 0;
-}
-.edition + .edition { margin-top: 0; }
-section .edition:last-of-type { border-bottom: 1px solid var(--ink-12); }
-.edition h3 {
-    grid-column: 1;
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(28px, 3vw, 42px);
-    line-height: 1.1;
-    text-align: left;
-}
-.edition .caption { grid-column: 1; display: block; margin-top: 8px; text-align: left; align-self: start; }
-.edition p.ed-desc {
-    grid-column: 2;
-    grid-row: 1;
-    margin: 0;
-    font-size: 17.5px;
-    line-height: 1.72;
-    color: var(--ink-70);
-    max-width: 52ch;
-    text-align: left;
-}
-.edition .materials {
-    grid-column: 2;
-    grid-row: 2;
-    align-self: start;
-    margin: 14px 0 0;
-    font-style: italic;
-    font-size: 16px;
-    color: var(--ink-52);
-    max-width: 60ch;
-    text-align: left;
-}
-
-/* ── Essay (research, centered reading column) ── */
-.essay h2 {
-    text-align: center;
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(34px, 4vw, 58px);
-    line-height: 1.08;
-    margin-bottom: 7vh;
-}
-.essay h2 em { font-style: italic; }
-.essay .measure p {
-    font-size: 18.5px;
-    line-height: 1.78;
-    color: var(--ink-70);
-}
-.essay .measure p + p { margin-top: 22px; }
-.essay .pull {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: clamp(26px, 2.8vw, 42px);
-    line-height: 1.26;
-    max-width: 30ch;
-    margin: 8vh auto;
-    padding-left: clamp(20px, 3vw, 40px);
-    border-left: 2px solid var(--ink-30);
-}
-.essay .pull em { font-style: italic; }
-.essay h3 {
-    text-align: center;
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 30px;
-    margin: 8vh auto 4vh;
-}
-.essay .thm { margin-top: 32px; }
-.essay .thm .caption { display: block; margin-bottom: 8px; }
 
 /* ── Questions (collapsible ledger rows) ── */
 .qa-item {
@@ -797,24 +664,13 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     .index-row .t { order: -1; max-width: none; }
     .index-row:last-of-type { border-bottom: 1px solid var(--ink-12); }
 
-    .look, .book-entry, .edition { grid-template-columns: 1fr; row-gap: 18px; padding: 4.5vh 0; }
-    .look p, .book-entry p, .edition p.ed-desc { align-self: auto; }
+    .look, .book-entry { grid-template-columns: 1fr; row-gap: 18px; padding: 4.5vh 0; }
+    .look p, .book-entry p { align-self: auto; }
     .book-entry p { grid-column: 1; grid-row: auto; }
-    .edition p.ed-desc, .edition .materials { grid-column: 1; grid-row: auto; }
-    .edition .materials { margin-top: 4px; }
 
     .dark-section { padding-top: 9vh; padding-bottom: 9vh; }
 
-    .facing-cols { grid-template-columns: 1fr; border-bottom: none; }
-    .facing-col { padding: 4.5vh 0; }
-    .facing-col + .facing-col { border-left: none; border-top: 1px solid var(--ink-12); padding: 4.5vh 0; }
-    .facing-col:last-of-type { border-bottom: 1px solid var(--ink-12); }
-    .facing-body { margin-bottom: 6vh; }
-
     .book-lede { margin-bottom: 5vh; }
-    .editions-note { margin: -2vh auto 5vh; }
-
-    .essay h3 { margin: 7vh auto 3.5vh; }
 
     .qa-item summary { padding: 3.5vh 0; }
 
@@ -848,7 +704,7 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     .index-row .t { font-size: 14px; }
 
     .look h3 { font-size: clamp(26px, 7.6vw, 32px); line-height: 1.14; }
-    .look p, .book-entry p, .edition p.ed-desc { font-size: 16px; line-height: 1.68; }
+    .look p, .book-entry p { font-size: 16px; line-height: 1.68; }
 
     .atelier h2 { font-size: clamp(29px, 8.6vw, 37px); }
     .atelier .at-copy { font-size: 16.5px; }
@@ -857,23 +713,13 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     .lang-tab { font-size: 16.5px; }
     .atelier pre { font-size: 10.5px; line-height: 1.85; width: 100%; }
 
-    .facing-lede, .book-lede { font-size: clamp(28px, 8vw, 35px); line-height: 1.14; }
-    .facing-body { font-size: 16.5px; }
-    .facing-col h3 { font-size: 23px; }
-    .facing-col p:not(.who) { font-size: 16px; }
+    .book-lede { font-size: clamp(28px, 8vw, 35px); line-height: 1.14; }
 
     .book-entry h3 { font-size: clamp(24px, 7.2vw, 30px); }
-    .edition h3 { font-size: clamp(25px, 7.6vw, 31px); }
-    .edition .materials { font-size: 15px; }
     .caption { font-size: 15px; }
 
     .page-cover h1 { font-size: clamp(33px, 9.8vw, 46px); line-height: 1.1; }
     .page-cover .page-deck { font-size: 17px; }
-
-    .essay h2 { font-size: clamp(28px, 8vw, 35px); line-height: 1.14; }
-    .essay .measure p { font-size: 16px; }
-    .essay .pull { font-size: clamp(21px, 6.2vw, 27px); }
-    .essay h3 { font-size: 25px; }
 
     .qa-item summary h3 { font-size: clamp(21px, 6vw, 25px); line-height: 1.26; }
     .qa-item .answer { font-size: 16px; }
@@ -1098,32 +944,6 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     text-align: left;
 }
 
-.doc-table {
-    width: 100%;
-    max-width: 62ch;
-    margin: 5vh auto 0;
-    border-collapse: collapse;
-    text-align: left;
-}
-.doc-table th {
-    font-weight: 400;
-    font-style: italic;
-    font-size: 16px;
-    color: var(--ink-52);
-    padding: 0 22px 12px 0;
-    vertical-align: bottom;
-}
-.doc-table td {
-    border-top: 1px solid var(--ink-12);
-    padding: 14px 22px 14px 0;
-    font-size: 16.5px;
-    line-height: 1.6;
-    color: var(--ink-70);
-    vertical-align: top;
-}
-.doc-table th:last-child, .doc-table td:last-child { padding-right: 0; }
-.doc-table code { font-size: 13px; }
-
 @media (max-width: 860px) {
     .doc { margin-top: 8vh; }
 }
@@ -1134,6 +954,4 @@ section .news-item:last-of-type { border-bottom: 1px solid var(--ink-12); }
     .doc-code { padding: 16px 16px 12px; }
     .doc-code pre { font-size: 10.5px; line-height: 1.85; }
     .doc-note { font-size: 15px; }
-    .doc-table td { font-size: 14.5px; }
-    .doc-table code { font-size: 11.5px; }
 }

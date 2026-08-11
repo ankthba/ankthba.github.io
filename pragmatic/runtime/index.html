@@ -30,13 +30,10 @@
         </a>
         <nav>
             <a class="active" href="/pragmatic/runtime/">The runtime</a>
-            <a href="/pragmatic/product/">The product</a>
             <a href="/pragmatic/docs/">Docs</a>
             <a href="/pragmatic/practice/">In practice</a>
-            <a href="/pragmatic/research/">Research</a>
             <a href="/pragmatic/newsroom/">Newsroom</a>
             <a href="/pragmatic/questions/">Questions</a>
-            <a href="/pragmatic/pricing/">Pricing</a>
             <a class="cta" href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
@@ -44,7 +41,7 @@
     <!-- Page cover -->
     <section class="page-cover">
         <h1>The <em>runtime.</em></h1>
-        <p class="page-deck">One wrapper in your code, a journal underneath it, and a proof that replay is exact.</p>
+        <p class="page-deck">One wrapper in your code, a journal underneath it, and replay that is exact, every time.</p>
     </section>
 
     <section class="dark-section atelier" id="code">
@@ -85,7 +82,7 @@
 <span class="c-com">// Crash anywhere in the loop. Resume exactly; no tool runs twice.</span>
 <span class="c-kw">let</span> resumed = rt.resume(<span class="c-str">"agent-7"</span>, agent).unwrap();
 
-<span class="c-com">// Replay the whole run, bit for bit, with zero model calls (T1).</span>
+<span class="c-com">// Replay the whole run, bit for bit, with zero model calls.</span>
 <span class="c-kw">let</span> audit = rt.replay(<span class="c-str">"agent-7"</span>, agent).unwrap();</pre>
             </div>
             <div class="code-snippet" data-lang="python">
@@ -111,26 +108,8 @@ audit = rt.replay(<span class="c-str">"research-42"</span>, research)</pre>
         <p class="at-note">Available in Rust and Python, with stable C++, Java, Go, and Node bindings. A first-class TypeScript SDK is next on the roadmap.</p>
     </section>
 
-    <section class="facing" id="why">
-        <div class="running-head"><em>Why Pragmatic</em></div>
-        <h2 class="facing-lede">A model, <em>not a cache.</em></h2>
-        <p class="facing-body prose">Every durable execution engine handles a nondeterministic call the same way: run it once, cache the output as an opaque activity, and replay that fixed value. It works, but the engine never understands the call. Pragmatic models each LLM call as a first-class probability distribution and proves replay reproduces the run.</p>
-        <div class="facing-cols">
-            <div class="facing-col">
-                <h3>The LLM as an opaque activity</h3>
-                <p class="who">Elsewhere</p>
-                <p>The model call is a black box. Its output is cached and replayed as a fixed value, with no notion of the distribution it came from.</p>
-                <p>Replay is sound only if you keep all surrounding workflow code deterministic by hand. Step outside that and you hit nondeterminism errors.</p>
-                <p>No way to reason about the probability a run meets its spec, and no guarantee about how secret inputs flow to public outputs.</p>
-            </div>
-            <div class="facing-col">
-                <h3>The LLM as a first-class Oracle</h3>
-                <p class="who">At Pragmatic</p>
-                <p>The model call is a probability distribution the runtime understands. Replay soundness is mechanized in Lean 4, not left to discipline.</p>
-                <p>The determinism boundary is principled, so faithful replay holds across the whole run, nondeterministic behavior included.</p>
-                <p>Compositional probability bounds let you reason about whether a multi-agent system meets its spec, and noninterference is provable.</p>
-            </div>
-        </div>
+    <section class="spread">
+        <p class="statement"><em>A journal, not a cache.</em> <span>Other engines cache model outputs and trust you to keep the surrounding code deterministic. Pragmatic journals every step the agent takes, so resume and replay hold for the whole run.</span></p>
     </section>
 
     <section class="book" id="anatomy">
@@ -144,22 +123,12 @@ audit = rt.replay(<span class="c-str">"research-42"</span>, research)</pre>
         <div class="book-entry">
             <span class="caption">The core</span>
             <h3>Oracle and Journal.</h3>
-            <p class="prose">Each LLM call is modeled as a probability distribution, the Oracle. Every realized outcome is written to an append-only Journal. Replay reads outcomes back instead of re-sampling the model, which is what makes recovery faithful.</p>
+            <p class="prose">Every model call goes through the Oracle, and every realized outcome is written to an append-only, hash-chained Journal. Replay reads outcomes back instead of calling the model again, which is what makes recovery exact.</p>
         </div>
         <div class="book-entry">
             <span class="caption">The tool loop</span>
             <h3>Tools run exactly once.</h3>
             <p class="prose">The Claude adapter journals the full multi-turn loop: the model asks for a tool, the tool executes as a write-ahead journaled effect, and the result goes back into the conversation. Each turn is recorded with its tool requests, stop reason, and token usage intact, so the Journal doubles as a cost record. Crash anywhere in the loop and the run resumes with no tool re-executed; replay reproduces the loop without calling the model at all.</p>
-        </div>
-        <div class="book-entry">
-            <span class="caption">Trust</span>
-            <h3>Capabilities and a tamper-evident log.</h3>
-            <p class="prose">Every effect is checked against the run's capability allowlist, and the Journal is a hash-chained, immutable record of the run, HMAC-signed when a runtime key is configured. Idempotency, provenance, and a tamper-evident audit trail, at the runtime level.</p>
-        </div>
-        <div class="book-entry">
-            <span class="caption">Control</span>
-            <h3>The Supervisor.</h3>
-            <p class="prose">The Supervisor detects failures, restores agents from their Journals, and drives recovery and replay. It turns a crashed run into a resumed one without re-sampling or lost work.</p>
         </div>
     </section>
 
@@ -180,13 +149,10 @@ audit = rt.replay(<span class="c-str">"research-42"</span>, research)</pre>
                         <span class="f-head">Explore</span>
                         <a href="/pragmatic/">Overview</a>
                         <a href="/pragmatic/runtime/">The runtime</a>
-                        <a href="/pragmatic/product/">The product</a>
                         <a href="/pragmatic/docs/">Docs</a>
                         <a href="/pragmatic/practice/">In practice</a>
-                        <a href="/pragmatic/research/">Research</a>
                         <a href="/pragmatic/newsroom/">Newsroom</a>
                         <a href="/pragmatic/questions/">Questions</a>
-                        <a href="/pragmatic/pricing/">Pricing</a>
                     </div>
                     <div class="f-col">
                         <span class="f-head">Connect</span>

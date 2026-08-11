@@ -30,13 +30,10 @@
         </a>
         <nav>
             <a href="/pragmatic/runtime/">The runtime</a>
-            <a href="/pragmatic/product/">The product</a>
             <a href="/pragmatic/docs/">Docs</a>
             <a href="/pragmatic/practice/">In practice</a>
-            <a href="/pragmatic/research/">Research</a>
             <a href="/pragmatic/newsroom/">Newsroom</a>
             <a class="active" href="/pragmatic/questions/">Questions</a>
-            <a href="/pragmatic/pricing/">Pricing</a>
             <a class="cta" href="mailto:me@aniketh.net?subject=Pragmatic early access">Early access</a>
         </nav>
     </header>
@@ -52,7 +49,7 @@
                 <h3>How is this different from a general <em>durable execution engine?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and Pragmatic builds on the same lineage. The difference is that the engine has no model of the call, so there is no probabilistic reasoning and no information-flow guarantee, and replay holds only while the surrounding code stays deterministic. Pragmatic models the call itself and proves the replay guarantee.</p>
+            <p class="answer prose">General durable execution treats a model call as an opaque step: run it once, store the output, replay the stored value. That works well, and Pragmatic builds on the same lineage. The difference is that those engines keep working only while you keep the surrounding code deterministic yourself. Pragmatic journals the model calls, the tool effects, and the clock, so resume and replay hold for the whole run without that discipline.</p>
         </details>
         <details class="qa-item">
             <summary>
@@ -80,14 +77,21 @@
                 <h3>Is it <em>production-ready?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">Pragmatic is pre-release. The replay guarantee is mechanized in Lean 4, and the Rust reference runtime passes its determinism and recovery suites today, including a full Claude tool-use loop recorded, resumed, and replayed over live sockets. Early access is open to design partners who want to run it against real workloads and shape what ships.</p>
+            <p class="answer prose">Pragmatic is pre-release. The Rust reference runtime passes its determinism and recovery suites today, including a full Claude tool-use loop recorded, resumed, and replayed over live sockets. Early access is open to design partners who want to run it against real workloads and shape what ships.</p>
         </details>
         <details class="qa-item">
             <summary>
                 <h3>Where does <em>my data live?</em></h3>
                 <span class="q-mark">+</span>
             </summary>
-            <p class="answer prose">With self-hosted, the runtime and your Journals stay entirely in your environment. Pragmatic Cloud, which is in development, will manage durable journaling and replay for you. Enterprise adds a signed, immutable audit trail and information-flow guarantees for regulated teams.</p>
+            <p class="answer prose">On your own infrastructure. The runtime links into your agent as a library, and Journals are files on your own disk; nothing leaves your environment. A managed cloud backend is in development.</p>
+        </details>
+        <details class="qa-item">
+            <summary>
+                <h3>What does <em>it cost?</em></h3>
+                <span class="q-mark">+</span>
+            </summary>
+            <p class="answer prose">Pragmatic is source-available under the Business Source License 1.1. It is free for non-production use, and for production use by organizations under one million dollars in annual revenue. Production beyond that takes a commercial license: <a href="mailto:me@aniketh.net?subject=Pragmatic commercial license">email us</a>.</p>
         </details>
     </section>
 
@@ -108,13 +112,10 @@
                         <span class="f-head">Explore</span>
                         <a href="/pragmatic/">Overview</a>
                         <a href="/pragmatic/runtime/">The runtime</a>
-                        <a href="/pragmatic/product/">The product</a>
                         <a href="/pragmatic/docs/">Docs</a>
                         <a href="/pragmatic/practice/">In practice</a>
-                        <a href="/pragmatic/research/">Research</a>
                         <a href="/pragmatic/newsroom/">Newsroom</a>
                         <a href="/pragmatic/questions/">Questions</a>
-                        <a href="/pragmatic/pricing/">Pricing</a>
                     </div>
                     <div class="f-col">
                         <span class="f-head">Connect</span>

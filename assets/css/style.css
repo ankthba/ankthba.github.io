@@ -129,13 +129,9 @@ a.masthead__name:hover {
    stretching to the edges */
 .masthead__nav {
   max-width: calc(var(--measure) - 2 * var(--space-md));
-  margin: 1.5rem auto 0;
+  margin: 2rem auto 0;
   text-align: justify;
   text-align-last: center;
-}
-
-.masthead--home .masthead__nav {
-  margin-top: 2rem;
 }
 
 .masthead__nav-link {

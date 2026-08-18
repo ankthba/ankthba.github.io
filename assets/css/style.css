@@ -114,19 +114,14 @@ p {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  line-height: 1.1;
   color: var(--color-fg);
   transition: opacity var(--transition-fast);
 }
 
 a.masthead__name:hover {
   opacity: 0.6;
-}
-
-/* Home: the name is the hero */
-.masthead--home .masthead__name {
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
-  line-height: 1.1;
 }
 
 /* Matches the body text column: measure minus its side padding.

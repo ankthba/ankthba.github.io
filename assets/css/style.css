@@ -214,6 +214,61 @@ a.masthead__name:hover {
   margin-bottom: 0;
 }
 
+/* Latest writing: the nav link treatment, stacked and left-aligned */
+
+.writing {
+  margin-top: var(--space-md);
+}
+
+.writing__heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin-bottom: 0.9rem;
+  color: var(--color-fg);
+}
+
+.writing__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.writing__link {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-border-hover);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+/* Same ghost trick as the nav so the title holds its width on hover */
+.writing__link::before,
+.writing__link::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.writing__link::before {
+  font-style: normal;
+}
+
+.writing__link::after {
+  font-style: italic;
+}
+
+.writing__link:hover {
+  font-style: italic;
+  color: var(--color-muted);
+}
+
 /* ---------------------------------------------------------
    7. Entry lists (work, projects, education, research)
    --------------------------------------------------------- */

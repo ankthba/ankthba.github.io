@@ -1,0 +1,244 @@
+/* Haze landing page. The app's clothes, not the app: EB Garamond, white type
+   on a sky that runs from day to night as the page scrolls, hairline rules,
+   nothing raised and nothing dropped. */
+
+:root {
+  --ink: rgba(255, 255, 255, 0.96);
+  --ink-2: rgba(255, 255, 255, 0.75);
+  --ink-3: rgba(255, 255, 255, 0.5);
+  --hairline: rgba(255, 255, 255, 0.18);
+  --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--serif);
+  color: var(--ink);
+  background-color: #5d7089;
+  /* The day, top to bottom: noon, a hot afternoon, dusk, night. */
+  background-image: linear-gradient(
+    180deg,
+    #8695ab 0%,
+    #6e8098 18%,
+    #97909d 36%,
+    #ac8f92 50%,
+    #75648e 66%,
+    #454063 80%,
+    #1d2439 100%
+  );
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+::selection { background: rgba(255, 255, 255, 0.28); }
+
+a { color: inherit; }
+
+img { max-width: 100%; height: auto; }
+
+/* ---------- Header ---------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1010px;
+  margin: 0 auto;
+  padding: 1.4rem clamp(1.1rem, 4vw, 2rem);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-size: 1.15rem;
+}
+
+.brand img { width: 28px; height: 28px; border-radius: 7px; }
+
+.top nav {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  font-size: 0.95rem;
+}
+
+.top nav a {
+  text-decoration: none;
+  color: var(--ink-2);
+}
+
+.top nav a:hover { color: var(--ink); }
+
+/* ---------- Hero ---------- */
+
+.hero {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: clamp(4.5rem, 12vh, 8rem) 1.25rem clamp(3rem, 8vh, 5rem);
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(3.2rem, 8vw, 4.6rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.hero__sub {
+  margin: 0.5rem 0 0;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: var(--ink-2);
+}
+
+.hero__brief {
+  margin: 1.8rem auto 0;
+  font-style: italic;
+  font-size: 1.22rem;
+  line-height: 1.55;
+}
+
+.hero__cta { margin-top: 2.4rem; }
+
+.btn {
+  display: inline-block;
+  padding: 0.72rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  font-size: 1.08rem;
+  transition: background 0.15s ease;
+}
+
+.btn:hover { background: rgba(255, 255, 255, 0.14); }
+
+.hero__fine {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  color: var(--ink-3);
+}
+
+/* ---------- The four skies ---------- */
+
+.skies {
+  max-width: 1010px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 4vw, 2rem);
+}
+
+.skies__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.8rem, 2.5vw, 1.8rem);
+  align-items: center;
+}
+
+.skies__row img { display: block; width: 100%; }
+
+.skies__caption {
+  margin: 1.6rem 0 0;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--ink-2);
+}
+
+/* ---------- Features ---------- */
+
+.features {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.25rem;
+}
+
+.feature {
+  padding: 1.35rem 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.feature:last-child { border-bottom: 1px solid var(--hairline); }
+
+.feature h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.22rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+.feature p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+/* ---------- Closing ---------- */
+
+.closing {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) 1.25rem clamp(3rem, 7vw, 5rem);
+  text-align: center;
+}
+
+.closing p {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.closing .fine {
+  font-size: 0.98rem;
+  color: var(--ink-2);
+}
+
+.closing a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- Footer ---------- */
+
+.foot {
+  max-width: 1010px;
+  margin: 0 auto;
+  padding: 2.5rem clamp(1.1rem, 4vw, 2rem) 3rem;
+  border-top: 1px solid var(--hairline);
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.foot__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+  margin-bottom: 1.1rem;
+}
+
+.foot__links a { text-decoration: none; color: var(--ink-2); }
+
+.foot__links a:hover { color: var(--ink); }
+
+.foot p { margin: 0.3rem 0; }
+
+.foot .fine { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.8rem; }
+
+.foot .fine a { color: var(--ink-3); }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .skies__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .top nav { gap: 1rem; font-size: 0.9rem; }
+  .top nav .quiet { display: none; }
+}

@@ -24,10 +24,19 @@ body {
   background-attachment: fixed;
 }
 
-/* Two skies: day, and night for dark mode. */
+/* The four skies. The page opens on the one the viewer's clock calls for;
+   the header toggle can set any of them. */
+body.sky-morning {
+  background-color: #b192a0;
+  background-image: linear-gradient(180deg, #c4a38b 0%, #b192a0 48%, #7e8ba1 100%);
+}
 body.sky-day {
   background-color: #6b7e96;
   background-image: linear-gradient(180deg, #8494a9 0%, #6b7e96 55%, #566880 100%);
+}
+body.sky-evening {
+  background-color: #9a7080;
+  background-image: linear-gradient(180deg, #675a88 0%, #9a7080 55%, #bd8757 100%);
 }
 body.sky-night {
   background-color: #1f2740;
@@ -292,5 +301,10 @@ img { max-width: 100%; height: auto; }
     gap: 2rem;
   }
   .top nav .quiet { display: none; }
-  .top__right { gap: 1rem; }
+  .top__right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.7rem;
+  }
+  .theme button { padding: 0.28rem 0.6rem; font-size: 0.82rem; }
 }

@@ -82,25 +82,11 @@
   </section>
 
   <section class="skies">
-    <img class="skies__phone" id="shot" width="640" height="1306" alt="">
-    <script>
-      (function () {
-        var shots = {
-          day: ['current-conditions', 'Haze showing an overcast noon in San Francisco'],
-          morning: ['sunrise-losangeles', 'Haze showing a hot morning in Los Angeles'],
-          evening: ['sunset-madrid', 'Haze showing a clear evening in Madrid'],
-          night: ['night-tokyo', 'Haze showing a rainy night ahead in Tokyo']
-        };
-        var s = shots[window.hazeSky] || shots.day;
-        var img = document.getElementById('shot');
-        img.src = '/assets/img/haze/' + s[0] + '.webp';
-        img.alt = s[1] + ' on an iPhone 17 Pro Max';
-      })();
-    </script>
-    <noscript>
-      <style>#shot { display: none; }</style>
-      <img class="skies__phone" src="/assets/img/haze/current-conditions.webp" alt="Haze showing an overcast noon in San Francisco on an iPhone 17 Pro Max" width="640" height="1306">
-    </noscript>
+    <div class="skies__row">
+      <img src="/assets/img/haze/current-conditions.webp" alt="Haze showing an overcast day in San Francisco on an iPhone 17 Pro Max" width="640" height="1306">
+      <img src="/assets/img/haze/radar.webp" alt="The full screen precipitation radar in Haze, with a timeline you can play or scrub" width="640" height="1306" loading="lazy">
+      <img src="/assets/img/haze/trend-and-10day.webp" alt="The 72-hour temperature trend and the 10-day forecast in Haze" width="640" height="1306" loading="lazy">
+    </div>
     <p class="skies__caption">The sky in the app follows the time of day. This page does too.</p>
   </section>
 

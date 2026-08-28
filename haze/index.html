@@ -50,61 +50,24 @@
       <img src="/assets/img/haze-icon.png" alt="" width="28" height="28">
       <span>Haze</span>
     </a>
-    <div class="top__right">
-      <nav>
-        <a class="quiet" href="/haze/support/">Support</a>
-        <a class="quiet" href="/haze/privacy/">Privacy</a>
-        <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App&nbsp;Store</a>
-      </nav>
-      <div class="theme" role="group" aria-label="Sky">
-        <button type="button" data-sky="morning">Morning</button>
-        <button type="button" data-sky="day">Day</button>
-        <button type="button" data-sky="evening">Evening</button>
-        <button type="button" data-sky="night">Night</button>
-      </div>
-    </div>
+    <nav>
+      <a href="/haze/support/">Support</a>
+      <a href="/haze/privacy/">Privacy</a>
+      <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App&nbsp;Store</a>
+    </nav>
   </header>
 
   <script>
-    // The page opens on the sky the viewer's clock calls for; the toggle can
-    // set any of them, remembered for this visit.
+    // The page opens on the sky the viewer's clock calls for, like the app.
     (function () {
-      var KEY = 'haze-sky';
-      var meta = document.querySelector('meta[name="theme-color"]');
-      var buttons = document.querySelectorAll('.theme button');
+      var h = new Date().getHours();
+      var sky = h >= 5 && h < 10 ? 'morning' :
+                h >= 10 && h < 17 ? 'day' :
+                h >= 17 && h < 21 ? 'evening' : 'night';
+      document.body.className = 'sky-' + sky;
       var themes = { morning: '#c4a38b', day: '#8494a9', evening: '#675a88', night: '#2c3452' };
-
-      function clockSky() {
-        var h = new Date().getHours();
-        return h >= 5 && h < 10 ? 'morning' :
-               h >= 10 && h < 17 ? 'day' :
-               h >= 17 && h < 21 ? 'evening' : 'night';
-      }
-
-      function current() {
-        try {
-          var v = sessionStorage.getItem(KEY);
-          if (themes[v]) return v;
-        } catch (e) {}
-        return clockSky();
-      }
-
-      function apply() {
-        var sky = current();
-        document.body.className = 'sky-' + sky;
-        if (meta) meta.setAttribute('content', themes[sky]);
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', b.dataset.sky === sky ? 'true' : 'false');
-        });
-      }
-
-      buttons.forEach(function (b) {
-        b.addEventListener('click', function () {
-          try { sessionStorage.setItem(KEY, b.dataset.sky); } catch (e) {}
-          apply();
-        });
-      });
-      apply();
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', themes[sky]);
     })();
   </script>
 

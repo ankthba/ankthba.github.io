@@ -71,12 +71,6 @@ img { max-width: 100%; height: auto; }
 
 .brand img { width: 28px; height: 28px; border-radius: 7px; }
 
-.top__right {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-}
-
 .top nav {
   display: flex;
   align-items: center;
@@ -90,34 +84,6 @@ img { max-width: 100%; height: auto; }
 }
 
 .top nav a:hover { color: var(--ink); }
-
-/* Light / dark / auto, in the page's own hairline clothes. */
-.theme {
-  display: flex;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.theme button {
-  font-family: var(--serif);
-  font-size: 0.85rem;
-  color: var(--ink-2);
-  background: none;
-  border: 0;
-  padding: 0.32rem 0.75rem;
-  cursor: pointer;
-  line-height: 1.4;
-}
-
-.theme button + button { border-left: 1px solid var(--hairline); }
-
-.theme button:hover { color: var(--ink); }
-
-.theme button[aria-pressed="true"] {
-  background: rgba(255, 255, 255, 0.14);
-  color: var(--ink);
-}
 
 /* ---------- Hero ---------- */
 
@@ -300,11 +266,4 @@ img { max-width: 100%; height: auto; }
     max-width: min(300px, 78vw);
     gap: 2rem;
   }
-  .top nav .quiet { display: none; }
-  .top__right {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.7rem;
-  }
-  .theme button { padding: 0.28rem 0.6rem; font-size: 0.82rem; }
 }

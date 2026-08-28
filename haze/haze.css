@@ -1,6 +1,6 @@
 /* Haze landing page. The app's clothes, not the app: EB Garamond, white type
-   on a sky that runs from day to night as the page scrolls, hairline rules,
-   nothing raised and nothing dropped. */
+   on the sky the viewer's clock calls for, hairline rules, nothing raised
+   and nothing dropped. */
 
 :root {
   --ink: rgba(255, 255, 255, 0.96);
@@ -16,22 +16,30 @@ body {
   margin: 0;
   font-family: var(--serif);
   color: var(--ink);
-  background-color: #5d7089;
-  /* The day, top to bottom: noon, a hot afternoon, dusk, night. */
-  background-image: linear-gradient(
-    180deg,
-    #8695ab 0%,
-    #6e8098 18%,
-    #97909d 36%,
-    #ac8f92 50%,
-    #75648e 66%,
-    #454063 80%,
-    #1d2439 100%
-  );
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-size: 17px;
   line-height: 1.6;
+  background-color: #6b7e96;
+  background-attachment: fixed;
+}
+
+/* The four skies, chosen by the viewer's clock. */
+body.sky-day {
+  background-color: #6b7e96;
+  background-image: linear-gradient(180deg, #8494a9 0%, #6b7e96 55%, #566880 100%);
+}
+body.sky-morning {
+  background-color: #b192a0;
+  background-image: linear-gradient(180deg, #c4a38b 0%, #b192a0 48%, #7e8ba1 100%);
+}
+body.sky-evening {
+  background-color: #9a7080;
+  background-image: linear-gradient(180deg, #675a88 0%, #9a7080 55%, #bd8757 100%);
+}
+body.sky-night {
+  background-color: #1f2740;
+  background-image: linear-gradient(180deg, #2c3452 0%, #1f2740 60%, #131a2e 100%);
 }
 
 ::selection { background: rgba(255, 255, 255, 0.28); }
@@ -81,7 +89,7 @@ img { max-width: 100%; height: auto; }
 .hero {
   max-width: 640px;
   margin: 0 auto;
-  padding: clamp(4.5rem, 12vh, 8rem) 1.25rem clamp(3rem, 8vh, 5rem);
+  padding: clamp(4rem, 11vh, 7rem) 1.25rem clamp(2.5rem, 7vh, 4.5rem);
   text-align: center;
 }
 
@@ -127,22 +135,19 @@ img { max-width: 100%; height: auto; }
   color: var(--ink-3);
 }
 
-/* ---------- The four skies ---------- */
+/* ---------- The phone ---------- */
 
 .skies {
   max-width: 1010px;
   margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 4vw, 2rem);
+  padding: clamp(1rem, 3vw, 2rem) clamp(1.1rem, 4vw, 2rem) clamp(2rem, 5vw, 3.5rem);
 }
 
-.skies__row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(0.8rem, 2.5vw, 1.8rem);
-  align-items: center;
+.skies__phone {
+  display: block;
+  width: min(320px, 78vw);
+  margin: 0 auto;
 }
-
-.skies__row img { display: block; width: 100%; }
 
 .skies__caption {
   margin: 1.6rem 0 0;
@@ -155,28 +160,40 @@ img { max-width: 100%; height: auto; }
 /* ---------- Features ---------- */
 
 .features {
-  max-width: 620px;
+  max-width: 1010px;
   margin: 0 auto;
-  padding: clamp(2.5rem, 6vw, 4.5rem) 1.25rem;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.1rem, 4vw, 2rem);
+}
+
+.features__lede {
+  margin: 0 0 1.8rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink-2);
+}
+
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2.5rem, 6vw, 5rem);
 }
 
 .feature {
-  padding: 1.35rem 0;
+  padding: 1.2rem 0;
   border-top: 1px solid var(--hairline);
 }
 
-.feature:last-child { border-bottom: 1px solid var(--hairline); }
-
 .feature h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.22rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.18rem;
   font-weight: 500;
   letter-spacing: 0.005em;
 }
 
 .feature p {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: 1rem;
   line-height: 1.55;
   color: var(--ink-2);
 }
@@ -199,12 +216,6 @@ img { max-width: 100%; height: auto; }
 .closing .fine {
   font-size: 0.98rem;
   color: var(--ink-2);
-}
-
-.closing a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: rgba(255, 255, 255, 0.35);
 }
 
 /* ---------- Footer ---------- */
@@ -231,6 +242,8 @@ img { max-width: 100%; height: auto; }
 
 .foot p { margin: 0.3rem 0; }
 
+.foot a { color: var(--ink-2); }
+
 .foot .fine { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.8rem; }
 
 .foot .fine a { color: var(--ink-3); }
@@ -238,7 +251,6 @@ img { max-width: 100%; height: auto; }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 720px) {
-  .skies__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .features__grid { grid-template-columns: 1fr; }
   .top nav { gap: 1rem; font-size: 0.9rem; }
-  .top nav .quiet { display: none; }
 }

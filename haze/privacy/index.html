@@ -71,7 +71,7 @@
   <main class="page">
         <h1 class="page-title">Privacy Policy</h1>
         <div class="legal">
-          <p class="legal__updated">Last updated June 9, 2026</p>
+          <p class="legal__updated">Last updated August 28, 2026</p>
 
           <p>Haze has no accounts, no ads, and no third-party tracking or analytics. There isn’t much data to talk about, but here’s exactly how the app handles what it touches.</p>
 
@@ -79,14 +79,25 @@
           <p>I don’t collect anything. There are no servers of mine, no login, and no analytics. The app doesn’t build a profile of you, and nothing is ever sold, shared, or used to make money.</p>
 
           <h2>Location</h2>
-          <p>If you allow location access, Haze uses it <strong>only while the app is open</strong>, and <strong>only</strong> to show the forecast where you are. Your coordinates stay on your device and are sent to the weather provider to load that forecast. They’re never stored on any server of mine and never tied to your identity.</p>
+          <p>If you allow location access, Haze uses it (when-in-use) <strong>only</strong> to show the forecast where you are. Your coordinates are sent to the weather providers below to load that forecast. They’re never stored on any server of mine and never tied to your identity.</p>
+          <p>If you turn on rain alerts or the morning digest, the app remembers your most recent coordinates on the device so a periodic background check can fetch a fresh forecast while the app is closed. Those checks go straight from your phone to the same weather providers; nothing passes through any server of mine.</p>
           <p>Location is optional. You can turn it off in iOS Settings and still use everything: tap the search icon and type in any city to see its forecast.</p>
 
           <h2>Saved locations and settings</h2>
-          <p>Your saved locations and settings (like whether you use °F or °C) stay on your device. Deleting the app removes them.</p>
+          <p>Your saved locations and settings (like whether you use °F or °C) live on your device. If you’re signed into iCloud, they also sync through Apple’s iCloud key-value store so a new phone opens with your cities in place. That data sits in your Apple account, not with me, and Apple’s own privacy policy covers it. Everything works without iCloud, and deleting the app removes the local copy.</p>
+
+          <h2>Notifications</h2>
+          <p>Rain alerts, weather-advisory notices, the morning digest, and the golden-hour heads-up are all <strong>local notifications</strong>, composed on your device from the forecast it already holds. There is no push server and nothing leaves your phone to deliver them.</p>
 
           <h2>Weather data and third parties</h2>
-          <p>Forecasts come from <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, a free, open weather API. To load a forecast, the app sends the relevant coordinates (your location, or a city you searched) to Open-Meteo. No API key, account, or personal information is attached. What Open-Meteo does with those requests is covered by its own <a href="https://open-meteo.com/en/terms" target="_blank" rel="noopener">terms and privacy practices</a>.</p>
+          <p>To load weather, the app sends the relevant coordinates (your location, or a city you searched) to these services. No API key, account, or personal information is attached, and what each does with requests is covered by its own terms and privacy practices:</p>
+          <ul>
+            <li><a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>: forecasts and air quality.</li>
+            <li>The <a href="https://www.weather.gov" target="_blank" rel="noopener">National Weather Service</a>: advisories and nearby station observations (US).</li>
+            <li>The <a href="https://mesonet.agron.iastate.edu" target="_blank" rel="noopener">Iowa Environmental Mesonet</a>: radar imagery (US).</li>
+            <li><a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>: radar imagery outside the US.</li>
+            <li>Apple Maps: the base map under the radar, covered by Apple’s privacy policy.</li>
+          </ul>
 
           <h2>Apple’s privacy label</h2>
           <p>To match the App Store privacy label: Haze may use <strong>precise or coarse location</strong> for <strong>app functionality only</strong>. That data is <strong>not linked to your identity</strong> and is <strong>not used to track you</strong>.</p>

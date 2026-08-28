@@ -4,28 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Haze: Beautiful, Accurate Weather</title>
-  <meta name="description" content="A beautiful, accurate weather app for iPhone. Clean design, a sky that changes through the day, and forecasts you can rely on. No ads, no accounts.">
+  <meta name="description" content="A calm, editorial weather app for iPhone and Apple Watch. Big serif numerals, skies that shift with the day, radar, rain alerts, widgets, and accurate forecasts. No ads, no accounts.">
   <link rel="canonical" href="https://aniketh.net/haze/">
   <meta name="author" content="Aniketh Bandlamudi">
+  <meta name="theme-color" content="#8695ab">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Haze: Beautiful, Accurate Weather">
-  <meta property="og:description" content="A beautiful, accurate weather app for iPhone. Clean design, a sky that changes through the day, and forecasts you can rely on. No ads, no accounts.">
+  <meta property="og:description" content="A calm, editorial weather app for iPhone and Apple Watch. Big serif numerals, skies that shift with the day, radar, rain alerts, widgets, and accurate forecasts. No ads, no accounts.">
   <meta property="og:url" content="https://aniketh.net/haze/">
   <meta property="og:image" content="https://aniketh.net/assets/img/haze-icon.png">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Haze: Beautiful, Accurate Weather">
-  <meta name="twitter:description" content="A beautiful, accurate weather app for iPhone. Clean design and forecasts you can rely on. No ads, no accounts.">
+  <meta name="twitter:description" content="A calm, editorial weather app for iPhone and Apple Watch. Skies that shift with the day, radar, widgets, and forecasts you can rely on. No ads, no accounts.">
   <meta name="twitter:image" content="https://aniketh.net/assets/img/haze-icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/haze/haze.css">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
 
@@ -35,161 +35,108 @@
     "@type": "SoftwareApplication",
     "name": "Haze",
     "applicationCategory": "Weather",
-    "operatingSystem": "iOS 18+",
+    "operatingSystem": "iOS 18.0 or later",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "url": "https://aniketh.net/haze/",
     "image": "https://aniketh.net/assets/img/haze-icon.png",
     "author": { "@type": "Person", "name": "Aniketh Bandlamudi", "url": "https://aniketh.net/" }
   }
   </script>
-
-  <style>
-    /* Haze product page: app-store-style header and feature list */
-    .haze__head {
-      display: flex;
-      align-items: center;
-      gap: 1.1rem;
-      margin-bottom: var(--space-md);
-    }
-    .haze__icon {
-      width: 88px;
-      height: 88px;
-      border-radius: 20px;
-      box-shadow: 0 4px 24px rgba(45, 40, 30, 0.14);
-      flex-shrink: 0;
-    }
-    .haze__headtext { display: flex; flex-direction: column; gap: 0.15rem; }
-    .haze__headtext .page-title { margin-bottom: 0; text-align: left; }
-    .haze__subtitle {
-      font-size: 0.95rem;
-      color: var(--color-muted);
-      letter-spacing: 0.01em;
-    }
-    .haze__lede {
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: var(--color-fg);
-      max-width: none;
-      margin-bottom: 1rem;
-    }
-    .haze__body { color: var(--color-muted); line-height: 1.75; max-width: none; margin-bottom: var(--space-md); }
-
-    .haze__features {
-      list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.55rem 1.5rem;
-      margin: 0 0 var(--space-md);
-      padding: var(--space-md) 0;
-      border-top: 1px solid var(--color-border);
-      border-bottom: 1px solid var(--color-border);
-    }
-    .haze__features li {
-      position: relative;
-      padding-left: 1.1rem;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      color: var(--color-muted);
-    }
-    .haze__features li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.6em;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--color-muted);
-      opacity: 0.55;
-    }
-
-    .haze__links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: center;
-    }
-    .haze__meta {
-      margin-top: var(--space-md);
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      opacity: 0.8;
-    }
-    .haze__meta a { text-decoration: underline; text-underline-offset: 2px; }
-
-    @media (max-width: 768px) {
-      .haze__head { justify-content: flex-start; }
-    }
-    @media (max-width: 640px) {
-      .haze__features { grid-template-columns: 1fr; }
-      .haze__features li { text-align: left; }
-      .haze__head { gap: 0.9rem; justify-content: center; }
-      .haze__icon { width: 72px; height: 72px; border-radius: 16px; }
-      .haze__links { justify-content: center; }
-    }
-  </style>
 </head>
 <body>
-  
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+
+  <header class="top">
+    <a class="brand" href="/haze/">
+      <img src="/assets/img/haze-icon.png" alt="" width="28" height="28">
+      <span>Haze</span>
+    </a>
+    <nav>
+      <a class="quiet" href="/haze/support/">Support</a>
+      <a class="quiet" href="/haze/privacy/">Privacy</a>
+      <a class="quiet" href="https://github.com/ankthba/haze" target="_blank" rel="noopener">Source</a>
+      <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App&nbsp;Store</a>
     </nav>
   </header>
 
-  <main class="page">
-        <div class="haze__head">
-          <img class="haze__icon" src="/assets/img/haze-icon.png" alt="Haze app icon" width="88" height="88">
-          <div class="haze__headtext">
-            <h1 class="page-title">Haze</h1>
-            <span class="haze__subtitle">Beautiful, Accurate Weather</span>
-          </div>
-        </div>
+  <section class="hero">
+    <h1>Haze</h1>
+    <p class="hero__sub">Beautiful, accurate weather</p>
+    <p class="hero__brief">A weather app set like a magazine, not a dashboard. Big serif numerals, soft skies that shift with the time of day, and forecasts you can rely on. No ads, no accounts.</p>
+    <div class="hero__cta">
+      <a class="btn" href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">Download on the App&nbsp;Store</a>
+      <p class="hero__fine">Free · iPhone, iOS 18 · Apple Watch</p>
+    </div>
+  </section>
 
-        <p class="haze__lede">Haze is a weather app for iPhone that’s actually nice to look at. The forecasts are accurate, the design stays out of the way, and there are no ads or accounts.</p>
+  <section class="skies">
+    <div class="skies__row">
+      <img src="/assets/img/haze/current-conditions.webp" alt="Haze on an iPhone 17 Pro Max, showing an overcast noon in San Francisco on a slate blue sky" width="640" height="1306">
+      <img src="/assets/img/haze/sunrise-losangeles.webp" alt="Haze showing 92 degrees and a heat warning in Los Angeles on a warm sand sky" width="640" height="1306" loading="lazy">
+      <img src="/assets/img/haze/sunset-madrid.webp" alt="Haze showing a clear evening in Madrid on a violet and amber dusk sky" width="640" height="1306" loading="lazy">
+      <img src="/assets/img/haze/night-tokyo.webp" alt="Haze showing a rainy night ahead in Tokyo on a deep navy sky" width="640" height="1306" loading="lazy">
+    </div>
+    <p class="skies__caption">The same app at noon, in a heat wave, at dusk and past midnight.</p>
+  </section>
 
-        <p class="haze__body">The background shifts with the time of day and the current conditions, so the app looks different at dawn than it does at night. Forecasts come from Open-Meteo, which blends the ECMWF, GFS, and ICON models. Nothing else gets in the way.</p>
+  <section class="features">
+    <div class="feature">
+      <h2>The sky</h2>
+      <p>Every screen sits on a gradient drawn from the conditions and the sun's position, deepened so white type always reads.</p>
+    </div>
+    <div class="feature">
+      <h2>The forecast</h2>
+      <p>Hourly, a 72-hour trend you can scrub with a finger, and ten days out, each day opening hour by hour.</p>
+    </div>
+    <div class="feature">
+      <h2>The radar</h2>
+      <p>Observed NEXRAD frames and HRRR hours ahead in the US, RainViewer elsewhere, on a timeline you can play or scrub.</p>
+    </div>
+    <div class="feature">
+      <h2>Rain</h2>
+      <p>A plain-words nowcast from 15-minute data, a Live Activity while a shower passes, and alerts while the app is closed.</p>
+    </div>
+    <div class="feature">
+      <h2>Advisories</h2>
+      <p>National Weather Service watches and warnings in a quiet pill, never a flashing banner.</p>
+    </div>
+    <div class="feature">
+      <h2>The sun and the moon</h2>
+      <p>A draggable sun arc, sunrises and sunsets rated from the cloud deck, golden hour times, and the moon's phase computed on device.</p>
+    </div>
+    <div class="feature">
+      <h2>The details</h2>
+      <p>Wind, UV, humidity, pressure, cloud cover, dew point, precipitation and US air quality, each opening into a chart.</p>
+    </div>
+    <div class="feature">
+      <h2>Widgets</h2>
+      <p>Home Screen and Lock Screen, small to large, pinnable to any saved city.</p>
+    </div>
+    <div class="feature">
+      <h2>Apple Watch</h2>
+      <p>An app for the wrist and complications in four families, fed by the phone or fetching on their own.</p>
+    </div>
+    <div class="feature">
+      <h2>Yours</h2>
+      <p>Saved places sync through iCloud. Siri answers from the last forecast, even offline. Four app icons, one per sky. A morning digest at a time you choose.</p>
+    </div>
+  </section>
 
-        <ul class="haze__features">
-          <li>A sky that changes with the time of day</li>
-          <li>Current conditions, feels-like, and the day’s high and low</li>
-          <li>Hourly forecast and a 72-hour trend you can scrub</li>
-          <li>10-day outlook with hour-by-hour detail</li>
-          <li>A sunrise and sunset arc you can drag across the day</li>
-          <li>Wind, UV, humidity, pressure, cloud cover, and dew point</li>
-          <li>US air quality and precipitation</li>
-          <li>A home-screen widget that refreshes on its own</li>
-          <li>Saved locations and your current location</li>
-          <li>Switch between °F and °C, mph and km/h</li>
-        </ul>
+  <section class="closing">
+    <p>No ads, no accounts, no tracking, no analytics.</p>
+    <p class="fine">Forecasts blend the ECMWF, GFS and ICON models through Open-Meteo, and in the US the nearest weather station corrects the now. The code is public at <a href="https://github.com/ankthba/haze" target="_blank" rel="noopener">github.com/ankthba/haze</a>.</p>
+  </section>
 
-        <div class="haze__links">
-          <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
-          <a href="/haze/support/" class="project-item__link">Support</a>
-          <a href="/haze/privacy/" class="project-item__link">Privacy Policy</a>
-        </div>
-
-        <p class="haze__meta">Free · iPhone and iPad · iOS 18+ · Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>
-  </main>
-
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
-    </p>
+  <footer class="foot">
+    <div class="foot__links">
+      <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App Store</a>
+      <a href="/haze/support/">Support</a>
+      <a href="/haze/privacy/">Privacy</a>
+      <a href="https://github.com/ankthba/haze" target="_blank" rel="noopener">Source</a>
+      <a href="/">aniketh.net</a>
+    </div>
+    <p>Designed and built by <a href="/">Aniketh Bandlamudi</a>.</p>
+    <p class="fine">Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>. Radar imagery from the Iowa Environmental Mesonet and RainViewer. Alerts and station observations from the National Weather Service. &copy; 2026 Aniketh Bandlamudi.</p>
   </footer>
+
 </body>
 </html>

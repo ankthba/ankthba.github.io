@@ -56,47 +56,54 @@
         <a class="quiet" href="/haze/privacy/">Privacy</a>
         <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App&nbsp;Store</a>
       </nav>
-      <div class="theme" role="group" aria-label="Appearance">
-        <button type="button" data-theme="light">Light</button>
-        <button type="button" data-theme="dark">Dark</button>
-        <button type="button" data-theme="auto">Auto</button>
+      <div class="theme" role="group" aria-label="Sky">
+        <button type="button" data-sky="morning">Morning</button>
+        <button type="button" data-sky="day">Day</button>
+        <button type="button" data-sky="evening">Evening</button>
+        <button type="button" data-sky="night">Night</button>
       </div>
     </div>
   </header>
 
   <script>
-    // Day or night sky: light, dark, or auto (the default, following the
-    // system setting). The choice is remembered on this device.
+    // The page opens on the sky the viewer's clock calls for; the toggle can
+    // set any of them, remembered for this visit.
     (function () {
-      var KEY = 'haze-theme';
-      var media = window.matchMedia('(prefers-color-scheme: dark)');
+      var KEY = 'haze-sky';
       var meta = document.querySelector('meta[name="theme-color"]');
       var buttons = document.querySelectorAll('.theme button');
+      var themes = { morning: '#c4a38b', day: '#8494a9', evening: '#675a88', night: '#2c3452' };
 
-      function stored() {
+      function clockSky() {
+        var h = new Date().getHours();
+        return h >= 5 && h < 10 ? 'morning' :
+               h >= 10 && h < 17 ? 'day' :
+               h >= 17 && h < 21 ? 'evening' : 'night';
+      }
+
+      function current() {
         try {
-          var v = localStorage.getItem(KEY);
-          return v === 'light' || v === 'dark' ? v : 'auto';
-        } catch (e) { return 'auto'; }
+          var v = sessionStorage.getItem(KEY);
+          if (themes[v]) return v;
+        } catch (e) {}
+        return clockSky();
       }
 
       function apply() {
-        var choice = stored();
-        var night = choice === 'dark' || (choice === 'auto' && media.matches);
-        document.body.className = night ? 'sky-night' : 'sky-day';
-        if (meta) meta.setAttribute('content', night ? '#2c3452' : '#8494a9');
+        var sky = current();
+        document.body.className = 'sky-' + sky;
+        if (meta) meta.setAttribute('content', themes[sky]);
         buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', b.dataset.theme === choice ? 'true' : 'false');
+          b.setAttribute('aria-pressed', b.dataset.sky === sky ? 'true' : 'false');
         });
       }
 
       buttons.forEach(function (b) {
         b.addEventListener('click', function () {
-          try { localStorage.setItem(KEY, b.dataset.theme); } catch (e) {}
+          try { sessionStorage.setItem(KEY, b.dataset.sky); } catch (e) {}
           apply();
         });
       });
-      media.addEventListener('change', apply);
       apply();
     })();
   </script>
@@ -117,7 +124,7 @@
       <img src="/assets/img/haze/radar.webp" alt="The full screen precipitation radar in Haze, with a timeline you can play or scrub" width="640" height="1306" loading="lazy">
       <img src="/assets/img/haze/trend-and-10day.webp" alt="The 72-hour temperature trend and the 10-day forecast in Haze" width="640" height="1306" loading="lazy">
     </div>
-    <p class="skies__caption">The sky in the app follows the time of day.</p>
+    <p class="skies__caption">The sky in the app follows the time of day. This page does too.</p>
   </section>
 
   <section class="features">

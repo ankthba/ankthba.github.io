@@ -125,13 +125,17 @@ a.masthead__name:hover {
 }
 
 /* Matches the body text column: measure minus its side padding.
-   Justified like the text; a short last row centers instead of
-   stretching to the edges */
+   Centered rows, balanced so no link straggles alone on the last line */
 .masthead__nav {
   max-width: calc(var(--measure) - 2 * var(--space-md));
   margin: 2rem auto 0;
-  text-align: justify;
-  text-align-last: center;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Keep handles and other unbreakable tokens on one line */
+.nowrap {
+  white-space: nowrap;
 }
 
 .masthead__nav-link {

@@ -148,7 +148,8 @@ a.masthead__name:hover {
 }
 
 /* Invisible ghosts reserve both the upright and italic widths
-   (EB Garamond italic runs narrower) so nothing shifts on hover */
+   (EB Garamond italic runs narrower) so the italic current-page
+   link sits at the same width as the rest of the row */
 .masthead__nav-link::before,
 .masthead__nav-link::after {
   content: attr(data-text);
@@ -167,7 +168,6 @@ a.masthead__name:hover {
 }
 
 .masthead__nav-link:hover {
-  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -218,6 +218,19 @@ a.masthead__name:hover {
   margin-bottom: 0;
 }
 
+.about__text a {
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-border-hover);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.about__text a:hover {
+  color: var(--color-muted);
+}
+
 /* Latest writing: the nav link treatment, stacked and left-aligned */
 
 .writing {
@@ -250,26 +263,7 @@ a.masthead__name:hover {
   transition: color var(--transition-fast);
 }
 
-/* Same ghost trick as the nav so the title holds its width on hover */
-.writing__link::before,
-.writing__link::after {
-  content: attr(data-text);
-  display: block;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-}
-
-.writing__link::before {
-  font-style: normal;
-}
-
-.writing__link::after {
-  font-style: italic;
-}
-
 .writing__link:hover {
-  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -351,7 +345,6 @@ a.masthead__name:hover {
 }
 
 .project-item__link:hover {
-  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -359,6 +352,65 @@ a.masthead__name:hover {
   cursor: default;
   opacity: 0.6;
   pointer-events: none;
+}
+
+/* Projects: each entry is a row, text on the left and the whole
+   image on the right, the two centered on each other. The list runs
+   to the masthead width so the text keeps a readable measure. */
+.page--wide {
+  max-width: 48rem;
+}
+
+.project-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16rem;
+  grid-template-rows: 1fr auto auto auto 1fr;
+  column-gap: 2.5rem;
+}
+
+.project-item__header {
+  grid-area: 2 / 1;
+}
+
+.project-item__description {
+  grid-area: 3 / 1;
+}
+
+.project-item__links,
+.project-item > .project-item__link {
+  grid-area: 4 / 1;
+}
+
+.project-item__figure {
+  grid-area: 1 / 2 / 6 / 3;
+  align-self: center;
+  margin: 0;
+}
+
+.project-item__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-item__figure--phone img {
+  width: 12rem;
+  margin: 0 auto;
+}
+
+/* Narrow screens: image above the title */
+@media (max-width: 44rem) {
+  .project-item {
+    display: block;
+  }
+
+  .project-item__figure {
+    margin: 0 0 1.25rem;
+  }
+
+  .project-item__figure--phone img {
+    margin: 0;
+  }
 }
 
 /* ---------------------------------------------------------
@@ -410,7 +462,6 @@ a.masthead__name:hover {
 }
 
 .photos__links a:hover {
-  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -459,7 +510,6 @@ a.masthead__name:hover {
 }
 
 .lightbox__close:hover {
-  font-style: italic;
   color: var(--color-muted);
 }
 
@@ -470,25 +520,6 @@ a.masthead__name:hover {
 .lightbox__close:focus-visible {
   outline: 1px solid var(--color-border-hover);
   outline-offset: 3px;
-}
-
-/* Same ghost trick as the nav: these two sit side by side,
-   so reserve both widths to keep them still on hover */
-.photos__links a::before,
-.photos__links a::after {
-  content: attr(data-text);
-  display: block;
-  height: 0;
-  overflow: hidden;
-  visibility: hidden;
-}
-
-.photos__links a::before {
-  font-style: normal;
-}
-
-.photos__links a::after {
-  font-style: italic;
 }
 
 @media (max-width: 480px) {

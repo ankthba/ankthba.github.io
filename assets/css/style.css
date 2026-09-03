@@ -23,6 +23,12 @@
   --color-border: rgba(38, 38, 36, 0.14);
   --color-border-hover: rgba(38, 38, 36, 0.3);
 
+  /* Muted Prussian blue: cool enough to read as a link on the warm
+     ivory, desaturated enough to sit beside the ink without shouting */
+  --color-link: #2f5575;
+  --color-link-hover: #4a749b;
+  --color-link-underline: rgba(47, 85, 117, 0.35);
+
   --font-serif: "EB Garamond", Garamond, Georgia, serif;
   --font-display: "EB Garamond", Garamond, Georgia, serif;
   --font-sans: "EB Garamond", Garamond, Georgia, serif;
@@ -219,16 +225,17 @@ a.masthead__name:hover {
 }
 
 .about__text a {
-  color: var(--color-fg);
+  color: var(--color-link);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-border-hover);
+  text-decoration-color: var(--color-link-underline);
   text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 .about__text a:hover {
-  color: var(--color-muted);
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
 
 /* Latest writing: the nav link treatment, stacked and left-aligned */
@@ -255,16 +262,17 @@ a.masthead__name:hover {
 .writing__link {
   display: inline-block;
   font-size: 0.95rem;
-  color: var(--color-fg);
+  color: var(--color-link);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-border-hover);
+  text-decoration-color: var(--color-link-underline);
   text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 .writing__link:hover {
-  color: var(--color-muted);
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
 
 /* ---------------------------------------------------------
@@ -323,10 +331,10 @@ a.masthead__name:hover {
 .project-item__link {
   display: inline-block;
   font-size: 0.95rem;
-  color: var(--color-fg);
+  color: var(--color-link);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-border-hover);
+  text-decoration-color: var(--color-link-underline);
   text-underline-offset: 3px;
   margin-top: 0.35rem;
   transition: color var(--transition-fast);
@@ -345,72 +353,14 @@ a.masthead__name:hover {
 }
 
 .project-item__link:hover {
-  color: var(--color-muted);
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
 
 .project-item__link--disabled {
   cursor: default;
   opacity: 0.6;
   pointer-events: none;
-}
-
-/* Projects: each entry is a row, text on the left and the whole
-   image on the right, the two centered on each other. The list runs
-   to the masthead width so the text keeps a readable measure. */
-.page--wide {
-  max-width: 48rem;
-}
-
-.project-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 16rem;
-  grid-template-rows: 1fr auto auto auto 1fr;
-  column-gap: 2.5rem;
-}
-
-.project-item__header {
-  grid-area: 2 / 1;
-}
-
-.project-item__description {
-  grid-area: 3 / 1;
-}
-
-.project-item__links,
-.project-item > .project-item__link {
-  grid-area: 4 / 1;
-}
-
-.project-item__figure {
-  grid-area: 1 / 2 / 6 / 3;
-  align-self: center;
-  margin: 0;
-}
-
-.project-item__figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.project-item__figure--phone img {
-  width: 12rem;
-  margin: 0 auto;
-}
-
-/* Narrow screens: image above the title */
-@media (max-width: 44rem) {
-  .project-item {
-    display: block;
-  }
-
-  .project-item__figure {
-    margin: 0 0 1.25rem;
-  }
-
-  .project-item__figure--phone img {
-    margin: 0;
-  }
 }
 
 /* ---------------------------------------------------------
@@ -453,16 +403,17 @@ a.masthead__name:hover {
 .photos__links a {
   display: inline-block;
   font-size: 0.95rem;
-  color: var(--color-fg);
+  color: var(--color-link);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-border-hover);
+  text-decoration-color: var(--color-link-underline);
   text-underline-offset: 3px;
   transition: color var(--transition-fast);
 }
 
 .photos__links a:hover {
-  color: var(--color-muted);
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
 
 /* Full-screen viewer: same ivory paper, photo centered,

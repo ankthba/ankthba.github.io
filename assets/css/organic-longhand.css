@@ -1,28 +1,46 @@
 /* =========================================================
-   organic-longhand.css  —  TYPE EXPERIMENT
-   Layer this AFTER style.css:
+   organic-longhand.css  —  LIVE
+   This is what aniketh.net runs. Layer it after style.css:
      <link rel="stylesheet" href="/assets/css/style.css">
-     <link rel="stylesheet" href="/assets/css/organic-longhand.css">
+     <link rel="stylesheet" href="/assets/css/organic-longhand.css" data-organic>
 
-   The committed version: the whole site written out by hand in
-   one pen. Caveat everywhere, sized up hard (its x-height is
-   small, so 1.4rem here reads like 1.05rem of Garamond), lines
-   opened up, blocks nudged a fraction of a degree off square so
-   nothing sits perfectly true. Aged stock, ink that bleeds a
-   hair into the paper.
+   The whole site written out by hand in one pen: Reenie Beanie
+   everywhere, sized up, lines opened, blocks nudged a fraction of
+   a degree off square so nothing sits perfectly true. Ink bleeds a
+   hair into the paper. Paper matches the rest of the site.
 
-   Honest note: this is the least readable of the three. It suits
-   a short page. The Work and Projects pages carry real paragraphs
-   and will feel like effort to read.
+   Reenie Beanie is baked in as the default rather than pulled from
+   organic-hands.css, so a visitor downloads ONE display face
+   instead of seven. The --hand-* variables below carry its
+   measured values; organic-hands.css can still override them in
+   /preview/ to try another face against this setting.
+
+   Sizes are written on a Caveat baseline (the reference face the
+   scales were measured against) and multiplied by --hand-scale,
+   which is why the numbers below are not 1.
+
+   Honest note: this is the least readable of the four settings —
+   Work and Projects carry real paragraphs. readability.js puts an
+   escape hatch in the footer for anyone who wants Garamond back.
    ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
 
 :root {
-  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  --font-hand: "Reenie Beanie", "Bradley Hand", "Segoe Script", cursive;
   --font-serif: var(--font-hand);
   --font-sans: var(--font-hand);
   --font-display: var(--font-hand);
+
+  /* Reenie Beanie, measured: big lowercase, short caps and
+     ascenders, drawn with a thin stroke. Needs no reduction at
+     display size, a touch at reading size, extra leading for the
+     tight em, and only weight 400 — it ships a single weight, and
+     asking for 600 gets synthetic emboldening that smears it. */
+  --hand-scale: 1;
+  --hand-scale-body: 0.94;
+  --hand-leading: 1.15;
+  --hand-weight: 400;
 
   /* Same paper as the live site. The warmer creams these variants used
      to carry read as a different stock next to the rest of aniketh.net,
@@ -30,7 +48,7 @@
      — so anything but #faf9f5 here made the photo viewer flash a
      different tone. The grain below supplies the texture instead. */
   --color-bg: #faf9f5;
-  --color-fg: #26231c;
+  --color-fg: #1a1815;
   --color-muted: #6b6252;
   --color-link: #2b5270;
   --color-link-hover: #46739b;

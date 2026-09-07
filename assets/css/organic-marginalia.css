@@ -47,8 +47,8 @@ body::after {
 
 .masthead__name {
   font-family: var(--font-hand);
-  font-weight: 600;
-  font-size: clamp(3.1rem, 7.6vw, 4.5rem);
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(clamp(3.1rem, 7.6vw, 4.5rem) * var(--hand-scale, 1));
   line-height: 1;
   letter-spacing: 0.005em;
   transform: rotate(-1deg);
@@ -73,18 +73,18 @@ body::after {
 .project-item__title,
 .section-label {
   font-family: var(--font-hand);
-  font-weight: 600;
+  font-weight: var(--hand-weight, 600);
   letter-spacing: 0.005em;
 }
 
 .page-title {
-  font-size: clamp(2.9rem, 6.4vw, 3.7rem);
+  font-size: calc(clamp(2.9rem, 6.4vw, 3.7rem) * var(--hand-scale, 1));
   transform: rotate(-0.5deg);
   transform-origin: left center;
 }
 
-.writing__heading { font-size: 1.7rem; }
-.project-item__title { font-size: 2rem; }
+.writing__heading { font-size: calc(1.7rem * var(--hand-scale, 1)); }
+.project-item__title { font-size: calc(2rem * var(--hand-scale, 1)); }
 
 /* --- Hand-set copy is ragged right, never justified --- */
 
@@ -131,13 +131,13 @@ body::after {
 .project-item__role {
   font-family: var(--font-hand);
   font-style: normal;
-  font-size: 1.15rem;
+  font-size: calc(1.15rem * var(--hand-scale-body, 1));
 }
 
 .colophon__meta {
   font-family: var(--font-hand);
   font-style: normal;
-  font-size: 1.05rem;
+  font-size: calc(1.05rem * var(--hand-scale-body, 1));
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,171 @@
+/* =========================================================
+   organic-quill.css  —  TYPE EXPERIMENT
+   Layer this AFTER style.css:
+     <link rel="stylesheet" href="/assets/css/style.css">
+     <link rel="stylesheet" href="/assets/css/organic-quill.css">
+
+   The handwritten-serif answer. Strictly speaking that category
+   doesn't exist — serifs come from letters cut into stone and
+   handwriting mostly has none. What does exist is type drawn
+   from pen movement rather than chisel or pencil, and this
+   setting is built from it:
+
+   Body is Gentium Book Plus, drawn from calligraphic principles
+   — broad-nib shapes, a real book face, reads at length. Display
+   is Petit Formal Script, a formal script whose strokes still
+   end in serifs; a fountain pen rather than a marker. Roles sit
+   in Gentium italic, and italic type is itself descended from
+   Renaissance chancery handwriting, so the whole page is pen-
+   derived without a single marker font in it.
+
+   Gentium's x-height is 46/100 against EB Garamond's 42, so the
+   body sets a touch smaller to hold the same reading size.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&family=Petit+Formal+Script&display=swap');
+
+:root {
+  --font-hand: "Petit Formal Script", "Apple Chancery", cursive;
+  --font-serif: "Gentium Book Plus", Palatino, Georgia, serif;
+  --font-sans: "Gentium Book Plus", Palatino, Georgia, serif;
+  --font-display: "Petit Formal Script", "Apple Chancery", cursive;
+
+  /* Petit Formal Script sets 1.75x Caveat's width, so display type
+     comes down hard; see organic-hands.css for the measurements. */
+  --hand-scale: 0.6;
+  --hand-scale-body: 0.62;
+  --hand-weight: 400;
+  --hand-leading: 1.08;
+
+  --color-bg: #fbf8f0;
+  --color-fg: #221f1a;
+  --color-muted: #6b6355;
+  --color-link: #2d5170;
+  --color-link-hover: #46739b;
+
+  --measure: 37rem;
+
+  --stroke-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%232d5170' stroke-width='1.05' stroke-linecap='round' opacity='.6'/%3E%3C/svg%3E");
+  --stroke-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%23221f1a' stroke-width='1.2' stroke-linecap='round' opacity='.5'/%3E%3C/svg%3E");
+  --stroke-rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='8' viewBox='0 0 600 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5.1c60-3 120 1.8 180-.4s120-2.6 180 .9 118 1.4 178-1.1' fill='none' stroke='%23221f1a' stroke-width='1' stroke-linecap='round' opacity='.2'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: var(--paper-grain);
+  mix-blend-mode: multiply;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.78;
+}
+
+.masthead__name {
+  font-family: var(--font-hand);
+  font-weight: var(--hand-weight, 400);
+  font-size: calc(clamp(3.1rem, 7.6vw, 4.5rem) * var(--hand-scale, 1));
+  line-height: 1.15;
+  transform: rotate(-0.7deg);
+}
+
+.masthead__nav-link {
+  font-size: 0.92rem;
+}
+
+.masthead__nav-link.active {
+  font-style: italic;
+  color: var(--color-fg);
+  padding-bottom: 0.2em;
+  background-image: var(--stroke-ink);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+.page-title,
+.writing__heading,
+.project-item__title,
+.section-label {
+  font-family: var(--font-hand);
+  font-weight: var(--hand-weight, 400);
+}
+
+.page-title {
+  font-size: calc(clamp(2.9rem, 6.4vw, 3.7rem) * var(--hand-scale, 1));
+  line-height: 1.25;
+  transform: rotate(-0.35deg);
+  transform-origin: left center;
+}
+
+.writing__heading {
+  font-size: calc(1.7rem * var(--hand-scale, 1));
+  line-height: 1.35;
+}
+
+.project-item__title {
+  font-size: calc(2rem * var(--hand-scale, 1));
+  line-height: 1.3;
+}
+
+.page p {
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+.about__text a,
+.writing__link,
+.project-item__link,
+.photos__links a,
+.page a:not(.masthead__nav-link) {
+  text-decoration: none;
+  padding-bottom: 0.16em;
+  background-image: var(--stroke-link);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+.about__text a:hover,
+.writing__link:hover,
+.project-item__link:hover,
+.photos__links a:hover,
+.page a:not(.masthead__nav-link):hover {
+  text-decoration: none;
+  background-position: 0 calc(100% - 1px);
+}
+
+.project-item + .project-item {
+  background-image: var(--stroke-rule);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 100% 8px;
+  padding-top: calc(var(--space-md) + 0.4rem);
+}
+
+.project-item__role {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+}
+
+.project-item__description { font-size: 0.96rem; }
+
+.colophon__meta {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead__name,
+  .page-title { transform: none; }
+}

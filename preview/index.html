@@ -8,8 +8,10 @@
 
   <!-- The live site's stylesheet, unchanged -->
   <link rel="stylesheet" href="/assets/css/style.css">
-  <!-- The switcher inserts the variant stylesheet here, after the base sheet -->
+  <!-- The switcher rebuilds these two in order: variant first, then the
+       face-swap layer, which has to win the --font-hand cascade. -->
   <link rel="stylesheet" id="variant-anchor" href="data:text/css,">
+  <link rel="stylesheet" id="hands-anchor" href="/assets/css/organic-hands.css">
 
   <style>
     /* The switcher itself stays outside the experiment: fixed system
@@ -57,10 +59,12 @@
       color: #fff;
     }
 
-    .switcher__note {
+    .switcher__note,
+    .switcher__break {
       flex-basis: 100%;
-      opacity: 0.55;
     }
+
+    .switcher__note { opacity: 0.55; }
   </style>
 </head>
 <body>
@@ -70,6 +74,17 @@
     <button type="button" data-sheet="/assets/css/organic-marginalia.css" aria-pressed="false">Marginalia</button>
     <button type="button" data-sheet="/assets/css/organic-fieldnotes.css" aria-pressed="false">Fieldnotes</button>
     <button type="button" data-sheet="/assets/css/organic-longhand.css" aria-pressed="false">Longhand</button>
+    <button type="button" data-sheet="/assets/css/organic-quill.css" aria-pressed="false">Quill</button>
+    <span class="switcher__break"></span>
+    <span class="switcher__label">Hand</span>
+    <button type="button" data-hand="" aria-pressed="true">Variant default</button>
+    <button type="button" data-hand="caveat" aria-pressed="false">Caveat</button>
+    <button type="button" data-hand="reenie-beanie" aria-pressed="false">Reenie Beanie</button>
+    <button type="button" data-hand="shadows-into-light-two" aria-pressed="false">Shadows Into Light Two</button>
+    <button type="button" data-hand="over-the-rainbow" aria-pressed="false">Over the Rainbow</button>
+    <button type="button" data-hand="petit-formal-script" aria-pressed="false">Petit Formal Script</button>
+    <button type="button" data-hand="im-fell-english" aria-pressed="false">IM Fell English</button>
+    <button type="button" data-hand="cormorant-upright" aria-pressed="false">Cormorant Upright</button>
     <span class="switcher__note" id="switcher-note">EB Garamond, justified — the live site as it stands today.</span>
   </div>
 
@@ -147,33 +162,57 @@
 
   <script>
     const NOTES = {
-      "": "EB Garamond, justified — the live site as it stands today.",
-      "/assets/css/organic-marginalia.css": "Marginalia — body stays Garamond; the name, headings and underlines move to a pen. Ragged right.",
-      "/assets/css/organic-fieldnotes.css": "Fieldnotes — body in Shantell Sans, headings in Caveat, notebook margin rule. Readable at length.",
-      "/assets/css/organic-longhand.css": "Longhand — all Caveat, sized up, blocks nudged off square. Most character, least readable."
+      "": "EB Garamond, justified \u2014 the live site as it stands today.",
+      "/assets/css/organic-marginalia.css": "Marginalia \u2014 body stays Garamond; the name, headings and underlines move to a pen. Ragged right.",
+      "/assets/css/organic-fieldnotes.css": "Fieldnotes \u2014 body in Shantell Sans, headings in the hand, notebook margin rule. Readable at length.",
+      "/assets/css/organic-longhand.css": "Longhand \u2014 the hand carries the body copy too, sized up, blocks nudged off square.",
+      "/assets/css/organic-quill.css": "Quill \u2014 body in Gentium Book Plus, display in a script with serifs. Pen-derived throughout, no marker fonts."
     };
 
+    const head = document.head;
     const note = document.getElementById("switcher-note");
-    const buttons = document.querySelectorAll(".switcher button");
-    let current = document.getElementById("variant-anchor");
+    const sheetButtons = document.querySelectorAll("[data-sheet]");
+    const handButtons = document.querySelectorAll("[data-hand]");
+    let variantHref = "";
 
-    function apply(href) {
-      // Replace the element rather than reassigning href: a <link> whose
-      // first load failed stays inert in Chromium.
-      const next = document.createElement("link");
-      next.rel = "stylesheet";
-      next.id = "variant-anchor";
-      next.href = href || "data:text/css,";
-      current.replaceWith(next);
-      current = next;
+    // Both links are replaced rather than re-pointed: a <link> whose first
+    // load failed stays inert in Chromium. Order matters — the face-swap
+    // layer must come after the variant to win the --font-hand cascade.
+    function applySheets() {
+      document.getElementById("variant-anchor")?.remove();
+      document.getElementById("hands-anchor")?.remove();
+
+      const variant = document.createElement("link");
+      variant.rel = "stylesheet";
+      variant.id = "variant-anchor";
+      variant.href = variantHref || "data:text/css,";
+      head.append(variant);
+
+      const hands = document.createElement("link");
+      hands.rel = "stylesheet";
+      hands.id = "hands-anchor";
+      hands.href = "/assets/css/organic-hands.css";
+      head.append(hands);
     }
 
-    buttons.forEach((btn) => {
+    sheetButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const href = btn.dataset.sheet;
-        apply(href);
-        note.textContent = NOTES[href];
-        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        variantHref = btn.dataset.sheet;
+        note.textContent = NOTES[variantHref];
+        sheetButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        applySheets();
+      });
+    });
+
+    handButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const hand = btn.dataset.hand;
+        if (hand) {
+          document.documentElement.dataset.hand = hand;
+        } else {
+          delete document.documentElement.dataset.hand;
+        }
+        handButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
       });
     });
   </script>

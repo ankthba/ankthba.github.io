@@ -110,17 +110,29 @@ p {
 
 .masthead {
   width: 100%;
-  max-width: 48rem;
+  /* Was 48rem, which put the masthead in a wider box than the text and
+     gave the page three different column edges. One measure now. */
+  max-width: var(--measure);
   margin: 0 auto;
   padding: var(--space-xl) var(--space-md) 0;
   text-align: center;
+  /* Makes this box the reference the name sizes itself against. */
+  container-type: inline-size;
 }
 
 .masthead__name {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: 400;
+  /* Fallback for browsers without container query units. */
   font-size: clamp(2.5rem, 6vw, 3.5rem);
+  /* "Aniketh Bandlamudi" advances 8.068em in EB Garamond, so the column
+     width divided by that sets the name to exactly one measure — the same
+     left and right edge as the nav and the body copy, at every viewport.
+     The constant is tied to this string in this face: change either and
+     re-measure, or the name stops meeting the column. */
+  font-size: calc(100cqi / 8.068);
+  white-space: nowrap;
   line-height: 1.1;
   color: var(--color-fg);
   transition: opacity var(--transition-fast);
@@ -130,13 +142,23 @@ a.masthead__name:hover {
   opacity: 0.6;
 }
 
-/* Matches the body text column: measure minus its side padding.
-   Centered rows, balanced so no link straggles alone on the last line */
+/* The masthead's own content box is already exactly one measure, so the
+   nav just fills it — no second copy of the column arithmetic to drift.
+   text-wrap: balance is gone: it evened the rows against each other but
+   pulled them to ~300px inside a 496px column, which read as a third
+   width on the page. Filling the measure matters more than a balanced
+   last line. */
 .masthead__nav {
-  max-width: calc(var(--measure) - 2 * var(--space-md));
+  max-width: 100%;
   margin: 2rem auto 0;
-  text-align: center;
+  /* The body copy on this site is justified, so the nav is too: every row
+     meets both edges of the same measure the name and the text meet.
+     balance still picks the break points, which keeps the rows to an even
+     number of links each — without it the 15th link strands alone on a
+     line, and justifying a lone link would stretch it across the column. */
   text-wrap: balance;
+  text-align: justify;
+  text-align-last: justify;
 }
 
 /* Keep handles and other unbreakable tokens on one line */
@@ -146,7 +168,10 @@ a.masthead__name:hover {
 
 .masthead__nav-link {
   display: inline-block;
-  margin: 0 0.45rem 0.65rem;
+  /* No side margins: justification supplies the horizontal gaps, and
+     margins here would inset the first and last link of every row, leaving
+     the nav a few px narrower than the column it is supposed to match. */
+  margin: 0 0 0.65rem;
   text-align: center;
   font-size: 0.95rem;
   color: var(--color-fg);
@@ -552,7 +577,7 @@ a.masthead__name:hover {
   }
 
   .masthead__nav-link {
-    margin: 0 0.35rem 0.45rem;
+    margin: 0 0 0.45rem;
   }
 
   .page {

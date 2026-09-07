@@ -1,0 +1,146 @@
+/* =========================================================
+   organic-marginalia.css  —  TYPE EXPERIMENT
+   Layer this AFTER style.css:
+     <link rel="stylesheet" href="/assets/css/style.css">
+     <link rel="stylesheet" href="/assets/css/organic-marginalia.css">
+
+   The lightest of the three. The page is still a printed book:
+   body copy stays EB Garamond. Everything a person would have
+   added to that book by hand — the name on the flyleaf, the
+   headings, the underlines, the mark on the current page — is
+   written in pen. Ragged right instead of justified, because
+   justification is a machine setting text, not a hand.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+
+:root {
+  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+
+  /* Warmer paper, browner ink than the printed original */
+  --color-bg: #faf7ef;
+  --color-fg: #24221e;
+  --color-muted: #6d665a;
+  --color-link: #2f5575;
+  --color-link-hover: #47749d;
+
+  /* Pen strokes, drawn once and reused */
+  --stroke-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%232f5575' stroke-width='1.15' stroke-linecap='round' opacity='.6'/%3E%3C/svg%3E");
+  --stroke-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%2324221e' stroke-width='1.3' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E");
+  --stroke-rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='8' viewBox='0 0 600 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5.1c60-3 120 1.8 180-.4s120-2.6 180 .9 118 1.4 178-1.1' fill='none' stroke='%2324221e' stroke-width='1.1' stroke-linecap='round' opacity='.2'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* Paper tooth. Fixed so it doesn't scroll with the type. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: var(--paper-grain);
+  mix-blend-mode: multiply;
+}
+
+/* --- The name, signed --- */
+
+.masthead__name {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(3.1rem, 7.6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0.005em;
+  transform: rotate(-1deg);
+}
+
+/* --- Nav: still set type, but the current page is circled in pen --- */
+
+.masthead__nav-link.active {
+  font-style: normal;
+  color: var(--color-fg);
+  padding-bottom: 0.2em;
+  background-image: var(--stroke-ink);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+/* --- Headings in hand --- */
+
+.page-title,
+.writing__heading,
+.project-item__title,
+.section-label {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+.page-title {
+  font-size: clamp(2.9rem, 6.4vw, 3.7rem);
+  transform: rotate(-0.5deg);
+  transform-origin: left center;
+}
+
+.writing__heading { font-size: 1.7rem; }
+.project-item__title { font-size: 2rem; }
+
+/* --- Hand-set copy is ragged right, never justified --- */
+
+.page p {
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+/* --- Underlines drawn, not typeset --- */
+
+.about__text a,
+.writing__link,
+.project-item__link,
+.photos__links a,
+.page a:not(.masthead__nav-link) {
+  text-decoration: none;
+  padding-bottom: 0.16em;
+  background-image: var(--stroke-link);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+.about__text a:hover,
+.writing__link:hover,
+.project-item__link:hover,
+.photos__links a:hover,
+.page a:not(.masthead__nav-link):hover {
+  text-decoration: none;
+  background-position: 0 calc(100% - 1px);
+}
+
+/* --- Entries divided by a drawn rule --- */
+
+.project-item + .project-item {
+  background-image: var(--stroke-rule);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 100% 8px;
+  padding-top: calc(var(--space-md) + 0.4rem);
+}
+
+.project-item__role {
+  font-family: var(--font-hand);
+  font-style: normal;
+  font-size: 1.15rem;
+}
+
+.colophon__meta {
+  font-family: var(--font-hand);
+  font-style: normal;
+  font-size: 1.05rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead__name,
+  .page-title { transform: none; }
+}

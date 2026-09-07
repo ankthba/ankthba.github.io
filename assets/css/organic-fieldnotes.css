@@ -1,0 +1,171 @@
+/* =========================================================
+   organic-fieldnotes.css  —  TYPE EXPERIMENT
+   Layer this AFTER style.css:
+     <link rel="stylesheet" href="/assets/css/style.css">
+     <link rel="stylesheet" href="/assets/css/organic-fieldnotes.css">
+
+   The middle setting, and the one that holds up over 500 words.
+   Body copy moves to Shantell Sans — a handwriting face drawn
+   with real reading in mind, so the paragraphs still work — and
+   headings go to Caveat. Cream stock, a notebook margin rule
+   down the left, ink-blue links underlined by hand.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Shantell+Sans:ital,wght@0,300..700;1,300..700&display=swap');
+
+:root {
+  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  --font-serif: "Shantell Sans", "Comic Sans MS", "Segoe Print", sans-serif;
+  --font-sans: "Shantell Sans", "Comic Sans MS", "Segoe Print", sans-serif;
+  --font-display: "Caveat", "Segoe Script", cursive;
+
+  --color-bg: #fdfaf1;
+  --color-fg: #2b2823;
+  --color-muted: #6f675a;
+  --color-link: #2c5470;
+  --color-link-hover: #45739a;
+
+  /* Shantell runs wide; the column needs a little more room */
+  --measure: 38rem;
+
+  --stroke-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%232c5470' stroke-width='1.2' stroke-linecap='round' opacity='.65'/%3E%3C/svg%3E");
+  --stroke-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6' viewBox='0 0 100 6' preserveAspectRatio='none'%3E%3Cpath d='M1 3.4c8-2.6 16 1.5 25 .3s16-2.7 25-.7 16 3.1 25 1.5 17-2.3 24-1.1' fill='none' stroke='%232b2823' stroke-width='1.3' stroke-linecap='round' opacity='.5'/%3E%3C/svg%3E");
+  --stroke-rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='8' viewBox='0 0 600 8' preserveAspectRatio='none'%3E%3Cpath d='M2 5.1c60-3 120 1.8 180-.4s120-2.6 180 .9 118 1.4 178-1.1' fill='none' stroke='%232b2823' stroke-width='1.1' stroke-linecap='round' opacity='.18'/%3E%3C/svg%3E");
+  --stroke-margin: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='200' viewBox='0 0 4 200' preserveAspectRatio='none'%3E%3Cpath d='M2 0c-1.1 30 1.3 60 .2 92s-.9 60 .4 108' fill='none' stroke='%23b06a45' stroke-width='1.2' stroke-linecap='round' opacity='.45'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: var(--paper-grain);
+  mix-blend-mode: multiply;
+}
+
+/* Shantell sets smaller on the body than Garamond, and wants air */
+body {
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: -0.004em;
+}
+
+.masthead__name {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(3.2rem, 7.8vw, 4.6rem);
+  line-height: 1;
+  transform: rotate(-1.2deg);
+}
+
+.masthead__nav-link {
+  font-size: 0.82rem;
+  margin: 0 0.4rem 0.7rem;
+}
+
+.masthead__nav-link.active {
+  font-style: normal;
+  color: var(--color-fg);
+  padding-bottom: 0.22em;
+  background-image: var(--stroke-ink);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+.page-title,
+.writing__heading,
+.project-item__title,
+.section-label {
+  font-family: var(--font-hand);
+  font-weight: 600;
+}
+
+.page-title {
+  font-size: clamp(3rem, 6.6vw, 3.9rem);
+  transform: rotate(-0.6deg);
+  transform-origin: left center;
+}
+
+.writing__heading { font-size: 1.8rem; }
+.project-item__title { font-size: 2.1rem; }
+
+/* The notebook margin — only where the column has room beside it */
+@media (min-width: 900px) {
+  .page { position: relative; }
+
+  .page::before {
+    content: "";
+    position: absolute;
+    top: var(--space-md);
+    bottom: var(--space-lg);
+    left: 0.9rem;
+    width: 4px;
+    background-image: var(--stroke-margin);
+    background-repeat: repeat-y;
+    background-size: 4px 200px;
+  }
+}
+
+.page p {
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+.about__text p { margin-bottom: 1.5rem; }
+
+.about__text a,
+.writing__link,
+.project-item__link,
+.photos__links a,
+.page a:not(.masthead__nav-link) {
+  text-decoration: none;
+  padding-bottom: 0.16em;
+  background-image: var(--stroke-link);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 100px 5px;
+}
+
+.about__text a:hover,
+.writing__link:hover,
+.project-item__link:hover,
+.photos__links a:hover,
+.page a:not(.masthead__nav-link):hover {
+  text-decoration: none;
+  background-position: 0 calc(100% - 1px);
+}
+
+.writing__link,
+.project-item__link,
+.photos__links a { font-size: 0.9rem; }
+
+.project-item + .project-item {
+  background-image: var(--stroke-rule);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 100% 8px;
+  padding-top: calc(var(--space-md) + 0.4rem);
+}
+
+.project-item__role {
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+.project-item__description { font-size: 0.96rem; }
+
+.colophon__meta {
+  font-family: var(--font-hand);
+  font-style: normal;
+  font-size: 1.1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead__name,
+  .page-title { transform: none; }
+}

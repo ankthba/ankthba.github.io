@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Type experiment — Aniketh Bandlamudi</title>
+
+  <!-- The live site's stylesheet, unchanged -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- The switcher inserts the variant stylesheet here, after the base sheet -->
+  <link rel="stylesheet" id="variant-anchor" href="data:text/css,">
+
+  <style>
+    /* The switcher itself stays outside the experiment: fixed system
+       type, so it reads the same no matter which variant is loaded. */
+    .switcher {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #333;
+    }
+
+    .switcher__label {
+      margin-right: 0.25rem;
+      opacity: 0.55;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .switcher button {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid rgba(0, 0, 0, 0.22);
+      border-radius: 999px;
+      background: transparent;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .switcher button:hover { border-color: rgba(0, 0, 0, 0.5); }
+
+    .switcher button[aria-pressed="true"] {
+      background: #24221e;
+      border-color: #24221e;
+      color: #fff;
+    }
+
+    .switcher__note {
+      flex-basis: 100%;
+      opacity: 0.55;
+    }
+  </style>
+</head>
+<body>
+  <div class="switcher">
+    <span class="switcher__label">Type</span>
+    <button type="button" data-sheet="" aria-pressed="true">Current</button>
+    <button type="button" data-sheet="/assets/css/organic-marginalia.css" aria-pressed="false">Marginalia</button>
+    <button type="button" data-sheet="/assets/css/organic-fieldnotes.css" aria-pressed="false">Fieldnotes</button>
+    <button type="button" data-sheet="/assets/css/organic-longhand.css" aria-pressed="false">Longhand</button>
+    <span class="switcher__note" id="switcher-note">EB Garamond, justified — the live site as it stands today.</span>
+  </div>
+
+  <header class="masthead masthead--home">
+    <h1 class="masthead__name">Aniketh Bandlamudi</h1>
+    <nav class="masthead__nav">
+      <a href="#" class="masthead__nav-link active" data-text="About">About</a>
+      <a href="#" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="#" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="#" class="masthead__nav-link" data-text="Projects">Projects</a>
+      <a href="#" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="#" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="#" class="masthead__nav-link" data-text="Press">Press</a>
+      <a href="#" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="#" class="masthead__nav-link" data-text="Resume">Resume</a>
+      <a href="#" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="#" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="#" class="masthead__nav-link" data-text="X">X</a>
+      <a href="#" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="#" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="#" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+    </nav>
+  </header>
+
+  <main class="page">
+    <div class="about__text">
+      <p>Hey, I’m Aniketh, studying CS and Applied Math at the University of Virginia.</p>
+      <p>Right now I’m building <a href="#">Pragmatic</a>, a Rust runtime that makes AI agents more fault-tolerant, and <a href="#">OCRadar</a>, which uses AI to help catch oral cancer early. I also built <a href="#">Haze</a>, a 5-star rated weather app for iPhone. My work has reached millions of people worldwide and been covered by <a href="#">WTOP, Korea Times, United Airlines, and Washington Dulles International Airport among others</a>.</p>
+      <p>In a previous life, I led software at Oakton Robotics for four years, attended Y Combinator Startup School, and spoke at the <a href="#">Tech Roast Show</a>. Outside work, I photograph aircraft at Dulles and landscapes around the world, and enjoy hiking.</p>
+    </div>
+
+    <section class="writing">
+      <h2 class="writing__heading">Latest writing</h2>
+      <div class="writing__list">
+        <a href="#" class="writing__link" data-text="What You Owe">What You Owe</a>
+      </div>
+    </section>
+
+    <h1 class="page-title" style="margin-top: 4.5rem;">Work</h1>
+    <div class="projects__list">
+      <article class="project-item">
+        <div class="project-item__header">
+          <h3 class="project-item__title">Pragmatic</h3>
+          <span class="project-item__role">Founder · Jan 2026 – Present · Incorporated as Pragmatic Research, Inc.</span>
+        </div>
+        <p class="project-item__description">Building a durable execution runtime in Rust for nondeterministic AI agents. It journals every step of a run so agents survive any crash, resume exactly where they stopped, and replay faithfully for debugging and audit.</p>
+        <a href="#" class="project-item__link">Visit site</a>
+      </article>
+
+      <article class="project-item">
+        <div class="project-item__header">
+          <h3 class="project-item__title">Alarm.com</h3>
+          <span class="project-item__role">Engineering Intern · May 2026</span>
+        </div>
+        <p class="project-item__description">Supported hardware QA for home security systems by configuring and integrating devices (locks, sensors, lighting) into automated testing workflows. Performed hands-on lab work including soldering buck converters and embedded boards, assembling RJ45 Ethernet cables, and provisioning Raspberry Pi units for test automation. Built an internal software tool for lab device management.</p>
+        <a href="#" class="project-item__link">Visit site</a>
+      </article>
+
+      <article class="project-item">
+        <div class="project-item__header">
+          <h3 class="project-item__title">OCRadar</h3>
+          <span class="project-item__role">Founder &amp; President · May 2022 – Present</span>
+        </div>
+        <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
+        <a href="#" class="project-item__link">Visit site</a>
+      </article>
+    </div>
+  </main>
+
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
+    </p>
+  </footer>
+
+  <script>
+    const NOTES = {
+      "": "EB Garamond, justified — the live site as it stands today.",
+      "/assets/css/organic-marginalia.css": "Marginalia — body stays Garamond; the name, headings and underlines move to a pen. Ragged right.",
+      "/assets/css/organic-fieldnotes.css": "Fieldnotes — body in Shantell Sans, headings in Caveat, notebook margin rule. Readable at length.",
+      "/assets/css/organic-longhand.css": "Longhand — all Caveat, sized up, blocks nudged off square. Most character, least readable."
+    };
+
+    const note = document.getElementById("switcher-note");
+    const buttons = document.querySelectorAll(".switcher button");
+    let current = document.getElementById("variant-anchor");
+
+    function apply(href) {
+      // Replace the element rather than reassigning href: a <link> whose
+      // first load failed stays inert in Chromium.
+      const next = document.createElement("link");
+      next.rel = "stylesheet";
+      next.id = "variant-anchor";
+      next.href = href || "data:text/css,";
+      current.replaceWith(next);
+      current = next;
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const href = btn.dataset.sheet;
+        apply(href);
+        note.textContent = NOTES[href];
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      });
+    });
+  </script>
+</body>
+</html>

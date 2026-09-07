@@ -19,6 +19,9 @@
 
    organic-toggle.css is deliberately NOT marked data-organic —
    it styles the button, so it has to survive being switched off.
+   It also sets the button in EB Garamond whatever the page is set
+   in: an escape hatch printed in the face you cannot read is no
+   escape hatch.
    ========================================================= */
 
 (function () {
@@ -96,15 +99,23 @@
   }
 
   function mount() {
-    var host = document.querySelector(".colophon");
-    if (!host) return;
+    if (!document.body) return;
+
+    // First thing on the page and first thing in the DOM, so it is also
+    // the first stop for a keyboard or screen reader. A reader who finds
+    // the handwriting hard work should not have to get through the whole
+    // page to find the control that fixes it.
+    var bar = document.createElement("div");
+    bar.className = "readability-bar";
 
     button = document.createElement("button");
     button.type = "button";
     button.className = "readability";
     button.textContent = LABEL[mode];
     button.addEventListener("click", toggle);
-    host.appendChild(button);
+
+    bar.appendChild(button);
+    document.body.insertBefore(bar, document.body.firstChild);
     apply();
   }
 

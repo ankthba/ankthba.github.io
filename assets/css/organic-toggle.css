@@ -7,12 +7,25 @@
    where every organic sheet is switched off.
    ========================================================= */
 
+/* Sits above the masthead, on the masthead's own column so it lines up
+   with the page rather than floating loose in the corner. */
+.readability-bar {
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.35rem var(--space-md) 0;
+  text-align: right;
+}
+
 .readability {
   display: inline-block;
-  margin-top: 0.75rem;
   padding: 0;
-  font-family: inherit;
-  font-size: 0.8rem;
+  /* Deliberately NOT inherit. The whole point of this control is to be
+     read by someone who is struggling with the handwriting, so it is
+     set in the face it switches to. It also warms EB Garamond into the
+     cache, which makes the switch itself instant. */
+  font-family: "EB Garamond", Garamond, Georgia, serif;
+  font-size: 0.85rem;
   line-height: 1.4;
   color: var(--color-muted);
   background: none;
@@ -39,10 +52,10 @@
   outline-offset: 3px;
 }
 
-/* The colophon is a <p> followed by the button; keep them stacked and
-   centered like the rest of the footer. */
-.colophon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Match the masthead's narrower gutters on small screens. */
+@media (max-width: 640px) {
+  .readability-bar {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
 }

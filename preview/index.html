@@ -10,8 +10,11 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <!-- The switcher rebuilds these two in order: variant first, then the
        face-swap layer, which has to win the --font-hand cascade. -->
-  <link rel="stylesheet" id="variant-anchor" href="data:text/css,">
-  <link rel="stylesheet" id="hands-anchor" href="/assets/css/organic-hands.css">
+  <link rel="stylesheet" id="variant-anchor" href="data:text/css," data-organic>
+  <link rel="stylesheet" id="hands-anchor" href="/assets/css/organic-hands.css" data-organic>
+  <!-- Not data-organic: it styles the footer toggle, so it has to
+       survive the toggle switching every organic sheet off. -->
+  <link rel="stylesheet" href="/assets/css/organic-toggle.css">
 
   <style>
     /* The switcher itself stays outside the experiment: fixed system
@@ -186,13 +189,18 @@
       variant.rel = "stylesheet";
       variant.id = "variant-anchor";
       variant.href = variantHref || "data:text/css,";
+      variant.dataset.organic = "";
       head.append(variant);
 
       const hands = document.createElement("link");
       hands.rel = "stylesheet";
       hands.id = "hands-anchor";
       hands.href = "/assets/css/organic-hands.css";
+      hands.dataset.organic = "";
       head.append(hands);
+
+      // New link elements start enabled; re-apply the reader's choice.
+      window.readability?.refresh();
     }
 
     sheetButtons.forEach((btn) => {
@@ -216,5 +224,6 @@
       });
     });
   </script>
+  <script src="/assets/js/readability.js" defer></script>
 </body>
 </html>

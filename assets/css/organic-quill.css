@@ -37,7 +37,12 @@
   --hand-weight: 400;
   --hand-leading: 1.08;
 
-  --color-bg: #fbf8f0;
+  /* Same paper as the live site. The warmer creams these variants used
+     to carry read as a different stock next to the rest of aniketh.net,
+     and style.css hardcodes the lightbox overlay to rgba(250,249,245,.96)
+     — so anything but #faf9f5 here made the photo viewer flash a
+     different tone. The grain below supplies the texture instead. */
+  --color-bg: #faf9f5;
   --color-fg: #221f1a;
   --color-muted: #6b6355;
   --color-link: #2d5170;

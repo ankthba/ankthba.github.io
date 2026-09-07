@@ -19,7 +19,12 @@
   --font-sans: "Shantell Sans", "Comic Sans MS", "Segoe Print", sans-serif;
   --font-display: "Caveat", "Segoe Script", cursive;
 
-  --color-bg: #fdfaf1;
+  /* Same paper as the live site. The warmer creams these variants used
+     to carry read as a different stock next to the rest of aniketh.net,
+     and style.css hardcodes the lightbox overlay to rgba(250,249,245,.96)
+     — so anything but #faf9f5 here made the photo viewer flash a
+     different tone. The grain below supplies the texture instead. */
+  --color-bg: #faf9f5;
   --color-fg: #2b2823;
   --color-muted: #6f675a;
   --color-link: #2c5470;

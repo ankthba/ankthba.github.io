@@ -18,7 +18,12 @@
   --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
 
   /* Warmer paper, browner ink than the printed original */
-  --color-bg: #faf7ef;
+  /* Same paper as the live site. The warmer creams these variants used
+     to carry read as a different stock next to the rest of aniketh.net,
+     and style.css hardcodes the lightbox overlay to rgba(250,249,245,.96)
+     — so anything but #faf9f5 here made the photo viewer flash a
+     different tone. The grain below supplies the texture instead. */
+  --color-bg: #faf9f5;
   --color-fg: #24221e;
   --color-muted: #6d665a;
   --color-link: #2f5575;

@@ -55,8 +55,8 @@ body {
 
 .masthead__name {
   font-family: var(--font-hand);
-  font-weight: 600;
-  font-size: clamp(3.2rem, 7.8vw, 4.6rem);
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(clamp(3.2rem, 7.8vw, 4.6rem) * var(--hand-scale, 1));
   line-height: 1;
   transform: rotate(-1.2deg);
 }
@@ -81,17 +81,17 @@ body {
 .project-item__title,
 .section-label {
   font-family: var(--font-hand);
-  font-weight: 600;
+  font-weight: var(--hand-weight, 600);
 }
 
 .page-title {
-  font-size: clamp(3rem, 6.6vw, 3.9rem);
+  font-size: calc(clamp(3rem, 6.6vw, 3.9rem) * var(--hand-scale, 1));
   transform: rotate(-0.6deg);
   transform-origin: left center;
 }
 
-.writing__heading { font-size: 1.8rem; }
-.project-item__title { font-size: 2.1rem; }
+.writing__heading { font-size: calc(1.8rem * var(--hand-scale, 1)); }
+.project-item__title { font-size: calc(2.1rem * var(--hand-scale, 1)); }
 
 /* The notebook margin — only where the column has room beside it */
 @media (min-width: 900px) {
@@ -162,7 +162,7 @@ body {
 .colophon__meta {
   font-family: var(--font-hand);
   font-style: normal;
-  font-size: 1.1rem;
+  font-size: calc(1.1rem * var(--hand-scale-body, 1));
 }
 
 @media (prefers-reduced-motion: reduce) {

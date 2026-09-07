@@ -1,0 +1,125 @@
+/* =========================================================
+   organic-hands.css  —  TYPE EXPERIMENT (comparison harness)
+   Layer this AFTER a variant:
+     style.css → organic-<variant>.css → organic-hands.css
+   then set the face on <html data-hand="reenie-beanie">.
+
+   HARNESS, NOT SHIPPING CODE. It imports seven display faces
+   so they can be compared side by side. Before this goes near
+   production, pick one, delete the rest of the @import, and
+   fold that face's two scale values into the variant file.
+
+   Why the scale values: these faces disagree wildly about how
+   much of the em the letters occupy. Measured x-height and
+   cap-height per 100px em, in Chromium:
+
+     face                    x-ht   cap   width of the name
+     Caveat                    36    71    674
+     Reenie Beanie             41    58    665
+     Shadows Into Light Two    60    83    708
+     Over the Rainbow          81    89    878
+     Petit Formal Script       59    79   1182
+     IM Fell English           46    69    851
+     Cormorant Upright         40    63    794
+
+   Caveat has the smallest x-height of the set, so every other
+   face has to come DOWN in font-size to look the same size.
+   --hand-scale is for display type, where caps carry some of
+   the weight (65% x-height match, 35% cap match, then capped
+   so the name never sets more than ~5% wider than Caveat did
+   — Petit Formal Script is 1.75x Caveat's width and would
+   otherwise break the masthead).
+
+   --hand-scale-body is for settings that set running text in
+   the hand. Matching x-height alone fails badly here: Over the
+   Rainbow puts 81% of its em into the x-height, so an x-matched
+   size leaves almost no em, and since line-height is a multiple
+   of the em the whole block collapses into an unreadable brick.
+   So body scale blends x-height with advance width (55/45), and
+   --hand-leading opens the line spacing back up on the faces
+   with a compressed em.
+
+   --hand-weight exists because five of these seven faces ship a
+   single weight. Asking them for 600 gets synthetic emboldening,
+   which smears a hairline script. Only Caveat and Cormorant
+   Upright have real weight to draw on.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Reenie+Beanie&family=Shadows+Into+Light+Two&family=Over+the+Rainbow&family=Petit+Formal+Script&family=IM+Fell+English:ital@0;1&family=Cormorant+Upright:wght@300;400;500;600&display=swap');
+
+/* --- Marker and pen hands --- */
+
+[data-hand="caveat"] {
+  --font-hand: "Caveat", "Segoe Script", "Bradley Hand", cursive;
+  --hand-scale: 1;
+  --hand-scale-body: 1;
+  --hand-weight: 600;
+}
+
+/* Thin ballpoint. Big lowercase, short caps and ascenders — needs no
+   reduction at display size, but the tight em wants extra leading. */
+[data-hand="reenie-beanie"] {
+  --font-hand: "Reenie Beanie", "Bradley Hand", cursive;
+  --hand-scale: 1;
+  --hand-scale-body: 0.94;
+  --hand-leading: 1.15;
+  --hand-weight: 400;
+}
+
+/* Even felt-tip. The most neutral hand of the set. */
+[data-hand="shadows-into-light-two"] {
+  --font-hand: "Shadows Into Light Two", "Bradley Hand", cursive;
+  --hand-scale: 0.74;
+  --hand-scale-body: 0.76;
+  --hand-leading: 1.12;
+  --hand-weight: 400;
+}
+
+/* Loose pencil, very light. The most extreme metrics here: 81% of the
+   em is x-height, so it takes both the largest reduction and the most
+   added leading. */
+[data-hand="over-the-rainbow"] {
+  --font-hand: "Over the Rainbow", "Bradley Hand", cursive;
+  --hand-scale: 0.57;
+  --hand-scale-body: 0.7;
+  --hand-leading: 1.3;
+  --hand-weight: 400;
+}
+
+/* --- Handwritten serifs --- */
+
+/* Formal script with serifed terminals — a fountain pen, not a marker. */
+[data-hand="petit-formal-script"] {
+  --font-hand: "Petit Formal Script", "Apple Chancery", cursive;
+  --hand-scale: 0.6;
+  --hand-scale-body: 0.62;
+  --hand-leading: 1.08;
+  --hand-weight: 400;
+}
+
+/* Digitized 17th-century hand-punchcut type. Irregular, ink-spread,
+   and still a real serif — the closest thing to a handwritten serif
+   that stays readable as running text. */
+[data-hand="im-fell-english"] {
+  --font-hand: "IM Fell English", Georgia, serif;
+  --hand-scale: 0.76;
+  --hand-scale-body: 0.79;
+  --hand-weight: 400;
+}
+
+/* Italic construction stood upright: chancery handwriting shapes,
+   serif finish. The quietest of the three. */
+[data-hand="cormorant-upright"] {
+  --font-hand: "Cormorant Upright", Garamond, Georgia, serif;
+  --hand-scale: 0.89;
+  --hand-scale-body: 0.88;
+  --hand-weight: 500;
+}
+
+/* Reenie Beanie and Over the Rainbow are drawn with a much thinner
+   stroke than Caveat. Left alone they read as grey next to the body
+   copy, so the ink goes a shade darker to compensate. */
+[data-hand="reenie-beanie"],
+[data-hand="over-the-rainbow"] {
+  --color-fg: #1a1815;
+}

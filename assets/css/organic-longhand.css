@@ -51,16 +51,16 @@ body::after {
 
 body {
   font-family: var(--font-hand);
-  font-size: 1.4rem;
+  font-size: calc(1.4rem * var(--hand-scale-body, 1));
   font-weight: 500;
-  line-height: 1.62;
+  line-height: calc(1.62 * var(--hand-leading, 1));
   /* Ink bleed: a hair of the stroke soaking into the stock */
   text-shadow: 0 0 0.45px currentColor;
 }
 
 .masthead__name {
-  font-weight: 600;
-  font-size: clamp(3.6rem, 9vw, 5.2rem);
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(clamp(3.6rem, 9vw, 5.2rem) * var(--hand-scale, 1));
   line-height: 0.98;
   transform: rotate(-1.4deg);
 }
@@ -70,7 +70,7 @@ body {
 }
 
 .masthead__nav-link {
-  font-size: 1.1rem;
+  font-size: calc(1.1rem * var(--hand-scale-body, 1));
   margin: 0 0.5rem 0.4rem;
 }
 
@@ -85,20 +85,20 @@ body {
 }
 
 .page-title {
-  font-weight: 600;
-  font-size: clamp(3.2rem, 7.5vw, 4.2rem);
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(clamp(3.2rem, 7.5vw, 4.2rem) * var(--hand-scale, 1));
   transform: rotate(-0.7deg);
   transform-origin: left center;
 }
 
 .writing__heading {
-  font-weight: 600;
-  font-size: 1.9rem;
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(1.9rem * var(--hand-scale, 1));
 }
 
 .project-item__title {
-  font-weight: 600;
-  font-size: 2.2rem;
+  font-weight: var(--hand-weight, 600);
+  font-size: calc(2.2rem * var(--hand-scale, 1));
   transform: rotate(-0.3deg);
   transform-origin: left center;
 }
@@ -142,7 +142,7 @@ body {
 
 .writing__link,
 .project-item__link,
-.photos__links a { font-size: 1.25rem; }
+.photos__links a { font-size: calc(1.25rem * var(--hand-scale-body, 1)); }
 
 .project-item + .project-item {
   background-image: var(--stroke-rule);
@@ -153,17 +153,17 @@ body {
 }
 
 .project-item__role {
-  font-size: 1.2rem;
+  font-size: calc(1.2rem * var(--hand-scale-body, 1));
   font-style: normal;
 }
 
 .project-item__description {
-  font-size: 1.35rem;
-  line-height: 1.6;
+  font-size: calc(1.35rem * var(--hand-scale-body, 1));
+  line-height: calc(1.6 * var(--hand-leading, 1));
 }
 
 .colophon__meta {
-  font-size: 1.15rem;
+  font-size: calc(1.15rem * var(--hand-scale-body, 1));
   font-style: normal;
 }
 

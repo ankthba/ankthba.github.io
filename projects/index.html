@@ -3,6 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <script>
+    /* Before paint: apply a stored theme choice, and mark the root so
+       the colophon toggle is only shown where it can actually work. */
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') {
+          document.documentElement.setAttribute('data-theme', t);
+        }
+      } catch (e) {}
+    })();
+  </script>
   <title>Projects | Aniketh Bandlamudi</title>
   <meta name="description" content="Projects by Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
@@ -164,7 +179,13 @@
   <footer class="colophon">
     <p class="colophon__meta">
       <span>&copy; 2026 Aniketh Bandlamudi</span>
+      <span class="theme-toggle" role="group" aria-label="Color theme">
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
+      </span>
     </p>
   </footer>
+  <script src="/assets/js/theme.js" defer></script>
 </body>
 </html>

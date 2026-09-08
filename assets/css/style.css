@@ -591,12 +591,13 @@ a.masthead__name:hover {
   max-width: var(--measure);
   margin: 0 auto;
   padding: var(--space-md) var(--space-md) var(--space-lg);
-  text-align: center;
 }
 
 .colophon__meta {
-  /* The copyright and the theme control share one centred line, and drop
-     onto two lines rather than crowd on a narrow screen. */
+  /* The copyright takes the left edge of the measure and the theme
+     control the right, so this row meets the same two edges the name,
+     the nav and the body copy meet. They drop onto two lines rather
+     than crowd on a narrow screen. */
   display: flex;
   flex-wrap: wrap;
   /* Centred, not baseline-aligned: the buttons carry the invisible width
@@ -604,7 +605,7 @@ a.masthead__name:hover {
      button's baseline down past the copyright's. Both boxes are the same
      height, so centring lines the two lots of text up exactly. */
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0.4rem 1.5rem;
   font-size: 0.85rem;
   font-style: italic;
@@ -650,6 +651,10 @@ a.masthead__name:hover {
   height: 0;
   overflow: hidden;
   visibility: hidden;
+}
+
+.theme-toggle__option:last-child {
+  text-align: right;
 }
 
 .theme-toggle__option::before {
@@ -712,6 +717,13 @@ a.masthead__name:hover {
   }
 
   .page {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  /* Matches the masthead and the page column, so the colophon's two
+     edges stay the same two edges at every width. */
+  .colophon {
     padding-left: 1.75rem;
     padding-right: 1.75rem;
   }

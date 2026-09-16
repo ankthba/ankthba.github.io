@@ -202,9 +202,35 @@
   function wantPhoto() {
     if (photoAsked || !canvas.dataset.src) return;
     photoAsked = true;
+    load(1);
+  }
+
+  function load(tries) {
     var img = new Image();
-    img.decoding = 'async';
-    img.onload = function () { photo = img; photoReady = true; schedule(); };
+
+    function ready() {
+      photo = img;
+      photoReady = true;
+      schedule();
+    }
+
+    // load fires as soon as the bytes are in, which is not the same as
+    // the bitmap being decoded and drawable. Painting it before then
+    // gets skipped, which shows up as the photograph appearing for a
+    // frame here and there instead of whenever the trail is over it.
+    // decode() waits for the thing we actually need.
+    img.onload = function () {
+      if (img.decode) {
+        img.decode().then(ready, ready);
+      } else {
+        ready();
+      }
+    };
+
+    img.onerror = function () {
+      if (tries > 0) setTimeout(function () { load(tries - 1); }, 400);
+    };
+
     img.src = canvas.dataset.src;
   }
 
@@ -523,6 +549,7 @@
     measure();
     layout();
     start = null;
+    wantPhoto();
     schedule();
 
     // Belt and braces. The plate is the content; the develop is only a

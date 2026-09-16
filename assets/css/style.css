@@ -794,8 +794,22 @@ a.masthead__name:hover {
   padding: var(--space-xl) 0;
 }
 
+/* The photograph sits behind the plate permanently, as an ordinary
+   image the browser paints for us. The canvas above it is opaque: it
+   fills with the page colour and punches holes in itself along the
+   trail, and the photograph shows through them. Nothing about the
+   picture depends on it being redrawn. */
+.plate__photo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
 .plate canvas {
   display: block;
+  position: relative;
   cursor: crosshair;
   /* Read by the renderer, not painted. A custom property holding
      light-dark() comes back from getPropertyValue() as the literal
@@ -830,7 +844,7 @@ a.masthead__name:hover {
   }
 
   .layout > .plate {
-    position: static;
+    position: relative;
     width: 100%;
     max-width: 17rem;
     margin: var(--space-md) auto 0;

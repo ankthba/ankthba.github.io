@@ -47,6 +47,7 @@
   var FRAME = 42;       // ms between frames while only the light is moving
 
   var ctx = canvas.getContext('2d');
+  var photoEl = canvas.parentElement.querySelector('.plate__photo');
   var COLS = +canvas.dataset.cols;
   var ROWS = +canvas.dataset.rows;
   var raw = canvas.dataset.plate;
@@ -177,7 +178,6 @@
   var trail = new Float32Array(N);   // how lately the cursor passed each cell
   var alive = false;                 // is there any trail left to fade
   var lastPt = null;                 // previous pointer position, for joining up
-  var stage = null, stageCtx = null; // the photograph, cut to the trail
 
   // A fixed hash rather than Math.random, so the edge of the trail
   // breaks up the same way on every visit instead of reshuffling.
@@ -192,47 +192,12 @@
 
   /* ---- the photograph behind the type ---------------------------- */
 
-  // The plate is a picture of a photograph and the photograph is still
-  // there behind it, with the studio backdrop already taken off. It only
-  // shows where the cursor has just been. Fetched on the first approach
-  // of the pointer, because a reader who never touches it never needs it.
-
-  var photo = null, photoReady = false, photoAsked = false;
-
-  function wantPhoto() {
-    if (photoAsked || !canvas.dataset.src) return;
-    photoAsked = true;
-    load(1);
-  }
-
-  function load(tries) {
-    var img = new Image();
-
-    function ready() {
-      photo = img;
-      photoReady = true;
-      schedule();
-    }
-
-    // load fires as soon as the bytes are in, which is not the same as
-    // the bitmap being decoded and drawable. Painting it before then
-    // gets skipped, which shows up as the photograph appearing for a
-    // frame here and there instead of whenever the trail is over it.
-    // decode() waits for the thing we actually need.
-    img.onload = function () {
-      if (img.decode) {
-        img.decode().then(ready, ready);
-      } else {
-        ready();
-      }
-    };
-
-    img.onerror = function () {
-      if (tries > 0) setTimeout(function () { load(tries - 1); }, 400);
-    };
-
-    img.src = canvas.dataset.src;
-  }
+  // There is nothing to load or draw here any more. The photograph is an
+  // ordinary <img> behind the canvas, permanently on the page, painted
+  // by the browser. This canvas is opaque: it fills with the page colour
+  // and takes holes out of itself along the trail, and the photograph is
+  // simply already there underneath. Drawing it per frame instead made
+  // it depend on decode timing, which is what made it flash.
 
   // How far a cell has given way to the photograph: nothing until the
   // cursor has been near it, then its own grain decides exactly when it
@@ -340,6 +305,10 @@
     canvas.height = Math.round(h * dpr);
     canvas.style.width = w + 'px';
     canvas.style.height = h + 'px';
+    if (photoEl) {
+      photoEl.style.width = w + 'px';
+      photoEl.style.height = h + 'px';
+    }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     // Deliberately larger than the cell. A Garamond lowercase fills well
@@ -362,6 +331,9 @@
     // plate would then draw in the default black. That happens to look
     // right on the ivory and disappears entirely on the dark page.
     var ink = getComputedStyle(canvas).color || '#262624';
+    // The page's own colour, resolved: the canvas has to match whatever
+    // the theme is or its edges would show as a block against the page.
+    var page = getComputedStyle(document.body).backgroundColor || '#faf9f5';
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = font;
@@ -374,37 +346,29 @@
     var w = parseFloat(canvas.style.width);
     var h = parseFloat(canvas.style.height);
 
-    // The photograph, cut to the trail. Cell by cell rather than as one
-    // soft disc, so the two pictures meet on a broken edge of characters
-    // instead of a circle.
-    if (alive && photoReady) {
-      if (!stage) {
-        stage = document.createElement('canvas');
-        stageCtx = stage.getContext('2d');
-      }
-      if (stage.width !== canvas.width || stage.height !== canvas.height) {
-        stage.width = canvas.width;
-        stage.height = canvas.height;
-      }
-      var dpr = canvas.width / w;
-      stageCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      stageCtx.clearRect(0, 0, w, h);
-      stageCtx.drawImage(photo, 0, 0, w, h);
-      stageCtx.globalCompositeOperation = 'destination-in';
+    // Opaque, in the colour of the page, so the photograph behind is
+    // hidden until a hole is taken out of it.
+    ctx.fillStyle = page;
+    ctx.fillRect(0, 0, w, h);
+
+    // Take the trail out of it, cell by cell rather than as one soft
+    // disc, so the two pictures meet on a broken edge of characters
+    // instead of a circle. The rectangles overlap by half a pixel so the
+    // grid does not show as a mesh of hairlines.
+    if (alive) {
+      ctx.globalCompositeOperation = 'destination-out';
       for (var mr = 0; mr < ROWS; mr++) {
         for (var mc = 0; mc < COLS; mc++) {
           var mv = reveal(mr * COLS + mc);
           if (mv <= 0.004) continue;
-          stageCtx.fillStyle = 'rgba(0,0,0,' + mv.toFixed(3) + ')';
-          // Overlapping by half a pixel keeps the grid from showing as
-          // a mesh of hairlines.
-          stageCtx.fillRect(mc * cellW - 0.5, mr * cellH - 0.5, cellW + 1, cellH + 1);
+          ctx.fillStyle = 'rgba(0,0,0,' + mv.toFixed(3) + ')';
+          ctx.fillRect(mc * cellW - 0.5, mr * cellH - 0.5, cellW + 1, cellH + 1);
         }
       }
-      stageCtx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(stage, 0, 0, w, h);
-      ctx.fillStyle = ink;
+      ctx.globalCompositeOperation = 'source-over';
     }
+
+    ctx.fillStyle = ink;
 
     // Where the light is standing this frame.
     var ang = still ? -2.4 : (now / ORBIT) * Math.PI * 2;
@@ -492,10 +456,7 @@
     if (layout()) schedule();
   }
 
-  canvas.addEventListener('pointerenter', wantPhoto);
-
   canvas.addEventListener('pointermove', function (e) {
-    wantPhoto();
     var box = canvas.getBoundingClientRect();
     drag(e.clientX - box.left, e.clientY - box.top);
     schedule();
@@ -549,7 +510,6 @@
     measure();
     layout();
     start = null;
-    wantPhoto();
     schedule();
 
     // Belt and braces. The plate is the content; the develop is only a

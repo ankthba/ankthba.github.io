@@ -741,7 +741,131 @@ a.masthead__name:hover {
 }
 
 /* ---------------------------------------------------------
-   13. Reduced Motion & View Transitions
+   13. Home layout and the portrait
+
+   The home page is the one page that is not a single centred
+   column. The column is unchanged: same measure, same masthead,
+   same justified nav, same colophon. It is simply moved off
+   centre so that a picture can sit beside it, and the pair of
+   them is centred instead.
+
+   The picture is a photograph sampled down to a grid of tones
+   and redrawn in EB Garamond by /assets/js/plate.js.
+   --------------------------------------------------------- */
+
+.layout {
+  flex: 1;
+  width: 100%;
+  /* Stops the picture running away with itself on a very wide monitor. */
+  max-width: 80rem;
+  margin-inline: auto;
+  display: grid;
+  /* The text column keeps its own measure to the pixel; the picture
+     takes whatever is left, so it grows with the window instead of
+     sitting at a fixed size in the middle of it. */
+  grid-template-columns: minmax(0, var(--measure)) minmax(16rem, 1fr);
+  /* Four rows: the name, the prose, a spacer that takes up whatever is
+     left of the window, and the colophon. The slack is parked in its
+     own row rather than inside the prose row, so the prose row keeps
+     its natural height and the picture beside it can be centred on the
+     text rather than on the empty half of the page. */
+  grid-template-rows: auto auto 1fr auto;
+  justify-content: center;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+.layout > .masthead { grid-column: 1; grid-row: 1; }
+.layout > .page     { grid-column: 1; grid-row: 2; }
+.layout > .colophon { grid-column: 1; grid-row: 4; }
+
+/* The picture stands against the text and nothing else: it spans the
+   name and the prose, not the spacer under them, so it is centred on
+   the body of the page rather than on the window. */
+.layout > .plate {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  position: relative;
+  min-height: 0;
+  /* The masthead opens with this much space above the name and the
+     prose closes with the same below it. Matching it here makes the
+     picture's content box exactly as tall as the text beside it, so
+     the face spans the text and nothing more. */
+  padding: var(--space-xl) 0;
+}
+
+.plate canvas {
+  display: block;
+  cursor: crosshair;
+  /* Read by the renderer, not painted. A custom property holding
+     light-dark() comes back from getPropertyValue() as the literal
+     function text, which canvas cannot use, so the ink is taken off a
+     real property that does resolve. */
+  color: var(--color-fg);
+}
+
+/* Laid over its column and centred on it, rather than sitting in the
+   flow at the top of it. Taking the picture out of flow also means it
+   can be sized against the column's height without its own height
+   feeding back into that measurement. */
+@media (min-width: 1041px) {
+  .plate canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Below this the text column could no longer hold its full measure
+   beside the picture, so the page goes back to being one centred
+   column and the picture takes its place in the flow, between the nav
+   and the prose. */
+@media (max-width: 1040px) {
+  /* A flex column rather than a plain block, so that .page keeps its
+     flex: 1 and the colophon still sits at the foot of a short page. */
+  .layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .layout > .plate {
+    position: static;
+    width: 100%;
+    max-width: 17rem;
+    margin: var(--space-md) auto 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Justification needs room. At this measure it opens rivers between
+     the words and hyphenates every other line, so the prose and the
+     nav both go ragged. The column edges still line up on the left,
+     which is what the page is actually built on. */
+  .page p {
+    text-align: left;
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
+
+  .masthead__nav {
+    text-align: center;
+    text-align-last: center;
+  }
+
+  .masthead__nav-link {
+    margin: 0 0.55rem 0.5rem;
+  }
+
+  .layout > .plate {
+    max-width: 15rem;
+    margin-top: var(--space-sm);
+  }
+}
+
+/* ---------------------------------------------------------
+   14. Reduced Motion & View Transitions
    --------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {

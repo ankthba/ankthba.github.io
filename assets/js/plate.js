@@ -15,8 +15,11 @@
    jaw keep catching and losing it. The picture never moves; only which
    characters are standing in it does.
 
-   It takes a loupe. Cells near the pointer thicken further, so the face
-   darkens under the cursor and settles back when it leaves.
+   It keeps a trail. The cursor lays a stroke into a buffer held at cell
+   resolution, and that stroke fades a little every frame. The
+   photograph it was made from, backdrop already removed, shows through
+   only where the stroke is, cell by cell along a grainy edge, so the
+   characters step aside as you pass and close again behind you.
 
    The plate itself is one character per cell on the canvas element,
    each a tone from 0 to 63. No image is fetched. */
@@ -35,8 +38,10 @@
 
   var DEVELOP = 900;    // ms from the first cell laid down to the last
   var FADE = 260;       // ms for one cell to come up
-  var LOUPE = 0.34;     // loupe radius, as a fraction of the plate's width
-  var LIFT = 0.34;      // how far up the ramp the loupe pushes a cell
+  var BRUSH = 0.17;     // width of the trail, as a fraction of the plate
+  var DECAY = 0.955;    // what is left of the trail after a frame
+  var GRAIN = 0.5;      // how far the per-cell noise breaks up the edge
+  var SOFT = 0.35;      // width of the front between type and photograph
   var RELIEF = 0.17;    // how hard the raking light bites
   var ORBIT = 27000;    // ms for the light to walk once around
   var FRAME = 42;       // ms between frames while only the light is moving
@@ -169,8 +174,88 @@
   var cellW = 0, cellH = 0, fontPx = 16, font = '16px';
   var advance = null;
   var start = null;
-  var pointer = null;   // {x, y} in CSS pixels within the canvas
-  var loupe = 0;        // eased 0..1, so the loupe fades rather than snaps
+  var trail = new Float32Array(N);   // how lately the cursor passed each cell
+  var alive = false;                 // is there any trail left to fade
+  var lastPt = null;                 // previous pointer position, for joining up
+  var stage = null, stageCtx = null; // the photograph, cut to the trail
+
+  // A fixed hash rather than Math.random, so the edge of the trail
+  // breaks up the same way on every visit instead of reshuffling.
+  var order = new Float32Array(N);
+  (function () {
+    var seed = 0x2f6e2b1;
+    for (var i = 0; i < N; i++) {
+      seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; seed |= 0;
+      order[i] = ((seed >>> 0) % 1000) / 1000;
+    }
+  })();
+
+  /* ---- the photograph behind the type ---------------------------- */
+
+  // The plate is a picture of a photograph and the photograph is still
+  // there behind it, with the studio backdrop already taken off. It only
+  // shows where the cursor has just been. Fetched on the first approach
+  // of the pointer, because a reader who never touches it never needs it.
+
+  var photo = null, photoReady = false, photoAsked = false;
+
+  function wantPhoto() {
+    if (photoAsked || !canvas.dataset.src) return;
+    photoAsked = true;
+    var img = new Image();
+    img.decoding = 'async';
+    img.onload = function () { photo = img; photoReady = true; schedule(); };
+    img.src = canvas.dataset.src;
+  }
+
+  // How far a cell has given way to the photograph: nothing until the
+  // cursor has been near it, then its own grain decides exactly when it
+  // turns, so the trail has a ragged edge rather than a rim.
+  function reveal(i) {
+    var u = (trail[i] * (1 + SOFT) - order[i] * GRAIN) / SOFT;
+    if (u <= 0) return 0;
+    if (u >= 1) return 1;
+    return u * u * (3 - 2 * u);
+  }
+
+  // Lay the brush down at a point, keeping whatever was already there:
+  // the trail is the high-water mark of where the cursor has been, and
+  // the decay below is what pulls it back down again.
+  function stamp(x, y) {
+    var radius = BRUSH * Math.max(COLS * cellW, ROWS * cellH);
+    if (!(radius > 0)) return;
+    for (var r = 0; r < ROWS; r++) {
+      var dy = (r + 0.5) * cellH - y;
+      if (dy < -radius || dy > radius) continue;
+      for (var c = 0; c < COLS; c++) {
+        var dx = (c + 0.5) * cellW - x;
+        if (dx < -radius || dx > radius) continue;
+        var d = Math.sqrt(dx * dx + dy * dy) / radius;
+        if (d >= 1) continue;
+        var f = 1 - d;
+        f = f * f * (3 - 2 * f);
+        var i = r * COLS + c;
+        if (f > trail[i]) trail[i] = f;
+      }
+    }
+    alive = true;
+  }
+
+  // A pointer that moves quickly reports in long jumps, which would lay
+  // the brush down as separate blots. Join them up.
+  function drag(x, y) {
+    if (lastPt) {
+      var dx = x - lastPt.x, dy = y - lastPt.y;
+      var span = Math.sqrt(dx * dx + dy * dy);
+      var step = Math.max(cellW, cellH) * 0.6;
+      var n = Math.min(24, Math.floor(span / step));
+      for (var j = 1; j <= n; j++) {
+        stamp(lastPt.x + dx * (j / (n + 1)), lastPt.y + dy * (j / (n + 1)));
+      }
+    }
+    stamp(x, y);
+    lastPt = { x: x, y: y };
+  }
   var raf = null, last = 0, visible = true;
 
   // EB Garamond is not a monospace, so the heavy end of the ramp draws
@@ -241,7 +326,10 @@
     return true;
   }
 
+  var drew = false;
+
   function draw(now) {
+    drew = true;
     // Read off the canvas itself rather than out of the custom property:
     // a token holding light-dark() comes back from getPropertyValue() as
     // the literal function text, which canvas silently rejects, and the
@@ -256,8 +344,41 @@
     ctx.fillStyle = ink;
 
     var elapsed = still ? Infinity : now - start;
-    var radius = LOUPE * COLS * cellW;
     var lastGlyph = RAMP.length - 1;
+    var w = parseFloat(canvas.style.width);
+    var h = parseFloat(canvas.style.height);
+
+    // The photograph, cut to the trail. Cell by cell rather than as one
+    // soft disc, so the two pictures meet on a broken edge of characters
+    // instead of a circle.
+    if (alive && photoReady) {
+      if (!stage) {
+        stage = document.createElement('canvas');
+        stageCtx = stage.getContext('2d');
+      }
+      if (stage.width !== canvas.width || stage.height !== canvas.height) {
+        stage.width = canvas.width;
+        stage.height = canvas.height;
+      }
+      var dpr = canvas.width / w;
+      stageCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      stageCtx.clearRect(0, 0, w, h);
+      stageCtx.drawImage(photo, 0, 0, w, h);
+      stageCtx.globalCompositeOperation = 'destination-in';
+      for (var mr = 0; mr < ROWS; mr++) {
+        for (var mc = 0; mc < COLS; mc++) {
+          var mv = reveal(mr * COLS + mc);
+          if (mv <= 0.004) continue;
+          stageCtx.fillStyle = 'rgba(0,0,0,' + mv.toFixed(3) + ')';
+          // Overlapping by half a pixel keeps the grid from showing as
+          // a mesh of hairlines.
+          stageCtx.fillRect(mc * cellW - 0.5, mr * cellH - 0.5, cellW + 1, cellH + 1);
+        }
+      }
+      stageCtx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(stage, 0, 0, w, h);
+      ctx.fillStyle = ink;
+    }
 
     // Where the light is standing this frame.
     var ang = still ? -2.4 : (now / ORBIT) * Math.PI * 2;
@@ -280,21 +401,16 @@
         // Slope facing the light thickens, slope facing away thins.
         var v = t + (gx[i] * lx + gy[i] * ly) * RELIEF;
 
-        if (loupe > 0.002 && pointer) {
-          var dx = x - pointer.x, dy = y - pointer.y;
-          var d = Math.sqrt(dx * dx + dy * dy);
-          if (d < radius) {
-            var f = 1 - d / radius;
-            v += f * f * loupe * LIFT;
-          }
-        }
-
         if (v < 0) v = 0; else if (v > 1) v = 1;
         var gi = Math.round(v * lastGlyph);
         var ch = RAMP[gi];
         if (ch === ' ') continue;
 
-        ctx.globalAlpha = k;
+        // A character stands aside where the cursor has just passed,
+        // and comes back as the trail fades.
+        var a = alive ? k * (1 - reveal(i)) : k;
+        if (a < 0.01) continue;
+        ctx.globalAlpha = a;
 
         var gw = advance[gi] * fontPx;
         if (gw > cellW) {
@@ -315,12 +431,21 @@
     raf = null;
     if (start === null) start = now;
 
-    var want = pointer ? 1 : 0;
-    loupe += (want - loupe) * 0.22;
-    if (Math.abs(want - loupe) < 0.004) loupe = want;
+    // Pull the whole trail down a little each frame. When there is
+    // nothing left of it the plate is back to plain type and the loop
+    // can stop.
+    if (alive) {
+      var left = 0;
+      for (var ti = 0; ti < N; ti++) {
+        var tv = trail[ti] * DECAY;
+        trail[ti] = tv < 0.004 ? 0 : tv;
+        if (trail[ti] > left) left = trail[ti];
+      }
+      if (left <= 0) alive = false;
+    }
 
     var developing = !still && now - start < DEVELOP + FADE + 40;
-    var busy = developing || loupe > 0.002;
+    var busy = developing || alive;
 
     // While the light is the only thing moving there is no reason to
     // redraw sixty times a second.
@@ -341,16 +466,25 @@
     if (layout()) schedule();
   }
 
+  canvas.addEventListener('pointerenter', wantPhoto);
+
   canvas.addEventListener('pointermove', function (e) {
+    wantPhoto();
     var box = canvas.getBoundingClientRect();
-    pointer = { x: e.clientX - box.left, y: e.clientY - box.top };
+    drag(e.clientX - box.left, e.clientY - box.top);
     schedule();
   });
 
-  canvas.addEventListener('pointerleave', function () {
-    pointer = null;
+  // Break the line on the way out, so re-entering somewhere else does
+  // not draw a stroke across the face from where the cursor left.
+  function lift() {
+    lastPt = null;
     schedule();
-  });
+  }
+
+  canvas.addEventListener('pointerleave', lift);
+  canvas.addEventListener('pointercancel', lift);
+  canvas.addEventListener('pointerup', lift);
 
   window.addEventListener('resize', refit);
   if (wide.addEventListener) wide.addEventListener('change', refit);
@@ -389,20 +523,19 @@
     measure();
     layout();
     start = null;
+    schedule();
 
-    // A document that is hidden, backgrounded, or otherwise not being
-    // painted gets no animation frames, and a plate that waited for one
-    // would simply never appear. The picture is the content and the
-    // develop is only decoration, so put a finished plate down
-    // synchronously whenever frames cannot be relied on, and leave the
-    // clock in the past so any later frame draws it finished too.
-    if (document.hidden) {
+    // Belt and braces. The plate is the content; the develop is only a
+    // flourish. If no animation frame has arrived shortly after load,
+    // whatever the reason, stop waiting and put a finished plate down.
+    // A hidden document never gets frames at all, and relying on them
+    // in a visible one has already cost this page its portrait twice.
+    setTimeout(function () {
+      if (drew) return;
       var t = now();
       start = t - (DEVELOP + FADE + 100);
       draw(t);
-    }
-
-    schedule();
+    }, 180);
   }
 
   // Drawing before the face arrives would lay the whole plate out in

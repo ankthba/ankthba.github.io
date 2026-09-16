@@ -23,180 +23,143 @@
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
-  
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link active" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+  <header class="head">
+    <a class="head__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="head__links">
+      <a href="/work/">Work</a>
+      <a href="/education/">Education</a>
+      <a href="/projects/" aria-current="page">Projects</a>
+      <a href="/research/">Research</a>
+      <a href="/photos/">Photography</a>
+      <a href="/press/">Press</a>
+      <a href="/resume/">Resume</a>
+      <a href="/contact/">Contact</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
     </nav>
   </header>
 
-  <main class="page">
-        <h1 class="page-title">Projects</h1>
-        <div class="projects__list">
-          <!-- Pragmatic hidden for now; covered under Work experience.
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Pragmatic</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">A durable execution runtime in Rust for nondeterministic AI agents. It journals every step of a run so agents survive any crash, resume exactly where they stopped, and replay faithfully for debugging and audit.</p>
-            <a href="https://aniketh.net/pragmatic" class="project-item__link">Visit site</a>
-          </article>
-          -->
+  <main>
+    <h1 class="title">Projects</h1>
+    <div class="entries">
+      <article class="entry">
+        <h2 class="entry__name">Hypnagogia</h2>
+        <p class="entry__meta">Creator</p>
+        <p class="entry__body">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep. 144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles. The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation&rsquo;s own output files at page load. Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
+        <p class="entry__links">
+          <a href="https://aniketh.net/hypnagogia">Open it</a>
+          <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Hypnagogia</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep. 144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles. The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load. Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
-            <div class="project-item__links">
-              <a href="https://aniketh.net/hypnagogia" class="project-item__link">Open it</a>
-              <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-            </div>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Haze</h2>
+        <p class="entry__meta">Weather app</p>
+        <p class="entry__body">Beautiful, full-featured weather app designed for fast, accurate daily decisions, with current conditions, hourly trends, multi-day forecasts, air quality, wind, humidity, pressure, UV, visibility, sunrise and sunset details, and severe-weather awareness in one polished interface.</p>
+        <p class="entry__links">
+          <a href="/haze/">Learn more</a>
+          <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App Store</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Haze</h3>
-              <span class="project-item__role">Weather App</span>
-            </div>
-            <p class="project-item__description">Beautiful, full-featured weather app designed for fast, accurate daily decisions, with current conditions, hourly trends, multi-day forecasts, air quality, wind, humidity, pressure, UV, visibility, sunrise and sunset details, and severe-weather awareness in one polished interface.</p>
-            <div class="project-item__links">
-              <a href="https://aniketh.net/haze" class="project-item__link">Learn more</a>
-              <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
-            </div>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Sentry</h2>
+        <p class="entry__meta">Co-developer</p>
+        <p class="entry__body">A privacy-first system monitor for macOS with companion iPhone and Apple Watch apps. Live menu bar stats, real-time CPU, GPU, and memory charts, battery health trends, and thermal insights with fan control on Apple Silicon, plus an MCP server and CLI that let coding agents check system capacity before running heavy tasks. No cloud, no telemetry; everything stays on device.</p>
+        <p class="entry__links">
+          <a href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Sentry</h3>
-              <span class="project-item__role">Co-developer</span>
-            </div>
-            <p class="project-item__description">A privacy-first system monitor for macOS with companion iPhone and Apple Watch apps. Live menu bar stats, real-time CPU, GPU, and memory charts, battery health trends, and thermal insights with fan control on Apple Silicon, plus an MCP server and CLI that let coding agents check system capacity before running heavy tasks. No cloud, no telemetry; everything stays on device.</p>
-            <a href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Graphite</h2>
+        <p class="entry__meta">Creator</p>
+        <p class="entry__body">A 3D graphing calculator that runs entirely in the browser. Plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
+        <p class="entry__links">
+          <a href="https://aniketh.net/graphite">Use it</a>
+          <a href="https://github.com/ankthba/graphite" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Graphite</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser. Plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
-            <div class="project-item__links">
-              <a href="https://aniketh.net/graphite" class="project-item__link">Use it</a>
-              <a href="https://github.com/ankthba/graphite" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-            </div>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Splatify</h2>
+        <p class="entry__meta">Creator</p>
+        <p class="entry__body">A one-command, fully local video-to-3D pipeline for Apple Silicon Macs. Point it at ordinary phone videos of a place and it reconstructs an interactive Gaussian splat scene you can fly around in a browser, running ffmpeg, COLMAP, and Brush end-to-end with no cloud or GPU rig.</p>
+        <p class="entry__links">
+          <a href="https://github.com/ankthba/Splatify" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <!-- OCRadar hidden for now; covered under Work experience.
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">OCRadar</h3>
-              <span class="project-item__role">Founder & President</span>
-            </div>
-            <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
-            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
-          </article>
-          -->
+      <article class="entry">
+        <h2 class="entry__name">Ejector</h2>
+        <p class="entry__meta">Creator</p>
+        <p class="entry__body">A tiny, zero-dependency macOS menu bar app for ejecting external drives, SD cards, SSDs, and mounted disk images without digging through Finder. One-click eject, live volume count badge, type-aware icons, and an Eject All shortcut, all in a single Swift file.</p>
+        <p class="entry__links">
+          <a href="https://github.com/ankthba/ejector" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Splatify</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">A one-command, fully local video-to-3D pipeline for Apple Silicon Macs. Point it at ordinary phone videos of a place and it reconstructs an interactive Gaussian splat scene you can fly around in a browser, running ffmpeg, COLMAP, and Brush end-to-end with no cloud or GPU rig.</p>
-            <a href="https://github.com/ankthba/Splatify" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">EdgeFabric</h2>
+        <p class="entry__meta">Creator</p>
+        <p class="entry__body">Synthesize distributed intelligence from ambient compute with instantaneous inference across edge devices.</p>
+        <p class="entry__links">
+          <a href="https://github.com/ankthba/EdgeFabric" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Ejector</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">A tiny, zero-dependency macOS menu bar app for ejecting external drives, SD cards, SSDs, and mounted disk images without digging through Finder. One-click eject, live volume count badge, type-aware icons, and an Eject All shortcut, all in a single Swift file.</p>
-            <a href="https://github.com/ankthba/ejector" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">IllumiSign</h2>
+        <p class="entry__meta">Hack the Nest 2025 winner</p>
+        <p class="entry__body">Open-source, browser-based communication tool for people with ALS using real-time eye tracking to select letters and speak them aloud.</p>
+        <p class="entry__links">
+          <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener">View project</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">EdgeFabric</h3>
-              <span class="project-item__role">Creator</span>
-            </div>
-            <p class="project-item__description">Synthesize distributed intelligence from ambient compute with instantaneous inference across edge devices.</p>
-            <a href="https://github.com/ankthba/EdgeFabric" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Oakton Codebase</h2>
+        <p class="entry__meta">Co-President</p>
+        <p class="entry__body">Leading Oakton High School&rsquo;s premier coding club, organizing competitive programming, web dev, and USACO and LeetCode prep while mentoring members.</p>
+        <p class="entry__links">
+          <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener">View site</a>
+        </p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">IllumiSign</h3>
-              <span class="project-item__role">Hack the Nest 2025 Winner</span>
-            </div>
-            <p class="project-item__description">Open-source, browser-based communication tool for people with ALS using real-time eye tracking to select letters and speak them aloud.</p>
-            <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener" class="project-item__link">View project</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">PCB Design</h2>
+        <p class="entry__meta">Hardware</p>
+        <p class="entry__body">Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity and thermal performance.</p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Oakton Codebase</h3>
-              <span class="project-item__role">Co-President</span>
-            </div>
-            <p class="project-item__description">Leading Oakton HS’s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep while mentoring members.</p>
-            <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener" class="project-item__link">View site</a>
-          </article>
+      <article class="entry">
+        <h2 class="entry__name">Apple Silicon Analysis</h2>
+        <p class="entry__meta">Research</p>
+        <p class="entry__body">Reverse-engineered Apple Silicon to model CPU, GPU and Neural Engine integration, cache hierarchies, and power efficiency strategies.</p>
+      </article>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">PCB Design</h3>
-              <span class="project-item__role">Hardware</span>
-            </div>
-            <p class="project-item__description">Developing compact, efficient PCBs for USB-C storage and embedded applications with a focus on signal integrity and thermal performance.</p>
-          </article>
-
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Apple Silicon Analysis</h3>
-              <span class="project-item__role">Research</span>
-            </div>
-            <p class="project-item__description">Reverse-engineered Apple Silicon to model CPU/GPU/Neural Engine integration, cache hierarchies, and power efficiency strategies.</p>
-          </article>
-
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">CS DS&A</h3>
-              <span class="project-item__role">Coursework</span>
-            </div>
-            <p class="project-item__description">Assignments for the Oakton High School AV CS Data Structures & Algorithms course.</p>
-            <a href="https://github.com/ankthba/csdsav" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
-
-        </div>
+      <article class="entry">
+        <h2 class="entry__name">CS DS&amp;A</h2>
+        <p class="entry__meta">Coursework</p>
+        <p class="entry__body">Assignments for the Oakton High School AV CS Data Structures and Algorithms course.</p>
+        <p class="entry__links">
+          <a href="https://github.com/ankthba/csdsav" target="_blank" rel="noopener">View repo</a>
+        </p>
+      </article>
+    </div>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
-      <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
-      </span>
-    </p>
+  <footer class="foot">
+    <span>&copy; 2026 Aniketh Bandlamudi</span>
+    <span class="theme-toggle" role="group" aria-label="Color theme">
+      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+    </span>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
 </body>

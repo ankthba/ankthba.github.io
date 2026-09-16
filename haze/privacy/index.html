@@ -28,52 +28,29 @@
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
   <style>
-    .legal { max-width: none; }
-    .legal__updated {
-      font-size: 0.78rem;
-      color: var(--color-muted);
-      opacity: 0.8;
-      margin-bottom: var(--space-md);
-    }
-    .legal h2 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--color-fg);
-      letter-spacing: -0.01em;
-      margin: var(--space-md) 0 0.5rem;
-    }
-    .legal p {
-      font-size: 0.92rem;
-      line-height: 1.7;
-      color: var(--color-muted);
-      max-width: none;
-      margin-bottom: 0.75rem;
-    }
-    .legal ul { margin: 0 0 0.75rem; padding-left: 1.1rem; }
-    .legal li {
-      font-size: 0.92rem;
-      line-height: 1.7;
-      color: var(--color-muted);
-      margin-bottom: 0.35rem;
-    }
-    .legal a { color: var(--color-fg); text-decoration: underline; text-underline-offset: 2px; }
+    /* The privacy page is the one piece of long-form prose on the site,
+       so it gets sub-headings and a list. Everything else is inherited. */
+    .legal { max-width: 40rem; }
+    .legal__updated { font-size: 0.8125rem; color: var(--muted); margin-bottom: 2rem; }
+    .legal h2 { font-size: 1.15rem; margin: 2.2rem 0 0.5rem; }
+    .legal p { color: var(--muted); margin-bottom: 0.8rem; }
+    .legal ul { margin: 0 0 0.8rem; padding-left: 1.1rem; color: var(--muted); }
+    .legal li { margin-bottom: 0.3rem; }
+    .legal strong { font-weight: 400; color: var(--fg); }
   </style>
 </head>
 <body>
-  
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link">About</a>
-      <a href="/work/" class="masthead__nav-link">Work</a>
-      <a href="/education/" class="masthead__nav-link">Education</a>
-      <a href="/projects/" class="masthead__nav-link">Projects</a>
-      <a href="/research/" class="masthead__nav-link">Research</a>
-      <a href="/photos/" class="masthead__nav-link">Photography</a>
-      <a href="/contact/" class="masthead__nav-link">Contact</a>
-      <a href="/resume/" class="masthead__nav-link">Resume</a>
-    </nav>
-    <nav class="masthead__social">
+  <header class="head">
+    <a class="head__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="head__links">
+      <a href="/work/">Work</a>
+      <a href="/education/">Education</a>
+      <a href="/projects/">Projects</a>
+      <a href="/research/">Research</a>
+      <a href="/photos/">Photography</a>
+      <a href="/press/">Press</a>
+      <a href="/resume/">Resume</a>
+      <a href="/contact/">Contact</a>
       <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
       <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
@@ -83,8 +60,8 @@
     </nav>
   </header>
 
-  <main class="page">
-        <h1 class="page-title">Privacy Policy</h1>
+  <main>
+    <h1 class="title">Privacy Policy</h1>
         <div class="legal">
           <p class="legal__updated">Last updated August 28, 2026</p>
 
@@ -128,15 +105,13 @@
         </div>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
-      <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
-      </span>
-    </p>
+  <footer class="foot">
+    <span>&copy; 2026 Aniketh Bandlamudi</span>
+    <span class="theme-toggle" role="group" aria-label="Color theme">
+      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+    </span>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
 </body>

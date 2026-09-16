@@ -44,45 +44,41 @@
   </style>
 </head>
 <body>
-  
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link active" data-text="Resume">Resume</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+  <header class="head">
+    <a class="head__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="head__links">
+      <a href="/work/">Work</a>
+      <a href="/education/">Education</a>
+      <a href="/projects/">Projects</a>
+      <a href="/research/">Research</a>
+      <a href="/photos/">Photography</a>
+      <a href="/press/">Press</a>
+      <a href="/resume/" aria-current="page">Resume</a>
+      <a href="/contact/">Contact</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
     </nav>
   </header>
 
-  <main class="page page--centered">
-        <h1 class="page-title">Resume</h1>
-        <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
-          <img class="resume__frame" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
-        </a>
-        <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" download="Aniketh-Bandlamudi-Resume.pdf" class="project-item__link resume__download">Download PDF</a>
+  <main>
+    <h1 class="title">Resume</h1>
+    <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
+      <img class="sheet" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
+    </a>
+    <a class="plain-link" href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" download="Aniketh-Bandlamudi-Resume.pdf">Download PDF</a>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
-      <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
-      </span>
-    </p>
+  <footer class="foot">
+    <span>&copy; 2026 Aniketh Bandlamudi</span>
+    <span class="theme-toggle" role="group" aria-label="Color theme">
+      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+    </span>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
 </body>

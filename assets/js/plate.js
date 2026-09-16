@@ -15,8 +15,9 @@
    jaw keep catching and losing it. The picture never moves; only which
    characters are standing in it does.
 
-   It takes a loupe. Cells near the pointer thicken further, so the face
-   darkens under the cursor and settles back when it leaves.
+   It stands back. Rest on it and the lettering thins out while the
+   photograph it was made from comes up through it, background already
+   removed, then the two cross back when the pointer leaves.
 
    The plate itself is one character per cell on the canvas element,
    each a tone from 0 to 63. No image is fetched. */
@@ -35,8 +36,9 @@
 
   var DEVELOP = 900;    // ms from the first cell laid down to the last
   var FADE = 260;       // ms for one cell to come up
-  var LOUPE = 0.34;     // loupe radius, as a fraction of the plate's width
-  var LIFT = 0.34;      // how far up the ramp the loupe pushes a cell
+  var SOFT = 0.42;      // width of the dissolve front
+  var REACH = 0.62;     // how far the pointer's influence carries, as a fraction of the plate
+  var EASE = 0.10;      // per frame, for the fade in and out of the whole effect
   var RELIEF = 0.17;    // how hard the raking light bites
   var ORBIT = 27000;    // ms for the light to walk once around
   var FRAME = 42;       // ms between frames while only the light is moving
@@ -47,6 +49,7 @@
   var raw = canvas.dataset.plate;
   var N = COLS * ROWS;
   var tone;
+  var trim;   // where the kept block sits inside the untrimmed plate
 
   var full = new Float32Array(N);   // 0 = empty, 1 = solid ink
   var index = {};
@@ -84,6 +87,7 @@
     }
     var rb = bounds(rowSum, ROWS), cb = bounds(colSum, COLS);
     var r0 = rb[0], r1 = rb[1], c0 = cb[0], c1 = cb[1];
+    trim = { c0: c0, r0: r0, cols: COLS, rows: ROWS };
     var w = c1 - c0 + 1, h = r1 - r0 + 1;
     var cut = new Float32Array(w * h);
     for (r = 0; r < h; r++) {
@@ -161,6 +165,53 @@
     for (i = 0; i < N; i++) { gx[i] /= peak; gy[i] /= peak; }
   }
 
+  /* ---- the photograph behind the type ---------------------------- */
+
+  // The plate is a picture of a photograph, and the photograph is still
+  // there behind it. Rest on it and the lettering stands back and the
+  // real face comes up through it, then settles again when you leave.
+  //
+  // The file is cut to exactly the region the plate was made from, with
+  // the studio backdrop already removed, so it needs no placing: it is
+  // drawn over the whole canvas and lands on the drawn face. It is
+  // fetched on the first approach of the pointer, because a reader who
+  // never touches the picture never needs it.
+
+  var photo = null, photoReady = false, photoAsked = false;
+
+  function wantPhoto() {
+    if (photoAsked || !canvas.dataset.src) return;
+    photoAsked = true;
+    var img = new Image();
+    img.decoding = 'async';
+    img.onload = function () { photo = img; photoReady = true; schedule(); };
+    img.src = canvas.dataset.src;
+  }
+
+  /* ---- the order the cells give way in --------------------------- */
+
+  // Fading the whole photograph up over the whole plate is the cheap
+  // version of this: two flat layers crossing, and it reads as a switch
+  // rather than as one picture becoming another. Instead the pointer
+  // carries the change with it, and every cell is given its own moment
+  // to turn over inside that. The threshold here is pure grain, so the
+  // boundary between the drawing and the photograph is a ragged scatter
+  // of characters rather than a circle with an edge.
+  var order = new Float32Array(N);
+  (function () {
+    // A fixed hash rather than Math.random, so the picture dissolves the
+    // same way every time instead of reshuffling on each visit.
+    var seed = 0x2f6e2b1;
+    for (var r = 0; r < ROWS; r++) {
+      for (var c = 0; c < COLS; c++) {
+        seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; seed |= 0;
+        order[r * COLS + c] = ((seed >>> 0) % 1000) / 1000;
+      }
+    }
+  })();
+
+  var stage = null, stageCtx = null;   // the photograph, cut to the cells that have turned
+
   /* ---- drawing -------------------------------------------------- */
 
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -170,8 +221,10 @@
   var advance = null;
   var start = null;
   var pointer = null;   // {x, y} in CSS pixels within the canvas
-  var loupe = 0;        // eased 0..1, so the loupe fades rather than snaps
+  var over = false;     // is the pointer resting on the picture
+  var peek = 0;         // eased 0..1, so the effect fades in and out rather than snapping
   var raf = null, last = 0, visible = true;
+  var shown = -1;       // the peek the canvas is currently showing
 
   // EB Garamond is not a monospace, so the heavy end of the ramp draws
   // wider than its cell and the columns mush together. Each glyph's
@@ -241,6 +294,22 @@
     return true;
   }
 
+  // How far this cell has turned from drawing to photograph. Near the
+  // pointer it is fully over; further out its own grain decides, so the
+  // two pictures interleave along a broken front instead of a rim.
+  var reachPx = 0;
+
+  function reveal(i, x, y) {
+    if (peek <= 0 || !pointer) return 0;
+    var dx = x - pointer.x, dy = y - pointer.y;
+    var d = Math.sqrt(dx * dx + dy * dy) / reachPx;
+    if (d >= 1) return 0;
+    var near = 1 - d;
+    var t = peek * near * near * (3 - 2 * near);
+    var v = (t * (1 + SOFT) - order[i]) / SOFT;
+    return v <= 0 ? 0 : (v >= 1 ? 1 : v * v * (3 - 2 * v));
+  }
+
   function draw(now) {
     // Read off the canvas itself rather than out of the custom property:
     // a token holding light-dark() comes back from getPropertyValue() as
@@ -256,12 +325,47 @@
     ctx.fillStyle = ink;
 
     var elapsed = still ? Infinity : now - start;
-    var radius = LOUPE * COLS * cellW;
     var lastGlyph = RAMP.length - 1;
 
     // Where the light is standing this frame.
     var ang = still ? -2.4 : (now / ORBIT) * Math.PI * 2;
     var lx = Math.cos(ang), ly = Math.sin(ang);
+
+    var w = parseFloat(canvas.style.width);
+    var h = parseFloat(canvas.style.height);
+
+    reachPx = REACH * Math.max(w, h);
+
+    if (peek > 0.002 && photoReady && pointer) {
+      if (!stage) {
+        stage = document.createElement('canvas');
+        stageCtx = stage.getContext('2d');
+      }
+      if (stage.width !== canvas.width || stage.height !== canvas.height) {
+        stage.width = canvas.width;
+        stage.height = canvas.height;
+      }
+      var dpr = canvas.width / w;
+      stageCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      stageCtx.clearRect(0, 0, w, h);
+      stageCtx.drawImage(photo, 0, 0, w, h);
+
+      // Keep the photograph only where a cell has turned over. The
+      // rectangles overlap by a pixel so the grid does not show as a
+      // mesh of hairlines between them.
+      stageCtx.globalCompositeOperation = 'destination-in';
+      for (var mr = 0; mr < ROWS; mr++) {
+        for (var mc = 0; mc < COLS; mc++) {
+          var mv = reveal(mr * COLS + mc, (mc + 0.5) * cellW, (mr + 0.5) * cellH);
+          if (mv <= 0.002) continue;
+          stageCtx.fillStyle = 'rgba(0,0,0,' + mv.toFixed(3) + ')';
+          stageCtx.fillRect(mc * cellW - 0.5, mr * cellH - 0.5, cellW + 1, cellH + 1);
+        }
+      }
+      stageCtx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(stage, 0, 0, w, h);
+      ctx.fillStyle = ink;
+    }
 
     for (var r = 0; r < ROWS; r++) {
       var y = (r + 0.5) * cellH;
@@ -280,21 +384,17 @@
         // Slope facing the light thickens, slope facing away thins.
         var v = t + (gx[i] * lx + gy[i] * ly) * RELIEF;
 
-        if (loupe > 0.002 && pointer) {
-          var dx = x - pointer.x, dy = y - pointer.y;
-          var d = Math.sqrt(dx * dx + dy * dy);
-          if (d < radius) {
-            var f = 1 - d / radius;
-            v += f * f * loupe * LIFT;
-          }
-        }
+        // A character holds its place until its own cell turns over,
+        // and goes as the photograph arrives underneath it.
+        var alpha = k * (1 - reveal(i, x, y));
+        if (alpha < 0.01) continue;
 
         if (v < 0) v = 0; else if (v > 1) v = 1;
         var gi = Math.round(v * lastGlyph);
         var ch = RAMP[gi];
         if (ch === ' ') continue;
 
-        ctx.globalAlpha = k;
+        ctx.globalAlpha = alpha;
 
         var gw = advance[gi] * fontPx;
         if (gw > cellW) {
@@ -315,22 +415,23 @@
     raf = null;
     if (start === null) start = now;
 
-    var want = pointer ? 1 : 0;
-    loupe += (want - loupe) * 0.22;
-    if (Math.abs(want - loupe) < 0.004) loupe = want;
+    var want = over ? 1 : 0;
+    peek += (want - peek) * EASE;
+    if (Math.abs(want - peek) < 0.004) peek = want;
 
     var developing = !still && now - start < DEVELOP + FADE + 40;
-    var busy = developing || loupe > 0.002;
+    var live = over || peek > 0.002;
 
-    // While the light is the only thing moving there is no reason to
-    // redraw sixty times a second.
-    if (busy || now - last >= FRAME) {
+    // Under the pointer the revealed patch moves with it, so draw every
+    // frame. Left alone, the raking light is the only thing going and a
+    // third of that rate is plenty.
+    if (developing || live || now - last >= FRAME) {
       draw(now);
       last = now;
+      shown = peek;
     }
 
-    if (!still && visible) schedule();
-    else if (busy) schedule();
+    if (developing || live || (!still && visible)) schedule();
   }
 
   function schedule() {
@@ -341,16 +442,26 @@
     if (layout()) schedule();
   }
 
+  canvas.addEventListener('pointerenter', wantPhoto);
+
   canvas.addEventListener('pointermove', function (e) {
+    wantPhoto();
     var box = canvas.getBoundingClientRect();
     pointer = { x: e.clientX - box.left, y: e.clientY - box.top };
+    over = true;
     schedule();
   });
 
-  canvas.addEventListener('pointerleave', function () {
-    pointer = null;
+  function release() {
+    over = false;
     schedule();
-  });
+  }
+
+  canvas.addEventListener('pointerleave', release);
+  // A finger never leaves: without these the picture would stay half
+  // turned over after a tap.
+  canvas.addEventListener('pointerup', release);
+  canvas.addEventListener('pointercancel', release);
 
   window.addEventListener('resize', refit);
   if (wide.addEventListener) wide.addEventListener('change', refit);

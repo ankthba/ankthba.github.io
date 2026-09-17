@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiki · Pragmatic</title>
+
+    <meta name="description" content="A file-by-file reference to the Pragmatic runtime's Rust workspace, written for a reader who has never touched Rust. Every claim checked against the source at v0.4.0.">
+    <meta name="author" content="Aniketh Bandlamudi">
+
+    <meta property="og:title" content="Wiki · Pragmatic">
+    <meta property="og:description" content="A file-by-file reference to the Pragmatic runtime's Rust workspace, written for a reader who has never touched Rust. Every claim checked against the source at v0.4.0.">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://aniketh.net/assets/img/pragmaticog.png">
+    <link rel="canonical" href="https://aniketh.net/pragmatic/wiki/">
+
+    <meta name="color-scheme" content="light dark">
+    <link rel="icon" type="image/png" href="/assets/img/pragmaticfavicon.png">
+
+<style>
+:root{
+  /* Wikipedia's own tokens */
+  --wp-base:#202122; --wp-subtle:#54595d; --wp-faint:#72777d;
+  --wp-paper:#ffffff; --wp-neutral-subtle:#f8f9fa; --wp-neutral:#eaecf0;
+  --wp-border:#a2a9b1; --wp-border-subtle:#c8ccd1;
+  --wp-link:#3366cc; --wp-visited:#795cb2;
+  --wp-bar-note:#fc3; --wp-bar-qa:#3366cc; --wp-bar-test:#14866d;
+  --wp-serif:'Linux Libertine','Libertinus Serif',Georgia,'Times New Roman',Times,serif;
+  --wp-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Lato,Helvetica,Arial,sans-serif;
+  --wp-mono:ui-monospace,Menlo,Consolas,'Liberation Mono',monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wp-base:#f8f9fa; --wp-subtle:#a2a9b1; --wp-faint:#8b9298;
+  --wp-paper:#101418; --wp-neutral-subtle:#27292d; --wp-neutral:#202122;
+  --wp-border:#54595d; --wp-border-subtle:#43464a;
+  --wp-link:#88a9e0; --wp-visited:#a799cc;
+  --wp-bar-note:#ab7f2a; --wp-bar-qa:#88a9e0; --wp-bar-test:#2a9d78;
+}}
+:root[data-theme="dark"]{
+  --wp-base:#f8f9fa; --wp-subtle:#a2a9b1; --wp-faint:#8b9298;
+  --wp-paper:#101418; --wp-neutral-subtle:#27292d; --wp-neutral:#202122;
+  --wp-border:#54595d; --wp-border-subtle:#43464a;
+  --wp-link:#88a9e0; --wp-visited:#a799cc;
+  --wp-bar-note:#ab7f2a; --wp-bar-qa:#88a9e0; --wp-bar-test:#2a9d78;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--wp-paper);color:var(--wp-base);
+  font:14px/1.6 var(--wp-sans);-webkit-font-smoothing:antialiased}
+a{color:var(--wp-link);text-decoration:none}
+a:hover{text-decoration:underline}
+a:visited{color:var(--wp-visited)}
+:focus-visible{outline:2px solid var(--wp-link);outline-offset:1px}
+
+/* ── shell ─────────────────────────────────────────────── */
+.wiki{display:grid;grid-template-columns:15.5rem minmax(0,1fr);
+  max-width:1596px;margin:0 auto;align-items:start}
+.sidebar{position:sticky;top:0;max-height:100vh;overflow-y:auto;
+  padding:1rem .75rem 3rem}
+.page{min-width:0;max-width:60rem;padding:1.25rem 2rem 3rem;
+  border-left:1px solid var(--wp-border-subtle);min-height:100vh}
+
+/* wordmark, in Wikipedia's serif lockup */
+.brand{display:flex;align-items:center;gap:.6rem;padding:0 .4rem 1rem}
+.brand img{width:30px;height:30px;display:block;flex:none}
+:root[data-theme="dark"] .brand img{filter:invert(1)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand img{filter:invert(1)}}
+.brand b{display:block;font:400 15px/1.1 var(--wp-serif);letter-spacing:.06em;
+  text-transform:uppercase}
+.brand span span{display:block;font:400 9.5px/1.3 var(--wp-serif);
+  color:var(--wp-subtle);letter-spacing:.01em;margin-top:2px}
+
+/* ── sidebar portals (Vector 2022) ─────────────────────── */
+.portal{margin-bottom:1rem}
+.portal>summary{list-style:none;cursor:pointer;display:flex;
+  align-items:baseline;justify-content:space-between;gap:.5rem;
+  font:400 .8125rem/1.4 var(--wp-sans);color:var(--wp-subtle);
+  padding:0 .4rem .3em;border-bottom:1px solid var(--wp-border-subtle);
+  margin-bottom:.35rem}
+.portal>summary::-webkit-details-marker{display:none}
+.portal>summary::after{content:"[hide]";color:var(--wp-link);font-size:.75rem;
+  flex:none}
+.portal:not([open])>summary::after{content:"[show]"}
+.portal>summary:hover::after{text-decoration:underline}
+#toc-d>summary{font-weight:700;color:var(--wp-base)}
+
+.portal-list{list-style:none;margin:0;padding:0}
+.portal-list li{margin:0}
+.portal-list a{display:block;font-size:.8125rem;line-height:1.4;
+  color:var(--wp-link);padding:.22rem .4rem}
+.portal-list a:hover{text-decoration:underline}
+
+/* ── contents rail ─────────────────────────────────────── */
+.toc{display:flex;flex-direction:column;counter-reset:tsec}
+.toc a{display:block;font-size:.8125rem;line-height:1.4;color:var(--wp-base);
+  padding:.28rem .4rem .28rem .5rem;border-left:2px solid transparent}
+.toc a:hover{background:var(--wp-neutral-subtle);
+  border-left-color:var(--wp-border);text-decoration:none}
+.toc a:visited{color:var(--wp-base)}
+.toctop{font-weight:700}
+.tocpart{counter-increment:tsec;counter-reset:tsub;margin-top:.3rem;font-weight:700}
+.tocpart::before{content:counter(tsec) "\00a0\00a0";color:var(--wp-subtle);
+  font-weight:400;font-variant-numeric:tabular-nums}
+.tocfile{padding-left:1.5rem !important;font-weight:400;counter-increment:tsub}
+.tocfile::before{content:counter(tsec) "." counter(tsub) "\00a0\00a0";
+  color:var(--wp-subtle);font-variant-numeric:tabular-nums}
+.tocfile code{background:none;padding:0;border:none;font-size:.78rem;color:inherit}
+
+/* ── page head ─────────────────────────────────────────── */
+.pagehead{margin-bottom:.35em}
+h1{font:400 1.95rem/1.25 var(--wp-serif);padding-bottom:.18em;
+  border-bottom:1px solid var(--wp-border);margin-bottom:.2em}
+.tagline{font-size:.8125rem;color:var(--wp-subtle);margin-bottom:.9em}
+.hatnote{font-style:italic;padding-left:1.6em;margin-bottom:1em;
+  font-size:.875rem;color:var(--wp-base)}
+
+/* ── infobox ───────────────────────────────────────────── */
+.infobox{float:right;clear:right;width:22em;margin:0 0 1em 1.4em;
+  background:var(--wp-neutral-subtle);border:1px solid var(--wp-border);
+  font-size:88%;line-height:1.5}
+.infobox .ib-title{font:700 125%/1.3 var(--wp-serif);text-align:center;
+  padding:.35em .6em;background:var(--wp-neutral);
+  border-bottom:1px solid var(--wp-border)}
+.infobox table{width:100%;border-collapse:collapse;min-width:0}
+.infobox th{text-align:left;vertical-align:top;padding:.36em .6em;width:42%;
+  font-weight:700;color:var(--wp-base);background:none;border:none;
+  border-bottom:1px solid var(--wp-border-subtle);font-size:100%;
+  letter-spacing:0;text-transform:none;line-height:1.5}
+.infobox td{padding:.36em .6em;vertical-align:top;border:none;overflow-wrap:anywhere;
+  border-bottom:1px solid var(--wp-border-subtle)}
+.infobox tr:last-child th,.infobox tr:last-child td{border-bottom:none}
+.infobox .ib-sec{background:var(--wp-neutral);font-weight:700;text-align:center;
+  padding:.28em .6em;border-bottom:1px solid var(--wp-border-subtle);
+  font-size:100%;letter-spacing:0;text-transform:none}
+@media (max-width:820px){.infobox{float:none;width:100%;margin:0 0 1em}}
+
+/* ── section numbering ─────────────────────────────────── */
+main{counter-reset:sec}
+main>.part{counter-increment:sec;counter-reset:sub;margin-bottom:1.5em}
+.eyebrow{display:none}
+.parthead{margin:1em 0 .25em}
+h2{font:400 1.5rem/1.3 var(--wp-serif);padding-bottom:.18em;
+  border-bottom:1px solid var(--wp-border);text-wrap:balance}
+h2::before{content:counter(sec) "\00a0\00a0";color:var(--wp-subtle)}
+h3{font:700 1.2rem/1.35 var(--wp-sans);margin:1em 0 .2em}
+h4{font:700 1rem/1.35 var(--wp-sans);margin:.9em 0 .15em}
+.modintro{margin-bottom:.4em;max-width:none}
+.modintro p{margin:.5em 0}
+p{margin:.5em 0}
+
+/* ── file entries as numbered subsections ──────────────── */
+.entry{counter-increment:sub;margin:1.1em 0 1.6em}
+.entryhead{display:flex;align-items:baseline;gap:.55em;flex-wrap:wrap;
+  padding-bottom:.15em;border-bottom:1px solid var(--wp-border-subtle);
+  margin-bottom:.5em}
+.entryhead .cur{display:none}
+.fname{font:700 1.2rem/1.35 var(--wp-sans);background:none;padding:0;border:none}
+.fname::before{content:counter(sec) "." counter(sub) "\00a0\00a0";
+  color:var(--wp-subtle);font-weight:400;font-variant-numeric:tabular-nums}
+.role{color:var(--wp-subtle);font-size:.875rem;font-style:italic}
+.relpath{margin-left:auto;font:.75rem/1 var(--wp-mono);color:var(--wp-faint);
+  white-space:nowrap}
+@media (max-width:700px){.relpath{display:none}}
+.entry p{margin:.5em 0}
+ul,ol{margin:.3em 0 0 1.6em;padding:0}
+li{margin-bottom:.1em}
+.entry ol,.entry ul{margin:.3em 0 .5em 1.6em;padding:0}
+
+/* ── code ──────────────────────────────────────────────── */
+code{font-family:var(--wp-mono);font-size:.85em;background:var(--wp-neutral-subtle);
+  border:1px solid var(--wp-neutral);border-radius:2px;padding:1px 4px;
+  color:var(--wp-base)}
+pre{background:var(--wp-neutral-subtle);border:1px solid var(--wp-neutral);
+  padding:1em;overflow-x:auto;margin:.8em 0;
+  font:12.5px/1.4 var(--wp-mono);color:var(--wp-base)}
+pre code{background:none;padding:0;border:none;font:inherit}
+
+/* ── message boxes (ambox) ─────────────────────────────── */
+.remember,.block{margin:.9em 0;padding:.6em 1em;background:var(--wp-neutral-subtle);
+  border:1px solid var(--wp-border-subtle);border-left:6px solid var(--wp-bar-note)}
+.block{border-left-color:var(--wp-bar-qa)}
+.block-tests{border-left-color:var(--wp-bar-test)}
+.remember .label,.block .label{display:block;font-weight:700;font-size:.75rem;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--wp-subtle);
+  margin-bottom:.35em}
+.remember p{margin:.2em 0;font-weight:700}
+.block p{margin:.45em 0}
+.block ul,.block ol{margin:.4em 0 .4em 1.6em;padding:0}
+
+blockquote{border-left:3px solid var(--wp-border-subtle);padding-left:1em;
+  color:var(--wp-subtle);margin:.8em 0}
+
+/* ── wikitable ─────────────────────────────────────────── */
+.tablewrap{overflow-x:auto;margin:1em 0}
+table{border-collapse:collapse;background:var(--wp-paper);font-size:.875rem}
+.tablewrap table{border:1px solid var(--wp-border);min-width:380px}
+th{background:var(--wp-neutral);font-weight:700;text-align:center;
+  padding:.3em .6em;border:1px solid var(--wp-border);color:var(--wp-base);
+  font-size:.875rem;letter-spacing:0;text-transform:none;line-height:1.5}
+td{padding:.3em .6em;border:1px solid var(--wp-border);vertical-align:top;overflow-wrap:break-word}
+.path{font-family:var(--wp-mono);font-size:.85em;color:var(--wp-subtle)}
+
+/* ── figure (thumb) ────────────────────────────────────── */
+.mapwrap{margin:1em 0;padding:.6em;border:1px solid var(--wp-border-subtle);
+  background:var(--wp-neutral-subtle);overflow-x:auto}
+.mapwrap::after{display:block;margin-top:.7em;padding:.4em .2em 0;
+  border-top:1px solid var(--wp-border-subtle);font-size:.8125rem;
+  line-height:1.45;color:var(--wp-subtle);
+  content:"Figure 1. Workspace layout: the zero-dependency core, the crates that implement or consume it, and the four bindings that wrap the C ABI."}
+.maprow{display:flex;gap:.6em;justify-content:center;flex-wrap:wrap}
+.crate{border:1px solid var(--wp-border);padding:.45em .8em;min-width:148px;
+  background:var(--wp-paper)}
+.crate b{display:block;font:700 12.5px/1.3 var(--wp-mono)}
+.crate span{font-size:11px;color:var(--wp-subtle)}
+.crate.core{background:var(--wp-neutral);border-width:2px;text-align:center;min-width:320px}
+.crate.ghost{border-style:dashed}
+.crate.wide{min-width:320px;text-align:center}
+.mapdown{text-align:center;font:11px/2.2 var(--wp-mono);color:var(--wp-faint)}
+.maplabel{display:block;width:100%;text-align:center;font-weight:700;
+  font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--wp-subtle);margin-bottom:.5em}
+
+/* ── footer ────────────────────────────────────────────── */
+.foot{margin-top:2em;padding-top:1em;border-top:1px solid var(--wp-border-subtle);
+  color:var(--wp-subtle);font-size:.75rem;line-height:1.5;
+  display:flex;flex-direction:column;gap:.3em}
+
+@media (max-width:980px){
+  .wiki{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:static;max-height:none;overflow:visible;
+    padding:.75rem 1rem;border-bottom:1px solid var(--wp-border-subtle)}
+  .brand{padding:0 0 .75rem}
+  .portal{margin-bottom:.5rem}
+  .portal>summary{padding:.45em .1rem}
+  .portal:not([open]){margin-bottom:.35rem}
+  .portal:not([open])>summary{border-bottom:none}
+  .portal-list a,.toc a{padding-top:.4rem;padding-bottom:.4rem}
+  .page{border-left:none;padding:1rem 1rem 3rem;max-width:none;min-height:0}
+}
+</style>
+</head>
+<body>
+
+<div class="wiki" id="top">
+<aside class="sidebar">
+<div class="brand"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAIJklEQVR42u1cCWxWRRDmEAqFcii3rQhSRa2oQAGJiGfUqNGgHFHBCAajMRqNilHkVKhgRA4TjCIgKOAVDCoWjWgUg3hLUBTvUg5FRU4R+OtMMqvjsLtv3+vf9JXOJF/+FHb39X3f7Ozs7PavU0dNTU1NTU1NTU1NTU1NTU1NTU1NTS0Flte0SV1E0r7KYJbIh88WgCMDcRSgnoqQPfKvBfwA+BnwUwDKAY8DGqoI2SF/L6AiAZ5SEbJHfiYG8RnWfo6KkIz8ayzkrwDMBMxyAP9vrqWfihAna3F4/kJATuA4wwH7VITskt+IzxIfIkTIUwHc5J8B+IvIOmgjP2YYux6wQ6wJVyjjbgEKAFvYYvqRCTtxvJa3pXXDjIcpahtl3C/CLBY2fgF0qsRYXQHbmQBTdQ2IJq+YwpAJGfclnQHw+QAjfzegmwoQHb/rA95gxH0JaJpABCxdfMvGWVaZulJtC0NXi+zlyjiLMNtH8DEGqPeHC9FceO8rod5L7eoB3mT91wGaKLPxZsFERuAewKlRHsz69hLryL3q/fEFOIFyeCPCwzEEeIz1+x3QWZlNJsLzjEgsRbcK6NMOsJn1W6Den1yAi2lHbELJCBeZrM8tbPE9ADhXBUguRGPAp8yb3wMc4REhB7CGtV9d6wpw8kWT5t7Mo29nhO4H9LOUG0zb88nrzYy5KSn5tt879SIyItBzBwDaJxWCjZVPJQkjwhyPAM+ydngs2TbJLlqMjefLQ8y7pFYERkIDKvsiCRsB0wE9k3gSG/MJRuw2wDGSLPg8TtR9ZiR5Fvv5FEAJ4Hsa721A61SK4CCfHyFiTv46eVJz6W2uF2Lj9gX8zca70yLA/ey5+LwePrJsz8bNGparAUsBu9jzDqZWBEZAQ8CTAee36wHjMM8Pjbm48ALeYWN8Dshl7fJoXPP/pbQbrhsY2zsBRgG+iDhnxs+VqREhwvOx+ricNkIVFmEwXCwGXMSPGi1eyQ9X+IH7pazNVWL8IbZ1QvyMop4NmEdhzfY77qQyyKbUiSA8X5KPR4HD6f+PB4wVHiqBBy+34YLr8lZaDH9kfV5ibV5l//4NoJnH29sCRgJWsdAigXF/MqCI+vRniUCGhaM21SYCvVwOWyAPIV+0bwYYTLNir8Pj8DRsNh1N2mbBFOGduPCeRLUiM854x6LaHTCNdtQ20nGNeQtwHd6uszzbJkIpD4XVIUI+q9dkKOyMkIuchYwegEcBZQ4hDBnDBBlF9AzTbjQ7dMH+f+KME6IPArwWIHpfc53R9fuTCJtY/2081a6O8JMv4ucMX85vicMYDm60hANO0HciHDzH2pRT3ce0f5raFALGAL5yjGkNe4EZ2VQ2Bj67XZoEGBcSEx0L4jmA+YDfHKTtokV7ptjtmna4S55EY2x3jIEzZAnVmBrF2SSyd56cZgEmxN38WMJTZ8A9gLUe7z1gieEHPLPoa1wbQlLfgHcuOWwEiJgVrk1RJiBXj9z8VeKdD08BImZFV0plywIE2EokdctGUVAF+G9RHR1DgAcBJ9dGAcYnEcBRl8kFXAZ4kXL+uCFoD23QBmKpIrT+VNMFmJik/Ct+7ojFNsBnHqJDFuEKcbcIi3WFSev7jste1S5AgUj5sFRQHJJTC2/Hy1hnUUnjV4dH4wbsBbq66EtDF4rDfN7uD8AzgAvMSVlIeGLv24H2D2bMrdWyERM7zVXiRctsIjhie2vADYB3HV5tRJ3CrhUuYs/bTCSYZ89li/YEqgu5QtUaOj/uEOEcnPzV4l2xvtWyuotxBewclovQ00P8aXjNhG4r2wjaT+Xn4fwmBNV9eEo6lm2MMjQbu7D2LeiWXSm79i6xia6x9HZVTx3k4y68T1oqovkOEYpZ26Z4xZDKu3sshx0VVOzC4t6Zoi5Tz7IL3UXZURHVecxzxzrWlmLaRZc7wtM+upOKVxpbsH5HO8jvnY3sqqpFwMrjJXTYsc6zqH4CuMMcNTq8sCU7HkQsNeLQhovvevM8s6894GYi1ZVRbaAQ1g/wvninjZz8tJ2Kobd8IH7hjMPjdtDFKxSosStNZJ/DxIHM5azPYDH+QNHXlubiIdJ5eHHLc2i030J+r1R4foQIfCYcFC+1gVK5E0OOJNmV9ZVsjLX8si0lA3zBXR7zSLIL/h2CZZZmWIgsTy35EeHIF19D078+7A/uEKMsIWocIw3XhNNDK7OWdWqZWKfSF3YCRVhBhx29feezAWPNZmRgubqjRYBCKjebdtNCCfNkao8APuTZTo24YcdIqZ+0FiNSwK2M2Hm2A3f6XCy8tnUWqrI5NYr8KhDxVrEo9vcIcKFYc0bWiLCRYhEaAT5mAmBK2MBFatz2atHeH+zRlhmTcc0YtXABljBvLvPFdLFmbPGtGWph5MfOajxZ07HKbHwBYuf1ln1DRu4blOHwMnfQztaRRtani11855yrzIZ7v7e2EzjGUFvtSGdBtPfK6uZ6Xt2MMZasnr6sX1UQRlx3Ud8fk4B8MwsmifODIp0F0aRNZ6Hjf3WfLGRSJSqAn7h2rO6ToesoA+MW8MTXn+0W9fxWyrSbuGbi9rO5DTEoRARB/lDLd88toCuPOgM8JOayHbBThIgv7BvKDuH/vbqe5OvPaus6kMtKy4eIEDGGjfz5Sn58ERpbRNhJmc1dgLsF8DbdQ+wki5Ov3xdaiZmwJOFXF2vYqQIR4kDJz7IIi2gd2BGB3fS3v0p+lkXIoY1VlwgU6ilYFYlQ1X3Uwjds3n2Ampqampqampqampqampqampqamtoh9g/QrfSjidRf9gAAAABJRU5ErkJggg==" alt=""><span><b>Pragmatic</b><span>engineering wiki</span></span></div>
+<details class="portal" id="nav-d" open>
+<summary>Navigation</summary>
+<ul class="portal-list">
+<li><a href="#top">Main page</a></li>
+<li><a href="/pragmatic/">Pragmatic home</a></li>
+<li><a href="/pragmatic/runtime/">The runtime</a></li>
+<li><a href="/pragmatic/docs/">Docs</a></li>
+<li><a href="/pragmatic/practice/">In practice</a></li>
+<li><a href="/pragmatic/questions/">Questions</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain">Repository</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain/blob/main/docs/quickstart.md">Quickstart</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain/blob/main/docs/concepts.md">Concepts</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain/blob/main/CHANGELOG.md">Changelog</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain/blob/main/SECURITY.md">Security policy</a></li>
+<li><a href="https://github.com/pragmaticco/pragmaticMain/blob/main/LICENSE">License (BUSL-1.1)</a></li>
+</ul>
+</details>
+<details class="portal" id="toc-d" open>
+<summary>Contents</summary>
+<nav class="toc">
+<a class='toctop' href='#top'>(Top)</a>
+<a class='tocpart' href='#part-0'>The big idea</a>
+<a class='tocpart' href='#part-1'>Just enough Rust to read this guide</a>
+<a class='tocpart' href='#part-2'>Core crate I — the foundations (value, fault, sha256, journal)</a>
+<a class='tocfile' href='#f-crates-pragmatic-src-lib-rs'><code>pragmatic/lib.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-value-rs'><code>value.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-fault-rs'><code>fault.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-sha256-rs'><code>sha256.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-journal-rs'><code>journal.rs</code></a>
+<a class='tocpart' href='#part-3'>Core crate II — the execution engine (oracle, ctx, store)</a>
+<a class='tocfile' href='#f-crates-pragmatic-src-oracle-rs'><code>oracle.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-ctx-rs'><code>ctx.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-store-rs'><code>store.rs</code></a>
+<a class='tocpart' href='#part-4'>Core crate III — the drivers (runtime, async_runtime, supervisor, memory)</a>
+<a class='tocfile' href='#f-crates-pragmatic-src-runtime-rs'><code>runtime.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-async-runtime-rs'><code>async_runtime.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-supervisor-rs'><code>supervisor.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-src-memory-rs'><code>memory.rs</code></a>
+<a class='tocpart' href='#part-5'>The macro crate — #[pragmatic::durable]</a>
+<a class='tocfile' href='#f-crates-pragmatic-macros-cargo-toml'><code>pragmatic-macros/Cargo.toml</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-macros-src-lib-rs'><code>pragmatic-macros/lib.rs</code></a>
+<a class='tocpart' href='#part-6'>The model adapters — pragmatic-anthropic and pragmatic-openai</a>
+<a class='tocfile' href='#f-crates-pragmatic-anthropic-src-lib-rs'><code>pragmatic-anthropic/lib.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-openai-src-lib-rs'><code>pragmatic-openai/lib.rs</code></a>
+<a class='tocpart' href='#part-7'>The C ABI — pragmatic-ffi</a>
+<a class='tocfile' href='#f-crates-pragmatic-ffi-include-pragmatic-h'><code>pragmatic.h</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-ffi-src-lib-rs'><code>pragmatic-ffi/lib.rs</code></a>
+<a class='tocpart' href='#part-8'>The other languages — pragmatic-python and bindings/</a>
+<a class='tocfile' href='#f-crates-pragmatic-python-src-lib-rs'><code>pragmatic-python/lib.rs</code></a>
+<a class='tocfile' href='#f-bindings-cpp-pragmatic-hpp'><code>pragmatic.hpp</code></a>
+<a class='tocfile' href='#f-bindings-go-pragmatic-go'><code>pragmatic.go</code></a>
+<a class='tocfile' href='#f-bindings-java-pragmatic-pragmatic-java'><code>Pragmatic.java</code></a>
+<a class='tocfile' href='#f-bindings-node-pragmatic-js'><code>pragmatic.js</code></a>
+<a class='tocpart' href='#part-9'>The operator console — pragmatic-cli</a>
+<a class='tocfile' href='#f-crates-pragmatic-cli-src-main-rs'><code>pragmatic-cli/main.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-cli-src-export-rs'><code>export.rs</code></a>
+<a class='tocfile' href='#f-crates-pragmatic-cli-src-serve-rs'><code>serve.rs</code></a>
+<a class='tocpart' href='#part-10'>The rest of the repository</a>
+<a class='tocpart' href='#appendix'>Appendix — defending the whole system</a>
+</nav>
+</details>
+<script>
+(function(){
+  var mq = window.matchMedia('(min-width: 981px)');
+  var panels = ['nav-d','toc-d'].map(function(id){ return document.getElementById(id); });
+  function sync(m){ panels.forEach(function(d){ if(d) d.open = m.matches; }); }
+  sync(mq);
+  if (mq.addEventListener) mq.addEventListener('change', sync);
+  else if (mq.addListener) mq.addListener(sync);
+})();
+</script>
+</aside>
+<article class="page">
+<div class="pagehead"><h1>Pragmatic</h1><p class="tagline">From the Pragmatic engineering wiki, the internal reference</p></div>
+<p class="hatnote">This article covers the Rust implementation and its repository. For the formal model it implements, see &sect;11 and &sect;12.</p>
+<aside class="infobox">
+  <div class="ib-title">Pragmatic</div>
+  <table>
+    <tr><th>Developer</th><td>Pragmatic Research, Inc.</td></tr>
+    <tr><th>Written in</th><td>Rust (edition 2021)</td></tr>
+    <tr><th>Initial release</th><td>0.2.0 &mdash; 13 July 2026</td></tr>
+    <tr><th>Stable release</th><td>0.4.0 &mdash; 8 August 2026</td></tr>
+    <tr><td class="ib-sec" colspan="2">Repository</td></tr>
+    <tr><th>Workspace</th><td>7 crates, 26 documented files</td></tr>
+    <tr><th>Core dependencies</th><td>None</td></tr>
+    <tr><th>Bindings</th><td>Python, C++, Go, Java, Node.js</td></tr>
+    <tr><th>Test suite</th><td>82 passing, 0 failing</td></tr>
+    <tr><td class="ib-sec" colspan="2">License</td></tr>
+    <tr><th>License</th><td>BUSL&#8209;1.1</td></tr>
+    <tr><th>Converts to</th><td>Apache&nbsp;2.0 on 6 August 2030</td></tr>
+    <tr><th>Source</th><td><a href="https://github.com/pragmaticco/pragmaticMain">pragmaticco/pragmaticMain</a></td></tr>
+  </table>
+</aside>
+<main>
+      <section class="part" id="part-0"><div class="parthead"><span class="eyebrow">Part 0</span><h2>The big idea</h2></div><p>Pragmatic is a <strong>black-box recorder for LLM agents</strong>, written in Rust. Two promises: if an agent crashes 900 steps into a 1,000-step job, it resumes on step 901 without re-paying for a single token; and when someone asks "what did the agent actually do?", the entire run replays bit-for-bit from a tamper-evident log, with the model never contacted.</p>
+<p>Both promises come from <strong>one trick</strong>, and every file in this repository exists to serve it:</p>
+<ol><li>An LLM call is treated as a <strong>draw from a probability distribution</strong>. The code calls this the <strong>Oracle</strong>.</li><li>Every realized draw — plus every side effect, message receive, and clock read — is <strong>appended to a log</strong> the moment it happens. The log is the <strong>Journal</strong>, and each entry is hashed together with the previous entry's hash, forming a chain.</li><li>Crash recovery and audit replay are now the <strong>same operation</strong>: run the agent function again from the top, but feed it recorded outcomes from the journal instead of sampling the model. Editing any journal entry after the fact breaks the hash chain at exactly that spot.</li></ol>
+<p>There are only four names you need to keep in your head. Everything else is supporting cast.</p>
+<div class='tablewrap'><table><thead><tr><th>Name</th><th>What it is</th></tr></thead><tbody><tr><td><code>Oracle</code></td><td>the LLM call, as a swappable trait — the <em>only</em> source of randomness</td></tr><tr><td><code>Journal</code></td><td>the append-only, hash-chained log where every outcome is saved</td></tr><tr><td><code>Ctx</code></td><td>the handle your agent function holds; <code>ctx.oracle(...)</code> decides record-vs-replay</td></tr><tr><td><code>Runtime</code></td><td>the driver: <code>run</code>, <code>resume</code>, <code>replay</code>, <code>verify</code></td></tr></tbody></table></div>
+<p><strong>How the workspace fits together.</strong> The core crate (<code>pragmatic</code>) has zero dependencies and contains the whole mechanism. Around it: two adapters that plug real model APIs into the <code>Oracle</code> trait, a macro that stamps your agent's code version into the journal, a CLI for inspecting journals, and a C ABI that carries the runtime into five other languages.</p>
+<p><strong>How to use this guide.</strong> This guide assumes nothing. If you have never written Rust, start with Part 1 — it teaches exactly the Rust needed to read this codebase, using only code from this repo, and you can jump back to it any time a symbol looks unfamiliar. The mechanism itself lives in Parts 2–4 (the core crate); every later part is a wrapper around it. Each file gets: a plain-words walkthrough with real code from the repo, the one thing to remember, the Rust patterns in play, and the questions someone will eventually ask you about it — with honest answers, including the known trade-offs. Being upfront about a documented trade-off <em>is</em> the defense.</p>
+<div class="mapwrap">
+<div class="maprow maplabel-row"><span class="maplabel">model adapters</span></div>
+<div class="maprow">
+  <div class="crate"><b>pragmatic-anthropic</b><span>Claude, tool use</span></div>
+  <div class="crate"><b>pragmatic-openai</b><span>any compatible server</span></div>
+  <div class="crate ghost"><b>pragmatic-macros</b><span>#[durable]</span></div>
+</div>
+<div class="mapdown">implement Oracle &nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp; optional feature</div>
+<div class="maprow">
+  <div class="crate core"><b>pragmatic</b><span>Oracle &middot; Journal &middot; Ctx &middot; Runtime &mdash; zero dependencies</span></div>
+</div>
+<div class="mapdown">&darr; consumed by</div>
+<div class="maprow">
+  <div class="crate"><b>pragmatic-python</b><span>PyO3, direct</span></div>
+  <div class="crate"><b>pragmatic-ffi</b><span>C ABI</span></div>
+  <div class="crate"><b>pragmatic-cli</b><span>reads journals</span></div>
+</div>
+<div class="mapdown">&darr; wraps the C ABI</div>
+<div class="maprow">
+  <div class="crate wide"><b>bindings/</b><span>C++ &middot; Go &middot; Java &middot; Node</span></div>
+</div>
+</div>
+</section>
+<section class="part" id="part-1"><div class="parthead"><span class="eyebrow">Part 1</span><h2>Just enough Rust to read this guide</h2></div><p>This part exists so you never have to leave the guide to look something up. It teaches exactly the Rust you need to read this codebase — nothing more. Read it once now, then come back to it whenever a later section uses a symbol you don't recognize. Every example below is real code from this repo.</p>
+<h3>What you're looking at — a workspace of crates</h3>
+<p>A <strong>crate</strong> is Rust's word for a package: one library or one program. This repo is a <strong>workspace</strong>: seven crates that build together, listed in the <code>Cargo.toml</code> file at the root. <code>Cargo.toml</code> is the manifest — name, version, dependencies — and <strong>Cargo</strong> is Rust's build tool that reads it.</p>
+<p>Inside each crate, the code lives in <code>src/</code>. Two special filenames: <code>src/lib.rs</code> means "this crate is a library" (code for others to use), and <code>src/main.rs</code> means "this crate is a program you can run" (only <code>pragmatic-cli</code> has one). The <code>target/</code> folder is just build output — machine-generated, never read it.</p>
+<p>One more word you'll see constantly: <strong>stdlib</strong> (standard library) — the toolbox every Rust program gets for free: files, strings, networking. "Zero dependencies" means the core crate uses <em>only</em> that toolbox.</p>
+<h3>Structs — data with a name</h3>
+<p>A <strong>struct</strong> bundles data under a name:</p>
+<pre><code class="lang-rust">pub struct Value(pub Vec&lt;u8&gt;);</code></pre>
+<p>In plain words: "a <code>Value</code> is a <code>Vec&lt;u8&gt;</code> — a growable list of bytes — wrapped in a new name." Wrapping one thing in a new name is called a <strong>newtype</strong>; it exists so the compiler treats "journaled bytes" as its own kind of thing, not just any bytes. <code>pub</code> means public — visible to code outside this file. The wrapped value is reached as <code>.0</code> (field number zero).</p>
+<h3>Enums — a value that is one of a fixed list</h3>
+<p>A Rust <strong>enum</strong> is a type that must be exactly one of several named options — and each option can carry data:</p>
+<pre><code class="lang-rust">pub enum Fault {
+    OracleErr(String),
+    Timeout,
+    BudgetExhausted,
+    JournalDesync { cursor: Cursor, expected: String, found: String },
+    // ...
+}</code></pre>
+<p>In plain words: "a <code>Fault</code> is <em>either</em> an oracle error carrying a message, <em>or</em> a timeout carrying nothing, <em>or</em> a desync carrying three named fields, <em>or</em> …". This is how the codebase makes lists of possibilities airtight: every failure must fit one of these boxes.</p>
+<p>You take enums apart with <strong><code>match</code></strong>:</p>
+<pre><code class="lang-rust">match fault {
+    Fault::Timeout =&gt; Decision::Restart,
+    Fault::JournalDesync { .. } =&gt; Decision::Stop,
+    _ =&gt; Decision::Escalate,
+}</code></pre>
+<p>The compiler <em>forces</em> you to handle every option (<code>_</code> means "everything else"). When the guide says "the supervisor dispatches on the fault tag," this is the machinery it means.</p>
+<h3>Traits — a job description any type can apply for</h3>
+<p>A <strong>trait</strong> is a list of functions a type promises to provide. It's the single most important concept for this codebase:</p>
+<pre><code class="lang-rust">pub trait Oracle {
+    fn call(&amp;self, prompt: &amp;Value) -&gt; Result&lt;Value, Fault&gt;;
+}</code></pre>
+<p>In plain words: "anything calling itself an <code>Oracle</code> must have a <code>call</code> function that takes a prompt and returns either a <code>Value</code> or a <code>Fault</code>." A type applies for the job with an <strong><code>impl</code></strong> block: <code>impl Oracle for AnthropicOracle { ... }</code> says "the Anthropic client is an Oracle — here's its <code>call</code>."</p>
+<p>This is why the runtime never cares which model you use. It's written against the job description, not the applicant:</p>
+<pre><code class="lang-rust">pub struct Runtime&lt;O: Oracle&gt; { /* ... */ }</code></pre>
+<p>The <code>&lt;O: Oracle&gt;</code> part is a <strong>generic</strong>: "this runtime works for any type <code>O</code>, as long as <code>O</code> is an Oracle." Real model, fake test model, model that refuses to answer — all interchangeable.</p>
+<h3>Result and <code>?</code> — errors as values</h3>
+<p>Rust has no exceptions. A function that can fail returns a <strong><code>Result</code></strong>, which is just an enum: <code>Ok(the answer)</code> or <code>Err(the problem)</code>. The <strong><code>?</code> operator</strong> is the shorthand that makes this bearable:</p>
+<pre><code class="lang-rust">let plan = ctx.oracle(&quot;plan the task&quot;)?;</code></pre>
+<p>In plain words: "call the oracle; if it worked, unwrap the answer into <code>plan</code>; if it failed, stop here and pass the error up to whoever called me." Every <code>?</code> you see is a tiny early-exit. A cousin you'll also see: <strong><code>Option</code></strong> — <code>Some(value)</code> or <code>None</code> — for "might not exist" rather than "might fail."</p>
+<h3>Ownership and borrowing — the <code>&amp;</code> and <code>&amp;mut</code> everywhere</h3>
+<p>Rust's defining rule: every value has exactly <strong>one owner</strong>, and when you want to let someone else look at it, you lend it — called <strong>borrowing</strong>:</p>
+<ul><li><code>&amp;thing</code> — a shared borrow. Read-only. Any number of readers at once.</li><li><code>&amp;mut thing</code> — an exclusive borrow. The borrower may <em>change</em> the thing, and while they hold it, nobody else may even look.</li></ul>
+<p>That's why every agent function has this exact signature:</p>
+<pre><code class="lang-rust">fn research(ctx: &amp;mut Ctx) -&gt; Result&lt;Value, Fault&gt;</code></pre>
+<p>The agent borrows the context exclusively: it can append to the journal through it, and the compiler guarantees no one else touches the journal mid-step. When you see an apostrophe like <code>Ctx&lt;'a&gt;</code>, that's a <strong>lifetime</strong> — a label the compiler uses to prove a borrow never outlives the thing it borrows. You can read every lifetime in this codebase as: "this handle must not outlive the run it belongs to." You never need to write one to read the code.</p>
+<p>Strings, while we're here: <strong><code>String</code></strong> is owned text, <strong><code>&amp;str</code></strong> is borrowed text (a view into someone else's), and <strong><code>Vec&lt;u8&gt;</code></strong> is raw bytes. The journal stores bytes, not text — models can return anything.</p>
+<h3>Closures — functions you write inline</h3>
+<p>A <strong>closure</strong> is an unnamed function defined right where it's used, with its arguments between pipes:</p>
+<pre><code class="lang-rust">ctx.effect(&quot;charge_card&quot;, amount, |arg| do_the_charge(arg))</code></pre>
+<p>In plain words: "here's a side effect named charge_card; and here, inline, is <em>how</em> to perform it if the runtime decides it actually needs performing." The runtime holds the closure and only invokes it when recording — during replay it's never called. The C layer (called the FFI — "foreign function interface," how Rust talks to other languages) and the bindings pass the same idea across languages as "callbacks."</p>
+<h3>Attributes — instructions to the compiler, in brackets</h3>
+<p>Lines starting <code>#[...]</code> are <strong>attributes</strong>: notes attached to the next item.</p>
+<ul><li><code>#[derive(Clone, PartialEq, Eq)]</code> — "compiler, auto-write the code that makes this type copyable and comparable." Free standard behavior, zero hand-written code.</li><li><code>#[cfg(feature = "macros")]</code> — "only compile this if the <code>macros</code> feature is switched on." Conditional compilation.</li><li><code>#[pragmatic::durable]</code> — a <strong>procedural macro</strong>: a program that runs <em>at compile time</em> and rewrites your function's code (here: injecting the version-stamp line). That's the whole <code>pragmatic-macros</code> crate.</li><li><code>#[doc(hidden)]</code> — "this is public but keep it out of the documentation" — used for test helpers.</li></ul>
+<h3><code>unsafe</code> — the clearly-marked trapdoor</h3>
+<p>Rust's compiler normally <em>proves</em> your memory use is correct. An <strong><code>unsafe</code> block</strong> says: "compiler, you can't check this part — a human takes responsibility." In this codebase, <code>unsafe</code> appears only where Rust must talk to other languages (the C ABI and the Python binding), because foreign code is invisible to the compiler's proofs. Every such spot pairs the trapdoor with a guardrail — for example, the context pointer handed to C is deliberately nulled after each run, so misuse fails with a clear error instead of corrupting memory. When you hit <code>unsafe</code> in Part 6 or 7, the question to ask is always "what's the guardrail?" — and the guide answers it each time.</p>
+<h3>Running things — the three commands that matter</h3>
+<pre><code class="lang-bash">cargo test</code></pre>
+<p>Runs every test in the workspace — including the code examples inside documentation comments. This is the repo's proof machine.</p>
+<pre><code class="lang-bash">cargo run --example research_agent</code></pre>
+<p>Runs one of the <code>examples/</code> programs (each crate's <code>examples/</code> folder is runnable demos). The best way to <em>feel</em> the crash-resume trick is to run one, kill it mid-run with Ctrl-C, and run it again.</p>
+<pre><code class="lang-bash">cargo build -p pragmatic-ffi</code></pre>
+<p>Builds one specific crate (<code>-p</code> = package) — here, the shared library the C++, Go, Java, and Node bindings load.</p>
+<p><strong>The one thing to remember.</strong> You now know every symbol this codebase uses: structs bundle data, enums list possibilities, traits are job descriptions, <code>Result</code> + <code>?</code> carry errors, <code>&amp;mut</code> is an exclusive loan, and <code>unsafe</code> is a marked trapdoor with a guardrail. Everything else is vocabulary you can look up right here when you meet it.</p></section>
+<section class="part" id="part-2"><div class="parthead"><span class="eyebrow">Part 2</span><h2>Core crate I — the foundations (value, fault, sha256, journal)</h2></div><div class="modintro"><p>These four files are the ground floor of the <code>pragmatic</code> crate — everything else is built on top of them. <code>value.rs</code> defines the bytes every recorded step carries, <code>fault.rs</code> lists every way a run is allowed to fail, <code>sha256.rs</code> provides the fingerprint function that makes the log tamper-evident, and <code>journal.rs</code> combines all three into the append-only log that the product's replay and audit story rests on. Read them in that order.</p></div><section class="entry" id="f-crates-pragmatic-src-lib-rs">
+<header class="entryhead"><span class="cur">01</span><code class="fname">lib.rs</code><span class="role">the front door</span><span class="relpath">crates/pragmatic/src/lib.rs</span></header>
+<div class="lede"><p>This is the first file the compiler reads, and it's the front door of the whole library: it describes what Pragmatic is, lists the other files, and puts the important names where users can reach them. Nothing is computed here.</p>
+<p>Its best feature: the description at the top contains a working code example, and Rust actually <em>runs</em> examples inside documentation as tests. So the product's core promise sits at the top of the codebase as a program that fails the build if it ever stops being true:</p>
+<pre><code class="lang-rust">let resumed = rt.resume(&quot;research-42&quot;, research).unwrap();
+assert_eq!(resumed.fresh_steps, 0); // everything came from the journal</code></pre>
+<p>That last line is the whole pitch in code: after a crash, the run resumed and made <strong>zero</strong> new model calls — every answer came from the saved log.</p>
+<p>The rest of the file is housekeeping: a list of the crate's other files, and a "shortcut menu" that lets users grab the four main types (<code>Oracle</code>, <code>Journal</code>, <code>Ctx</code>, <code>Runtime</code>) directly without knowing which file each lives in.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The product's core promise is written into this file as a test that runs on every build.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><strong>Q: How do I know the crash-recovery claim actually works?</strong> A: It's not just in the marketing — it's an assertion in the code that runs automatically on every test cycle. If recovery ever re-called the model, the build would fail. <strong>Q: Where do I start reading the code?</strong> A: Right here. This file is a table of contents; the four names it exports are the whole story, and this guide covers each one in order.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-value-rs">
+<header class="entryhead"><span class="cur">02</span><code class="fname">value.rs</code><span class="role">the bytes every journaled step carries</span><span class="relpath">crates/pragmatic/src/value.rs</span></header>
+<div class="lede"><p><code>Value</code> is the box every recorded outcome travels in: a model's answer, a message received, a tool's result. The whole definition is one line:</p>
+<pre><code class="lang-rust">pub struct Value(pub Vec&lt;u8&gt;);</code></pre>
+<p>In plain words: a struct wrapping a single list of raw bytes (<code>Vec&lt;u8&gt;</code> is Rust's "list of bytes"). That is all it is, on purpose. Think of it as a sealed envelope — the journal must be able to store an outcome and later hand it back byte-for-byte without ever opening it. There are helpers for viewing the bytes as text when a human wants to look, but the bytes are always the real record: they are what gets saved and hashed.</p></div>
+<div class="remember"><span class="label">Remember</span><p><code>Value</code> is opaque bytes on purpose — the journal's byte-for-byte replay guarantee only works because nothing ever interprets the payload.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why raw bytes instead of text?</em> Because an outcome is not always clean text — a tool result could be anything. Storing bytes keeps replay exact and leaves interpretation to whoever needs it.</li><li><em>Could a strange character in a model's answer corrupt the record?</em> No. The bytes are what gets saved and hashed; the text view is display-only, and at worst a log line shows a placeholder character.</li><li><em>Can I put anything in a <code>Value</code>?</em> Yes — any byte string is valid, which is why the inner field is public. There is no hidden rule to break.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-fault-rs">
+<header class="entryhead"><span class="cur">03</span><code class="fname">fault.rs</code><span class="role">every way a run is allowed to fail</span><span class="relpath">crates/pragmatic/src/fault.rs</span></header>
+<div class="lede"><p>This file is one enum — a fixed multiple-choice list — naming every way an agent run is allowed to fail: the model call failed, a tool failed, time ran out, a step or cost budget ran out, the agent tried something it had no permission for, and so on. The philosophy: failures are named values, not crashes. It is the runtime's incident report form — every failure mode has a pre-printed box, and the Supervisor reads the box to decide what happens next.</p>
+<p>Two entries matter most for the replay story. <code>JournalDesync</code> means the log and the code disagree — usually the agent code changed between recording and replay — so the run fails loudly rather than pretending. <code>ReplayExhausted</code> means the log simply ended: nothing is wrong, and "resume" is the right verb to continue the run, because "replay" refuses to call the model.</p></div>
+<div class="remember"><span class="label">Remember</span><p><code>Fault</code> is a closed, matchable list — supervisors make decisions by matching on the tag, so every failure must fit one of these boxes.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>What actually happens when an agent fails mid-run?</em> The failure becomes one of these named values, and the Supervisor picks a rule for that name — retry, undo, or restart from the journal. Nothing dies silently.</li><li><em>Why a fixed list instead of a general-purpose error type?</em> Because decisions are made by the name on the box, and a closed list means the compiler forces the Supervisor to handle every case — nothing falls through unclassified.</li><li><em>Why do faults carry a text message instead of full error details?</em> So faults can be copied, stored, and compared, which tests and supervisors need. The deliberate trade-off is losing some machine-readable detail.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-sha256-rs">
+<header class="entryhead"><span class="cur">04</span><code class="fname">sha256.rs</code><span class="role">the in-house fingerprint function</span><span class="relpath">crates/pragmatic/src/sha256.rs</span></header>
+<div class="lede"><p>This file is a from-scratch copy of SHA-256, the industry-standard hash function — a function that turns any pile of data into a short, fixed-size fingerprint — plus HMAC-SHA-256, the keyed version, which mixes a secret key into the fingerprint. The journal's tamper-evidence rests on these fingerprints.</p>
+<p>It exists for one reason: the core crate takes zero outside dependencies, so rather than pull in a crypto library, the standard algorithm was re-typed here. Correctness does not rest on trusting the author — the unit tests check the code against the official published test answers, so any deviation from the standard makes those tests fail. The keyed version is what makes an audit trail attributable to the runtime's key, not just tamper-evident.</p></div>
+<div class="remember"><span class="label">Remember</span><p>This is not invented crypto — it is the standard algorithm, re-typed to keep the crate dependency-free, and pinned to official test vectors.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Isn't "rolling your own crypto" a red flag?</em> The warning is about inventing new schemes, not transcribing a standard hash, and the official test vectors pin this code to the spec. The honest trade-off: a vetted library gets more outside review and hardware acceleration — this buys zero dependencies at the cost of raw speed and outside eyes.</li><li><em>Is a software-only hash fast enough?</em> Yes for this workload — measured journal appends run at roughly 0.44 microseconds each at a million entries on an Apple M5 Pro, in release builds — and the cost stays flat from a thousand entries out to a million.</li><li><em>Any known weak spots?</em> One, worth naming: the signing key is not wiped from memory after use. That is acceptable when the same process holds the key anyway, but it is the kind of thing an audit should note.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-journal-rs">
+<header class="entryhead"><span class="cur">05</span><code class="fname">journal.rs</code><span class="role">the append-only, hash-chained flight recorder</span><span class="relpath">crates/pragmatic/src/journal.rs</span></header>
+<div class="lede"><p>The Journal is the crate's load-bearing file — the black-box flight recorder of an agent run. Every outcome decided by the outside world — a model's answer, a message, a tool result — is appended as it happens; replay reads them back instead of calling the model again.</p>
+<p>Each entry's fingerprint bakes in the previous entry's, so changing any committed entry breaks every later link. A crash mid-write only tears the tail, which gets trimmed on reopen, and the run resumes from the clean prefix. Tool calls are logged as an intent before and a commit after, so a crash in between leaves a visible loose end for recovery; the agent code's fingerprint is logged too, so changed code fails loudly on replay.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The journal is the single source of truth — replay, crash recovery, and audit are just different ways of reading this hash-chained list back.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>A thousand test runs (each using a predictable fake model — “seeded” with a fixed starting number) replay with zero model calls and identical results; runs crashed at every point resume with only lost steps re-called; and append cost stays flat out to a million entries.</p></aside>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>If someone edits the log, do you catch it?</em> Casual edits, yes — verification pinpoints the first bad entry. But an attacker could rewrite everything and recompute: unkeyed, the log is tamper-evident, not tamper-proof; the keyed mode closes that gap for anyone without the runtime key.</li><li><em>What if the machine dies mid-run?</em> The torn tail is trimmed and the run resumes from what was recorded, re-calling the model only for the lost steps.</li><li><em>Why read the whole file into memory on open?</em> The whole chain is verified on load, and journals are per-run logs, not databases — simple and safe. Streaming would be the upgrade if they grew huge.</li></ul></aside>
+</section></section>
+<section class="part" id="part-3"><div class="parthead"><span class="eyebrow">Part 3</span><h2>Core crate II — the execution engine (oracle, ctx, store)</h2></div><div class="modintro"><p>These three files are the engine room. <code>oracle.rs</code> defines the one and only place randomness is allowed to enter a run (the LLM call), plus a small toolkit of wrappers around it. <code>ctx.rs</code> is the referee your agent code actually talks to: for every step it decides "read the saved answer from the journal" or "do it for real and save it". <code>store.rs</code> is the private filing cabinet where the runtimes keep those journals and the in-memory mailboxes. Read them in that order — oracle first (the interface), ctx second (the logic), store third (the plumbing).</p></div><section class="entry" id="f-crates-pragmatic-src-oracle-rs">
+<header class="entryhead"><span class="cur">06</span><code class="fname">oracle.rs</code><span class="role">the only door randomness can walk through</span><span class="relpath">crates/pragmatic/src/oracle.rs</span></header>
+<div class="lede"><p>An <strong>oracle</strong> is this codebase's name for an LLM call: a prompt goes in, one sampled answer comes out. This file defines the tiny trait for that, plus a <code>provenance</code> label saying which model answered — audit metadata, never checked during replay. The rule is stated in the file itself: the oracle is the only source of unpredictability in a run. Everything random walks through this one door, so the journal only has to record what came through it. In replay mode the runtime never calls the oracle at all.</p>
+<p>It also ships four ready-made oracles. <code>SeededOracle</code> makes random-looking answers from a starting number (a seed) — realistic test unpredictability at zero API cost. <code>CountingOracle</code> wraps any oracle and counts live calls; it is how tests prove replay makes zero model calls rather than just claiming it. <code>RetryOracle</code> retries only failures of the model call itself (rate limits, overload), doubling the wait each attempt — and retries happen before anything is journaled, so the journal keeps only the answer that finally succeeded. <code>RefusingOracle</code> errors on every call; strict replay runs against it, so "the model is never consulted" is enforced by construction, not convention.</p></div>
+<div class="remember"><span class="label">Remember</span><p>Everything unpredictable enters through <code>Oracle::call</code>, and that is what makes "record once, replay forever" possible.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Q: What happens when the model provider rate-limits us mid-run?</em> A: <code>RetryOracle</code> catches exactly that kind of failure and tries again, waiting twice as long each time, up to a set limit. Any other failure passes straight through — it means the run is wrong, not the call.</li><li><em>Q: How do you prove replay never quietly calls the model?</em> A: Two ways. Tests count live calls with <code>CountingOracle</code> and check for zero, and strict replay uses <code>RefusingOracle</code>, which errors on any call. Enforced, not promised.</li><li><em>Q: Do your tests burn API credits?</em> A: No. <code>SeededOracle</code> gives repeatable fake answers from a seed — tests only. Production oracles are real model clients you implement.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-ctx-rs">
+<header class="entryhead"><span class="cur">07</span><code class="fname">ctx.rs</code><span class="role">the referee between your agent and the world</span><span class="relpath">crates/pragmatic/src/ctx.rs</span></header>
+<div class="lede"><p><code>Ctx</code> is the object handed to your agent code. Every time the agent wants something from outside — a model answer, a tool call, a message, the current time — it asks <code>Ctx</code>, which decides step by step: serve the saved outcome from the journal (replay), or do it for real and save it (record). The agent cannot tell which happened. A resumed run replays its saved steps, then falls through to recording fresh, automatically.</p>
+<p>Two safety features matter most. First, replay is checked, not blind: if the code asks a different question on replay than it did on record, the run fails loudly with <code>JournalDesync</code> instead of serving a stale answer — and <code>program_marker</code> records the program's name and hash, so replaying with changed code fails the same way. Second, external writes (send an email, charge a card) follow a write-ahead discipline: journal the intent to disk, then act, then journal the result. A crash in the middle leaves a dangling intent — proof the world may have changed — and the framework refuses to resume until it is resolved. It never guesses.</p></div>
+<div class="remember"><span class="label">Remember</span><p>One code path, two meanings: the journal cursor decides, per step, whether reality is read back or written down.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Q: What if the server dies right after charging a customer's card?</em> A: The "about to charge" record is already on disk. On restart the framework halts and asks you to declare, through a recovery policy, whether the charge happened or should be written off — it never silently charges twice.</li><li><em>Q: Two disk writes per external action — isn't that slow?</em> A: Yes, and it is deliberate. The intent must be durable before the world changes, or a crash could leave a payment with no record. That is the price of the guarantee.</li><li><em>Q: Can a developer bypass all this and read the clock directly?</em> A: The compiler cannot stop it. The contract is that outside input goes through <code>Ctx</code>, backed by tripwires — the program hash check, the loud mismatch failure. It is a discipline with alarms, not a mathematical lock.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-store-rs">
+<header class="entryhead"><span class="cur">08</span><code class="fname">store.rs</code><span class="role">the filing cabinet behind both runtimes</span><span class="relpath">crates/pragmatic/src/store.rs</span></header>
+<div class="lede"><p><code>JournalStore</code> is where both runtimes keep their journals and message inboxes. It is marked <code>pub(crate)</code> — private plumbing users never see — and shared by the sync <code>Runtime</code> and the async <code>AsyncRuntime</code>, so both get identical storage behavior. It loads or creates journals — in memory, or one append-only file per run on disk — passes along the key that lets journals be cryptographically chained and signed, and cleans run ids into safe filenames so a hostile id cannot escape the storage folder.</p>
+<p>Its one public piece is the recovery vocabulary — your two choices for each effect a crash left half-finished:</p>
+<pre><code class="lang-rust">pub enum Recover {
+    Commit(Value),
+    Compensate,
+}</code></pre>
+<p><code>Commit(result)</code> means "it happened — record this result, never redo it." <code>Compensate</code> means "write it off — the resumed run performs it fresh." The store also holds channel messages in memory. A message the agent actually received was journaled at that moment and survives crashes; a message sent but not yet received is lost in a crash. The durability line sits at consumption, not delivery — a deliberate boundary.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>Of these three files only <code>oracle.rs</code> carries inline tests: they show retries are bounded, the delays double correctly, and only transient model failures get retried. <code>ctx.rs</code> and <code>store.rs</code> are covered by runtime-level tests elsewhere in the crate.</p></aside>
+<div class="remember"><span class="label">Remember</span><p>The store makes journals durable and shared; messages are only as durable as the journal entry that consumed them.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Q: If we crash, what does a customer lose?</em> A: Nothing that was journaled — journals live on disk, and every step the run consumed is in them. Un-received messages vanish; a sender needing guaranteed delivery should send through a durable effect or redeliver on resume.</li><li><em>Q: Can two runs end up in the same file?</em> A: In theory yes — filename cleaning is lossy, so two odd run ids could map to one file. In practice run ids are unique identifiers chosen by the caller; cleaning is for filesystem safety, not uniqueness.</li><li><em>Q: Why hide this file from users?</em> A: No <code>pub</code> means no promise: its internals can change freely without breaking anyone. Users only ever see <code>Runtime</code>.</li></ul></aside>
+</section></section>
+<section class="part" id="part-4"><div class="parthead"><span class="eyebrow">Part 4</span><h2>Core crate III — the drivers (runtime, async_runtime, supervisor, memory)</h2></div><div class="modintro"><p>The last module was the parts; this one is the machines that drive them: the engine that records, resumes, and replays runs, its async twin, the supervisor that handles crashes and undo, and a standalone labeled memory store that nothing else calls yet. Read them in that order.</p></div><section class="entry" id="f-crates-pragmatic-src-runtime-rs">
+<header class="entryhead"><span class="cur">09</span><code class="fname">runtime.rs</code><span class="role">the sync engine: record, resume, replay</span><span class="relpath">crates/pragmatic/src/runtime.rs</span></header>
+<div class="lede"><p>Think of <code>Runtime</code> as a tape deck for agent runs. <code>run</code> records to tape while the agent executes. <code>resume</code> picks up a half-finished tape and keeps recording where it stopped. <code>replay</code> plays the tape back with the microphone unplugged — the model cannot be consulted. ("Sync" means ordinary one-step-at-a-time code.) The file mostly delegates: <code>Ctx</code> from the previous module does the per-step work, <code>JournalStore</code> does the storage. Every verb returns a <code>RunReport</code>, a receipt: what the run produced, and how many steps came from tape versus fresh from the model.</p>
+<p>All three verbs share one engine, and two details carry the guarantees. In replay mode the model client is swapped for <code>RefusingOracle</code>, whose only job is to error — even a bug can't reach the network. The journal hits disk before the result is reported, so a failed attempt still leaves durable progress for <code>resume</code>.</p></div>
+<div class="remember"><span class="label">Remember</span><p>All three verbs run the same agent code through the same engine; only the setup differs — whether a journal may be created, whether half-finished effects get cleaned up first, and whether the model is replaced by one that refuses.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: You say replay never calls the model. Is that a promise or a hope?</em> A: It's enforced twice: replay errors the moment the recording runs out, and even if that broke, the stand-in client errors on every call. A 1,000-run test counts model calls and asserts zero.</p>
+<p><em>Q: What happens if a run crashes halfway through?</em> A: Everything recorded so far is already on disk; <code>resume</code> redoes only what was lost.</p>
+<p><em>Q: Can one <code>Runtime</code> handle many runs at once?</em> A: No — single-owner by design; use one per thread or add a lock.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-async-runtime-rs">
+<header class="entryhead"><span class="cur">10</span><code class="fname">async_runtime.rs</code><span class="role">the same engine, with <code>await</code> (and a pocket executor)</span><span class="relpath">crates/pragmatic/src/async_runtime.rs</span></header>
+<div class="lede"><p>"Async" is Rust's way of writing code that can pause while waiting — say, for a model's answer over the network — instead of holding everything up. This file re-delivers the sync runtime's guarantees for async agents without adding a single outside dependency. It doesn't copy the logic: it wraps the sync <code>Ctx</code> for the journal bookkeeping and adds one new path for fresh model calls. That path checks the recording first, and in strict replay it fails before it could reach the network — the same guarantee as the sync engine, enforced at the same choke point.</p>
+<p>Two conveniences round it out. Every sync model client automatically works as an async one (it just blocks while it runs — fine for tests and command-line tools; servers should implement the async version natively). And <code>block_on</code>, a roughly 20-line "executor" — the small loop that drives async code forward — means users don't need tokio, the big third-party async engine.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The async runtime doesn't fork the logic — it wraps the sync engine over a permanently refusing model client and routes fresh calls through one new path that checks the recording first.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: Why build your own executor instead of using tokio?</em> A: It keeps the zero-dependency claim, and tokio users lose nothing — the code runs on any executor. The pocket one has no timers or network handling, so servers should keep their real one.</p>
+<p><em>Q: The sync engine swaps in a refusing model for replay. Does the async one have the same protection?</em> A: Yes, arranged differently: the fresh-call path only runs when the replay check finds nothing, and in strict replay that check errors first.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-supervisor-rs">
+<header class="entryhead"><span class="cur">11</span><code class="fname">supervisor.rs</code><span class="role">the crash boss: fault in, decision out</span><span class="relpath">crates/pragmatic/src/supervisor.rs</span></header>
+<div class="lede"><p>When a run faults, someone must decide what happens next. That's the <code>Supervisor</code>, which maps each fault to one of four decisions:</p>
+<pre><code class="lang-rust">pub enum Decision { Restart, Compensate, Escalate, Stop }</code></pre>
+<p>The default policy splits faults into two families. Transient ones — a flaky model, a flaky tool, a timeout — get restarted; trying again might work. Logical ones — a blown budget, a violated contract — stop; retrying would fail the same way. Every restart resumes from the journal, so a retry never redoes earlier model calls or effects. You can raise the retry cap (default 3), swap the policy, and plug in a "compensator" — your undo procedure.</p>
+<p>The compensator drives the saga: real-world effects are undone in reverse order, like unwinding a stack, and each undo is journaled — so a crash mid-undo never undoes anything twice.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The supervisor never re-executes work — restarts resume from the journal and undos are journaled too, so both are safe to repeat.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: What if an undo itself fails — the refund doesn't go through?</em> A: The supervisor can't see that; it records the undo as done regardless. If your undo can fail, handle retries inside it — the journal still shows what was attempted, in what order.</p>
+<p><em>Q: Retrying a down API three times fast — no waiting between tries?</em> A: Deliberate — the supervisor caps attempts but owns no timing. Waiting belongs in the model-client layer, per call rather than per run.</p>
+<p><em>Q: Undos are matched to effects by name — what if two share one?</em> A: Only the recorded result tells them apart; give distinct actions distinct names. Simple keys won over something fancier.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-src-memory-rs">
+<header class="entryhead"><span class="cur">12</span><code class="fname">memory.rs</code><span class="role">a labeled store where secrets can't leak downhill</span><span class="relpath">crates/pragmatic/src/memory.rs</span></header>
+<div class="lede"><p>A small key-value store — labeled slots you read and write by name — where every entry is marked <code>Low</code> (public) or <code>High</code> (secret). Two rules hold on every access: no read-up (a public-level reader can't see secrets) and no write-down (a secret-level writer can't create public-visible entries). Secrets ride the elevator up, never down. Both rules boil down to one less-than-or-equal comparison on a two-variant enum.</p>
+<p>Two honest facts. Memory is deliberately not journaled: its contents can be rebuilt exactly by re-running the program against the recorded inputs, so saving them would only bloat the journal. And nothing else in the crate calls this file yet — it's a standalone, tested embodiment of the security rules from the research paper behind the design.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>Replay makes zero model calls over 100 random runs, resuming after a cut-short journal redoes only the lost part, and file-backed runs survive a process restart. Memory's own tests pin both security rules.</p></aside>
+<div class="remember"><span class="label">Remember</span><p>Both security rules reduce to one comparison — and the store is intentionally neither journaled nor yet wired into the runtime.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: Does the product actually use this today?</em> A: Not yet. It's exported but nothing in the runtime calls it — a working, tested demonstration awaiting integration, and saying that plainly is the defense.</p>
+<p><em>Q: Real systems need more than two secrecy levels, right?</em> A: True. Two is the smallest model that shows both rules, and the code is written against the general rule, not the two names — so richer labels are an extension, not a rewrite.</p>
+<p><em>Q: Isn't "not journaled" a gap in the durability story?</em> A: No — replay re-runs the program against the recording and memory comes out identical.</p></aside>
+</section></section>
+<section class="part" id="part-5"><div class="parthead"><span class="eyebrow">Part 5</span><h2>The macro crate — #[pragmatic::durable]</h2></div><div class="modintro"><p>This is the smallest crate in the product, and it does exactly one thing: when a developer writes <code>#[pragmatic::durable]</code> above an agent function, this macro — a small piece of code that rewrites other code while the program is being built — stamps a fingerprint of that function into the journal, so the system can refuse to replay a recording against code that has changed. Two files: the settings file, then the macro itself.</p></div><section class="entry" id="f-crates-pragmatic-macros-cargo-toml">
+<header class="entryhead"><span class="cur">13</span><code class="fname">Cargo.toml</code><span class="role">declaring a compile-time-only crate</span><span class="relpath">crates/pragmatic-macros/Cargo.toml</span></header>
+<div class="lede"><p>This is the crate's settings file, and two of its lines do all the work. The first marks the crate as a <em>procedural macro</em> — a plugin for the Rust compiler itself. Its code runs while a customer's program is being built, not while it runs, and nothing from this crate ships in the finished product; only the code it generates does.</p>
+<p>The second is the empty dependency list — empty on purpose. Most compiler plugins pull in two big helper libraries; this one pulls in nothing. That keeps builds fast for every user and means no extra third-party code runs on customers' build machines.</p></div>
+<div class="remember"><span class="label">Remember</span><p>This crate is a compiler plugin with zero dependencies, and both of those facts are deliberate.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>Tests in the main crate (<code>crates/pragmatic/tests/durable_macro.rs</code>) apply the macro to real functions and prove the fingerprint lands first in the journal, honest replays pass, and changed code fails loudly before any step runs.</p></aside>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><strong>Q: Why is this its own crate instead of part of the main one?</strong> A: Rust requires it: a compiler plugin cannot mix with normal library code. The main crate re-exports it, so customers just write <code>#[pragmatic::durable]</code>.</p>
+<p><strong>Q: Is "zero dependencies" a real advantage or a vanity metric?</strong> A: Real, with a real cost: faster builds and less third-party code to trust, in exchange for reading code with rules of thumb instead of a full parser, which has known edge cases.</p>
+<p><strong>Q: If this code never ships, why keep it so small?</strong> A: It runs on the build machine of everyone who compiles the product — and the less build-time code there is, the less customers take on faith.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-macros-src-lib-rs">
+<header class="entryhead"><span class="cur">14</span><code class="fname">lib.rs</code><span class="role">the entire macro, 143 lines</span><span class="relpath">crates/pragmatic-macros/src/lib.rs</span></header>
+<div class="lede"><p>This file is the whole crate, and it acts like a notary: it never changes what a function does. When a developer writes <code>#[pragmatic::durable]</code> above an agent function, it fingerprints the source — a short hash, a number computed from the text that changes whenever the code really changes — and inserts one line at the top:</p>
+<pre><code class="lang-rust">ctx.program_marker(&quot;research&quot;, &quot;a1b2...&quot;)?;</code></pre>
+<p>On the first run, that line records the function's name and fingerprint as the journal's first entry. On replay it checks them: if the code changed, the run stops with a clear error before any step executes. Reformatting is harmless — whitespace and plain comments are stripped before the macro sees anything — but any real edit locks out old journals. That is the feature, not a bug.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The macro turns "replay the same code you recorded" from a promise into a check — one hash, one injected line.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><strong>Q: The fingerprint isn't a cryptographic hash. Is that a security hole?</strong> A: No — it is a change detector, not a security boundary. Anyone able to tamper with the source could just rewrite the journal instead; tamper evidence belongs in the audit layer.</p>
+<p><strong>Q: Isn't reading code without a real parser fragile?</strong> A: There are known edge cases, but the failure is always a build-time error, never silently wrong code — and the fix, if needed, is a real parser behind the same public attribute.</p>
+<p><strong>Q: Could old journals stop replaying by accident?</strong> A: Real edits invalidate them by design; reformatting does not. One caveat: a compiler upgrade could in principle reprint the code differently and do the same — even then the failure is a loud error, never a silent replay of the wrong code.</p></aside>
+</section></section>
+<section class="part" id="part-6"><div class="parthead"><span class="eyebrow">Part 6</span><h2>The model adapters — pragmatic-anthropic and pragmatic-openai</h2></div><div class="modintro"><p>These two small crates are the plugs that connect the runtime to real language models — one for Anthropic's Claude, one for OpenAI and the many servers that copy its format. Each fulfills the core crate's <code>Oracle</code> contract (prompt bytes in, answer bytes out), so the journal never has to know which vendor is on the other end.</p></div><section class="entry" id="f-crates-pragmatic-anthropic-src-lib-rs">
+<header class="entryhead"><span class="cur">15</span><code class="fname">`lib.rs` (pragmatic-anthropic) — Claude as a journaled Oracle, tools included</code><span class="role"></span><span class="relpath">crates/pragmatic-anthropic/src/lib.rs</span></header>
+<div class="lede"><p>This file is a translator. On one side, the core crate's <code>Oracle</code> trait — one required method, <code>call</code>: prompt bytes in, answer bytes out. On the other, Anthropic's Claude API. <code>AnthropicOracle</code> makes the internet call; <code>Conversation</code> and <code>Turn</code> let an agent run a multi-turn tool loop, all through the same journaled channel.</p>
+<p>It is built so the journal — the product's permanent record of every model call — never knows which vendor is on the other end. It reads the prompt bytes: if they parse as JSON (structured plain text) with a <code>"messages"</code> list inside, it sends the whole conversation with tools; anything else goes as plain text. On conversation prompts, Claude's entire reply is journaled — tool calls, token usage and all — a complete audit record; plain-text prompts journal just the answer text. No retries, no streaming, on purpose: one complete outcome per call.</p></div>
+<div class="remember"><span class="label">Remember</span><p>Plain questions, full conversations, and tool calls all travel through one journaled channel as bytes — the journal never cares that Claude is on the other end.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>What happens when Anthropic has an outage or rate-limits us?</em> The call fails cleanly with the status code and an error snippet — no retry, on purpose. Retry policy lives one layer up, in <code>RetryOracle</code> or the <code>Supervisor</code>, so it is set in one place.</li><li><em>Why no streaming, like a chat app?</em> The journal wants exactly one complete outcome per model call; streaming would mean recording partial answers, so it was ruled out by design.</li><li><em>How do we know an audit replay saw the exact same conversation?</em> It is rebuilt from journaled values, and identical histories always produce byte-identical prompt bytes — a unit test pins that.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-openai-src-lib-rs">
+<header class="entryhead"><span class="cur">16</span><code class="fname">`lib.rs` (pragmatic-openai) — any Chat Completions server as a journaled Oracle</code><span class="role"></span><span class="relpath">crates/pragmatic-openai/src/lib.rs</span></header>
+<div class="lede"><p>This crate is the universal travel plug. It speaks the OpenAI Chat Completions dialect — a request format spoken by Ollama, vLLM, llama.cpp, Groq, and most other model servers — so one adapter covers OpenAI and any model behind a <code>/chat/completions</code> address. It is deliberately simpler — no tools, no conversation history.</p>
+<p>Two touches make the reach real: <code>base_url</code> points at a cloud API, a gateway, or a model on your own machine, and an empty API key sends no login header — keyless local servers get a clean request. Failures are reported like the Anthropic adapter's — no retries, no streaming — and <code>provenance()</code> records which model produced each outcome in the journal.</p></div>
+<div class="remember"><span class="label">Remember</span><p>This adapter trades features for reach: one plain message in, one text answer out, against any server speaking the Chat Completions dialect.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>We run models on our own machines — can Pragmatic talk to them?</em> Yes — point the base URL at it and pass an empty key; anything speaking Chat Completions works.</li><li><em>Why does this adapter do less than the Anthropic one?</em> On purpose. Tool-calling formats vary across the "compatible" ecosystem; keeping it to one exchange keeps the promise honest, and the full tool loop lives in the Anthropic adapter today.</li><li><em>Isn't <code>max_tokens</code> deprecated on newer OpenAI models?</em> Yes — the code picks it anyway: it is the field the whole ecosystem understands, and optional, so it can be left off.</li></ul></aside>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>The wire tests check the exact bytes crossing to a tiny fake server, then kill it and prove a recorded run replays identically; the tool test proves a tool ran exactly once across record, resume, and replay.</p></aside>
+</section></section>
+<section class="part" id="part-7"><div class="parthead"><span class="eyebrow">Part 7</span><h2>The C ABI — pragmatic-ffi</h2></div><div class="modintro"><p>pragmatic-ffi is how every language that isn't Rust gets to use Pragmatic: it compiles to a library any C-speaking language can call, and the in-tree C++, Java, Go, and Node bindings all stand on it. Read <code>include/pragmatic.h</code> first — it is the promise — then <code>src/lib.rs</code>, which is how the promise is kept.</p></div><section class="entry" id="f-crates-pragmatic-ffi-include-pragmatic-h">
+<header class="entryhead"><span class="cur">17</span><code class="fname">pragmatic.h</code><span class="role">the published contract, written by hand</span><span class="relpath">crates/pragmatic-ffi/include/pragmatic.h</span></header>
+<div class="lede"><p>This file is Pragmatic's promise to everyone who doesn't write Rust. A header is a short text file listing the functions a library offers and the rules for calling them. Ours is written by hand — no generator — because the most valuable parts are plain-English rules no tool could write: who frees each piece of text memory, that callbacks (code of ours that Rust calls back into) must never crash across the language border, and that a runtime must be used from one thread at a time — a thread being one of several independent workers a running program can have; only one worker may ever touch a given runtime.</p>
+<p>It also hides our internals. The types callers hold — <code>PragRuntime</code>, <code>PragCtx</code>, <code>PragReport</code> — are opaque: declared but never described, so other languages carry a handle to them without seeing inside. That lets us rework the Rust side without breaking anyone. The header also lists the numbered error codes — <code>PRAG_OK</code> plus the <code>PRAG_ERR_*</code> family, most with a one-line meaning. Reading that list is the fastest tour of everything that can go wrong in a run.</p></div>
+<div class="remember"><span class="label">Remember</span><p>This header is maintained by hand, so every change to the library's public surface must be mirrored here by a person.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: A hand-written header sounds fragile — what catches a mismatch?</em> A: Our automated builds compile the C++ and Go bindings — which read this header — against the freshly built library, so a drifted function breaks loudly. The Java and Node bindings copy the declarations by hand and miss that check; an honest gap.</p>
+<p><em>Q: Can one runtime be used from several threads?</em> A: No — the header says so plainly, and each language binding adds its own locking where needed. We can loosen this later without breaking the contract.</p>
+<p><em>Q: If you rewrite the internals, do customer integrations break?</em> A: No. Callers hold opaque handles and use only the functions listed here, so as long as the header keeps its promises, the inside can change freely.</p></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-ffi-src-lib-rs">
+<header class="entryhead"><span class="cur">18</span><code class="fname">lib.rs</code><span class="role">the whole C ABI in one file</span><span class="relpath">crates/pragmatic-ffi/src/lib.rs</span></header>
+<div class="lede"><p>This file is the border checkpoint between the safe Rust runtime and every other language — the "C ABI" is the plain calling format they all speak. Nothing new is computed here: every function checks what crosses the border, copies text into memory the library owns, and stamps a numbered status code on the way out. The library frees its own text memory because the two sides may manage memory differently, and mixing memory managers crashes unpredictably.</p>
+<p>A model callback from another language is wrapped so the runtime treats it as native. The context handle a caller uses during a run is disabled the moment its callback ends, so late use gets a clean error instead of a crash. Error types survive the crossing — "budget ran out" arrives as a different code from "tool flaked" — so callers still know what is safe to retry. And a Rust panic is caught and turned into an error code, because a panic must never cross the language border.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p><code>tests/c_abi.rs</code> uses the library exactly as a foreign language would: a run is recorded, resumed with zero fresh model calls, replayed with an identical trace, and verified for tampering — and typed errors and channel messages arrive intact.</p></aside>
+<div class="remember"><span class="label">Remember</span><p>Every trick in this file has the same shape: replace a silent memory error with a loud, typed, recoverable one.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><p><em>Q: Should the amount of <code>unsafe</code> code here worry me?</em> A: It marks where the compiler can't check pointers from other languages, so the file checks them itself — verify on entry, disable after use, catch panics. A discipline, not a compiler guarantee.</p>
+<p><em>Q: Can it carry raw binary data?</em> A: Not yet. Text round-trips perfectly, but a C string ends at the first zero byte, so binary bytes become a placeholder character; buffer-style APIs are a known 0.x gap.</p></aside>
+</section></section>
+<section class="part" id="part-8"><div class="parthead"><span class="eyebrow">Part 8</span><h2>The other languages — pragmatic-python and bindings/</h2></div><div class="modintro"><p>These five files are how every language that is not Rust reaches the same Rust runtime. Python is the odd one out — it plugs into the Rust core directly instead of going through the C ABI; the other four (C++, Go, Java, Node) all sit on the C ABI and each re-solves the same two border problems with its own tools: who owns each piece of text that crosses, and how our code gets called back from the other side. Read Python first, then the C++ header, which sets the pattern the Go, Java, and Node files copy.</p></div><section class="entry" id="f-crates-pragmatic-python-src-lib-rs">
+<header class="entryhead"><span class="cur">19</span><code class="fname">pragmatic-python/src/lib.rs</code><span class="role">Python talks straight to the Rust core</span><span class="relpath">crates/pragmatic-python/src/lib.rs</span></header>
+<div class="lede"><p>Every other language in this module reaches the runtime through the C ABI. Python does not. This crate uses PyO3 — a Rust library that turns Rust structs into real Python classes — to plug Python straight into the core crate. The result is a native-feeling package: you type <code>import pragmatic</code> and get real classes, and one built package (a "wheel") works on every Python from 3.9 up.</p>
+<p>Python gets this because it is the first-class SDK, and going direct avoids translating everything twice (Rust to C text to Python). There is one carefully fenced piece of <code>unsafe</code> Rust: during a run, Python holds a raw memory address for the run's context object, and the binding blanks that address the instant the run ends. Stale use gets a clear error, not a crash.</p></div>
+<div class="remember"><span class="label">Remember</span><p>Python binds the Rust core directly through PyO3, and the only <code>unsafe</code> code is one pointer that is deliberately blanked the moment its run ends.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why doesn't Python go through the C ABI like the other four languages?</em> Python is the first-class SDK, so it gets a direct binding with real Python classes and no double translation. The C ABI exists for languages we only maintain.</li><li><em>Is the <code>unsafe</code> code a liability?</em> It is contained: the pointer is pinned to one thread, blanked before the object goes away, and checked on every use. Misuse produces a loud Python error, not a crash.</li><li><em>What do errors look like for a Python user?</em> Every runtime fault arrives as a plain <code>RuntimeError</code> carrying message text, so the typed fault code is flattened away. Richer exceptions could be added later without breaking anything.</li></ul></aside>
+</section>
+<section class="entry" id="f-bindings-cpp-pragmatic-hpp">
+<header class="entryhead"><span class="cur">20</span><code class="fname">pragmatic.hpp</code><span class="role">the C ABI wrapped once; the pattern the other three copy</span><span class="relpath">bindings/cpp/pragmatic.hpp</span></header>
+<div class="lede"><p>A single C++ header file: a customer includes it, links our library, and is done — nothing extra to compile. It wraps the raw C ABI in classes that clean up after themselves and turn error codes into ordinary exceptions.</p>
+<p>It matters beyond C++ because it sets the two border rules the other bindings copy. Rule one: every string crossing the border has exactly one owner — anything Rust hands over is copied out, then handed back for Rust to free. Rule two: no exception may ever escape into Rust, because an exception crossing the border is undefined behavior — the program may do anything, including corrupt data. So every callback (code of ours that Rust calls back into) runs inside a catch-everything guard that turns failures into error messages. <code>take</code> is rule one in four lines:</p>
+<pre><code class="lang-cpp">inline std::string take(char* s) {
+    if (s == nullptr) return {};
+    std::string out(s);
+    prag_str_free(s);
+    return out;
+}</code></pre></div>
+<div class="remember"><span class="label">Remember</span><p>Two rules — every string goes through <code>take</code>/<code>give</code>, and nothing ever unwinds into Rust — and the other three bindings are this file translated.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why does it matter that this is one header file?</em> Zero build friction: one include line, one link flag. At this size the compile cost is trivial.</li><li><em>What if a customer's own code throws an error inside a callback?</em> The guard catches it and hands Rust an error message, which the runtime records as a typed fault. Nothing crosses the border raw.</li><li><em>Why do the Go, Java, and Node files look so alike?</em> Deliberately — this file sets the pattern and the others translate it, so fixes port easily.</li></ul></aside>
+</section>
+<section class="entry" id="f-bindings-go-pragmatic-go">
+<header class="entryhead"><span class="cur">21</span><code class="fname">pragmatic.go</code><span class="role">the same surface through cgo</span><span class="relpath">bindings/go/pragmatic.go</span></header>
+<div class="lede"><p>One Go file binds the C ABI using cgo, Go's built-in bridge to C: a special comment in the file holds real C code and build settings. Border rules are the same as the C++ header. The twist: Go bans two things from crossing into C — its function pointers, and its pointers — because Go's garbage collector (its automatic memory cleaner) may move or free anything C still holds.</p>
+<p>It works around both bans the sanctioned way. Tiny fixed C functions ("thunks") stand in for Go functions, and each Go closure is checked into a table that returns a ticket (<code>cgo.Handle</code>); C carries the ticket, Go redeems it when called back — a coat check. One honest wart: the numeric fault codes are hand-copied from the C header — Java and Node keep copies too — so renumbering a code touches three files.</p></div>
+<div class="remember"><span class="label">Remember</span><p>Everything odd here exists because Go forbids its functions and pointers from crossing into C; thunks plus tickets are the approved workaround.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Could a customer ship this binding in production?</em> Not as-is: the build settings point at our development tree so tests run with zero setup. A real deployment would link an installed library; the README marks this binding maintenance-only.</li><li><em>What if the hand-copied error numbers drift out of sync?</em> A fault would show the wrong label in Go, Java, or Node. The smoke tests assert on specific typed faults, so drift trips them.</li><li><em>Why a coat-check ticket instead of passing the function directly?</em> Go's garbage collector cannot see what C holds, so the function could be freed while C still points at it. The ticket keeps it alive and findable.</li></ul></aside>
+</section>
+<section class="entry" id="f-bindings-java-pragmatic-pragmatic-java">
+<header class="entryhead"><span class="cur">22</span><code class="fname">Pragmatic.java</code><span class="role">pure Java over the C ABI, no JNI to compile</span><span class="relpath">bindings/java/pragmatic/Pragmatic.java</span></header>
+<div class="lede"><p>One Java file binds the C ABI with <code>java.lang.foreign</code>, Java's built-in bridge to native code: it describes each C function's shape at run time and gets back a callable handle. The payoff: no JNI, the older approach that means compiling and shipping separate C glue per platform — here the standard Java compiler is the whole build.</p>
+<p>The big deviation is how callbacks travel. C++ and Go smuggle the callback through a spare pointer that rides with each call; Java parks it in a per-thread slot (a <code>ThreadLocal</code>) and reads it back when Rust calls in. That works only because the runtime always calls back on the same thread — so one thread can drive only one run at a time. Two rough edges: the last oracle reference lingers in its slot until the next run (bounded, not a growing leak), and a <code>RunReport</code> holds native memory that leaks unless closed.</p></div>
+<div class="remember"><span class="label">Remember</span><p>Java parks each callback in a per-thread variable instead of a pointer — safe only because the runtime always calls back on the same thread.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why require such a new Java version?</em> JDK 22 is where <code>java.lang.foreign</code> finalized. The alternative is JNI: per-platform compiled glue, the exact burden this binding exists to avoid.</li><li><em>What is the riskiest part of this file?</em> The C function shapes are written by hand and no compiler checks them; a mistake corrupts memory at call time, not build time. That is the tax for skipping JNI.</li><li><em>Does "one run per thread" limit customers?</em> One thread cannot drive two runs at once, and callbacks must stay on their thread. Documented, and it matches how the runtime calls back.</li></ul></aside>
+</section>
+<section class="entry" id="f-bindings-node-pragmatic-js">
+<header class="entryhead"><span class="cur">23</span><code class="fname">pragmatic.js</code><span class="role">the C ABI from Node via koffi</span><span class="relpath">bindings/node/pragmatic.js</span></header>
+<div class="lede"><p>Node.js has no built-in way to call C, so this binding uses koffi, a package that loads our library from plain-text declarations of each C function, found via the <code>PRAGMATIC_LIBRARY</code> environment variable (an external setting) or defaulting to our development build.</p>
+<p>Two ideas keep it tidy. First, string ownership is automated: koffi's "disposable" return type decodes each Rust-owned string and frees it in one step, so forgetting to free is impossible. Second, errors take a side door: when a JavaScript callback throws, the binding parks the original <code>Error</code> in a private slot and rethrows that exact object — stack trace intact — once the run returns the matching fault. Much nicer for debugging, and safe only because Node runs all JavaScript on one thread.</p></div>
+<aside class="block block-tests"><div class="label">What the tests prove</div><p>Every language runs the same smoke test — record a run, resume with zero new model calls, replay bit-for-bit, verify the hash chain — proving journals are byte-compatible no matter which language recorded them.</p></aside>
+<div class="remember"><span class="label">Remember</span><p>JavaScript errors bypass the normal error slot and re-emerge as the original exception — a trick that is only safe because Node is single-threaded.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why do Node developers get real stack traces back when other languages don't?</em> The normal error channel only carries text, so other bindings flatten the error; Node parks and rethrows the original object. The price is a single-threaded assumption, which matches how Node runs.</li><li><em>Why do timestamps come back as awkward <code>BigInt</code> values?</em> Nanosecond timestamps are too big for JavaScript's ordinary numbers, which are only exact up to 2^53. A plain number would silently corrupt journaled clock reads.</li></ul></aside>
+</section></section>
+<section class="part" id="part-9"><div class="parthead"><span class="eyebrow">Part 9</span><h2>The operator console — pragmatic-cli</h2></div><div class="modintro"><p>This crate builds the <code>pragmatic</code> program itself — the tool an operator runs to answer "what did my agent actually do?", showing the journal four ways: terminal text, a pass/fail check, a single HTML file, and a live local website. Everything in it, even the web server, is written by hand on the standard library, so the whole tool stays small enough to audit.</p></div><section class="entry" id="f-crates-pragmatic-cli-src-main-rs">
+<header class="entryhead"><span class="cur">24</span><code class="fname">main.rs</code><span class="role">the command switchboard</span><span class="relpath">crates/pragmatic-cli/src/main.rs</span></header>
+<div class="lede"><p>This file is the front door of the <code>pragmatic</code> command-line tool. It reads what the operator typed and runs one of five jobs: <code>runs</code> lists every recorded run in a folder, <code>show</code> prints one run's timeline, <code>verify</code> checks the run's hash chain — its chain of digital fingerprints — pass or fail, <code>export</code> writes the HTML report, and <code>serve</code> starts the local website. It is a receptionist: it never digs into the journal files itself — it asks the core library and formats the answers.</p>
+<p>Two choices keep it simple. A "run" is any file ending in <code>.journal</code> — no database, the folder itself is the list. Even the argument reading is written by hand, because the tool takes no outside code beyond the core. It flags trouble plainly: a journal cut short by a crash, and any action that started but never finished — a sign the program died mid-action. <code>verify</code> exits with a failure code, so build systems can use it as a gate.</p></div>
+<div class="remember"><span class="label">Remember</span><p>This file only reads and formats — every fact it prints is computed by the core library.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>Why hand-build the command-line plumbing when free libraries exist?</em> Policy: no outside code beyond the core. We lose auto-generated help; we gain a small program a customer can audit line by line — fitting for a tool that sells trust.</li><li><em>Can these commands ever change or damage my records?</em> No. Every command is read-only: it opens a journal, asks the core library questions, and prints the answers.</li><li><em>Will it stay fast with thousands of runs?</em> Listing re-checks every file each time — fine at real operator scale (dozens of runs), and easy to speed up later if needed.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-cli-src-export-rs">
+<header class="entryhead"><span class="cur">25</span><code class="fname">export.rs</code><span class="role">one journal, one HTML file</span><span class="relpath">crates/pragmatic-cli/src/export.rs</span></header>
+<div class="lede"><p>This file turns one run's journal into a single web page you can attach to an incident ticket or email to an auditor. "Single" is literal: the styles and even the logo are baked into the file, so it makes zero network requests and opens in any browser, offline. It is a printout, not an app: no JavaScript framework, just rows you click to expand.</p>
+<p>Each journal event becomes one row whose detail text says what replay would do at that step — for example, a finished action's result is returned, not performed again — so the report doubles as documentation of the product's guarantees. The header states the big facts: did the hash chain verify, and did any action start but never finish. Journal text comes from prompts and model outputs, so it is treated as untrusted: every piece is cleaned before it goes into the page. The live website (serve.rs) reuses the same page-building helpers, so served and exported pages look identical.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The page is built by gluing text together, so its one safety rule — clean every piece of journal text first — is enforced by team discipline, not by the compiler.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>If I send this report to my auditor, do they need your servers?</em> No. Everything is inside the one file — it opens offline, in any browser, years from now.</li><li><em>What stops hostile text from injecting code into the page?</em> Every journal-derived string is cleaned first. The caveat: that rule is not machine-enforced or pinned by tests yet — a sensible next hardening step.</li><li><em>Why explain "replay" inside the report?</em> So the report stands alone — each row teaches the guarantee it demonstrates.</li></ul></aside>
+</section>
+<section class="entry" id="f-crates-pragmatic-cli-src-serve-rs">
+<header class="entryhead"><span class="cur">26</span><code class="fname">serve.rs</code><span class="role">a live console, HTTP server included</span><span class="relpath">crates/pragmatic-cli/src/serve.rs</span></header>
+<div class="lede"><p>This file is a small, complete web server — about 200 lines, written from scratch with no framework. It serves the same pages export.rs builds, but re-reads the journal folder on every request, so refreshing the browser shows a run growing while it is still recording. Three addresses: a list of all runs, one run's timeline, and a health check.</p>
+<p>The security model is one line:</p>
+<pre><code class="lang-rust">TcpListener::bind((&quot;127.0.0.1&quot;, port))</code></pre>
+<p><code>127.0.0.1</code> always means "this machine only." No other computer can connect, which is why there is no login and no encryption — none is needed. That is deliberate: the console shows prompts and outcomes, so putting it on a network should be an explicit decision, made by placing a standard gateway in front. The server also refuses run names containing unusual characters, so a crafted request cannot trick it into opening files outside the journal folder.</p></div>
+<div class="remember"><span class="label">Remember</span><p>The server is safe because of what it refuses to do: talk to other machines, read more of a request than it needs, or accept a run name with odd characters.</p></div>
+<aside class="block block-qa"><div class="label">Questions you might get asked</div><ul><li><em>You wrote your own web server — is that wise?</em> For this job, yes. It is local-only, read-only, and about 200 auditable lines; a framework would add thousands of lines of other people's code to defend.</li><li><em>Can a team share this console over the network?</em> Yes, deliberately: put a standard gateway (a reverse proxy) in front to handle logins and encryption. On its own, it stays on one machine.</li><li><em>How is it "live" without any push technology?</em> It re-reads the files every time you refresh the page — simple and always current; the trade-off is you press refresh yourself.</li></ul></aside>
+</section></section>
+<section class="part" id="part-10"><div class="parthead"><span class="eyebrow">Part 10</span><h2>The rest of the repository</h2></div><p>This part of the guide covers everything in the repository that is not source code: the README, the four docs pages, the changelog, the contributor and security policies, the two license files, the demo journal files, every runnable example, and the small pieces of project plumbing (build manifests, CI workflows, the bindings overview). Together with the source-file chapters, this completes coverage of the whole repo. Every section below describes only what the file actually says.</p>
+<h3><code>README.md</code> — the front door</h3>
+<p><strong>What it is.</strong> The first page anyone sees on GitHub. It is the sales pitch, the elevator demo, and the map of the repo in one file. <strong>What's inside.</strong> It opens with the one-line position: Pragmatic is "the black-box recorder for LLM agents." It names the two production pains: (1) a long agent run dies and a naive retry re-pays for every model call, and (2) someone — an auditor, a customer — asks what the agent actually did. It then states the three guarantees (journal every step, recover from any crash, replay faithfully), shows a real tool-use agent in about 30 lines of Rust, and backs each claim with a "Measured, not promised" table where every number is a test in this repo (for example: 1000 of 1000 runs replay byte-identically). A comparison table answers "Why not Temporal?": generic workflow engines treat a model call as an opaque cached blob; Pragmatic models it and makes the history a tamper-evident audit artifact. It ends with the crate list, the console commands, an "Honest scope" section admitting what is not done yet, and a plain summary of the license. <strong>Why it matters to you.</strong> This is the message; if the README changes, the product story changed.</p>
+<h3><code>docs/quickstart.md</code> — five minutes to a durable agent</h3>
+<p><strong>What it is.</strong> The condensed getting-started page: from adding the library to a working crash-proof agent in six numbered steps. <strong>What's inside.</strong> Step 1 adds two lines to <code>Cargo.toml</code> (Rust's dependency file). Step 2 writes an agent as a plain function: model calls go through <code>ctx.oracle</code> and side effects through <code>ctx.effect</code>, with the <code>#[pragmatic::durable]</code> marker on top. Steps 3–5 run it, kill it, resume it, and replay it — with the promise that resume re-pays for nothing and replay never calls the model. Step 6 installs the <code>pragmatic</code> command-line tool and inspects the run. Short closing sections show the same thing in async Rust and in Python (<code>pip install pragmatic-runtime</code>), and point at the deeper docs. <strong>Why it matters to you.</strong> It is the first hands-on experience a prospect has; if this page is not smooth, nothing after it matters.</p>
+<h3><code>docs/usage.md</code> — the full hands-on guide</h3>
+<p><strong>What it is.</strong> The long-form "you just found this repo, now actually use it" page — deliberately the middle path between the quickstart and the theory page. <strong>What's inside.</strong> A no-API-key path first: clone the repo and run <code>cargo run --example research_agent</code>, which uses a seeded stand-in model. Then: installing in your own project (Rust, Python, CLI), writing a first durable agent, and swapping in a real model — Anthropic, any OpenAI-compatible server (including a local Ollama with no key), or a <code>RetryOracle</code> wrapper that retries flaky APIs before anything is journaled. It explains the three operations on a run (<code>run</code>, <code>resume</code>, <code>replay</code>), the rule of thumb for effects (reads can be plain code; writes belong in <code>ctx.effect</code>), what a "dangling intent" is (a crash landed between "about to do the effect" and "effect done," so the runtime asks you to resolve it instead of guessing), how to inspect runs, and a plain FAQ. <strong>Why it matters to you.</strong> This is the page you send to a design partner; it is the product's user manual today.</p>
+<h3><code>docs/concepts.md</code> — the theory, mapped to the API</h3>
+<p><strong>What it is.</strong> The "why it works" page. It maps the research — a formal model called the Agentical calculus — onto the actual API. <strong>What's inside.</strong> The core idea: an LLM call is a draw from a probability distribution (the "Oracle"), every realized draw is written to the Journal in the same step it is used, and replay reads outcomes back instead of re-sampling. Theorem T1 says replay reproduces the recorded run exactly; it is proved on paper in the calculus and demonstrated empirically by the 1000-run E1 suite. A Lean 4 mechanization is in progress — the semantics and the theorem statements are formalized, the proof bodies are not yet discharged — so it is not machine-checked today. The page explains the two modes every step runs in (record vs. replay), the Journal format (append-only, entries keyed by position, linked by SHA-256 hashes so any edit breaks the chain), the write-ahead effect discipline, program identity (your function's source is hashed and journaled as step zero, so changed code refuses to replay old journals), faults and the Supervisor, budgets and effect allowlists, and labeled memory for information-flow control. It closes with honest scope: one process, local files. <strong>Why it matters to you.</strong> When a technical buyer asks "why should I believe the guarantees," this page is the answer.</p>
+<h3><code>docs/STRATEGY.md</code> — the business bet, written down</h3>
+<p><strong>What it is.</strong> The durable record of what Pragmatic is betting on, dated 2026-08-08, meant to be changed only deliberately via pull request. <strong>What's inside.</strong> The wedge decision: lead with auditability (tamper-evident replay), with zero-token crash recovery as the supporting economic benefit — because recovery alone is contestable by Temporal-style engines, and audit is not. Who it's for: design partners running multi-step agents in production, sharpest in regulated industries. The roadmap in priority order: (1) prove the abstraction on real agents (Anthropic done; OpenAI tool-loop parity next), (2) a first-class TypeScript SDK, (3) a minimal hosted console for 2–3 design partners, (4) only then breadth. An explicit "NOT doing" list: no new language bindings (C++/Java/Go/Node frozen at maintenance-only), no agent framework, no distributed journal until a customer needs it. Plus a positioning FAQ and named signals for when the strategy is working or should be revisited. <strong>Why it matters to you.</strong> This is your own decision log — the document that keeps roadmap choices consistent between the two of you.</p>
+<h3><code>CHANGELOG.md</code> — what shipped, when</h3>
+<p><strong>What it is.</strong> The release history, in the standard "Keep a Changelog" format, three releases so far. <strong>What's inside.</strong> <strong>0.2.0</strong> (2026-07-13, "public beta"): the first public release — core runtime, macros, Anthropic adapter, CLI, and the measured E1/E2/E3 results (the three headline benchmarks: exact replay every time, recovery from a crash at every possible point, and journal speed). <strong>0.3.0</strong> (2026-07-14, "customer-ready beta"): the async runtime, Python bindings, <code>pragmatic serve</code> (the live web console), wire-level tests of the Anthropic adapter, and one replay-divergence bug fix. <strong>0.4.0</strong> (2026-08-08, "polyglot launch"): journaled tool use end to end, the C ABI plus C++/Java/Go/Node bindings, the OpenAI-compatible adapter, <code>RetryOracle</code>, the strategy doc — and the license change from MIT/Apache to the Business Source License under Pragmatic Research, Inc. <strong>Why it matters to you.</strong> It is the public memory of the project; investors and users read it to judge pace and direction.</p>
+<h3><code>CONTRIBUTING.md</code> + <code>SECURITY.md</code> — the rules of engagement</h3>
+<p><strong>What it is.</strong> Two short policy files: how outsiders contribute code, and how they report vulnerabilities. <strong>What's inside.</strong> CONTRIBUTING sets three ground rules: the core crates stay zero-dependency; changes to replay behavior need an argument that they preserve Theorem T1, not just passing tests; and every claimed guarantee ships with a test. It lists the standard workflow commands (<code>cargo test</code>, <code>cargo fmt</code>, <code>cargo clippy</code>) and two hard rules about the on-disk format: never reuse a journal event tag, and format breaks require a version bump plus a migration story. It also names the highest-severity bug possible: a replay divergence. SECURITY says email me@aniketh.net (never a public issue), promises acknowledgment within 72 hours, supports 0.3.x and 0.4.x, and defines what counts as a vulnerability here: forging the hash chain, bypassing a keyed journal, making strict replay touch the model or the world, and capability or information-flow bypasses. Known non-vulnerabilities: journals are plaintext by design, and whoever holds the HMAC key can rewrite history. <strong>Why it matters to you.</strong> These files set expectations you will be held to — response times, format stability, and what "security bug" means for this product.</p>
+<h3><code>LICENSE</code> + <code>LICENSE-APACHE</code> — who may use this, and when it becomes fully open</h3>
+<p><strong>What it is.</strong> The legal terms. <code>LICENSE</code> is the Business Source License 1.1 (BUSL), a "source-available" license originally written by MariaDB. <code>LICENSE-APACHE</code> is the full standard text of the Apache License 2.0. <strong>What's inside.</strong> BUSL in plain words, per the actual file: anyone may read, copy, modify, and redistribute the code, and use it freely for anything that is <em>not</em> production. Production use is allowed under the "Additional Use Grant" only if both conditions hold: (a) the organization's gross revenue over the prior 12 months is under US $1,000,000, and (b) they are not selling Pragmatic itself as a hosted, managed, or embedded service. Anyone outside that grant needs a commercial license from the Licensor, Pragmatic Research, Inc. The Licensed Work is "Pragmatic 0.4.0," and on the Change Date — 2030-08-06, four years after release — this version automatically converts to Apache 2.0 and the restrictions fall away. Each released version gets its own Change Date. Violating the license terminates your rights across all versions. <code>LICENSE-APACHE</code> is in the repo because Apache 2.0 is the named Change License — the terms every version eventually converts to — so the destination text ships alongside the code (the project was also dual MIT/Apache before 0.4.0, per the changelog). <strong>Why it matters to you.</strong> This is the legal core of the business model: free enough to spread, restricted exactly where the commercial hosted layer will live.</p>
+<h3><code>demo-journals/</code> — two ready-made journal files</h3>
+<p><strong>What it is.</strong> A local folder holding two journal files: <code>research-42.journal</code> (a completed run) and <code>payment-7.journal</code> (a run that deliberately crashed inside an effect, leaving a dangling intent). They were generated by the CLI's <code>seed_demo</code> example, and because <code>.gitignore</code> excludes <code>*.journal</code>, they live only on this machine — they are not committed to git. <strong>What's inside.</strong> Each file is the on-disk journal format: a binary file starting with the magic bytes <code>PRAGJRNL</code>, then length-prefixed entries. Opened raw, you can read the prompts in plain text ("plan: survey durable execution for agents", "charge_card") interleaved with 32-byte hash-chain values — concrete proof that journals store prompts in plaintext, as SECURITY.md warns. The right way to look is the CLI: <code>cargo run -p pragmatic-cli -- runs --dir ./demo-journals</code> lists both runs with chain status, <code>... show research-42 --dir ./demo-journals</code> prints the timeline, <code>... verify --all --dir ./demo-journals</code> walks the hash chain, and <code>... export</code> or <code>... serve</code> opens the HTML console. <strong>Why it matters to you.</strong> It is the zero-setup demo: point the CLI at this folder and show the audit story in thirty seconds.</p>
+<h3><code>examples/</code> (across the crates) — seven runnable demos</h3>
+<p><strong>What it is.</strong> Seven small, complete programs, each a documented sales demo for one capability. Four need no API key at all. <strong>What's inside.</strong></p>
+<ul><li><code>crates/pragmatic/examples/research_agent.rs</code> — the landing-page demo: record a 12-step run, simulate a crash at step nine, resume without re-sampling a single journaled step (it prints <code>9 steps replayed from journal, 5 recorded fresh</code> — the five are the ones the crash destroyed, never re-paid duplicates), replay bit-for-bit, verify the signed chain. Run: <code>cargo run -p pragmatic --example research_agent</code>.</li><li><code>crates/pragmatic/examples/async_research.rs</code> — the same story in async Rust on the built-in executor. Run: <code>cargo run -p pragmatic --example async_research</code>.</li><li><code>crates/pragmatic/examples/tool_use_retries.rs</code> — a flaky tool fails twice; a Supervisor restarts from the journal each time, so nothing is re-drafted and the tool's failures are retried alone. Run: <code>cargo run -p pragmatic --example tool_use_retries</code>.</li><li><code>crates/pragmatic/examples/map_reduce.rs</code> — three parallel worker runs ("mappers") feeding results over message pipes ("channels") into one combining run (the "reducer"); one worker "crashes" and recovers from its own journal without disturbing the others. Run: <code>cargo run -p pragmatic --example map_reduce</code>.</li><li><code>crates/pragmatic-anthropic/examples/tool_loop.rs</code> — the real thing: Claude decides to call a calculator tool, every model turn and tool call is journaled, and replay is bit-identical with zero model or tool calls. Run: <code>ANTHROPIC_API_KEY=... cargo run -p pragmatic-anthropic --example tool_loop</code> (prints a friendly hint and exits if the key is missing).</li><li><code>crates/pragmatic-anthropic/examples/live_research.rs</code> — a live plan-execute-synthesize run against the API; kill it mid-run with Ctrl-C, run it again, and the paid-for completions are read back. Run: <code>ANTHROPIC_API_KEY=... cargo run --release -p pragmatic-anthropic --example live_research</code>.</li><li><code>crates/pragmatic-cli/examples/seed_demo.rs</code> — seeds a journal directory (one clean run, one dangling-intent run) so the CLI can be tried with no model at all. Run: <code>cargo run -p pragmatic-cli --example seed_demo -- ./demo-journals</code>. (The <code>pragmatic-openai</code> crate currently ships no examples.)</li></ul>
+<p><strong>Why it matters to you.</strong> These are the scripted demos for every conversation — pick the one that matches the pain the prospect just described.</p>
+<h3><code>.github/workflows/</code> — the robots that test and publish</h3>
+<p><strong>What it is.</strong> Two GitHub Actions files. CI (continuous integration) means GitHub automatically builds and tests the code on every push and pull request; the release workflow publishes packages when you tag a version. <strong>What's inside.</strong> <code>ci.yml</code> runs several jobs: formatting and lint checks, a check that the core crate really has zero dependencies, the full test suite in debug and release (the release run produces the headline numbers), all four no-key examples, a CLI and web-console smoke test using <code>seed_demo</code>, Python and C++/Java/Go/Node binding tests, an optional live-Anthropic-API test that runs only if the secret key is configured, and a no-default-features build check. <code>release.yml</code> fires when you push a tag like <code>v0.4.0</code>: it publishes the Rust crates to crates.io and builds Python wheels for Linux, macOS, and Windows for PyPI, using two repo secrets (a crates.io token and a PyPI token). <strong>Why it matters to you.</strong> The green CI badge on the README is the proof behind "every claim is a test," and shipping a release is one <code>git tag</code> away.</p>
+<h3><code>Cargo.toml</code>, <code>Cargo.lock</code>, <code>.gitignore</code>, <code>.claude/</code> — root plumbing</h3>
+<p><strong>What it is.</strong> The workspace manifest and housekeeping files at the repo root. A "workspace" is Rust's way of building several related crates (packages) from one folder. <strong>What's inside.</strong> <code>Cargo.toml</code> lists the seven member crates, sets the shared version (0.4.0), license tag (BUSL-1.1), homepage, and authors (Pragmatic Research, Inc.), and turns on maximum optimization for release builds. <code>Cargo.lock</code> is the auto-generated pin of exact dependency versions — machine-maintained; you never edit it. <code>.gitignore</code> tells git what not to track: build output (<code>/target</code>), the lock file, every <code>*.journal</code> file, macOS <code>.DS_Store</code> files, and the local <code>.claude/</code> folder (personal Claude Code settings on this machine, not part of the product). <strong>Why it matters to you.</strong> This is where the version number and license tag live, so a release bump starts here.</p>
+<h3><code>bindings/README.md</code> — the polyglot story in one page</h3>
+<p><strong>What it is.</strong> The overview page for the <code>bindings/</code> folder (the C++, Java, Go, and Node.js wrappers, whose source code is covered in the source-file chapters). <strong>What's inside.</strong> It states that all four bindings sit on the one C ABI from <code>pragmatic-ffi</code>, so journals are byte-compatible across every language plus Rust, Python, and the CLI. It declares their status plainly — stable, maintenance-only, per the strategy doc — and gives a table of how each binding works, its extra dependencies (only Node needs one, koffi), and each one's test command. It then lists the identical surface every binding exposes and notes that every <code>test.sh</code> runs the same record-resume-replay-verify scenario. <strong>Why it matters to you.</strong> It is the one page that turns "we support five languages" from a claim into a checkable table.</p></section>
+<section class="part" id="appendix"><div class="parthead"><span class="eyebrow">Appendix</span><h2>Defending the whole system</h2></div><p>These are the big-picture questions — the ones that span the whole system. The per-file Q&amp;As handle the local stuff; these are what a skeptical engineer, an auditor, or an investor asks about the product as a whole. Answers are short on purpose: each one is something you can actually say in a meeting.</p>
+<p><strong>Q: Why does the core have zero dependencies? Isn't that just showing off?</strong> A: It's a trust argument. The pitch is "this journal is your audit trail" — and an audit trail is only as trustworthy as the code that wrote it. Our core is small enough to read in an afternoon, with no third-party code inside it that an auditor would also have to vet. The trade-off: we had to build a few things ourselves that most projects import, and we accept that cost deliberately. The two model adapters are the documented exception — they need HTTPS and JSON, so they use two well-known libraries, kept at the edge.</p>
+<p><strong>Q: You wrote your own SHA-256? Isn't rolling your own crypto a famous mistake?</strong> A: The famous mistake is inventing your own <em>scheme</em> — new algorithms, new protocols. We didn't. SHA-256 is a public, standardized recipe with official test answers published by the US government (NIST), and our implementation is automatically checked against those answers in our test suite. It's used for fingerprinting log entries, not for keeping secrets. And if we ever want a third-party implementation instead, it's a one-file swap.</p>
+<p><strong>Q: AI models give different answers every time. How can replay be "exact"?</strong> A: Because replay never asks the model anything. When the run happens, we save the model's actual answer — the exact bytes. Replay re-runs the agent's code and hands back those saved answers. During an audit replay the model is literally replaced with a stub that errors if anyone tries to call it. The randomness isn't eliminated; it's captured the moment it happens and never consulted again.</p>
+<p><strong>Q: What stops someone from editing the log after the fact?</strong> A: Every entry is fingerprinted together with the fingerprint of the entry before it, forming a chain. Change anything and every later fingerprint stops matching — the <code>verify</code> command points to the exact spot where the chain breaks. Honest framing: this makes tampering <em>detectable</em>, not impossible. For stronger protection there's an option to mix a secret key into the fingerprints, so an outsider without the key can't rebuild a convincing fake chain.</p>
+<p><strong>Q: Can it handle many agents at once?</strong> A: Many <em>runs</em> at once, yes — every run has its own separate journal. Inside a single run, things happen one step at a time, on purpose: a recorder needs a clear, ordered story to replay. That's a stated design decision, not a limitation we stumbled into.</p>
+<p><strong>Q: Is there anything that does NOT survive a crash?</strong> A: One thing, by design: a message that was sent to a run but not yet picked up by it dies with the process. The rule of thumb: the journal records what the run <em>observed</em>, not what the outside world did. Anything that must survive should go through the recorded channels.</p>
+<p><strong>Q: Why does changing the agent's code break replay of old logs?</strong> A: On purpose. A journal is a recording of one specific version of your agent. Replaying it under different code would be a lie — so the runtime stamps a fingerprint of the code into the log's first entry and refuses to replay under anything else. The blunt edge: even a tiny code edit invalidates old recordings. Think of journals like build artifacts, tied to a version.</p>
+<p><strong>Q: Parts of this were AI-generated. Why should anyone trust it?</strong> A: Because trust here comes from the tests, not the author. The core promises — zero re-paid tokens on recovery, bit-for-bit replay, tamper detection — are all encoded as automated tests, including ones that record over a real network connection, kill the server, and prove replay works with the model unreachable. Every language binding runs the same story end-to-end. The code was also reviewed and is fully documented — this guide is part of that.</p>
+<p><strong>Q: What are those "T1" and "Lean" references in the comments?</strong> A: The design is based on a formal mathematical model (the team calls it the Agentical calculus), and its main theorem — replay reproduces the run exactly — is proved on paper in that calculus. <strong>Say it exactly this way:</strong> the <em>math</em> is proved on paper, and the <em>Rust code</em> is an implementation held to that math by the test suite (1000 of 1000 runs replay byte-identically), not a machine-verified program itself. There is a Lean 4 development, but it is a <em>skeleton</em>: the semantics and the theorem statements are formalized while the proof bodies are still <code>sorry</code>. Do not call it machine-checked or &ldquo;sorry-free&rdquo; — that is a specific, checkable claim in the Lean world, and it is the one thing here that would not survive a technical reference check.</p>
+<p><strong>Q: Give me the whole repo in five sentences.</strong> A: Every model call's answer is saved to an append-only, fingerprint-chained log the moment it happens. Crash recovery and audit replay are the same move — re-run the code, feed back the saved answers. The core does this with zero dependencies; adapters connect real model APIs; a small macro pins the code version; a CLI turns logs into readable web pages; a C layer carries it all to five other languages. Side effects are written down <em>before</em> they're performed, so they're never accidentally done twice. The journal is the product — everything else exists to write it, protect it, or read it.</p></section>
+    </main>
+<div class="foot"><span>This page was last edited on 17 September 2026, at 01:45 (UTC).</span><span>Every claim was checked against <code>pragmaticco/pragmaticMain</code> at v0.4.0: quoted code compared line by line, benchmarks re-run, and the full test suite executed (82 passing).</span></div>
+</article>
+</div>
+
+</body>
+</html>

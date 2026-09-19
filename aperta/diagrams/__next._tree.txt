@@ -12,9 +12,10 @@
 :HL["/aperta/anatomy/elbow.png","image"]
 :HL["/aperta/anatomy/hand.png","image"]
 :HL["/aperta/anatomy/heart.png","image"]
+:HL["/aperta/anatomy/hip.png","image"]
 :HL["/aperta/anatomy/lung.png","image"]
 :HL["/aperta/anatomy/abdomen.png","image"]
 :HL["/aperta/anatomy/spine.png","image"]
 :HL["/aperta/anatomy/knee.png","image"]
 :HL["/aperta/anatomy/bodies.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"qHZAg-Aerv0tc_FVPtLiR"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"RKoVRqn4twjs_fmYREaz7"}

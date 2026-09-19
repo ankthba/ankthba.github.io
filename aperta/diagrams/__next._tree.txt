@@ -6,6 +6,7 @@
 :HL["/aperta/anatomy/ear.png","image"]
 :HL["/aperta/anatomy/eye.png","image"]
 :HL["/aperta/anatomy/mouth.png","image"]
+:HL["/aperta/anatomy/neck.png","image"]
 :HL["/aperta/anatomy/shoulder.png","image"]
 :HL["/aperta/anatomy/hand.png","image"]
 :HL["/aperta/anatomy/heart.png","image"]
@@ -15,4 +16,4 @@
 :HL["/aperta/anatomy/knee.png","image"]
 :HL["/aperta/anatomy/bodies.png","image"]
 :HL["/aperta/anatomy/spot.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"BVL1p1PcIDV56vvD5bf-R"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"kNC_F2n1eldg4keyxWvUd"}

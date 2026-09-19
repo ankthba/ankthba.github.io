@@ -5,6 +5,7 @@
 :HL["/aperta/anatomy/shoulder.png","image"]
 :HL["/aperta/anatomy/spot.png","image"]
 :HL["/aperta/anatomy/hand.png","image"]
+:HL["/aperta/anatomy/heart.png","image"]
 :HL["/aperta/anatomy/spine.png","image"]
 :HL["/aperta/anatomy/knee.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"uFrfFYeCcCu-uXkp0ZCdW"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"2ZZ85SB4cCxYBMINz0WVK"}

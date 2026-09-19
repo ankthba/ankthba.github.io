@@ -1,4 +1,4 @@
-:HL["/aperta/_next/static/chunks/416aclmoi7o20.css","style"]
+:HL["/aperta/_next/static/chunks/1ya1fjzvtudy5.css","style"]
 :HL["/aperta/_next/static/media/5e5dfa9e86f764b8-s.p.22x-ws2e_cdqh.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/aperta/_next/static/media/8c2eb9ceedecfc8e-s.p.23aeddxv5enbo.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/aperta/_next/static/media/f7aa21714c1c53f8-s.p.0-95eo-012xnf.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
@@ -10,4 +10,4 @@
 :HL["/aperta/anatomy/lung.png","image"]
 :HL["/aperta/anatomy/spine.png","image"]
 :HL["/aperta/anatomy/knee.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"8EYtdX1ZAIi014ehuGCOA"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"Sm1Sgq_IA-g0dDir_lfqc"}

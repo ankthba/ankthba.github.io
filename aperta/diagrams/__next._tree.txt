@@ -21,4 +21,4 @@
 :HL["/aperta/anatomy/ankle.png","image"]
 :HL["/aperta/anatomy/skin.png","image"]
 :HL["/aperta/anatomy/bodies.png","image"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"0Y9nCgdEPPoL8ZHcerw6y"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"diagrams","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"Pf2V1aLJyn8oWUH37SB5D"}

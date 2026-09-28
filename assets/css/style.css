@@ -1,99 +1,58 @@
 /* =========================================================
    style.css - Portfolio
-   One centered column, serif throughout. Italic serif for
-   names and titles, letterspaced caps for labels and nav,
-   hairline rules for structure.
+   A twelve-column page set in EB Garamond, with IBM Plex Mono
+   for the small print: the bar, numbers, captions. One accent,
+   a marigold. Hairline rules for structure.
    ========================================================= */
 
 /* ---------------------------------------------------------
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400&display=swap');
 
 /* ---------------------------------------------------------
-   2. CSS Variables & Theme
+   2. Tokens
    --------------------------------------------------------- */
 
 /* The light palette, and the whole palette as far as a browser without
-   light-dark() is concerned. Those browsers stay on ivory, which is
-   where the site was before dark mode existed. */
+   light-dark() is concerned. */
 :root {
-  --color-bg: #faf9f5;
-  --color-bg-alt: #f0eee8;
-  --color-fg: #262624;
-  --color-muted: #6f695e;
-  --color-border: rgba(38, 38, 36, 0.14);
-  --color-border-hover: rgba(38, 38, 36, 0.3);
+  --paper: #f2f0e9;
+  --ink: #151513;
+  --muted: #78736a;
+  --rule: rgba(21, 21, 19, 0.16);
 
-  /* The gallery mat behind a photo. White in both themes: a print is
-     mounted on white board whatever the room's lighting, and on the dark
-     page the mat becomes the thing that reads as paper. */
-  --color-mat: #ffffff;
-  --color-scrim: rgba(250, 249, 245, 0.96);
+  /* A marigold. On the dark page it is bright enough to set anything
+     in. On ivory it only holds up at display sizes, so there it colours
+     large type (--accent-ink) and marks small links with a marigold
+     underline under ink, never marigold words. */
+  --accent: #f2b705;
+  --accent-ink: #e8a80c;
 
-  /* Muted Prussian blue: cool enough to read as a link on the warm
-     ivory, desaturated enough to sit beside the ink without shouting */
-  --color-link: #2f5575;
-  --color-link-hover: #4a749b;
-  --color-link-underline: rgba(47, 85, 117, 0.35);
+  --scrim: rgba(242, 240, 233, 0.97);
 
-  /* A link underline drawn in ink instead of blue, for the colophon
-     controls: they set the page's appearance, they don't go anywhere. */
-  --color-underline-quiet: rgba(38, 38, 36, 0.32);
+  --serif: "EB Garamond", Garamond, Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
-  --font-serif: "EB Garamond", Garamond, Georgia, serif;
-  --font-display: "EB Garamond", Garamond, Georgia, serif;
-  --font-sans: "EB Garamond", Garamond, Georgia, serif;
-
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 2.5rem;
-  --space-lg: 4.5rem;
-  --space-xl: 7rem;
-
-  --measure: 36rem;
-
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --gutter: clamp(16px, 2.2vw, 36px);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: light;
 }
 
-/* Both palettes, in one place. Each token carries its light and its dark
-   value, and light-dark() reads whichever the used color-scheme calls
-   for, so switching themes means changing one property rather than
-   restating twenty. The dark side is not an inversion: the ivory becomes
-   a warm near-black of the same temperature, the ink a warm off-white
-   rather than #fff, and the Prussian blue rises to a tint that still
-   reads as a link against it.
-
-   Guarded by @supports so that a browser without light-dark() also
-   keeps color-scheme: light above, and doesn't end up with dark
-   scrollbars framing an ivory page. */
 @supports (color: light-dark(#000, #fff)) {
   :root {
-    --color-bg: light-dark(#faf9f5, #1a1917);
-    --color-bg-alt: light-dark(#f0eee8, #22211e);
-    --color-fg: light-dark(#262624, #e8e6df);
-    --color-muted: light-dark(#6f695e, #a49d90);
-    --color-border: light-dark(rgba(38, 38, 36, 0.14), rgba(232, 230, 223, 0.16));
-    --color-border-hover: light-dark(rgba(38, 38, 36, 0.3), rgba(232, 230, 223, 0.32));
+    --paper: light-dark(#f2f0e9, #121210);
+    --ink: light-dark(#151513, #ecebe4);
+    --muted: light-dark(#78736a, #8d887e);
+    --rule: light-dark(rgba(21, 21, 19, 0.16), rgba(236, 235, 228, 0.14));
+    --accent: light-dark(#f2b705, #f5c030);
+    --accent-ink: light-dark(#e8a80c, #f5c030);
+    --scrim: light-dark(rgba(242, 240, 233, 0.97), rgba(18, 18, 16, 0.97));
 
-    /* --color-mat is deliberately absent: the gallery mat is white in
-       both themes, so it keeps its single definition above. Only the
-       paper the lightbox lays over the page follows the theme. */
-    --color-scrim: light-dark(rgba(250, 249, 245, 0.96), rgba(26, 25, 23, 0.96));
-
-    --color-link: light-dark(#2f5575, #8fb3d4);
-    --color-link-hover: light-dark(#4a749b, #b3cde5);
-    --color-link-underline: light-dark(rgba(47, 85, 117, 0.35), rgba(143, 179, 212, 0.38));
-
-    --color-underline-quiet: light-dark(rgba(38, 38, 36, 0.32), rgba(232, 230, 223, 0.3));
-
-    /* No data-theme is the default state, and it defers to the system.
-       The colophon toggle writes the attribute to override it, and
-       removes it again for "System". */
+    /* No data-theme defers to the system. The footer toggle writes the
+       attribute to override it, and removes it again for "System". */
     color-scheme: light dark;
   }
 
@@ -111,329 +70,294 @@
   padding: 0;
 }
 
-::selection {
-  background: var(--color-fg);
-  color: var(--color-bg);
-}
-
+html { -webkit-text-size-adjust: 100%; }
 
 body {
-  font-family: var(--font-serif);
-  font-size: 1.0625rem;
-  font-weight: 400;
-  line-height: 1.7;
-  color: var(--color-fg);
-  background-color: var(--color-bg);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* Paper grain, fixed over everything and never in the way. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+main { flex: 1; }
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+h1, h2, h3 { font-weight: 400; }
+p { text-wrap: pretty; }
+
+::selection { background: var(--accent); color: #151513; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
+.muted { color: var(--muted); }
+.nowrap { white-space: nowrap; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--gutter);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-  line-height: 1.15;
-  text-wrap: balance;
+/* A link that underlines from the left on hover. */
+.u {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--ease);
 }
+.u:hover,
+.u:focus-visible,
+.u[aria-current="page"] { background-size: 100% 1px; }
 
-p {
-  text-wrap: pretty;
+/* Things rise into view once, as /assets/js/site.js finds them. */
+.js .rise {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 1s ease, transform 1.2s var(--ease);
 }
-
+.js .rise.in { opacity: 1; transform: none; }
 
 /* ---------------------------------------------------------
-   4. Masthead (every page)
+   4. Bar (every page): fixed, and inverted against whatever
+   passes under it
    --------------------------------------------------------- */
 
-.masthead {
-  width: 100%;
-  /* Was 48rem, which put the masthead in a wider box than the text and
-     gave the page three different column edges. One measure now. */
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: var(--space-xl) var(--space-md) 0;
-  text-align: center;
-  /* Makes this box the reference the name sizes itself against. */
-  container-type: inline-size;
+.bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  padding-top: 18px;
+  color: #fff;
+  mix-blend-mode: difference;
+  align-items: start;
+  transition: transform 0.5s var(--ease), opacity 0.4s ease;
 }
 
-.masthead__name {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-weight: 400;
-  /* Fallback for browsers without container query units. */
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
-  /* "Aniketh Bandlamudi" advances 8.068em in EB Garamond, so the column
-     width divided by that sets the name to exactly one measure — the same
-     left and right edge as the nav and the body copy, at every viewport.
-     The constant is tied to this string in this face: change either and
-     re-measure, or the name stops meeting the column. */
-  font-size: calc(100cqi / 8.068);
-  white-space: nowrap;
-  line-height: 1.1;
-  color: var(--color-fg);
-  transition: opacity var(--transition-fast);
+/* Out of the way while reading down the page, back as soon as the
+   reader scrolls up for it. Set by /assets/js/site.js. */
+.bar.away {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+.bar__id { grid-column: 1 / 4; }
+.bar__role { grid-column: 4 / 6; }
+.bar__clock { grid-column: 6 / 8; font-variant-numeric: tabular-nums; }
+.bar__nav {
+  grid-column: 8 / 13;
+  display: flex;
+  justify-content: space-between;
+  gap: 0 12px;
+  flex-wrap: wrap;
 }
 
-a.masthead__name:hover {
-  opacity: 0.6;
+/* The button that stands in for the nav on small screens. */
+.bar__menu {
+  display: none;
+  grid-column: 10 / 13;
+  justify-self: end;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: inherit;
+  /* A thumb-sized target around eleven pixels of type. */
+  padding: 12px 0 12px 20px;
+  margin: -12px 0;
 }
 
-/* The masthead's own content box is already exactly one measure, so the
-   nav just fills it — no second copy of the column arithmetic to drift.
-   text-wrap: balance is gone: it evened the rows against each other but
-   pulled them to ~300px inside a 496px column, which read as a third
-   width on the page. Filling the measure matters more than a balanced
-   last line. */
-.masthead__nav {
-  max-width: 100%;
-  margin: 2rem auto 0;
-  /* The body copy on this site is justified, so the nav is too: every row
-     meets both edges of the same measure the name and the text meet.
-     balance still picks the break points, which keeps the rows to an even
-     number of links each — without it the 15th link strands alone on a
-     line, and justifying a lone link would stretch it across the column. */
-  text-wrap: balance;
-  text-align: justify;
-  text-align-last: justify;
-}
-
-/* Keep handles and other unbreakable tokens on one line */
-.nowrap {
-  white-space: nowrap;
-}
-
-.masthead__nav-link {
-  display: inline-block;
-  /* No side margins: justification supplies the horizontal gaps, and
-     margins here would inset the first and last link of every row, leaving
-     the nav a few px narrower than the column it is supposed to match. */
-  margin: 0 0 0.65rem;
-  text-align: center;
-  font-size: 0.95rem;
-  color: var(--color-fg);
-  transition: color var(--transition-fast);
-}
-
-/* Invisible ghosts reserve both the upright and italic widths
-   (EB Garamond italic runs narrower) so the italic current-page
-   link sits at the same width as the rest of the row */
-.masthead__nav-link::before,
-.masthead__nav-link::after {
-  content: attr(data-text);
-  display: block;
-  height: 0;
-  overflow: hidden;
+/* The menu: the whole screen, paper-coloured, the pages set large. It
+   sits under the bar, so the button that opened it stays in reach to
+   close it. */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: calc(18px + 56px) var(--gutter) calc(24px + env(safe-area-inset-bottom));
+  background: var(--paper);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
   visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+.menu.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s ease;
+}
+.menu__nav a {
+  display: block;
+  width: fit-content;
+  font-size: min(clamp(2.5rem, 11.5vw, 4.4rem), 7.4svh);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: transform 0.7s var(--ease), opacity 0.5s ease;
+}
+.menu.open .menu__nav a {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i) * 35ms + 60ms);
+}
+.menu__nav a[aria-current="page"] { font-style: italic; color: var(--accent-ink); }
+.menu__nav a:active { font-style: italic; }
+.menu__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  color: var(--muted);
 }
 
-.masthead__nav-link::before {
-  font-style: normal;
-}
+body.menu-open { overflow: hidden; }
 
-.masthead__nav-link::after {
+/* ---------------------------------------------------------
+   5. Section heads: set like an editorial running head, the
+   name in italic and a quiet link opposite it
+   --------------------------------------------------------- */
+
+.sec {
+  padding-top: clamp(96px, 16vh, 180px);
+}
+.sec__head {
+  align-items: baseline;
+  padding-bottom: 20px;
+}
+.sec__t {
+  grid-column: 1 / 9;
   font-style: italic;
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
-
-.masthead__nav-link:hover {
-  color: var(--color-muted);
-}
-
-/* Current page reads quiet, like the reference */
-.masthead__nav-link.active {
-  font-style: italic;
-  color: var(--color-muted);
+.sec__aside {
+  grid-column: 9 / 13;
+  text-align: right;
+  font-size: 1.05rem;
 }
 
 /* ---------------------------------------------------------
-   5. Page column
+   6. Inner pages: a very large title, then entries on the grid
    --------------------------------------------------------- */
 
 .page {
-  flex: 1;
-  width: 100%;
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  padding: clamp(120px, 22vh, 240px) var(--gutter) 0;
 }
 
-/* Body text justifies to both column edges, like the nav */
-.page p {
-  text-align: justify;
+.page-title {
+  font-size: clamp(3.6rem, 12vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  margin: 0 0 clamp(56px, 10vh, 120px) -0.04em;
+  animation: title-in 1.3s var(--ease) both;
+}
+
+@keyframes title-in {
+  from { opacity: 0; transform: translateY(0.25em); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Entries: work, education, projects, research, press. The title and
+   its role take the left of the page, the account of it the right. */
+.projects__list {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--rule);
+}
+
+.project-item {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-content: start;
+  padding: 26px 0 40px;
+  border-top: 1px solid var(--rule);
+}
+
+.project-item > * { grid-column: 7 / 12; }
+
+.project-item__header {
+  /* Spans however many rows the right column needs. Empty implicit
+     rows are zero tall, so the number only has to be big enough. */
+  grid-column: 1 / 7 !important;
+  grid-row: 1 / span 12;
+  padding-right: var(--gutter);
+}
+
+.project-item__title {
+  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.018em;
+}
+
+.project-item__role {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 1.02rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.project-item__description {
+  font-size: 1.12rem;
+  line-height: 1.55;
+  margin-bottom: 0.9rem;
   -webkit-hyphens: auto;
   hyphens: auto;
 }
 
-.page-title {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2.25rem, 5vw, 2.9rem);
-  line-height: 1.15;
-  margin-bottom: var(--space-md);
-  color: var(--color-fg);
-}
-
-/* ---------------------------------------------------------
-   6. Home intro
-   --------------------------------------------------------- */
-
-.about__text p {
-  color: var(--color-fg);
-  margin-bottom: 1.6rem;
-}
-
-.about__text p:last-child {
-  margin-bottom: 0;
-}
-
-.about__text a {
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-link-underline);
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast);
-}
-
-.about__text a:hover {
-  color: var(--color-link-hover);
-  text-decoration-color: var(--color-link-hover);
-}
-
-/* Latest writing: the nav link treatment, stacked and left-aligned */
-
-.writing {
-  margin-top: var(--space-md);
-}
-
-.writing__heading {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.25rem;
-  margin-bottom: 0.9rem;
-  color: var(--color-fg);
-}
-
-.writing__list {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
-}
-
-.writing__link {
-  display: inline-block;
-  font-size: 0.95rem;
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-link-underline);
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast);
-}
-
-.writing__link:hover {
-  color: var(--color-link-hover);
-  text-decoration-color: var(--color-link-hover);
-}
-
-/* ---------------------------------------------------------
-   7. Entry lists (work, projects, education, research)
-   --------------------------------------------------------- */
-
-.projects__list {
-  display: flex;
-  flex-direction: column;
-}
-
-.project-item {
-  padding: var(--space-md) 0;
-}
-
-.project-item:first-child {
-  padding-top: 0;
-}
-
-.project-item:last-child {
-  padding-bottom: 0;
-}
-
-.project-item__header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.35rem;
-  margin-bottom: 0.85rem;
-}
-
-.project-item__title {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 400;
-  margin: 0;
-}
-
-.project-item__role {
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--color-muted);
-}
-
-.project-item__description {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--color-fg);
-  margin: 0 0 0.5rem;
-}
-
-.project-item__description:last-child {
-  margin-bottom: 0;
-}
-
 .project-item__link {
-  display: inline-block;
-  font-size: 0.95rem;
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-link-underline);
-  text-underline-offset: 3px;
-  margin-top: 0.35rem;
-  transition: color var(--transition-fast);
+  justify-self: start;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: linear-gradient(var(--rule), var(--rule)) 0 100% / 100% 1px no-repeat;
+  transition: color 0.3s ease, background-size 0.3s ease;
 }
+.project-item__link:hover {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 100% 0.14em;
+}
+.project-item__link::after { content: " →"; }
+.project-item__link[target="_blank"]::after { content: " ↗"; }
+.project-item__link[href^="mailto:"]::after,
+.project-item__link[download]::after { content: ""; }
 
 .project-item__links {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
-  margin-top: 0.35rem;
-}
-
-.project-item__links .project-item__link {
-  margin-top: 0;
-}
-
-.project-item__link:hover {
-  color: var(--color-link-hover);
-  text-decoration-color: var(--color-link-hover);
+  gap: 0.35rem;
 }
 
 .project-item__link--disabled {
@@ -442,454 +366,559 @@ a.masthead__name:hover {
   pointer-events: none;
 }
 
+/* Contact and 404: one large sentence and a way on. */
+.contact__text {
+  max-width: 22ch;
+  margin-bottom: 2rem;
+  font-size: clamp(1.7rem, 3.6vw, 3.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+}
+
 /* ---------------------------------------------------------
-   8. Photos
+   7. Photography
    --------------------------------------------------------- */
 
-/* Masonry columns; photos keep their native aspect ratio,
-   each in a white gallery mat */
 .photos__grid {
-  columns: 3;
-  column-gap: 0.9rem;
+  columns: 4;
+  column-gap: var(--gutter);
 }
 
 .photo-item {
   break-inside: avoid;
-  margin-bottom: 0.9rem;
-  padding: 1.85rem;
-  background: var(--color-mat);
+  margin-bottom: var(--gutter);
   cursor: zoom-in;
 }
 
 .photo-item img {
-  display: block;
   width: 100%;
   height: auto;
-  transition: opacity var(--transition-base);
+  background: var(--rule);
+  transition: opacity 0.4s ease;
 }
 
-.photo-item:hover img {
-  opacity: 0.85;
-}
+.photo-item:hover img { opacity: 0.82; }
 
 .photos__links {
   display: flex;
-  justify-content: center;
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+  gap: 2rem;
+  margin-top: clamp(40px, 6vh, 72px);
+  font-size: 1.15rem;
 }
 
 .photos__links a {
-  display: inline-block;
-  font-size: 0.95rem;
-  color: var(--color-link);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-link-underline);
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast);
+  background: linear-gradient(var(--rule), var(--rule)) 0 100% / 100% 1px no-repeat;
+  transition: color 0.3s ease;
 }
-
 .photos__links a:hover {
-  color: var(--color-link-hover);
-  text-decoration-color: var(--color-link-hover);
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 100% 0.14em;
 }
+.photos__links a::after { content: " ↗"; }
 
-/* Full-screen viewer: same ivory paper, photo centered,
-   a quiet Close in the corner */
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-md);
-  background: var(--color-scrim);
-  animation: lightbox-fade var(--transition-base);
+  padding: clamp(48px, 7vh, 80px) var(--gutter);
+  background: var(--scrim);
+  animation: lightbox-in 0.3s ease;
 }
 
-.lightbox[hidden] {
-  display: none;
-}
+.lightbox[hidden] { display: none; }
 
-@keyframes lightbox-fade {
+@keyframes lightbox-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 .lightbox__img {
-  display: block;
-  max-width: min(60rem, 100%);
-  max-height: 82vh;
-  padding: 2.5rem;
-  background: var(--color-mat);
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .lightbox__close {
   position: absolute;
-  top: 1.25rem;
-  right: 1.75rem;
-  font-family: var(--font-serif);
-  font-size: 0.95rem;
-  color: var(--color-fg);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color var(--transition-fast);
+  top: 18px;
+  right: var(--gutter);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
-
-.lightbox__close:hover {
-  color: var(--color-muted);
-}
-
-.lightbox__close:focus {
-  outline: none;
-}
-
-.lightbox__close:focus-visible {
-  outline: 1px solid var(--color-border-hover);
-  outline-offset: 3px;
-}
-
-@media (max-width: 480px) {
-  .photos__grid {
-    columns: 2;
-    column-gap: 0.6rem;
-  }
-
-  .photo-item {
-    margin-bottom: 0.6rem;
-    padding: 1.2rem;
-  }
-}
+.lightbox__close:hover { color: var(--muted); }
 
 /* ---------------------------------------------------------
-   9. Contact & Resume
+   8. Resume
    --------------------------------------------------------- */
-
-.contact__text {
-  max-width: 34rem;
-  margin-bottom: var(--space-md);
-}
 
 .resume__frame {
   width: 100%;
-  border: 1px solid var(--color-border);
+  max-width: 52rem;
+  height: auto;
+  /* Stays white in both themes on purpose: the SVG is black glyph
+     paths on nothing, and a resume should read as a sheet of paper
+     whatever the page behind it is doing. */
+  background: #fff;
+  box-shadow: 0 2px 24px rgba(21, 21, 19, 0.08);
+  transition: transform 0.6s var(--ease);
 }
+a:hover > .resume__frame { transform: translateY(-4px); }
 
 .resume__download {
-  margin-top: var(--space-sm);
+  display: inline-block;
+  margin-top: 1.5rem;
 }
 
 /* ---------------------------------------------------------
-   10. Colophon (footer, every page)
+   9. Footer (every page)
    --------------------------------------------------------- */
 
-.colophon {
-  width: 100%;
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: var(--space-md) var(--space-md) var(--space-lg);
-}
+.foot { padding-top: clamp(110px, 18vh, 200px); }
 
-.colophon__meta {
-  /* The copyright takes the left edge of the measure and the theme
-     control the right, so this row meets the same two edges the name,
-     the nav and the body copy meet. They drop onto two lines rather
-     than crowd on a narrow screen. */
-  display: flex;
-  flex-wrap: wrap;
-  /* Centred, not baseline-aligned: the buttons carry the invisible width
-     ghosts below, and a zero-height block after the text moves a
-     button's baseline down past the copyright's. Both boxes are the same
-     height, so centring lines the two lots of text up exactly. */
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.4rem 1.5rem;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--color-muted);
+/* Set to exactly the width of the page by /assets/js/site.js; 13vw is
+   close enough for the moment before it runs. */
+.foot__mail {
+  display: block;
+  padding-inline: var(--gutter);
+  white-space: nowrap;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  font-size: 13vw;
+  transition: color 0.35s ease;
 }
+.foot__mail:hover { color: var(--accent-ink); font-style: italic; }
+
+.foot__row {
+  padding-block: 34px 26px;
+  margin-top: 26px;
+  border-top: 1px solid var(--rule);
+  row-gap: 18px;
+  align-items: start;
+}
+.foot__row > :nth-child(1) { grid-column: 1 / 6; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.foot__row > :nth-child(2) { grid-column: 6 / 9; }
+.foot__row > :nth-child(3) { grid-column: 9 / 11; }
+.foot__row > :nth-child(4) { grid-column: 11 / 13; text-align: right; }
 
 /* Hidden until the inline head script has proved scripting is on:
-   without it these three buttons would sit in the footer doing
-   nothing, and the page would still be following the system anyway. */
-.theme-toggle {
-  display: none;
+   without it these three buttons would do nothing. */
+.theme-toggle { display: none; }
+:root.js .theme-toggle { display: inline-flex; gap: 12px; }
+.theme-toggle__option { text-transform: uppercase; color: var(--muted); }
+.theme-toggle__option:hover { color: var(--ink); }
+.theme-toggle__option[aria-pressed="true"] { color: var(--ink); }
+.theme-toggle__option[aria-pressed="true"]::before { content: "● "; color: var(--accent); }
+
+/* ---------------------------------------------------------
+   10. Home: the headline
+   --------------------------------------------------------- */
+
+.hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: clamp(96px, 17vh, 190px);
 }
 
-:root.js .theme-toggle {
-  display: inline-flex;
-  gap: 0.8rem;
+.hero__title {
+  padding-inline: var(--gutter);
+  font-size: clamp(2.35rem, 6.3vw, 10rem);
+  line-height: 0.99;
+  letter-spacing: -0.022em;
+  text-indent: 25%;
 }
+.hero__title em { font-style: italic; }
+.hero__title .nb { white-space: nowrap; }
+/* text-indent inherits into inline-blocks, and every word is one. */
+.hero__title .w,
+.hero__title .w > span { text-indent: 0; }
 
-.theme-toggle__option {
-  /* Underlined like a link, in ink rather than blue: these change how
-     the page looks, they don't go anywhere. Upright against the italic
-     colophon line, so that italic is left to mean "in force". */
-  font-family: inherit;
-  font-size: inherit;
-  font-style: normal;
-  line-height: inherit;
-  padding: 0;
-  color: var(--color-muted);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--color-underline-quiet);
-  text-underline-offset: 3px;
-  transition: color var(--transition-fast);
-}
-
-/* The same invisible ghosts the nav uses: each button reserves both its
-   upright and its italic width, so switching the setting doesn't change
-   how wide these three words are and shove the centred row sideways. */
-.theme-toggle__option::before,
-.theme-toggle__option::after {
-  content: attr(data-text);
-  display: block;
-  height: 0;
+/* Photographs set in the line like words. */
+.inl {
+  display: inline-block;
+  position: relative;
+  width: 1.5em;
+  height: 0.72em;
+  margin: 0 0.06em;
+  vertical-align: -0.02em;
   overflow: hidden;
-  visibility: hidden;
+  border-radius: 0.06em;
+  background: var(--rule);
+  text-indent: 0;
+  transition: width 0.7s var(--ease), clip-path 1.2s var(--ease);
+}
+.inl img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.inl img.on { opacity: 1; }
+@media (hover: hover) {
+  .inl:hover { width: 2.7em; }
 }
 
-.theme-toggle__option:last-child {
-  text-align: right;
+/* Load: each word rises out of its own line, the photographs open
+   from the left. Only when scripting is on to finish the job. */
+.js .hero__title .w {
+  display: inline-block;
+  clip-path: inset(-0.2em -0.3em -0.3em -0.3em);
 }
+.js .hero__title .w > span {
+  display: inline-block;
+  transform: translateY(125%);
+  transition: transform 1.25s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.js .hero__title .inl { clip-path: inset(0 100% 0 0); transition-delay: 0s, var(--d, 0s); }
+.ready .hero__title .w > span { transform: none; }
+.ready .hero__title .inl { clip-path: inset(0 0 0 0); }
+.settled .hero__title .w { clip-path: none; }
 
-.theme-toggle__option::before {
-  font-style: normal;
+.hero__foot {
+  padding-block: 28px 22px;
+  align-items: end;
 }
+.hero__foot > :nth-child(1) { grid-column: 1 / 4; }
+.hero__foot > :nth-child(2) { grid-column: 4 / 8; }
+.hero__foot > :nth-child(3) { grid-column: 8 / 11; }
+.hero__foot > :nth-child(4) { grid-column: 11 / 13; text-align: right; }
+.hero__foot b { font-weight: 400; color: var(--muted); display: block; margin-bottom: 4px; }
+.hero__foot a { border-bottom: 1px solid var(--rule); }
+.hero__foot a:hover { border-color: currentColor; }
 
-.theme-toggle__option::after {
-  font-style: italic;
-}
-
-.theme-toggle__option:hover {
-  color: var(--color-fg);
-}
-
-/* The setting in force goes italic and full ink, the way the current
-   page reads in the nav. */
-.theme-toggle__option[aria-pressed="true"] {
-  font-style: italic;
-  color: var(--color-fg);
-  text-decoration-color: var(--color-fg);
-}
-
-.theme-toggle__option:focus-visible {
-  outline: 1px solid var(--color-border-hover);
-  outline-offset: 3px;
-}
+.js .fade { opacity: 0; transition: opacity 1.4s ease 0.9s; }
+.ready .fade { opacity: 1; }
 
 /* ---------------------------------------------------------
-   11. Labels shared by inline page styles
+   11. Home: the index of work
    --------------------------------------------------------- */
 
-.section-label {
+.index { list-style: none; }
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: baseline;
+  padding: 18px var(--gutter) 16px;
+  border-top: 1px solid var(--rule);
+  transition: opacity 0.45s ease;
+}
+.index li:last-child .row { border-bottom: 1px solid var(--rule); }
+.row__n { grid-column: 1 / 2; color: var(--muted); }
+.row__name {
+  grid-column: 2 / 7;
+  font-size: clamp(2.1rem, 4.6vw, 4.9rem);
+  line-height: 1;
+  letter-spacing: -0.018em;
+  transition: transform 0.6s var(--ease), color 0.3s ease;
+}
+.row__desc {
+  grid-column: 7 / 11;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  font-style: italic;
+  color: var(--muted);
+}
+.row__role { grid-column: 11 / 13; text-align: right; color: var(--muted); }
+.row__thumb { display: none; }
+
+@media (hover: hover) {
+  .index:hover .row { opacity: 0.26; }
+  .index .row:hover { opacity: 1; }
+  .row:hover .row__name {
+    transform: translateX(0.22em);
+    font-style: italic;
+    color: var(--accent-ink);
+  }
+}
+
+/* The picture that trails the cursor through the index. */
+.peek {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  width: clamp(220px, 21vw, 360px);
+  aspect-ratio: 4 / 3;
+  pointer-events: none;
+  will-change: transform;
+}
+.peek__in {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
+  transform: scale(0.4);
+  opacity: 0;
+  transition: transform 0.55s var(--ease), opacity 0.3s ease;
+}
+.peek.on .peek__in { transform: scale(1); opacity: 1; }
+.peek img { width: 100%; height: 100%; object-fit: cover; }
+.peek img.contain { object-fit: contain; padding: 8%; }
+
+/* ---------------------------------------------------------
+   12. Home: photographs, a pinned strip that scrolls sideways
+   --------------------------------------------------------- */
+
+.gallery {
+  position: relative;
+  padding-top: 0;
+  margin-top: clamp(40px, 6vh, 80px);
+}
+.gallery__pin {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.gallery .sec__head {
+  position: absolute;
+  top: clamp(64px, 11vh, 110px);
+  left: 0;
+  right: 0;
+}
+.track {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(20px, 3.4vw, 64px);
+  padding-inline: var(--gutter) 30vw;
+  width: max-content;
+  will-change: transform;
+}
+.shot { flex: none; }
+.shot img {
+  height: var(--h, 56vh);
+  width: auto;
+  background: var(--rule);
+}
+.shot figcaption {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: var(--muted);
+}
+.shot--end {
+  align-self: center;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1;
+  font-style: italic;
+  white-space: nowrap;
+}
+.shot--end span { color: var(--accent-ink); font-style: normal; }
+.gallery__count {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+}
+.gallery__bar {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 16px;
+  height: 1px;
+  background: var(--rule);
+}
+.gallery__bar i {
   display: block;
-  color: var(--color-muted);
-  margin: var(--space-lg) 0 var(--space-md);
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
 }
 
-.section-label:first-child {
-  margin-top: 0;
+/* Without the pinning (small screens, reduced motion) it is just a
+   strip you swipe. */
+.gallery.static { height: auto !important; }
+.gallery.static .gallery__pin { position: relative; height: auto; overflow: visible; }
+.gallery.static .sec__head { position: static; }
+.gallery.static .track {
+  width: auto;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter);
+  padding-right: var(--gutter);
+  padding-bottom: 16px;
+  transform: none !important;
+  scrollbar-width: none;
 }
+.gallery.static .track::-webkit-scrollbar { display: none; }
+.gallery.static .shot { scroll-snap-align: start; }
+.gallery.static .gallery__count,
+.gallery.static .gallery__bar { display: none; }
 
 /* ---------------------------------------------------------
-   12. Responsive
+   13. Home: press marquee and about
    --------------------------------------------------------- */
+
+.marquee {
+  display: block;
+  overflow: hidden;
+  border-block: 1px solid var(--rule);
+  padding-block: clamp(14px, 2vw, 26px);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee__item {
+  display: flex;
+  align-items: center;
+  font-size: clamp(2.3rem, 6.2vw, 6.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.marquee__item:nth-child(even) { font-style: italic; }
+.marquee__item::after {
+  content: "";
+  width: 0.16em;
+  height: 0.16em;
+  margin: 0 0.55em;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.marquee:hover .marquee__item { color: var(--muted); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.about__body {
+  grid-column: 1 / 10;
+  font-size: clamp(1.45rem, 2.3vw, 2.3rem);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+}
+.about__body p + p { margin-top: 0.8em; }
+.about__body a {
+  background: linear-gradient(var(--accent), var(--accent)) 0 92% / 100% 0.12em no-repeat;
+  transition: background-size 0.4s var(--ease);
+}
+.about__body a:hover { background-size: 100% 0.5em; }
+.about__side {
+  grid-column: 10 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-top: 0.6em;
+}
+.about__side b { font-weight: 400; color: var(--muted); display: block; margin-bottom: 6px; }
+.about__side a { font-size: 1.15rem; line-height: 1.5; }
+.about__side ul { list-style: none; }
+
+/* ---------------------------------------------------------
+   14. Responsive
+   --------------------------------------------------------- */
+
+/* Between tablet and a full desktop there isn't room for everything in
+   one line of the bar: the role goes, and the nav takes its columns. */
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .bar__role { display: none; }
+  .bar__id { grid-column: 1 / 4; }
+  .bar__clock { grid-column: 4 / 7; }
+  .bar__nav { grid-column: 7 / 13; }
+}
+
+.bar__id, .bar__clock, .bar__nav a { white-space: nowrap; }
+
+/* Below that the nav no longer fits on one line, so the bar keeps the
+   name and a button for the rest. */
+@media (max-width: 1023px) {
+  .bar__role,
+  .bar__clock,
+  .bar__nav { display: none; }
+  .bar__id { grid-column: 1 / 10; }
+  .bar__menu { display: block; }
+  .bar { padding-top: max(18px, env(safe-area-inset-top)); }
+  .menu { display: flex; }
+}
+
+@media (max-width: 1100px) {
+  .photos__grid { columns: 3; }
+}
+
+@media (max-width: 900px) {
+  .page { padding-top: clamp(130px, 20vh, 200px); }
+
+  .project-item > *,
+  .project-item__header { grid-column: 1 / 13 !important; }
+  .project-item__header { grid-row: auto; padding: 0 0 1.1rem; }
+
+  .hero__title { text-indent: 0; }
+  .hero__foot { row-gap: 18px; }
+  .hero__foot > :nth-child(1) { grid-column: 1 / 7; }
+  .hero__foot > :nth-child(2) { grid-column: 7 / 13; }
+  .hero__foot > :nth-child(3) { grid-column: 1 / 10; }
+  .hero__foot > :nth-child(4) { grid-column: 10 / 13; }
+
+  .row { row-gap: 8px; }
+  .row__n { grid-column: 1 / 3; }
+  .row__name { grid-column: 3 / 10; }
+  .row__thumb {
+    display: block;
+    grid-column: 10 / 13;
+    grid-row: 1 / 3;
+    align-self: center;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #fff;
+  }
+  .row__thumb.contain { object-fit: contain; padding: 6%; }
+  .row__desc { grid-column: 3 / 10; font-size: 0.98rem; }
+  .row__role { display: none; }
+
+  .about__body { grid-column: 1 / 13; }
+  .about__side { grid-column: 1 / 13; flex-direction: row; flex-wrap: wrap; gap: 24px 40px; padding-top: 44px; }
+
+  .foot__row > :nth-child(1) { grid-column: 1 / 13; }
+  .foot__row > :nth-child(2) { grid-column: 1 / 7; }
+  .foot__row > :nth-child(3) { grid-column: 7 / 13; text-align: right; }
+  .foot__row > :nth-child(4) { grid-column: 1 / 13; text-align: left; }
+}
 
 @media (max-width: 640px) {
-  :root {
-    --space-xl: 4.5rem;
-    --space-lg: 3rem;
-    --space-md: 2rem;
-  }
-
-  .masthead {
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
-  }
-
-  .masthead__nav-link {
-    margin: 0 0 0.45rem;
-  }
-
-  .page {
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
-  }
-
-  /* Matches the masthead and the page column, so the colophon's two
-     edges stay the same two edges at every width. */
-  .colophon {
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
-  }
-
-  /* Center only the page title under the centered masthead;
-     entry titles, roles, and links stay left-aligned */
-  .page-title {
-    text-align: center;
-  }
-
-  .contact__text {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-/* ---------------------------------------------------------
-   13. Home layout and the portrait
-
-   The home page is the one page that is not a single centred
-   column. The column is unchanged: same measure, same masthead,
-   same justified nav, same colophon. It is simply moved off
-   centre so that a picture can sit beside it, and the pair of
-   them is centred instead.
-
-   The picture is a photograph sampled down to a grid of tones
-   and redrawn in EB Garamond by /assets/js/plate.js.
-   --------------------------------------------------------- */
-
-.layout {
-  flex: 1;
-  width: 100%;
-  /* Stops the picture running away with itself on a very wide monitor. */
-  max-width: 80rem;
-  margin-inline: auto;
-  display: grid;
-  /* The text column keeps its own measure to the pixel; the picture
-     takes whatever is left, so it grows with the window instead of
-     sitting at a fixed size in the middle of it. */
-  grid-template-columns: minmax(0, var(--measure)) minmax(16rem, 1fr);
-  /* Four rows: the name, the prose, a spacer that takes up whatever is
-     left of the window, and the colophon. The slack is parked in its
-     own row rather than inside the prose row, so the prose row keeps
-     its natural height and the picture beside it can be centred on the
-     text rather than on the empty half of the page. */
-  grid-template-rows: auto auto 1fr auto;
-  justify-content: center;
-  column-gap: clamp(1.5rem, 4vw, 4rem);
-}
-
-.layout > .masthead { grid-column: 1; grid-row: 1; }
-.layout > .page     { grid-column: 1; grid-row: 2; }
-.layout > .colophon { grid-column: 1; grid-row: 4; }
-
-/* The picture stands against the text and nothing else: it spans the
-   name and the prose, not the spacer under them, so it is centred on
-   the body of the page rather than on the window. */
-.layout > .plate {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  align-self: stretch;
-  position: relative;
-  min-height: 0;
-  /* The masthead opens with this much space above the name and the
-     prose closes with the same below it. Matching it here makes the
-     picture's content box exactly as tall as the text beside it, so
-     the face spans the text and nothing more. */
-  padding: var(--space-xl) 0;
-}
-
-/* The photograph sits behind the plate permanently, as an ordinary
-   image the browser paints for us. The canvas above it is opaque: it
-   fills with the page colour and punches holes in itself along the
-   trail, and the photograph shows through them. Nothing about the
-   picture depends on it being redrawn. */
-.plate__photo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.plate canvas {
-  display: block;
-  position: relative;
-  cursor: crosshair;
-  /* Read by the renderer, not painted. A custom property holding
-     light-dark() comes back from getPropertyValue() as the literal
-     function text, which canvas cannot use, so the ink is taken off a
-     real property that does resolve. */
-  color: var(--color-fg);
-}
-
-/* Laid over its column and centred on it, rather than sitting in the
-   flow at the top of it. Taking the picture out of flow also means it
-   can be sized against the column's height without its own height
-   feeding back into that measurement. */
-@media (min-width: 1041px) {
-  .plate canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
-
-/* Below this the text column could no longer hold its full measure
-   beside the picture, so the page goes back to being one centred
-   column and the picture takes its place in the flow, between the nav
-   and the prose. */
-@media (max-width: 1040px) {
-  /* A flex column rather than a plain block, so that .page keeps its
-     flex: 1 and the colophon still sits at the foot of a short page. */
-  .layout {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .layout > .plate {
-    position: relative;
-    width: 100%;
-    max-width: 17rem;
-    margin: var(--space-md) auto 0;
-    padding: 0;
-  }
+  .photos__grid { columns: 2; }
 }
 
 @media (max-width: 560px) {
-  /* Justification needs room. At this measure it opens rivers between
-     the words and hyphenates every other line, so the prose and the
-     nav both go ragged. The column edges still line up on the left,
-     which is what the page is actually built on. */
-  .page p {
-    text-align: left;
-    -webkit-hyphens: none;
-    hyphens: none;
-  }
-
-  .masthead__nav {
-    text-align: center;
-    text-align-last: center;
-  }
-
-  .masthead__nav-link {
-    margin: 0 0.55rem 0.5rem;
-  }
-
-  .layout > .plate {
-    max-width: 15rem;
-    margin-top: var(--space-sm);
-  }
+  .hero__foot > :nth-child(1),
+  .hero__foot > :nth-child(2) { grid-column: 1 / 13; }
+  .sec__t { grid-column: 1 / 13; }
+  .sec__aside { grid-column: 1 / 13; text-align: left; margin-top: 6px; }
+  .shot img { height: var(--hs, 46vh); }
 }
 
 /* ---------------------------------------------------------
-   14. Reduced Motion & View Transitions
+   15. Reduced motion and view transitions
    --------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+  *, *::before, *::after {
+    animation: none !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
   }
+  .marquee__track { flex-wrap: wrap; width: auto; }
+  .marquee__item:nth-child(n + 7) { display: none; }
 }
 
 @view-transition {

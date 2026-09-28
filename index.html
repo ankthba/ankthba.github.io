@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the colophon toggle is only shown where it can actually work. */
+       the footer toggle is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -100,62 +100,238 @@
   </script>
 </head>
 <body>
-  <div class="layout">
-  <header class="masthead masthead--home">
-    <h1 class="masthead__name">Aniketh Bandlamudi</h1>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link active" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+
+  <header class="bar grid mono">
+    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
+    <span class="bar__role">CS &amp; Applied Math, UVA</span>
+    <span class="bar__clock">Charlottesville<span data-clock></span></span>
+    <nav class="bar__nav" aria-label="Site">
+      <a class="u" href="/work/">Work</a>
+      <a class="u" href="/education/">Education</a>
+      <a class="u" href="/projects/">Projects</a>
+      <a class="u" href="/research/">Research</a>
+      <a class="u" href="/photos/">Photos</a>
+      <a class="u" href="/press/">Press</a>
+      <a class="u" href="/resume/">Resume</a>
+      <a class="u" href="/contact/">Contact</a>
     </nav>
+    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
   </header>
 
-  <figure class="plate">
-    <img class="plate__photo" src="/assets/img/aniketh-cutout.png" alt="" aria-hidden="true">
-    <canvas id="plate" width="600" height="700" role="img"
-    aria-label="A portrait of Aniketh Bandlamudi, drawn in EB Garamond characters"
-    data-cols="54" data-rows="34" data-plate="----------------------------+--------++-----------------------------------------------------------------------------------------------------------------------------------------------zqhaVYaXUdosv+-------------------------------------udTJC85677789DFJQjz---------------------------------wWG9334440112457BEDGOew------------------------------mE56BCCBA72110013469EDBGcx---------------------------i60111684574445300002AC679Gl-------------------------i61100001446733DA33545951378CZ-----------------------m401001103567899IOFCIJ953254869r----------------------H010015BC77GIFKOQXaaVgcKEIG6685l---------------------q201038DIG7AOSgejv---smrnhdUK651d---------------------q10003BHHJOTYhmpsxz+zzxwxupkWA20Z---------------------z900029FJPUZcgnrvyz--+xtqoppb951h----------------------H0004ADHGDDEEITgx--bLIIIOSYhE0H-----------------------h0005FG8ABAA857Ii-sUJDIPRXZeH0e------------------------C004IGGDBBCTO98UxseWNDZaaqhCIp-----------------------e6512IKPHGMMcVEDWwxomdbnorulNkv-----------------------p8A64MLRbdfhbSJIUw-vw+++-+wpguz------------------------X56CKKOXipohSHKUt-xv+----xqnx--------------------------F5AEEGQclkXGQTVq-+uvzzzyumiq--------------------------qA4BBAGTcYMAA9Gepmiqtqqtmfiu---------------------------nMGAA9LULKHFDJVajookklojfn------------------------------vAB8DPPJBIOVfjlmicclmigz-------------------------------X897KWSFGRcmnsrpsqggem--------------------------------s6756GSTOPTWaemssmXWk---------------------------------xA6545GSZdflsvwtmXUq----------------------------------yD97546EOTbhddfeZbl----------------------------------rpFFGD9569FKOONQTgso---------------------------------ZKvcJLOLGBBGLQVbffpsn-------------------------------uJ0GsxweVVTLKOSZimkltpw+----------------------------sR5236iy---rhVRVWWemmqux-qN+-----------------------lSD755444Ry-----xfbfgkqou---z68Pj+----------------vcL9445987546An--------srtrz----w86449Kbu---------"></canvas>
-  </figure>
-
-  <main class="page">
-    <div class="about__text">
-      <p>Hey, I’m Aniketh, studying CS and Applied Math at the University of Virginia.</p>
-      <p>Right now I’m building <a href="/pragmatic/">Pragmatic</a>, a Rust runtime that makes AI agents more fault-tolerant, and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a>, which uses AI to help catch oral cancer early. I also built <a href="/haze/">Haze</a>, a 5-star rated weather app for iPhone. My work has reached millions of people worldwide and been covered by <a href="/press/">WTOP, Korea Times, United Airlines, and Washington Dulles International Airport among others</a>.</p>
-      <p>In a previous life, I led software at Oakton Robotics for four years, attended Y Combinator Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>. Outside work, I photograph aircraft at Dulles and landscapes around the world, and enjoy hiking.</p>
+  <div class="menu" id="menu" data-menu>
+    <nav class="menu__nav" aria-label="Menu">
+      <a href="/" style="--i:0" aria-current="page">Home</a>
+      <a href="/work/" style="--i:1">Work</a>
+      <a href="/education/" style="--i:2">Education</a>
+      <a href="/projects/" style="--i:3">Projects</a>
+      <a href="/research/" style="--i:4">Research</a>
+      <a href="/photos/" style="--i:5">Photos</a>
+      <a href="/press/" style="--i:6">Press</a>
+      <a href="/resume/" style="--i:7">Resume</a>
+      <a href="/contact/" style="--i:8">Contact</a>
+    </nav>
+    <div class="menu__foot mono">
+      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
     </div>
+  </div>
 
-    <section class="writing">
-      <h2 class="writing__heading">Latest writing</h2>
-      <div class="writing__list">
-        <a href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener" class="writing__link" data-text="What You Owe">What You Owe</a>
+  <main>
+    <section class="hero">
+      <h1 class="hero__title">
+        I’m <em>Aniketh.</em> I build <span class="nb">software
+        <span class="inl" data-cycle aria-hidden="true">
+          <img class="on" src="/assets/img/projects/haze.webp" alt="">
+          <img src="/assets/img/pragmaticog.png" alt="">
+          <img src="/assets/img/projects/ocradar.jpg" alt="">
+          <img src="/assets/img/projects/sentry.webp" alt="">
+        </span></span>
+        that has reached millions, study computer science and applied math at the University of Virginia, and photograph <span class="nb"><em>aircraft</em>
+        <span class="inl" data-cycle aria-hidden="true">
+          <img class="on" src="/assets/photos/planeImage10-thumb.webp" alt="">
+          <img src="/assets/photos/planeImage6-thumb.webp" alt="">
+          <img src="/assets/photos/planeImage3-thumb.webp" alt="">
+          <img src="/assets/photos/planeImage12-thumb.webp" alt="">
+        </span></span>
+        and faraway <span class="nb"><em>landscapes</em>
+        <span class="inl" data-cycle aria-hidden="true">
+          <img class="on" src="/assets/photos/landscape13-thumb.webp" alt="">
+          <img src="/assets/photos/landscape12-thumb.webp" alt="">
+          <img src="/assets/photos/landscape4-thumb.webp" alt="">
+          <img src="/assets/photos/landscape14-thumb.webp" alt="">
+        </span>.</span>
+      </h1>
+
+      <div class="hero__foot grid mono fade">
+        <p><b>Currently</b>Building <a href="/pragmatic/">Pragmatic</a> and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a></p>
+        <p><b>Previously</b>Software lead, Oakton Robotics, four years.<br>Y Combinator Startup School.</p>
+        <p><b>Covered by</b>WTOP, Korea Times, United Airlines,<br>Washington Dulles International Airport</p>
+        <p>Scroll&nbsp;↓</p>
+      </div>
+    </section>
+
+    <section class="sec" id="work">
+      <div class="sec__head grid rise">
+        <span class="sec__t">Selected work</span>
+        <span class="sec__aside"><a class="u" href="/projects/">All projects →</a></span>
+      </div>
+
+      <ul class="index" data-index>
+        <li class="rise"><a class="row" href="/pragmatic/" data-peek="/assets/img/pragmaticog.png">
+          <span class="row__n mono">01</span>
+          <span class="row__name">Pragmatic</span>
+          <img class="row__thumb" src="/assets/img/pragmaticog.png" alt="" loading="lazy">
+          <span class="row__desc">A durable execution runtime in Rust that lets AI agents survive any crash.</span>
+          <span class="row__role mono">Creator</span>
+        </a></li>
+        <li class="rise"><a class="row" href="https://ocradar.com/" target="_blank" rel="noopener" data-peek="/assets/img/projects/ocradar.jpg">
+          <span class="row__n mono">02</span>
+          <span class="row__name">OCRadar</span>
+          <img class="row__thumb" src="/assets/img/projects/ocradar.jpg" alt="" loading="lazy">
+          <span class="row__desc">Computer vision on a phone, to help catch oral cancer early.</span>
+          <span class="row__role mono">Founder</span>
+        </a></li>
+        <li class="rise"><a class="row" href="https://aperta.health" target="_blank" rel="noopener" data-peek="/aperta/anatomy/heart.png" data-contain>
+          <span class="row__n mono">03</span>
+          <span class="row__name">Aperta</span>
+          <img class="row__thumb contain" src="/aperta/anatomy/heart.png" alt="" loading="lazy">
+          <span class="row__desc">Hospital discharge notes, redrawn by hand for the patient who has to live by them.</span>
+          <span class="row__role mono">Co-creator</span>
+        </a></li>
+        <li class="rise"><a class="row" href="/haze/" data-peek="/assets/img/projects/haze.webp">
+          <span class="row__n mono">04</span>
+          <span class="row__name">Haze</span>
+          <img class="row__thumb" src="/assets/img/projects/haze.webp" alt="" loading="lazy">
+          <span class="row__desc">A five-star weather app for iPhone.</span>
+          <span class="row__role mono">Creator</span>
+        </a></li>
+        <li class="rise"><a class="row" href="/hypnagogia">
+          <span class="row__n mono">05</span>
+          <span class="row__name">Hypnagogia</span>
+          <span class="row__desc">A whole fruit-fly brain, simulated to see whether a memory replays in sleep.</span>
+          <span class="row__role mono">Creator</span>
+        </a></li>
+        <li class="rise"><a class="row" href="/graphite">
+          <span class="row__n mono">06</span>
+          <span class="row__name">Graphite</span>
+          <span class="row__desc">A 3D graphing calculator, written from scratch, that runs in the browser.</span>
+          <span class="row__role mono">Creator</span>
+        </a></li>
+        <li class="rise"><a class="row" href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener" data-peek="/assets/img/projects/sentry.webp">
+          <span class="row__n mono">07</span>
+          <span class="row__name">Sentry</span>
+          <img class="row__thumb" src="/assets/img/projects/sentry.webp" alt="" loading="lazy">
+          <span class="row__desc">A privacy-first system monitor for Mac, iPhone and Apple Watch.</span>
+          <span class="row__role mono">Co-developer</span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="sec gallery static" id="photographs" data-gallery>
+      <div class="gallery__pin">
+        <div class="sec__head grid">
+          <span class="sec__t">Photographs</span>
+          <span class="sec__aside"><a class="u" href="/photos/">All photographs →</a></span>
+        </div>
+        <div class="track" data-track>
+          <figure class="shot" style="--h:62vh;--hs:48vh"><img src="/assets/photos/landscape12.webp" width="1284" height="1600" alt="A red-roofed church above a coastal village"><figcaption class="mono"><span>01</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:44vh;--hs:34vh"><img src="/assets/photos/planeImage10.webp" width="1600" height="1595" alt="An airliner climbing past a control tower" loading="lazy"><figcaption class="mono"><span>02</span><span>Aircraft</span></figcaption></figure>
+          <figure class="shot" style="--h:56vh;--hs:44vh"><img src="/assets/photos/landscape4.webp" width="1600" height="1211" alt="A snow-streaked mountain under cloud" loading="lazy"><figcaption class="mono"><span>03</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:66vh;--hs:50vh"><img src="/assets/photos/landscape13.webp" width="1284" height="1600" alt="A waterfall dropping into a gorge" loading="lazy"><figcaption class="mono"><span>04</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:40vh;--hs:32vh"><img src="/assets/photos/planeImage6.webp" width="1595" height="1600" alt="An airliner over cherry blossoms" loading="lazy"><figcaption class="mono"><span>05</span><span>Aircraft</span></figcaption></figure>
+          <figure class="shot" style="--h:54vh;--hs:42vh"><img src="/assets/photos/landscape2.webp" width="1600" height="1281" alt="Birds on a rocky outcrop" loading="lazy"><figcaption class="mono"><span>06</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:60vh;--hs:46vh"><img src="/assets/photos/landscape9.webp" width="1210" height="1600" alt="Bare trees reflected in still water at dusk" loading="lazy"><figcaption class="mono"><span>07</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:46vh;--hs:36vh"><img src="/assets/photos/planeImage3.webp" width="1600" height="1597" alt="A red airliner at the gate beneath the tower" loading="lazy"><figcaption class="mono"><span>08</span><span>Aircraft</span></figcaption></figure>
+          <figure class="shot" style="--h:58vh;--hs:44vh"><img src="/assets/photos/landscape11.webp" width="1600" height="1590" alt="A glacier in black and white" loading="lazy"><figcaption class="mono"><span>09</span><span>Landscape</span></figcaption></figure>
+          <figure class="shot" style="--h:50vh;--hs:40vh"><img src="/assets/photos/landscape15.webp" width="1600" height="1273" alt="Cherry blossoms against a pale sky" loading="lazy"><figcaption class="mono"><span>10</span><span>Landscape</span></figcaption></figure>
+          <a class="shot shot--end" href="/photos/">See them all <span>&rarr;</span></a>
+        </div>
+        <div class="gallery__count mono muted"><span data-count>01 / 10</span><span>Keep scrolling →</span></div>
+        <div class="gallery__bar"><i data-bar></i></div>
+      </div>
+    </section>
+
+    <section class="sec" id="press">
+      <div class="sec__head grid rise">
+        <span class="sec__t">Written about in</span>
+        <span class="sec__aside"><a class="u" href="/press/">All press →</a></span>
+      </div>
+      <a class="marquee" href="/press/" aria-label="Press: WTOP, The Korea Times, United Airlines, Washington Dulles International Airport, Vision Times">
+        <div class="marquee__track" aria-hidden="true">
+          <span class="marquee__item">WTOP</span>
+          <span class="marquee__item">The Korea Times</span>
+          <span class="marquee__item">United Airlines</span>
+          <span class="marquee__item">Washington Dulles International Airport</span>
+          <span class="marquee__item">Vision Times</span>
+          <span class="marquee__item">The Tech Roast Show</span>
+          <span class="marquee__item">WTOP</span>
+          <span class="marquee__item">The Korea Times</span>
+          <span class="marquee__item">United Airlines</span>
+          <span class="marquee__item">Washington Dulles International Airport</span>
+          <span class="marquee__item">Vision Times</span>
+          <span class="marquee__item">The Tech Roast Show</span>
+        </div>
+      </a>
+    </section>
+
+    <section class="sec" id="about">
+      <div class="sec__head grid rise">
+        <span class="sec__t">About</span>
+      </div>
+      <div class="grid rise">
+        <div class="about__body">
+          <p>In a previous life I led software at Oakton Robotics for four years, went through Y Combinator’s Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>.</p>
+          <p>Outside work, I photograph aircraft at Dulles and landscapes around the world, and go hiking whenever I can.</p>
+        </div>
+        <div class="about__side">
+          <div>
+            <b class="mono">Latest writing</b>
+            <a class="u" href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener"><em>What You Owe</em> ↗</a>
+          </div>
+          <div>
+            <b class="mono">Elsewhere here</b>
+            <ul>
+              <li><a class="u" href="/research/">Research</a></li>
+              <li><a class="u" href="/education/">Education</a></li>
+              <li><a class="u" href="/resume/">Resume</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
+  <footer class="foot" id="contact">
+    <div class="sec__head grid rise">
+      <span class="sec__t">Say hello</span>
+    </div>
+    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
+    <div class="foot__row grid mono">
+      <nav aria-label="Elsewhere">
+        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+      </nav>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
       </span>
-    </p>
+      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
+      <a class="u" href="#top" data-top>Back to top &uarr;</a>
+    </div>
   </footer>
-  </div>
+
+  <div class="peek" aria-hidden="true" data-peek-box><div class="peek__in"><img alt=""></div></div>
+
   <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/plate.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/home.js" defer></script>
 </body>
 </html>

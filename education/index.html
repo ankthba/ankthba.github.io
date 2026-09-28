@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the colophon toggle is only shown where it can actually work. */
+       the footer toggle is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -24,26 +24,43 @@
 </head>
 <body>
   
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link active" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
+  <header class="bar grid mono">
+    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
+    <span class="bar__role">CS &amp; Applied Math, UVA</span>
+    <span class="bar__clock">Charlottesville<span data-clock></span></span>
+    <nav class="bar__nav" aria-label="Site">
+      <a class="u" href="/work/">Work</a>
+      <a class="u" href="/education/" aria-current="page">Education</a>
+      <a class="u" href="/projects/">Projects</a>
+      <a class="u" href="/research/">Research</a>
+      <a class="u" href="/photos/">Photos</a>
+      <a class="u" href="/press/">Press</a>
+      <a class="u" href="/resume/">Resume</a>
+      <a class="u" href="/contact/">Contact</a>
     </nav>
+    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
   </header>
+
+  <div class="menu" id="menu" data-menu>
+    <nav class="menu__nav" aria-label="Menu">
+      <a href="/" style="--i:0">Home</a>
+      <a href="/work/" style="--i:1">Work</a>
+      <a href="/education/" style="--i:2" aria-current="page">Education</a>
+      <a href="/projects/" style="--i:3">Projects</a>
+      <a href="/research/" style="--i:4">Research</a>
+      <a href="/photos/" style="--i:5">Photos</a>
+      <a href="/press/" style="--i:6">Press</a>
+      <a href="/resume/" style="--i:7">Resume</a>
+      <a href="/contact/" style="--i:8">Contact</a>
+    </nav>
+    <div class="menu__foot mono">
+      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+    </div>
+  </div>
 
   <main class="page">
         <h1 class="page-title">Education</h1>
@@ -74,16 +91,30 @@
         </div>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
+  <footer class="foot">
+    <div class="sec__head grid rise">
+      <span class="sec__t">Say hello</span>
+    </div>
+    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
+    <div class="foot__row grid mono">
+      <nav aria-label="Elsewhere">
+        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+      </nav>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
       </span>
-    </p>
+      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
+      <a class="u" href="#top" data-top>Back to top &uarr;</a>
+    </div>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

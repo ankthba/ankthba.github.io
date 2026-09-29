@@ -1,0 +1,75 @@
+{
+  "from": "2026-09-28",
+  "to": "2026-10-04",
+  "timeZone": "America/New_York",
+  "plays": 516,
+  "tracks": [
+    {
+      "name": "Remember When",
+      "artists": "Wallows",
+      "url": "https://open.spotify.com/track/5naar7XewEOAjOywIp6Jjq",
+      "image": "https://i.scdn.co/image/ab67616d00001e021df393f4cf29c80c04456f77",
+      "plays": 28
+    },
+    {
+      "name": "Ain't That The Truth",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/6cEFXDnzk2tA1tG7RJiWNm",
+      "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+      "plays": 18
+    },
+    {
+      "name": "Congratulations (feat. Bilal)",
+      "artists": "Mac Miller, Bilal",
+      "url": "https://open.spotify.com/track/1OubIZ0ARYCUq5kceYUQiO",
+      "image": "https://i.scdn.co/image/ab67616d00001e022e92f776279eaf45d14a33fd",
+      "plays": 13
+    },
+    {
+      "name": "Cheer Me On",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/1uhkCvJALethci3eokMkbU",
+      "image": "https://i.scdn.co/image/ab67616d00001e0287607b2c8f5f52f1f057be0d",
+      "plays": 12
+    },
+    {
+      "name": "Original",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/0yKsZ7zzBGlqcMGsYLHPnJ",
+      "image": "https://i.scdn.co/image/ab67616d00001e02cbb0061c60c10e16a4e3ea89",
+      "plays": 11
+    }
+  ],
+  "artists": [
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 95
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 58
+    },
+    {
+      "name": "Wallows",
+      "url": "https://open.spotify.com/artist/0NIPkIjTV8mB795yEIiPYL",
+      "image": "https://i.scdn.co/image/ab67616100005174fde4e7d59f6d8868e2ffdaf5",
+      "plays": 53
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 25
+    },
+    {
+      "name": "Mac DeMarco",
+      "url": "https://open.spotify.com/artist/3Sz7ZnJQBIHsXLUSo0OQtM",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c9aca5b6d4c528caf75e8a1d",
+      "plays": 16
+    }
+  ]
+}

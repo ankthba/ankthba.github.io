@@ -3,3 +3,8 @@ name = "aniketh-now"
 main = "now.js"
 compatibility_date = "2026-09-01"
 workers_dev = true
+
+[vars]
+# Spotify IDs (track, album or artist) whose cover art is never shown,
+# comma-separated. Redeploy after changing: npx wrangler deploy
+HIDE = ""

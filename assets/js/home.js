@@ -57,11 +57,16 @@
       fetch('https://aniketh-now.ankthba.workers.dev/', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (now) {
-          var item = now.playing && now.track ? now.track : (now.recent || [])[0];
-          if (!item || !/^https:\/\//.test(item.image || '')) return;
+          /* The Worker picks a picture that is safe to show here: the
+             cover, or for an explicit song the artist's photo, or none. */
+          var item = now.headline;
+          var slot = cover.parentNode;
+          if (!item) return;
+          liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;
+          if (!/^https:\/\//.test(item.image || '')) { slot.hidden = true; return; }
+          slot.hidden = false;
           if (cover.getAttribute('src') !== item.image) cover.src = item.image;
           cover.classList.add('on');
-          liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;
         })
         .catch(function () {});
     };

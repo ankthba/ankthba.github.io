@@ -961,11 +961,17 @@ a:hover > .resume__frame { transform: translateY(-4px); }
    13b2. The music page, drawn by /assets/js/music.js
    --------------------------------------------------------- */
 
+/* The whole of what's playing fits the first screen: a smaller title
+   than the other pages, and a cover sized to the window's height. */
+.music.page { padding-top: clamp(84px, 12vh, 140px); }
+.music .page-title {
+  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  margin-bottom: 8px;
+}
 .music__lede {
-  max-width: 30ch;
-  margin: calc(-1 * clamp(24px, 5vh, 64px)) 0 clamp(48px, 8vh, 96px);
-  font-size: clamp(1.3rem, 2vw, 1.9rem);
-  line-height: 1.25;
+  margin: 0 0 clamp(22px, 4vh, 44px);
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  line-height: 1.3;
   font-style: italic;
   color: var(--muted);
 }
@@ -974,12 +980,16 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 /* Last played: the cover large, the song set like a headline. */
 .now {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--gutter);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
   align-items: end;
-  padding-bottom: clamp(40px, 7vh, 80px);
 }
-.now__art { display: block; aspect-ratio: 1; background: var(--rule); }
+.now__art {
+  display: block;
+  width: min(42vw, 54svh);
+  aspect-ratio: 1;
+  background: var(--rule);
+}
 .now__art img { width: 100%; height: 100%; object-fit: cover; }
 .now__when {
   display: flex;
@@ -1043,6 +1053,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 .music__tops { padding-inline: 0; }
 
 /* The listening log: a time instead of a rank, under each day. */
+.play--now .play__n { color: var(--accent-ink); }
 .log__day {
   margin: 34px 0 10px;
   font-size: 1.15rem;
@@ -1056,7 +1067,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 
 @media (max-width: 900px) {
   .now { grid-template-columns: minmax(0, 1fr); }
-  .now__art { max-width: 420px; }
+  .now__art { width: min(100%, 44svh); }
 }
 
 @media (max-width: 560px) {

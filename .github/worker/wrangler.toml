@@ -3,3 +3,13 @@ name = "aniketh-now"
 main = "now.js"
 compatibility_date = "2026-09-01"
 workers_dev = true
+
+# The one gate to Spotify (see NowPlaying in now.js): a single Durable
+# Object, so every copy of the Worker shares its limits.
+[[durable_objects.bindings]]
+name = "NOW"
+class_name = "NowPlaying"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["NowPlaying"]

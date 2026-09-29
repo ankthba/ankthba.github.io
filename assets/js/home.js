@@ -110,28 +110,44 @@
   setTimeout(go, 900);
 
   /* After "music" in the headline, the cover of whatever is playing on
-     Spotify now, or was last, from the Worker the music page uses. */
+     Spotify now, or was last, from the Worker the music page uses. The
+     frame stays out of the sentence until there is a picture to put in
+     it: if the Worker can't say, the cover of the song most on repeat
+     this week stands in (set below, once that file is in). */
   var liveLink = document.querySelector('[data-live-link]');
+  var standIn = null;
+  var showCover = null;
   if (liveLink && window.fetch) {
     var cover = liveLink.querySelector('[data-live-cover] img');
+    var slot = cover.parentNode;
+    var live = false;
+    slot.hidden = true;
+    cover.addEventListener('load', function () {
+      slot.hidden = false;
+      cover.classList.add('on');
+    });
+    cover.addEventListener('error', function () { slot.hidden = true; });
+    showCover = function (src, title) {
+      if (!/^https:\/\//.test(src || '')) return;
+      if (title) liveLink.title = title;
+      if (cover.getAttribute('src') !== src) cover.src = src;
+    };
     var paint = function () {
       fetch('https://aniketh-now.ankthba.workers.dev/', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (now) {
           var item = now.playing && now.track ? now.track : (now.recent || [])[0];
-          var slot = cover.parentNode;
-          if (!item) return;
-          liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;
-          var src = item.cover || item.image;
-          if (!/^https:\/\//.test(src || '')) { slot.hidden = true; return; }
-          slot.hidden = false;
-          if (cover.getAttribute('src') !== src) cover.src = src;
-          cover.classList.add('on');
+          if (!item) return Promise.reject();
+          live = true;
+          showCover(item.cover || item.image,
+            (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists);
         })
-        .catch(function () {});
+        .catch(function () {
+          if (!live && standIn) showCover(standIn.image, 'On repeat: ' + standIn.name + ' by ' + standIn.artists);
+        });
     };
     paint();
-    setInterval(function () { if (!document.hidden) paint(); }, 30000);
+    setInterval(function () { if (!document.hidden) paint(); }, 60000);
   }
 
   /* The photographs in the headline turn over, one at a time. */
@@ -201,6 +217,11 @@
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (data) {
         if (!data || !data.tracks || !data.tracks.length) return;
+        /* The headline's stand-in cover, if the live one hasn't come. */
+        standIn = data.tracks[0];
+        if (showCover && !liveLink.querySelector('[data-live-cover] img').getAttribute('src')) {
+          showCover(standIn.image, 'On repeat: ' + standIn.name + ' by ' + standIn.artists);
+        }
         fill(listening.querySelector('[data-listening-tracks]'), data.tracks.slice(0, 5), true);
         fill(listening.querySelector('[data-listening-artists]'), (data.artists || []).slice(0, 5), false);
         /* Until a full seven days have been counted it is "right now",

@@ -777,6 +777,8 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   transition: width 0.7s var(--ease), transform 0.7s var(--ease), clip-path 1.2s var(--ease);
 }
 .inl.open { z-index: 2; }
+/* Its display would otherwise beat the hidden attribute's. */
+.inl[hidden] { display: none; }
 .inl img {
   position: absolute;
   inset: 0;

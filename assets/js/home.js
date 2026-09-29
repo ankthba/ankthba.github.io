@@ -96,7 +96,7 @@
     });
   }
 
-  /* This week's listening, written hourly by the Action in
+  /* This week's listening, written every fifteen minutes by the Action in
      .github/workflows/listening.yml. The section stays hidden unless
      there is something to show. Links must go to Spotify and pictures
      must be https, whatever the file says. */

@@ -1,12 +1,15 @@
 name: Listening
 
-# Every hour: fold new Spotify plays into this week's counts and publish
+# Every fifteen minutes: fold new Spotify plays into this week's counts and publish
 # the top fives to the listening-data branch, which the home page reads.
-# main is never touched, so the site isn't rebuilt every hour.
+# main is never touched, so the site isn't rebuilt each time.
 
 on:
   schedule:
-    - cron: '23 * * * *'
+    # Spotify only reports the last fifty plays, about two and a half hours
+    # of listening, and GitHub can delay or drop scheduled runs, so this
+    # checks well inside that.
+    - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
 
 permissions:

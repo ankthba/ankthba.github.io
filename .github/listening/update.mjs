@@ -1,4 +1,4 @@
-// Run hourly by .github/workflows/listening.yml.
+// Run every fifteen minutes by .github/workflows/listening.yml.
 //
 // Spotify will only say what was played recently (the last fifty tracks),
 // never what was played most this week, so this keeps its own count. Each
@@ -84,7 +84,11 @@ function rank(counts, meta) {
 }
 
 const statePath = join(dir, 'state.json');
-const state = await readJSON(statePath, { v: 1, last: null, days: {}, tracks: {}, artists: {} });
+const state = await readJSON(statePath, { v: 1, last: null, since: null, days: {}, tracks: {}, artists: {} });
+// The day counting began. Spotify only ever reports the last fifty plays,
+// so nothing before that can be known, and until a full week has been
+// counted the range shown starts here rather than claiming the whole week.
+state.since ??= Object.keys(state.days).sort()[0] || null;
 const token = await accessToken();
 
 // Fold in anything newer than the last play already counted. Local files
@@ -97,6 +101,7 @@ const fresh = recent.items
 
 for (const { track, played_at } of fresh) {
   state.last = played_at;
+  state.since ??= localDay(played_at);
   if (!track || !track.id) continue;
   const day = (state.days[localDay(played_at)] ??= { t: {}, a: {} });
   day.t[track.id] = (day.t[track.id] || 0) + 1;
@@ -170,7 +175,7 @@ const coverFor = (artistId) => {
 };
 
 const listening = {
-  from: days[0],
+  from: state.since && state.since > days[0] ? state.since : days[0],
   to: days[days.length - 1],
   timeZone: TZ,
   plays: Object.values(tracks).reduce((a, b) => a + b, 0),

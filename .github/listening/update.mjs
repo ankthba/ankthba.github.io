@@ -137,17 +137,29 @@ const rankedTracks = rank(tracks, state.tracks);
 const topTracks = rankedTracks.slice(0, TOP);
 const topArtists = rank(artists, state.artists).slice(0, TOP);
 
-// Artists come back from recently-played without pictures. Ask for the
-// ones in the top five that don't have one yet; if Spotify won't say,
-// use the cover of their most played track this week instead.
-const missing = topArtists.map(([id]) => id).filter((id) => state.artists[id].i === undefined);
-if (missing.length) {
+// Artists come back from recently-played without pictures. For the ones
+// in the top five that don't have one yet, ask the Web API for that
+// artist; apps in Spotify's development mode are refused (403) there, so
+// fall back to the public oEmbed endpoint, which gives the same picture
+// Spotify shows on the artist's page. If both fail, their most played
+// cover this week stands in, and it is tried again next hour.
+async function artistPicture(id) {
   try {
-    const { artists: found } = await api('/artists?ids=' + missing.join(','), token);
-    for (const a of found) if (a && state.artists[a.id]) state.artists[a.id].i = image(a.images);
-  } catch (err) {
-    console.warn('Artist pictures unavailable:', err.message);
-  }
+    const url = image((await api('/artists/' + id, token)).images);
+    if (url) return url;
+  } catch {}
+  try {
+    const res = await fetch('https://open.spotify.com/oembed?url=' +
+      encodeURIComponent('https://open.spotify.com/artist/' + id));
+    if (res.ok) return (await res.json()).thumbnail_url || null;
+  } catch {}
+  return null;
+}
+for (const [id] of topArtists) {
+  if (state.artists[id].i) continue;
+  const url = await artistPicture(id);
+  if (url) state.artists[id].i = url;
+  else console.warn('No picture for artist', state.artists[id].n);
 }
 const coverFor = (artistId) => {
   const name = state.artists[artistId].n;

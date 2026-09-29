@@ -81,6 +81,7 @@ export class NowPlaying {
     this.recent = null;
     this.recentAt = 0;
     this.quietUntil = 0;
+    this.pausedFor = null;   // 'rate-limit' or 'budget' while quiet for one
     this.budget = { day: today(), used: 0 };
     this.token = null;       // { value, expires }
     this.pending = null;
@@ -88,9 +89,10 @@ export class NowPlaying {
 
   async load() {
     if (this.loaded) return;
-    const saved = await this.state.storage.get(['data', 'quietUntil', 'budget']);
+    const saved = await this.state.storage.get(['data', 'quietUntil', 'pausedFor', 'budget']);
     if (saved.get('data')) ({ data: this.data, at: this.dataAt } = saved.get('data'));
     this.quietUntil = saved.get('quietUntil') || 0;
+    this.pausedFor = saved.get('pausedFor') || null;
     this.budget = saved.get('budget') || this.budget;
     this.loaded = true;
   }
@@ -168,11 +170,25 @@ export class NowPlaying {
   }
 
   // The last good answer, with "playing" withdrawn once it's too old to
-  // be believed.
+  // be believed. While Spotify can't be asked, it says so, and until
+  // when, so the music page can put up a notice.
   answer() {
     if (!this.data) return null;
-    if (Date.now() - this.dataAt < STALE * 1000) return this.data;
-    return { ...this.data, playing: false, stale: true, progress_ms: null, track: null };
+    const paused = this.pause();
+    const data = Date.now() - this.dataAt < STALE * 1000
+      ? this.data
+      : { ...this.data, playing: false, stale: true, progress_ms: null, track: null };
+    return paused ? { ...data, ...paused, checked: new Date(this.dataAt).toISOString() } : data;
+  }
+
+  // Only a real stop (a 429, or the day's budget) counts as paused; the
+  // few seconds' wait after any other hiccup doesn't.
+  pause() {
+    if (Date.now() >= this.quietUntil) return null;
+    // A wait stored without a reason (from before reasons were kept) is
+    // a rate limit if it's longer than any hiccup would be.
+    const reason = this.pausedFor || (this.quietUntil - Date.now() > 60000 ? 'rate-limit' : null);
+    return reason ? { paused: reason, resumes: new Date(this.quietUntil).toISOString() } : null;
   }
 
   async fetch() {
@@ -193,20 +209,25 @@ export class NowPlaying {
       } catch (err) {
         console.error('now-playing:', err.message);
         let wait = NOW_EVERY;
-        if (err.status === 429) wait = err.retryAfter || BACKOFF;
-        else if (err.status === 'budget') {
+        this.pausedFor = null;
+        if (err.status === 429) {
+          wait = err.retryAfter || BACKOFF;
+          this.pausedFor = 'rate-limit';
+        } else if (err.status === 'budget') {
           const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
           wait = Math.ceil((midnight - Date.now()) / 1000);
+          this.pausedFor = 'budget';
         }
         this.quietUntil = Date.now() + wait * 1000;
-        await this.state.storage.put('quietUntil', this.quietUntil);
+        await this.state.storage.put({ quietUntil: this.quietUntil, pausedFor: this.pausedFor });
       }
     }
 
     const body = this.answer();
     if (body) return Response.json(body);
     const retry = Math.max(1, Math.ceil((this.quietUntil - Date.now()) / 1000));
-    return Response.json({ error: 'unavailable' }, { status: 503, headers: { 'Retry-After': String(retry) } });
+    return Response.json({ error: 'unavailable', ...(this.pause() || {}) },
+      { status: 503, headers: { 'Retry-After': String(retry) } });
   }
 }
 

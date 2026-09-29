@@ -93,8 +93,8 @@
   }
 
   /* What's playing, from the Worker at data-live (.github/worker/now.js),
-     which asks Spotify at most every five seconds. The page asks every
-     eight while it is in view; between answers the progress bar runs on
+     which asks Spotify at most every fifteen seconds. The page asks as
+     often while it is in view; between answers the progress bar runs on
      its own clock, and a scrub or a skip shows at the next answer. */
   var LIVE = page.getAttribute('data-live');
   var logged = [];
@@ -190,12 +190,39 @@
     }
   }
 
+  /* While Spotify has told the Worker to stop asking (too many requests,
+     or the day's own allowance spent), it says so, and until when; the
+     page says so too, above what it last heard. */
+  function notice(state) {
+    var box = $('[data-notice]');
+    if (!state || !state.paused || !state.resumes) { box.hidden = true; return; }
+    var resumes = new Date(state.resumes);
+    var at = resumes.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    var when = dayOf(resumes) === dayOf(new Date()) ? 'around ' + at
+      : dayOf(resumes) === dayOf(new Date(Date.now() + 864e5)) ? 'tomorrow around ' + at
+      : resumes.toLocaleDateString('en-US', { weekday: 'long' }) + ' around ' + at;
+    var why = state.paused === 'budget'
+      ? 'This site has used its share of Spotify for today'
+      : 'Spotify has asked this site to slow down';
+    var since = state.checked ? ' The log below is as of ' +
+      new Date(state.checked).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + '.' : '';
+    $('[data-notice-text]').textContent = why + ', so what\u2019s playing can\u2019t update until ' + when +
+      '.' + since + ' I\u2019m almost certainly still listening.';
+    box.hidden = false;
+  }
+
   function live() {
     if (!LIVE) return;
     var ask = function () {
       if (document.hidden) return;
       fetch(LIVE, { cache: 'no-store' })
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        /* A 503 still carries a body saying why, and until when. */
+        .then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (body) {
+            notice(body);
+            return r.ok ? body : Promise.reject(r.status);
+          });
+        })
         .then(function (now) {
           answered = true;
           follow(now);

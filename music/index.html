@@ -86,6 +86,12 @@
         <h1 class="page-title">Music</h1>
         <p class="music__lede">What I&rsquo;m listening to, live from Spotify.</p>
 
+        <!-- Shown by music.js while the Worker can't ask Spotify. -->
+        <div class="music__notice" role="status" data-notice hidden>
+          <p class="music__notice-label mono">Live feed paused</p>
+          <p class="music__notice-text" data-notice-text></p>
+        </div>
+
         <p class="music__empty" data-music-empty>Nothing to show just yet.</p>
 
         <div class="music__body" data-music-body hidden>

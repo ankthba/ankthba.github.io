@@ -193,21 +193,30 @@
   /* While Spotify has told the Worker to stop asking (too many requests,
      or the day's own allowance spent), it says so, and until when; the
      page says so too, above what it last heard. */
+  var countdown = null;
   function notice(state) {
     var box = $('[data-notice]');
+    clearInterval(countdown);
     if (!state || !state.paused || !state.resumes) { box.hidden = true; return; }
     var resumes = new Date(state.resumes);
-    var at = resumes.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
-    var when = dayOf(resumes) === dayOf(new Date()) ? 'around ' + at
-      : dayOf(resumes) === dayOf(new Date(Date.now() + 864e5)) ? 'tomorrow around ' + at
-      : resumes.toLocaleDateString('en-US', { weekday: 'long' }) + ' around ' + at;
-    var why = state.paused === 'budget'
-      ? 'This site has used its share of Spotify for today'
-      : 'Spotify has asked this site to slow down';
-    var since = state.checked ? ' The log below is as of ' +
-      new Date(state.checked).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + '.' : '';
-    $('[data-notice-text]').textContent = why + ', so what\u2019s playing can\u2019t update until ' + when +
-      '.' + since + ' I\u2019m almost certainly still listening.';
+    var time = function (d) { return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); };
+    var day = dayOf(resumes) === dayOf(new Date()) ? 'today'
+      : dayOf(resumes) === dayOf(new Date(Date.now() + 864e5)) ? 'tomorrow'
+      : resumes.toLocaleDateString('en-US', { weekday: 'long' });
+    $('[data-notice-text]').textContent =
+      'Spotify needs a breather. The music hasn\u2019t stopped; you just can\u2019t see it for a bit.';
+    $('[data-notice-at]').textContent = time(resumes) + ' ' + day;
+
+    /* The time left, to the second. */
+    var count = $('[data-notice-count]');
+    var two = function (n) { return (n < 10 ? '0' : '') + n; };
+    var draw = function () {
+      var s = Math.max(0, Math.round((resumes - Date.now()) / 1000));
+      count.textContent = two(Math.floor(s / 3600)) + ':' + two(Math.floor(s / 60) % 60) + ':' + two(s % 60);
+      if (!s) clearInterval(countdown);
+    };
+    draw();
+    countdown = setInterval(draw, 1000);
     box.hidden = false;
   }
 

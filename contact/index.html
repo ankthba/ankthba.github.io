@@ -16,6 +16,15 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
+      /* "At a glance", remembered, or asked for with ?brief */
+      var q = /[?&]brief(=([^&]*))?/.exec(location.search);
+      var on;
+      try { on = localStorage.getItem('mode') === 'brief'; } catch (e) {}
+      if (q) {
+        on = !/^(0|false|off)$/.test(q[2] || '');
+        try { on ? localStorage.setItem('mode', 'brief') : localStorage.removeItem('mode'); } catch (e) {}
+      }
+      if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
   <title>Contact | Aniketh Bandlamudi</title>
@@ -26,7 +35,7 @@
   
   <header class="bar grid mono">
     <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <span class="bar__role">CS &amp; Applied Math, UVA</span>
+    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
     <span class="bar__clock">Charlottesville<span data-clock></span></span>
     <nav class="bar__nav" aria-label="Site">
       <a class="u" href="/work/">Work</a>

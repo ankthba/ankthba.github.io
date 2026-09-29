@@ -16,6 +16,15 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
+      /* "At a glance", remembered, or asked for with ?brief */
+      var q = /[?&]brief(=([^&]*))?/.exec(location.search);
+      var on;
+      try { on = localStorage.getItem('mode') === 'brief'; } catch (e) {}
+      if (q) {
+        on = !/^(0|false|off)$/.test(q[2] || '');
+        try { on ? localStorage.setItem('mode', 'brief') : localStorage.removeItem('mode'); } catch (e) {}
+      }
+      if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
   <title>Aniketh Bandlamudi</title>
@@ -103,7 +112,7 @@
 
   <header class="bar grid mono">
     <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <span class="bar__role">CS &amp; Applied Math, UVA</span>
+    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
     <span class="bar__clock">Charlottesville<span data-clock></span></span>
     <nav class="bar__nav" aria-label="Site">
       <a class="u" href="/work/">Work</a>
@@ -139,7 +148,114 @@
     </div>
   </div>
 
-  <main>
+  <main class="home">
+    <section class="brief" data-brief aria-label="At a glance">
+      <header class="brief__head grid">
+        <p class="brief__kicker">The short version</p>
+        <h1 class="brief__name">Aniketh Bandlamudi</h1>
+        <p class="brief__lede">Computer Science and Applied Mathematics at the University of Virginia, graduating May 2030. Founder of Pragmatic Research, building fault-tolerant infrastructure for AI agents in Rust.</p>
+        <div class="brief__actions">
+          <a class="btn btn--solid" href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+          <a class="btn" href="mailto:me@aniketh.net">me@aniketh.net</a>
+          <a class="btn" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </header>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Experience</h2>
+        <div class="brief__body">
+            <div class="brief__entry">
+              <h3 class="brief__title">Founder &amp; Engineer</h3>
+              <p class="brief__meta"><a class="u" href="/pragmatic/">Pragmatic<span class="arr arr--r" aria-hidden="true"></span></a><span class="brief__when">Jan 2026 – Present</span></p>
+              <p>A zero-dependency durable execution runtime in Rust that lets nondeterministic AI agents survive crashes and resume where they stopped. Append-only step journal at 230&nbsp;ns per append, flat through 1M entries; 1000/1000 on the replay-determinism suite. Incorporated as Pragmatic Research, Inc. (Delaware C-corp) in Aug 2026.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title">Engineering Intern</h3>
+              <p class="brief__meta">Alarm.com, Tysons, VA<span class="brief__when">May 2026</span></p>
+              <p>Configured and integrated home security devices for hardware QA, soldered buck converters and embedded boards, and built an internal tool for managing lab devices that shortened QA-to-engineering test cycles.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title">Founder &amp; President</h3>
+              <p class="brief__meta"><a class="u" href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar<span class="arr arr--ne" aria-hidden="true"></span></a><span class="brief__when">May 2022 – Present</span></p>
+              <p>A nonprofit building computer-vision screening for early oral cancer; led a team of four. Published a CNN that detects oral squamous cell carcinoma with 98% accuracy, with custom capture hardware.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title">Software Lead (FRC) / R&amp;D Captain (FTC)</h3>
+              <p class="brief__meta">Oakton Robotics, Vienna, VA<span class="brief__when">2022 – 2026</span></p>
+              <p>Led software for a 25-member team across four seasons: systems engineering and control software for competition robots. Finalist, innovation and creativity awards.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Projects</h2>
+        <div class="brief__body">
+            <div class="brief__entry">
+              <h3 class="brief__title"><a class="u" href="/hypnagogia" target="_blank" rel="noopener">Hypnagogia<span class="arr arr--ne" aria-hidden="true"></span></a></h3>
+              <p class="brief__meta">Python, Brian2, TypeScript<span class="brief__when"></span></p>
+              <p>A whole <em>Drosophila</em> brain in Brian2, 144K neurons and 21.9M synapses from the male CNS connectome, testing whether a learned odor memory replays during sleep. Negative results reported in full.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title"><a class="u" href="/haze/">Haze<span class="arr arr--r" aria-hidden="true"></span></a></h3>
+              <p class="brief__meta">Swift, iOS, watchOS<span class="brief__when"></span></p>
+              <p>A five-star iPhone and Apple Watch weather app, built and shipped solo: widgets, Live Activities and Siri, blending ECMWF, GFS and ICON and correcting with NWS station data.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title"><a class="u" href="https://github.com/ankthba/Splatify" target="_blank" rel="noopener">Splatify<span class="arr arr--ne" aria-hidden="true"></span></a></h3>
+              <p class="brief__meta">ffmpeg, COLMAP, Brush<span class="brief__when"></span></p>
+              <p>A fully local video-to-3D pipeline for Apple Silicon that turns phone video into Gaussian splat scenes viewable in any browser.</p>
+            </div>
+            <div class="brief__entry">
+              <h3 class="brief__title"><a class="u" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener">IllumiSign<span class="arr arr--ne" aria-hidden="true"></span></a></h3>
+              <p class="brief__meta">Hack the Nest 2025 winner<span class="brief__when"></span></p>
+              <p>Browser-based communication for ALS patients: real-time eye tracking to choose letters and speak, with no special hardware.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Research</h2>
+        <div class="brief__body">
+            <div class="brief__entry">
+              <h3 class="brief__title"><a class="u" href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener">CNN detection of oral squamous cell carcinoma<span class="arr arr--ne" aria-hidden="true"></span></a></h3>
+              <p class="brief__meta">arXiv:2510.16235<span class="brief__when"></span></p>
+              <p>A convolutional network that detects oral squamous cell carcinoma with 98% accuracy, paired with custom hardware for consistent image capture.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Skills</h2>
+        <div class="brief__body">
+          <dl class="brief__skills">
+            <dt>Languages</dt><dd>Rust, Python, Swift, C++, Java, HTML/CSS/JavaScript</dd>
+            <dt>Technologies</dt><dd>PyTorch, computer vision, iOS and macOS development, distributed systems, embedded systems</dd>
+            <dt>Hardware</dt><dd>Soldering, robotics control systems, PCB design</dd>
+            <dt>Tools</dt><dd>Git, Xcode, Claude Code, Codex, ffmpeg, COLMAP, VS Code</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Education</h2>
+        <div class="brief__body">
+            <div class="brief__entry">
+              <h3 class="brief__title">University of Virginia</h3>
+              <p class="brief__meta">B.S. Computer Science &amp; Applied Mathematics<span class="brief__when">Expected May 2030</span></p>
+              <p>School of Engineering and Applied Science. Coursework: Multivariable Calculus (APMA 2120), Data Structures &amp; Algorithms 1 (CS 2100). UVA Solar Car Team (embedded software), IEEE UVA Student Chapter.</p>
+            </div>
+        </div>
+      </div>
+
+      <div class="brief__sec grid">
+        <h2 class="brief__label">Press</h2>
+        <div class="brief__body">
+          <p class="brief__press">OCRadar was covered by WTOP, The Korea Times, Vision Times, Virginia News Network and FCPS News; aviation photography featured by United Airlines, Star Alliance and Washington Dulles International Airport. <a class="u" href="/press/">All press<span class="arr arr--r" aria-hidden="true"></span></a></p>
+        </div>
+      </div>
+    </section>
+
     <section class="hero">
       <h1 class="hero__title">
         I’m <em>Aniketh.</em> I build <span class="nb">software

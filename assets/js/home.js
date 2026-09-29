@@ -162,7 +162,7 @@
         listening.querySelector('[data-listening-title]').textContent =
           week ? 'On repeat this week' : 'On repeat right now';
         listening.querySelector('[data-listening-range]').textContent =
-          (week ? range(data.from, data.to) : 'Since ' + since) + ' \u00b7 ' + data.plays + ' plays on Spotify';
+          (week ? range(data.from, data.to) : 'Since ' + since) + ', from Spotify';
         listening.hidden = false;
       })
       .catch(function () {});

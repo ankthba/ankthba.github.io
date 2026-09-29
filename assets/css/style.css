@@ -198,9 +198,9 @@ p { text-wrap: pretty; }
 }
 .bar__id { grid-column: 1 / 3; }
 .bar__mode { grid-column: 3 / 5; justify-self: start; }
-.bar__clock { grid-column: 5 / 8; font-variant-numeric: tabular-nums; }
+.bar__clock { grid-column: 5 / 7; font-variant-numeric: tabular-nums; }
 .bar__nav {
-  grid-column: 8 / 13;
+  grid-column: 7 / 13;
   display: flex;
   justify-content: space-between;
   gap: 0 12px;
@@ -900,6 +900,8 @@ a:hover > .resume__frame { transform: translateY(-4px); }
    --------------------------------------------------------- */
 
 .listening { row-gap: 56px; }
+.listening__more { display: inline-block; margin-top: 4px; }
+.sec__aside .listening__more { display: table; margin-left: auto; }
 .listening__col:first-child { grid-column: 1 / 7; }
 .listening__col:last-child { grid-column: 7 / 13; }
 
@@ -953,6 +955,189 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   .plays:hover .play { opacity: 0.3; }
   .plays .play:hover { opacity: 1; }
   .play:hover .play__name { font-style: italic; color: var(--accent-ink); }
+}
+
+/* ---------------------------------------------------------
+   13b2. The music page, drawn by /assets/js/music.js
+   --------------------------------------------------------- */
+
+.music__lede {
+  max-width: 30ch;
+  margin: calc(-1 * clamp(24px, 5vh, 64px)) 0 clamp(48px, 8vh, 96px);
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  line-height: 1.25;
+  font-style: italic;
+  color: var(--muted);
+}
+.music__empty { font-size: 1.15rem; color: var(--muted); }
+
+/* Last played: the cover large, the song set like a headline. */
+.now {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--gutter);
+  align-items: end;
+  padding-bottom: clamp(40px, 7vh, 80px);
+}
+.now__art { display: block; aspect-ratio: 1; background: var(--rule); }
+.now__art img { width: 100%; height: 100%; object-fit: cover; }
+.now__when {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.now--live .now__when::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.25; } }
+.now__name {
+  margin-top: 14px;
+  font-size: clamp(2.4rem, 6vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+}
+.now__by {
+  margin-top: 12px;
+  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  font-style: italic;
+  color: var(--muted);
+}
+
+
+.music__sec { padding-top: clamp(80px, 13vh, 150px); }
+.music__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px 24px;
+  padding-bottom: 12px;
+}
+.music__range { margin-bottom: 28px; color: var(--muted); font-size: 1.05rem; }
+.music__tops { padding-inline: 0; }
+
+/* A segmented switch: the choice in force is filled. */
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+.seg button {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 1rem;
+  color: var(--muted);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.seg button:hover { color: var(--ink); }
+.seg button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+/* Song of the day. */
+.cal__nav { display: inline-flex; align-items: center; gap: 12px; }
+.cal__month { min-width: 9.5em; text-align: center; font-size: 1.15rem; }
+.cal__step {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  transition: border-color 0.25s ease;
+}
+.cal__step:hover:not(:disabled) { border-color: var(--ink); }
+.cal__step:disabled { opacity: 0.3; cursor: default; }
+.cal__step .arr { margin: 0; }
+.cal__back { transform: rotate(180deg); }
+
+.cal {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: clamp(4px, 0.8vw, 12px);
+  margin-top: 8px;
+}
+.cal__dow { padding-bottom: 4px; color: var(--muted); }
+.cal__day {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: transparent;
+  transition: transform 0.4s var(--ease), border-color 0.25s ease;
+}
+.cal__day img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cal__day--played { border-color: transparent; }
+.cal__day--future { opacity: 0.35; border-style: dashed; }
+.cal__day--before { opacity: 0.4; border-color: transparent; }
+.cal__day--today { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cal__num {
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  color: var(--muted);
+}
+/* Over a cover the date sits on a small tab of paper, readable on any
+   picture. */
+.cal__day--played .cal__num {
+  padding: 1px 4px;
+  background: var(--paper);
+  color: var(--ink);
+  top: 5px;
+  left: 5px;
+}
+@media (hover: hover) {
+  a.cal__day:hover { transform: scale(1.04); z-index: 1; }
+}
+.cal__day--picked { border-color: var(--ink); }
+.cal__caption {
+  min-height: 3em;
+  margin-top: 18px;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* The listening log: a time instead of a rank, under each day. */
+.log__day {
+  margin: 34px 0 10px;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.log__day:first-child { margin-top: 0; }
+.plays--log .play { grid-template-columns: 5.2em 48px minmax(0, 1fr); }
+.plays--log .play__art { width: 48px; height: 48px; }
+.plays--log .play__name { font-size: clamp(1.15rem, 1.6vw, 1.45rem); }
+
+@media (max-width: 900px) {
+  .now { grid-template-columns: minmax(0, 1fr); }
+  .now__art { max-width: 420px; }
+}
+
+@media (max-width: 560px) {
+  .cal__num { top: 3px; left: 4px; font-size: 9px; }
+  .cal__day--played .cal__num { padding: 0 3px; top: 3px; left: 3px; }
+  .cal__dow { font-size: 9px; }
+  .seg button { padding: 0 11px; font-size: 0.95rem; }
 }
 
 /* ---------------------------------------------------------
@@ -1142,6 +1327,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   .hero__foot > :nth-child(2) { grid-column: 1 / 13; }
   .sec__t { grid-column: 1 / 13; }
   .sec__aside { grid-column: 1 / 13; text-align: left; margin-top: 6px; }
+  .sec__aside .listening__more { margin-left: 0; }
   .shot img { height: var(--hs, 46vh); }
   .play { grid-template-columns: 2em 48px minmax(0, 1fr) auto; column-gap: 12px; }
   .play__art { width: 48px; height: 48px; }

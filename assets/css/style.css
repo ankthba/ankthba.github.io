@@ -605,6 +605,18 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 }
 .hero__title em { font-style: italic; }
 .hero__title .nb { white-space: nowrap; }
+/* The headline is one sentence in clauses. On a wide screen they run on
+   as a paragraph; on a phone or an upright tablet each starts its own
+   line, the name larger, and a few take shorter wording. */
+.hero__title .sh { display: none; }
+@media (max-width: 700px), (max-width: 1023px) and (orientation: portrait) {
+  .hero__title .cl { display: block; }
+  .hero__title .cl + .cl { margin-top: var(--cl-gap, 0.2em); }
+  .hero__title .cl--hi { font-size: 1.3em; line-height: 1; }
+  .hero__title .lg { display: none; }
+  .hero__title .sh { display: inline; }
+  .hero__title .inl { width: 1.9em; height: 0.9em; vertical-align: -0.08em; }
+}
 /* "music" goes to the music page: underlined in marigold, italic word
    and live cover together. */
 .hero__link {
@@ -629,8 +641,10 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   border-radius: 0.06em;
   background: var(--rule);
   text-indent: 0;
-  transition: clip-path 1.2s var(--ease);
+  transform-origin: 0 50%;
+  transition: width 0.7s var(--ease), transform 0.7s var(--ease), clip-path 1.2s var(--ease);
 }
+.inl.open { z-index: 2; }
 .inl img {
   position: absolute;
   inset: 0;
@@ -638,8 +652,9 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   height: 100%;
   object-fit: cover;
   /* Each photo is framed on its subject (--fx, --fy in the markup), and
-     zooms towards it on hover. The frame itself never changes size, so
-     the line around it never moves. */
+     zooms a little towards it as the frame opens on hover. How far the
+     frame opens is set by home.js, so that it never runs past the end of
+     its line. */
   object-position: var(--fx, 50%) var(--fy, 50%);
   transform-origin: var(--fx, 50%) var(--fy, 50%);
   opacity: 0;
@@ -647,7 +662,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 }
 .inl img.on { opacity: 1; }
 @media (hover: hover) {
-  .inl:hover img { transform: scale(1.7); }
+  .inl.open img { transform: scale(1.12); }
 }
 
 /* Load: each word rises out of its own line, the photographs open
@@ -662,7 +677,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   transition: transform 1.25s var(--ease);
   transition-delay: var(--d, 0s);
 }
-.js .hero__title .inl { clip-path: inset(0 100% 0 0); transition-delay: 0s, var(--d, 0s); }
+.js .hero__title .inl { clip-path: inset(0 100% 0 0); transition-delay: 0s, 0s, var(--d, 0s); }
 .ready .hero__title .w > span { transform: none; }
 .ready .hero__title .inl { clip-path: inset(0 0 0 0); }
 .settled .hero__title .w { clip-path: none; }

@@ -153,8 +153,16 @@
         if (!data || !data.tracks || !data.tracks.length) return;
         fill(listening.querySelector('[data-listening-tracks]'), data.tracks.slice(0, 5), true);
         fill(listening.querySelector('[data-listening-artists]'), (data.artists || []).slice(0, 5), false);
+        /* Until a full seven days have been counted it is "right now",
+           since when; after that, "this week" and its dates. */
+        var span = (Date.parse(data.to) - Date.parse(data.from)) / 864e5 + 1;
+        var week = span >= 7;
+        var since = new Date(data.from + 'T12:00:00Z')
+          .toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+        listening.querySelector('[data-listening-title]').textContent =
+          week ? 'On repeat this week' : 'On repeat right now';
         listening.querySelector('[data-listening-range]').textContent =
-          range(data.from, data.to) + ' \u00b7 ' + data.plays + ' plays on Spotify';
+          (week ? range(data.from, data.to) : 'Since ' + since) + ' \u00b7 ' + data.plays + ' plays on Spotify';
         listening.hidden = false;
       })
       .catch(function () {});

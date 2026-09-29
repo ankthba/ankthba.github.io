@@ -91,9 +91,9 @@
   }
 
   /* What's playing, from the Worker at data-live (.github/worker/now.js),
-     which asks Spotify at most every ten seconds. The page asks every
-     fifteen while it is in view; between answers the progress bar runs
-     on its own clock. */
+     which asks Spotify at most every five seconds. The page asks every
+     eight while it is in view; between answers the progress bar runs on
+     its own clock, and a scrub or a skip shows at the next answer. */
   var LIVE = page.getAttribute('data-live');
   var logged = [];
   var tick = null;
@@ -133,6 +133,46 @@
     if (playing) tick = setInterval(draw, 500);
   }
 
+  /* Spotify only lists a song as played once it has finished, and then
+     a few minutes late. So the page keeps its own note of what it has
+     seen: the song playing now heads the log, and a song it watched play
+     for thirty seconds or more joins the log the moment the next one
+     starts. When Spotify's own record of that play arrives it takes the
+     page's place, rather than appearing twice. */
+  var heard = [];       // plays the page saw finish, newest first
+  var watching = null;  // { track, longest } for the song playing now
+
+  function merged(recent) {
+    var seen = {};
+    logged = (recent || []).concat(logged).filter(function (p) {
+      if (seen[p.played_at]) return false;
+      seen[p.played_at] = true;
+      return true;
+    });
+    heard = heard.filter(function (h) {
+      return !logged.some(function (p) {
+        return p.url === h.url && Math.abs(Date.parse(p.played_at) - Date.parse(h.played_at)) < 10 * 60000;
+      });
+    });
+    return heard.concat(logged)
+      .sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); })
+      .slice(0, 50);
+  }
+
+  function follow(now) {
+    var track = now.track;
+    if (watching && (!track || track.url !== watching.track.url)) {
+      if (watching.longest >= 30000) {
+        heard.unshift(Object.assign({}, watching.track, { played_at: new Date().toISOString() }));
+      }
+      watching = null;
+    }
+    if (track) {
+      if (!watching) watching = { track: track, longest: 0 };
+      watching.longest = Math.max(watching.longest, now.progress_ms || 0);
+    }
+  }
+
   function live() {
     if (!LIVE) return;
     var ask = function () {
@@ -140,28 +180,24 @@
       fetch(LIVE, { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (now) {
-          /* New plays go on top of the log, once each. */
-          var seen = {};
-          logged = (now.recent || []).concat(logged).filter(function (p) {
-            if (seen[p.played_at]) return false;
-            seen[p.played_at] = true;
-            return true;
-          }).sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); }).slice(0, 50);
-          log(logged);
-          showNow(now, logged[0]);
+          follow(now);
+          var plays = merged(now.recent);
+          log(plays, now.playing ? now.track : null);
+          showNow(now, plays[0]);
         })
         .catch(function () {});
     };
     ask();
-    setInterval(ask, 15000);
+    setInterval(ask, 8000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) ask(); });
   }
 
   /* The listening log: every recent play with its time, under a heading
      for each day. */
-  function log(plays) {
+  function log(plays, playing) {
     var box = $('[data-log]');
     box.textContent = '';
+    if (playing) plays = [Object.assign({ now: true, played_at: new Date().toISOString() }, playing)].concat(plays);
     var today = dayOf(new Date());
     var yesterday = dayOf(new Date(Date.now() - 864e5));
     var list = null;
@@ -178,9 +214,10 @@
       }
       var li = el('li');
       var href = spotify(item.url);
-      var row = el(href ? 'a' : 'div', 'play');
+      var row = el(href ? 'a' : 'div', item.now ? 'play play--now' : 'play');
       if (href) { row.href = href; row.target = '_blank'; row.rel = 'noopener'; }
-      var time = el('time', 'play__n mono', new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+      var time = el('time', 'play__n mono', item.now ? 'Now'
+        : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
       time.dateTime = item.played_at;
       row.appendChild(time);
       var art = el('img', 'play__art');

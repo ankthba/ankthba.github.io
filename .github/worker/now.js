@@ -1,7 +1,7 @@
 // A Cloudflare Worker that tells the site what's playing on Spotify right
 // now, and the last few plays, without the site ever holding a Spotify
 // key. It keeps the refresh token as a Worker secret, asks Spotify at
-// most once every ten seconds however many people are looking, and
+// most once every five seconds however many people are looking, and
 // returns only what the page shows: no device, no account, no token.
 //
 // Deploy from this folder with `npx wrangler deploy`. Secrets
@@ -9,7 +9,7 @@
 // set by .github/listening/auth.mjs.
 
 const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://localhost:4599'];
-const FRESH = 10; // seconds a response is reused for
+const FRESH = 5; // seconds a response is reused for
 
 let token = null; // { value, expires }, kept while this isolate lives
 
@@ -59,11 +59,20 @@ async function build(env) {
   ]);
   // Only songs are shown; a podcast or an ad counts as nothing playing.
   const track = now && now.currently_playing_type === 'track' && now.item ? now.item : null;
+  // Spotify keeps reporting the last song as playing, parked at its very
+  // end, when the device that is really playing (a private session, some
+  // speakers) isn't telling it anything. A song at its last second, or a
+  // report more than a song's length old, is not believed.
+  const stale = track && (
+    now.progress_ms >= track.duration_ms - 1500 ||
+    (now.timestamp && Date.now() - now.timestamp > track.duration_ms + 60000)
+  );
   return {
     at: new Date().toISOString(),
-    playing: Boolean(track && now.is_playing),
-    progress_ms: track ? now.progress_ms : null,
-    track: track ? song(track) : null,
+    playing: Boolean(track && now.is_playing && !stale),
+    stale: Boolean(stale),
+    progress_ms: track && !stale ? now.progress_ms : null,
+    track: track && !stale ? song(track) : null,
     recent: (recent?.items || []).map((i) => ({ ...song(i.track), played_at: i.played_at })),
   };
 }
@@ -84,7 +93,7 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: headers(origin) });
     if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
-    // One answer every ten seconds, shared by everyone asking.
+    // One answer every five seconds, shared by everyone asking.
     const cache = caches.default;
     const key = new Request(new URL('/now', request.url).toString());
     let body = await cache.match(key).then((r) => r && r.text());

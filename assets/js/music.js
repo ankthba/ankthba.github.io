@@ -116,11 +116,17 @@
     $('[data-now-by]').textContent = item.artists;
     var link = $('[data-now-link]');
     if (spotify(item.url)) link.href = item.url; else link.removeAttribute('href');
-    /* No picture that passed, or none yet: a plain square, never the
-       previous song's cover. */
+    /* The cover at its largest (640px), since it is shown big; a play
+       from the Action's file has only the 300px one, and Spotify's
+       address for the larger differs by a size code. No cover at all: a
+       plain square, never the previous song's. */
     var img = $('[data-now-img]');
-    if (https(item.image)) {
-      if (img.getAttribute('src') !== item.image) img.src = item.image;
+    var big = item.cover || (item.image || '').replace('/ab67616d00001e02', '/ab67616d0000b273');
+    if (https(big)) {
+      if (img.getAttribute('src') !== big) {
+        img.onerror = function () { if (item.image && img.getAttribute('src') !== item.image) img.src = item.image; };
+        img.src = big;
+      }
       img.hidden = false;
     } else {
       img.removeAttribute('src');

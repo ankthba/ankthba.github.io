@@ -44,11 +44,17 @@ function image(images = []) {
   return (bySize.find((i) => (i.width || 0) >= 300) || bySize.at(-1) || {}).url || null;
 }
 
+// The largest image there is (640px for album art), for the big cover.
+function largest(images = []) {
+  return ([...images].sort((a, b) => (b.width || 0) - (a.width || 0))[0] || {}).url || null;
+}
+
 const song = (t) => ({
   name: t.name,
   artists: t.artists.map((a) => a.name).join(', '),
   url: t.external_urls?.spotify || null,
   image: image(t.album?.images),
+  cover: largest(t.album?.images),
   duration_ms: t.duration_ms,
 });
 

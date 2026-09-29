@@ -34,10 +34,32 @@
     });
   })(title);
 
+  /* On a phone, or a tablet held upright, the headline is sized to fill the first screen: the
+     largest type at which it still ends above the bottom of the window.
+     Measured once the fonts are in, and again only if the width changes,
+     not when the browser's address bar slides away. */
+  var fitWidth = 0;
+  function fit() {
+    var upright = innerWidth <= 700 || (innerWidth < 1024 && innerHeight > innerWidth * 1.15);
+    if (!upright) { title.style.fontSize = ''; fitWidth = 0; return; }
+    if (innerWidth === fitWidth) return;
+    fitWidth = innerWidth;
+    var room = innerHeight - (title.getBoundingClientRect().top + scrollY) - 28;
+    var lo = 26, hi = 96;
+    while (hi - lo > 0.5) {
+      var mid = (lo + hi) / 2;
+      title.style.fontSize = mid + 'px';
+      if (title.offsetHeight <= room) lo = mid; else hi = mid;
+    }
+    title.style.fontSize = lo + 'px';
+  }
+  addEventListener('resize', fit);
+
   var started = false;
   function go() {
     if (started) return;
     started = true;
+    fit();
     /* Read layout first so the hidden starting state is committed and
        the change below transitions, rather than waiting on a frame a
        background tab may never draw. */
@@ -57,9 +79,7 @@
       fetch('https://aniketh-now.ankthba.workers.dev/', { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (now) {
-          /* The Worker picks a picture that is safe to show here: the
-             cover, or for an explicit song the artist's photo, or none. */
-          var item = now.headline;
+          var item = now.playing && now.track ? now.track : (now.recent || [])[0];
           var slot = cover.parentNode;
           if (!item) return;
           liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;

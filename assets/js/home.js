@@ -1,4 +1,4 @@
-/* The home page: the headline, the index of work, the photographs. */
+/* The home page: the headline, the work, the photographs. */
 
 'use strict';
 
@@ -146,42 +146,6 @@
     }, 1400);
   }
 
-  /* A picture trails the cursor through the index, lagging a little
-     and leaning into the direction it is being pulled. */
-  var box = document.querySelector('[data-peek-box]');
-  var index = document.querySelector('[data-index]');
-  if (hover && box && index) {
-    var pic = box.querySelector('img');
-    var mx = 0, my = 0, x = 0, y = 0, running = false;
-    var frame = function () {
-      var dx = mx - x;
-      x += dx * 0.14;
-      y += (my - y) * 0.14;
-      var tilt = Math.max(-9, Math.min(9, dx * 0.06));
-      /* Right of the cursor, so it never covers the name being read,
-         unless that would push it off the page. */
-      var left = x + 40 + box.offsetWidth > innerWidth ? x - 40 - box.offsetWidth : x + 40;
-      box.style.transform = 'translate3d(' + left + 'px,' + (y - box.offsetHeight / 2) + 'px,0) rotate(' + tilt + 'deg)';
-      if (running) requestAnimationFrame(frame);
-    };
-    addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
-    index.querySelectorAll('.row').forEach(function (row) {
-      row.addEventListener('mouseenter', function (e) {
-        var src = row.getAttribute('data-peek');
-        if (!src) { box.classList.remove('on'); return; }
-        pic.src = src;
-        pic.classList.toggle('contain', row.hasAttribute('data-contain'));
-        if (!box.classList.contains('on')) { x = mx = e.clientX; y = my = e.clientY; }
-        box.classList.add('on');
-        if (!running) { running = true; frame(); }
-      });
-      row.addEventListener('mouseleave', function () { box.classList.remove('on'); });
-    });
-    index.addEventListener('mouseleave', function () {
-      setTimeout(function () { if (!box.classList.contains('on')) running = false; }, 600);
-    });
-  }
-
   /* This week's listening, written every fifteen minutes by the Action in
      .github/workflows/listening.yml. The section stays hidden unless
      there is something to show. Links must go to Spotify and pictures
@@ -254,6 +218,89 @@
       .catch(function () {});
   }
 
+  /* The headline's own details: the clock beside it, the name
+     fitted to the page, its letters lifting towards the pointer. In a
+     scope of their own, so their names can't meet the rest of this
+     file's; the gallery code below returns early, so they come first. */
+  (function () {
+    /* The clock beside the headline, to the second. */
+    var clock = document.querySelector('[data-hb-clock]');
+    if (clock) {
+      var fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false, timeZoneName: 'short'
+      });
+      var tick = function () { clock.textContent = fmt.format(new Date()); };
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    /* The name runs the full width of the page: its size is measured
+       against the headline once the fonts are in, and on every resize. */
+    var nameEl = document.querySelector('[data-name]');
+    var wide = matchMedia('(min-width: 701px)');
+    var stackedQ = matchMedia('(max-width: 700px), (max-width: 1023px) and (orientation: portrait)');
+    var fitName = function () {
+      if (!nameEl) return;
+      nameEl.style.fontSize = '';
+      if (!wide.matches || stackedQ.matches) return;
+      var title = nameEl.parentElement;
+      var cs = getComputedStyle(title);
+      var room = title.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var base = parseFloat(getComputedStyle(nameEl).fontSize);
+      /* Measured at its own width, not the width of its column. */
+      nameEl.style.width = 'max-content';
+      nameEl.style.fontSize = '100px';
+      var w = nameEl.getBoundingClientRect().width;
+      nameEl.style.width = '';
+      nameEl.style.fontSize = Math.min(base * 1.8, 100 * room / w * 0.99) + 'px';
+    };
+    if (document.fonts) document.fonts.ready.then(fitName);
+    setTimeout(fitName, 950);
+    addEventListener('resize', fitName);
+
+    /* The name: each letter in a span of its own, lifting towards the
+       pointer as it passes over the headline. */
+    var name = document.querySelector('[data-name]');
+    if (name && hover && !still) {
+      var chars = [];
+      name.querySelectorAll('.w > span').forEach(function (word) {
+        var text = word.textContent;
+        word.textContent = '';
+        Array.prototype.forEach.call(text, function (c) {
+          var ch = document.createElement('span');
+          ch.className = 'ch';
+          ch.textContent = c;
+          word.appendChild(ch);
+          chars.push(ch);
+        });
+      });
+      var hero = document.querySelector('.hero');
+      var raf = 0, mx = -1e4, my = -1e4;
+      var draw = function () {
+        raf = 0;
+        chars.forEach(function (ch) {
+          var r = ch.getBoundingClientRect();
+          var dx = mx - (r.left + r.width / 2);
+          var dy = my - (r.top + r.height / 2);
+          var d = Math.sqrt(dx * dx + dy * dy);
+          var pull = Math.max(0, 1 - d / 320);
+          ch.style.transform = pull
+            ? 'translateY(' + (-pull * 0.09).toFixed(3) + 'em) rotate(' + (dx > 0 ? -1 : 1) * pull * 3 + 'deg)'
+            : '';
+        });
+      };
+      hero.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+        if (!raf) raf = requestAnimationFrame(draw);
+      });
+      hero.addEventListener('mouseleave', function () {
+        mx = my = -1e4;
+        if (!raf) raf = requestAnimationFrame(draw);
+      });
+    }
+  })();
+
   /* Photographs: pin the strip and turn vertical scroll into sideways
      travel. Below 900px, or with reduced motion, it is a swipe strip. */
   var gallery = document.querySelector('[data-gallery]');
@@ -261,6 +308,7 @@
   var track = gallery.querySelector('[data-track]');
   var bar = gallery.querySelector('[data-bar]');
   var count = gallery.querySelector('[data-count]');
+  var hint = gallery.querySelector('[data-hint]');
   var shots = track.querySelectorAll('figure.shot');
   var travel = 0;
   function pinned() { return !still && innerWidth > 900 && innerHeight > 520; }
@@ -271,6 +319,8 @@
     bar.style.transform = 'scaleX(' + p + ')';
     var k = Math.min(shots.length, Math.floor(p * shots.length) + 1);
     count.textContent = (k < 10 ? '0' : '') + k + ' / ' + shots.length;
+    /* Nothing left to scroll to, so no more asking. */
+    hint.classList.toggle('done', p > 0.97);
   }
   function measure() {
     if (!pinned()) {

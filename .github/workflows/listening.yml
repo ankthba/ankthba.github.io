@@ -1,8 +1,12 @@
 name: Listening
 
-# Every fifteen minutes: fold new Spotify plays into this week's counts and publish
-# the top fives to the listening-data branch, which the home page reads.
-# main is never touched, so the site isn't rebuilt each time.
+# Every fifteen minutes:
+#   1. update.mjs folds new Spotify plays into this week's counts, for the
+#      home page's top fives (listening.json).
+#   2. log.mjs appends every new play to the private listening-log repo.
+#   3. music.mjs summarises that log for the /music/ page (music.json).
+# listening.json and music.json go to the public listening-data branch,
+# which the site reads. main is never touched, so the site isn't rebuilt.
 
 on:
   schedule:
@@ -23,6 +27,8 @@ jobs:
   update:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      HAS_LOG: ${{ secrets.LISTENING_LOG_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,15 +45,32 @@ jobs:
             git worktree add --orphan -b listening-data data
           fi
 
+      - name: Check out the private log
+        if: env.HAS_LOG == 'true'
+        uses: actions/checkout@v4
+        with:
+          repository: ankthba/listening-log
+          ssh-key: ${{ secrets.LISTENING_LOG_KEY }}
+          path: log
+
       - name: Count this week's plays
         run: node .github/listening/update.mjs data
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
           SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+          RECENT_OUT: ${{ runner.temp }}/recent.json
 
-      # The branch is kept to a single commit, replaced each time: it holds
-      # the current week and nothing older.
+      - name: Log every play
+        if: env.HAS_LOG == 'true'
+        run: node .github/listening/log.mjs log "$RUNNER_TEMP/recent.json"
+
+      - name: Summarise the log for the music page
+        if: env.HAS_LOG == 'true'
+        run: node .github/listening/music.mjs log data
+
+      # The data branch is kept to a single commit, replaced each time: it
+      # holds the current summaries and nothing older.
       - name: Publish
         working-directory: data
         run: |
@@ -60,3 +83,18 @@ jobs:
               -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
               commit --quiet $(git rev-parse -q --verify HEAD >/dev/null && echo --amend) -m 'This week in listening'
           git push --force origin listening-data
+
+      # The log keeps its history: one commit per run that heard something.
+      - name: Save the log
+        if: env.HAS_LOG == 'true'
+        working-directory: log
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No new plays."
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit --quiet -m "Plays to $(node -p 'require("./cursor.json").last')"
+          git push origin HEAD

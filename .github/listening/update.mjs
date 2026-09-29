@@ -28,6 +28,7 @@ if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
 async function accessToken() {
   const res = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
+    signal: AbortSignal.timeout(15000),
     headers: {
       Authorization: 'Basic ' + Buffer.from(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString('base64'),
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -41,6 +42,7 @@ async function accessToken() {
 async function api(path, token) {
   const res = await fetch('https://api.spotify.com/v1' + path, {
     headers: { Authorization: 'Bearer ' + token },
+    signal: AbortSignal.timeout(15000),
   });
   if (!res.ok) throw new Error(`${path}: ${res.status} ${await res.text()}`);
   return res.json();
@@ -155,7 +157,7 @@ async function artistPicture(id) {
   } catch {}
   try {
     const res = await fetch('https://open.spotify.com/oembed?url=' +
-      encodeURIComponent('https://open.spotify.com/artist/' + id));
+      encodeURIComponent('https://open.spotify.com/artist/' + id), { signal: AbortSignal.timeout(5000) });
     if (res.ok) return (await res.json()).thumbnail_url || null;
   } catch {}
   return null;
@@ -188,6 +190,9 @@ const listening = {
     return { name: a.n, url: a.u, image: a.i || coverFor(id), plays };
   }),
 };
+
+// The raw plays, for the private log (log.mjs) to take what it hasn't got.
+if (process.env.RECENT_OUT) await writeFile(process.env.RECENT_OUT, JSON.stringify(recent.items));
 
 await writeFile(statePath, JSON.stringify(state) + '\n');
 await writeFile(join(dir, 'listening.json'), JSON.stringify(listening, null, 2) + '\n');

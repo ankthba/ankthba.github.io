@@ -133,6 +133,137 @@
     addEventListener('resize', fit);
   }
 
+  /* The pointer, everywhere: a small marigold dot that trails the real
+     position a little. Over a link it flows into that link's shape: a
+     highlight fitted to the words, or, where a link carries a control
+     of its own (the "At a glance" switch), the control itself. Over
+     anything marked data-cursor (a project's picture) it becomes a disc
+     that says what a click will do: "Visit" and an arrow out for another
+     site, "Open" and an arrow on for a page here.
+
+     Position, size and roundness all ease towards their goal together,
+     at the same rate whatever the screen's refresh rate, so every
+     change of shape is one movement. Only where there's a mouse. */
+  (function () {
+    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var cur = document.createElement('div');
+    cur.className = 'cursor';
+    cur.setAttribute('aria-hidden', 'true');
+    cur.innerHTML = '<span class="cursor__shape"></span>' +
+      '<span class="cursor__tag"><span class="cursor__label"></span><span class="cursor__arr arr"></span></span>';
+    document.body.appendChild(cur);
+    root.classList.add('has-cursor');
+    var shape = cur.querySelector('.cursor__shape');
+    var label = cur.querySelector('.cursor__label');
+    var arrow = cur.querySelector('.cursor__arr');
+
+    var DOT = 10, DISC = 108;
+    var px = -100, py = -100;
+    /* What's drawn: centre, width, height, corner radius. */
+    var d = { x: -100, y: -100, w: DOT, h: DOT, r: DOT / 2 };
+    var mode = 'dot', snap = null, lean = 0, padX = 0, padY = 0, fit = 0;
+    var running = false, seen = false, last = 0;
+
+    var goal = function () {
+      if (mode === 'link' && snap && snap.isConnected) {
+        var b = snap.getBoundingClientRect();
+        var mx = b.left + b.width / 2, my = b.top + b.height / 2;
+        var w = b.width + padX * 2, h = b.height + padY * 2;
+        return {
+          x: mx + (px - mx) * lean,
+          y: my + (py - my) * lean,
+          w: w, h: h,
+          r: fit ? Math.min(h / 2, fit + padY) : Math.min(h / 2, 8)
+        };
+      }
+      var size = mode === 'card' ? DISC : mode === 'big' ? 16 : DOT;
+      return { x: px, y: py, w: size, h: size, r: size / 2 };
+    };
+    var frame = function (t) {
+      var dt = last ? Math.min(64, Math.max(0, t - last)) : 16;
+      last = t;
+      var g = goal();
+      /* Exponential easing by elapsed time: the same feel at 60 or 120
+         frames a second. Where it goes and what shape it takes ease at
+         one rate, so the dot visibly grows into the shape rather than
+         arriving first and swelling after. */
+      var kp = still ? 1 : 1 - Math.exp(-dt / 70);
+      var ks = kp;
+      d.x += (g.x - d.x) * kp;
+      d.y += (g.y - d.y) * kp;
+      d.w += (g.w - d.w) * ks;
+      d.h += (g.h - d.h) * ks;
+      d.r += (g.r - d.r) * ks;
+      cur.style.transform = 'translate3d(' + d.x.toFixed(2) + 'px,' + d.y.toFixed(2) + 'px,0)';
+      shape.style.width = d.w.toFixed(2) + 'px';
+      shape.style.height = d.h.toFixed(2) + 'px';
+      shape.style.borderRadius = d.r.toFixed(2) + 'px';
+      var rest = Math.abs(g.x - d.x) + Math.abs(g.y - d.y) + Math.abs(g.w - d.w) + Math.abs(g.h - d.h);
+      /* Wrapped round a link it keeps watching, so it stays on the link
+         as the page scrolls beneath it. */
+      if (rest > 0.1 || mode === 'link') requestAnimationFrame(frame);
+      else { running = false; last = 0; }
+    };
+    var kick = function () { if (!running) { running = true; requestAnimationFrame(frame); } };
+
+    var aim = function (target) {
+      var el = target && target.closest ? target.closest('[data-cursor], a, button, [role="button"], label') : null;
+      snap = null;
+      if (el && el.hasAttribute('data-cursor')) {
+        var href = el.getAttribute('href') || '';
+        var out = el.target === '_blank' || (/^https?:/.test(href) && !/^https?:\/\/(www\.)?aniketh\.net/.test(href));
+        label.textContent = el.getAttribute('data-cursor') || (out ? 'Visit' : 'Open');
+        arrow.className = 'cursor__arr arr ' + (out ? 'arr--ne' : 'arr--r');
+        mode = 'card';
+      } else if (el) {
+        /* A control inside the link is what it becomes; otherwise the
+           link itself: a line of words, a button, a row in a list. Only
+           something enormous (the address across the footer, the press
+           marquee) keeps a dot. */
+        var control = el.querySelector('.switch, [data-cursor-shape]');
+        var b = (control || el).getBoundingClientRect();
+        if (control) {
+          mode = 'link'; snap = control; lean = 0; padX = padY = 3;
+          fit = parseFloat(getComputedStyle(control).borderTopLeftRadius) || 0;
+        } else if (b.height < 140 && b.width < innerWidth - 2) {
+          /* Wide things lean less, or the shape would wander off them. */
+          mode = 'link'; snap = el; lean = b.width > 320 ? 0.025 : 0.08;
+          /* A link that already has a shape (a pill button) is what the
+             cursor becomes, outline for outline; a line of words gets a
+             little air around it. */
+          fit = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+          if (fit) { padX = padY = 0; lean = 0.04; }
+          else if (b.width > 320) { padX = 10; padY = 0; }
+          else {
+            padX = Math.max(8, Math.min(14, b.height * 0.5));
+            padY = Math.max(3, Math.min(8, b.height * 0.2));
+          }
+        } else {
+          mode = 'big';
+        }
+      } else {
+        mode = 'dot';
+      }
+      cur.classList.toggle('is-card', mode === 'card');
+      cur.classList.toggle('is-link', mode === 'link');
+      cur.classList.toggle('is-control', !!(snap && (snap !== el || fit)));
+      kick();
+    };
+
+    addEventListener('mousemove', function (e) {
+      px = e.clientX; py = e.clientY;
+      if (!seen) { seen = true; d.x = px; d.y = py; cur.classList.add('is-in'); }
+      kick();
+    }, { passive: true });
+    document.addEventListener('mouseover', function (e) { aim(e.target); });
+    /* Gone when the pointer leaves the window, back when it returns. */
+    document.addEventListener('mouseout', function (e) {
+      if (!e.relatedTarget) { seen = false; cur.classList.remove('is-in'); }
+    });
+    addEventListener('mousedown', function () { cur.classList.add('is-down'); });
+    addEventListener('mouseup', function () { cur.classList.remove('is-down'); });
+  })();
+
   var top = document.querySelector('[data-top]');
   if (top) {
     top.addEventListener('click', function (e) {

@@ -258,13 +258,15 @@
       </div>
     </section>
 
-    <section class="hero">
+    <section class="hero hero--bold">
       <h1 class="hero__title">
-        <span class="cl cl--hi">I’m <em>Aniketh.</em></span>
+        <span class="cl cl--hi" data-name>I’m <em>Aniketh.</em></span>
+        <span class="hb__meta mono" aria-hidden="true"><span>Charlottesville, Virginia</span><span>38.0293° N, 78.4767° W</span><span class="hb__clock" data-hb-clock>&nbsp;</span></span>
+        <span class="rest">
         <span class="cl">I build <span class="nb">software
         <span class="inl" data-cycle aria-hidden="true">
           <img class="on" src="/assets/img/projects/haze.webp" alt="" style="--fx:50%;--fy:26%">
-          <img src="/assets/img/pragmaticog.png" alt="" style="--fx:50%;--fy:50%">
+          <img src="/assets/img/projects/hypnagogia.webp" alt="" style="--fx:50%;--fy:36%">
           <img src="/assets/img/projects/ocradar.jpg" alt="" style="--fx:32%;--fy:45%">
           <img src="/assets/img/projects/sentry.webp" alt="" style="--fx:50%;--fy:30%">
         </span></span>
@@ -288,73 +290,91 @@
         <span class="inl" data-live-cover aria-hidden="true">
           <img alt="">
         </span></a>.</span>
+        </span>
       </h1>
 
       <div class="hero__foot grid mono fade">
         <p><b>Currently</b>Building <a href="/pragmatic/">Pragmatic</a> and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a></p>
-        <p><b>Previously</b>Engineering intern, Alarm.com.<br>Software lead, Oakton Robotics, four years.<br>Y Combinator Startup School.</p>
+        <p><b>Previously</b>Engineering intern, Alarm.com.<br>Software lead, Oakton Robotics, four years.<br>Y&nbsp;Combinator Startup School.</p>
         <p><b>Covered by</b>WTOP, Korea Times, United Airlines,<br>Washington Dulles International Airport</p>
-        <p>Scroll<span class="arr arr--down" aria-hidden="true"></span></p>
+        <p class="hero__cue">Scroll<span class="arr arr--down" aria-hidden="true"></span></p>
       </div>
     </section>
 
-    <section class="sec" id="work">
+    <section class="sec bwork" id="work">
       <div class="sec__head grid rise">
         <span class="sec__t">Selected work</span>
         <span class="sec__aside"><a class="u" href="/projects/">All projects<span class="arr arr--r" aria-hidden="true"></span></a></span>
       </div>
+      <div class="wg grid">
+        <article class="wg__item wg__item--prag rise">
+          <a class="wg__media" href="/pragmatic/" data-cursor="Open" aria-label="Pragmatic">
+            <div class="wg__frame wg__frame--mark">
+              <span class="wg__diamond" aria-hidden="true"></span>
+              <span class="wg__tl mono" aria-hidden="true">Pragmatic Research, Inc.</span>
+              <span class="wg__br mono" aria-hidden="true">Durable execution for AI agents</span>
+            </div>
+          </a>
+          <div class="wg__cap">
+            <h3 class="wg__name"><a href="/pragmatic/" tabindex="-1">Pragmatic</a></h3>
+            <span class="wg__n mono">01</span>
+            <p class="wg__desc">A durable execution runtime in Rust that lets AI agents survive any crash.</p>
+            <p class="wg__spec mono">Founder · Rust · 2026 –</p>
+          </div>
+        </article>
+        <article class="wg__item wg__item--ocr rise">
+          <a class="wg__media" href="https://ocradar.com/" target="_blank" rel="noopener" data-cursor="Visit" aria-label="OCRadar">
+            <div class="wg__frame"><img src="/assets/img/projects/ocradar.jpg" alt="The OCRadar app, and its capture lens on a second phone" loading="lazy" style="object-position: 46% 45%"></div>
+          </a>
+          <div class="wg__cap">
+            <h3 class="wg__name"><a href="https://ocradar.com/" target="_blank" rel="noopener" tabindex="-1">OCRadar</a></h3>
+            <span class="wg__n mono">02</span>
+            <p class="wg__desc">Computer vision on a phone, to help catch oral cancer early.</p>
+            <p class="wg__spec mono">Founder · Computer vision · 2022 –</p>
+          </div>
+        </article>
+        <article class="wg__item wg__item--apt rise">
+          <a class="wg__media" href="https://aperta.health" target="_blank" rel="noopener" data-cursor="Visit" aria-label="Aperta">
+            <div class="wg__frame wg__frame--plates"><img src="/aperta/anatomy/heart.png" alt="" loading="lazy"><img src="/aperta/anatomy/lung.png" alt="" loading="lazy"><img src="/aperta/anatomy/eye.png" alt="" loading="lazy"><img src="/aperta/anatomy/hand.png" alt="" loading="lazy"><img src="/aperta/anatomy/knee.png" alt="" loading="lazy"><img src="/aperta/anatomy/spine.png" alt="" loading="lazy"><img src="/aperta/anatomy/skull.png" alt="" loading="lazy"><img src="/aperta/anatomy/ear.png" alt="" loading="lazy"><img src="/aperta/anatomy/shoulder.png" alt="" loading="lazy"></div>
+          </a>
+          <div class="wg__cap">
+            <h3 class="wg__name"><a href="https://aperta.health" target="_blank" rel="noopener" tabindex="-1">Aperta</a></h3>
+            <span class="wg__n mono">03</span>
+            <p class="wg__desc">Discharge notes, redrawn by hand for the patient who has to live by them.</p>
+            <p class="wg__spec mono">Co-creator · VTHacks 14</p>
+          </div>
+        </article>
+        <article class="wg__item wg__item--haze rise">
+          <a class="wg__media" href="/haze/" data-cursor="Open" aria-label="Haze">
+            <div class="wg__frame wg__frame--dusk"><img src="/assets/img/projects/haze.webp" alt="Haze on an iPhone" loading="lazy"></div>
+          </a>
+          <div class="wg__cap">
+            <h3 class="wg__name"><a href="/haze/" tabindex="-1">Haze</a></h3>
+            <span class="wg__n mono">04</span>
+            <p class="wg__desc">A five-star weather app for iPhone and Apple Watch, built alone.</p>
+            <p class="wg__spec mono">Creator · Swift · iOS and watchOS</p>
+          </div>
+        </article>
+        <article class="wg__item wg__item--hyp rise">
+          <a class="wg__media" href="/hypnagogia" data-cursor="Open" aria-label="Hypnagogia">
+            <div class="wg__frame wg__frame--night"><img src="/assets/img/projects/hypnagogia.webp" alt="The simulated fly brain, its spiking neurons lit" loading="lazy"></div>
+          </a>
+          <div class="wg__cap">
+            <h3 class="wg__name"><a href="/hypnagogia" tabindex="-1">Hypnagogia</a></h3>
+            <span class="wg__n mono">05</span>
+            <p class="wg__desc">A whole fruit-fly brain, simulated to see whether a memory replays in sleep.</p>
+            <p class="wg__spec mono">Creator · Python, Brian2</p>
+          </div>
+        </article>
+      </div>
 
-      <ul class="index" data-index>
-        <li class="rise"><a class="row" href="/pragmatic/" data-peek="/assets/img/pragmaticog.png">
-          <span class="row__n mono">01</span>
-          <span class="row__name">Pragmatic</span>
-          <img class="row__thumb" src="/assets/img/pragmaticog.png" alt="" loading="lazy">
-          <span class="row__desc">A durable execution runtime in Rust that lets AI agents survive any crash.</span>
-          <span class="row__role mono">Creator</span>
-        </a></li>
-        <li class="rise"><a class="row" href="https://ocradar.com/" target="_blank" rel="noopener" data-peek="/assets/img/projects/ocradar.jpg">
-          <span class="row__n mono">02</span>
-          <span class="row__name">OCRadar</span>
-          <img class="row__thumb" src="/assets/img/projects/ocradar.jpg" alt="" loading="lazy">
-          <span class="row__desc">Computer vision on a phone, to help catch oral cancer early.</span>
-          <span class="row__role mono">Founder</span>
-        </a></li>
-        <li class="rise"><a class="row" href="https://aperta.health" target="_blank" rel="noopener" data-peek="/aperta/anatomy/heart.png" data-contain>
-          <span class="row__n mono">03</span>
-          <span class="row__name">Aperta</span>
-          <img class="row__thumb contain" src="/aperta/anatomy/heart.png" alt="" loading="lazy">
-          <span class="row__desc">Hospital discharge notes, redrawn by hand for the patient who has to live by them.</span>
-          <span class="row__role mono">Co-creator</span>
-        </a></li>
-        <li class="rise"><a class="row" href="/haze/" data-peek="/assets/img/projects/haze.webp">
-          <span class="row__n mono">04</span>
-          <span class="row__name">Haze</span>
-          <img class="row__thumb" src="/assets/img/projects/haze.webp" alt="" loading="lazy">
-          <span class="row__desc">A five-star weather app for iPhone.</span>
-          <span class="row__role mono">Creator</span>
-        </a></li>
-        <li class="rise"><a class="row" href="/hypnagogia" data-peek="/assets/img/projects/hypnagogia.webp">
-          <span class="row__n mono">05</span>
-          <span class="row__name">Hypnagogia</span>
-          <img class="row__thumb" src="/assets/img/projects/hypnagogia.webp" alt="" loading="lazy">
-          <span class="row__desc">A whole fruit-fly brain, simulated to see whether a memory replays in sleep.</span>
-          <span class="row__role mono">Creator</span>
-        </a></li>
-        <li class="rise"><a class="row" href="/graphite" data-peek="/assets/img/projects/graphite.webp">
-          <span class="row__n mono">06</span>
-          <span class="row__name">Graphite</span>
-          <img class="row__thumb" src="/assets/img/projects/graphite.webp" alt="" loading="lazy">
-          <span class="row__desc">A 3D graphing calculator, written from scratch, that runs in the browser.</span>
-          <span class="row__role mono">Creator</span>
-        </a></li>
-        <li class="rise"><a class="row" href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener" data-peek="/assets/img/projects/sentry.webp">
-          <span class="row__n mono">07</span>
-          <span class="row__name">Sentry</span>
-          <img class="row__thumb" src="/assets/img/projects/sentry.webp" alt="" loading="lazy">
-          <span class="row__desc">A privacy-first system monitor for Mac, iPhone and Apple Watch.</span>
-          <span class="row__role mono">Co-developer</span>
-        </a></li>
-      </ul>
+      <div class="also grid rise">
+        <p class="also__label mono">Also</p>
+        <a class="also__item" href="/graphite"><span class="also__name">Graphite</span><span class="also__desc">A 3D graphing calculator, from scratch</span></a>
+        <a class="also__item" href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener"><span class="also__name">Sentry</span><span class="also__desc">A private system monitor for Mac</span></a>
+        <a class="also__item" href="https://github.com/ankthba/Splatify" target="_blank" rel="noopener"><span class="also__name">Splatify</span><span class="also__desc">Phone video to Gaussian splats</span></a>
+        <a class="also__item" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener"><span class="also__name">IllumiSign</span><span class="also__desc">Eye tracking that lets people with ALS speak</span></a>
+      </div>
     </section>
 
     <section class="sec gallery static" id="photographs" data-gallery>
@@ -376,7 +396,7 @@
           <figure class="shot" style="--h:50vh;--hs:40vh"><img src="/assets/photos/landscape15.webp" width="1600" height="1273" alt="Cherry blossoms against a pale sky" loading="lazy"><figcaption class="mono"><span>10</span><span>Landscape</span></figcaption></figure>
           <a class="shot shot--end" href="/photos/">See them all<span class="arr arr--r" aria-hidden="true"></span></a>
         </div>
-        <div class="gallery__count mono muted"><span data-count>01 / 10</span><span>Keep scrolling<span class="arr arr--r" aria-hidden="true"></span></span></div>
+        <div class="gallery__count mono muted"><span data-count>01 / 10</span><span class="gallery__hint" data-hint>Keep scrolling<span class="arr arr--r" aria-hidden="true"></span></span></div>
         <div class="gallery__bar"><i data-bar></i></div>
       </div>
     </section>
@@ -410,7 +430,7 @@
       </div>
       <div class="grid rise">
         <div class="about__body">
-          <p>In a previous life I led software at Oakton Robotics for four years, went through Y Combinator’s Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>.</p>
+          <p>In a previous life I led software at Oakton Robotics for four years, went through Y&nbsp;Combinator’s Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>.</p>
           <p>Outside work, I photograph aircraft at Dulles and landscapes around the world, and go hiking whenever I can.</p>
         </div>
         <div class="about__side">
@@ -471,8 +491,6 @@
       <a class="u" href="#top" data-top>Back to top<span class="arr arr--up" aria-hidden="true"></span></a>
     </div>
   </footer>
-
-  <div class="peek" aria-hidden="true" data-peek-box><div class="peek__in"><img alt=""></div></div>
 
   <script src="/assets/js/theme.js" defer></script>
   <script src="/assets/js/site.js" defer></script>

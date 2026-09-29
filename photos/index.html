@@ -27,8 +27,17 @@
       if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
-  <title>Photography | Aniketh Bandlamudi</title>
-  <meta name="description" content="Aviation and landscape photography by Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Photographs | Aniketh Bandlamudi</title>
+  <meta name="description" content="Aviation and landscape photography by Aniketh Bandlamudi.">
+  <link rel="canonical" href="https://aniketh.net/photos/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Photographs | Aniketh Bandlamudi">
+  <meta property="og:description" content="Aviation and landscape photography by Aniketh Bandlamudi.">
+  <meta property="og:url" content="https://aniketh.net/photos/">
+  <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
@@ -74,7 +83,7 @@
   </div>
 
   <main class="page">
-        <h1 class="page-title">Photography</h1>
+        <h1 class="page-title">Photographs</h1>
         <div class="photos__grid">
           <div class="photo-item"><img src="/assets/photos/landscape13-thumb.webp" data-full="/assets/photos/landscape13.webp" alt="Waterfall plunging into a canyon" width="514" height="640" loading="lazy"></div>
           <div class="photo-item"><img src="/assets/photos/planeImage3-thumb.webp" data-full="/assets/photos/planeImage3.webp" alt="Aviation photography" width="640" height="638" loading="lazy"></div>
@@ -107,8 +116,8 @@
           <div class="photo-item"><img src="/assets/photos/planeImage14-thumb.webp" data-full="/assets/photos/planeImage14.webp" alt="Aviation photography" width="640" height="640" loading="lazy"></div>
         </div>
         <div class="photos__links">
-          <a href="https://www.instagram.com/aniketh.png/" target="_blank" rel="noopener" data-text="Aviation">Aviation</a>
-          <a href="https://www.instagram.com/aniketh.jpg/" target="_blank" rel="noopener" data-text="Landscape">Landscape</a>
+          <a href="https://www.instagram.com/aniketh.png/" target="_blank" rel="noopener" data-text="Aircraft">Aircraft on Instagram</a>
+          <a href="https://www.instagram.com/aniketh.jpg/" target="_blank" rel="noopener" data-text="Landscapes">Landscapes on Instagram</a>
         </div>
   </main>
 
@@ -139,6 +148,13 @@
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
     <button class="lightbox__close" type="button">Close</button>
     <img class="lightbox__img" src="" alt="">
+    <div class="lightbox__foot mono">
+      <span class="lightbox__nav">
+        <button type="button" data-step="-1" aria-label="Previous photograph"><span class="arr arr--l" aria-hidden="true"></span></button>
+        <span class="lightbox__count" data-count></span>
+        <button type="button" data-step="1" aria-label="Next photograph"><span class="arr arr--r" aria-hidden="true"></span></button>
+      </span>
+    </div>
   </div>
 
   <script>
@@ -158,11 +174,25 @@
       var lightbox = document.getElementById('lightbox');
       var image = lightbox.querySelector('.lightbox__img');
       var closeButton = lightbox.querySelector('.lightbox__close');
+      var count = lightbox.querySelector('[data-count]');
+      var photos = Array.prototype.slice.call(document.querySelectorAll('.photo-item img'));
+      var current = 0;
       var lastFocused = null;
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
 
-      function open(photo) {
+      function show(i) {
+        current = (i + photos.length) % photos.length;
+        var photo = photos[current];
         image.src = photo.dataset.full || photo.currentSrc || photo.src;
         image.alt = photo.alt;
+        count.textContent = pad(current + 1) + ' / ' + pad(photos.length);
+        /* The next one is ready before it's asked for. */
+        var next = photos[(current + 1) % photos.length];
+        new Image().src = next.dataset.full || next.src;
+      }
+
+      function open(i) {
+        show(i);
         lightbox.hidden = false;
         document.body.style.overflow = 'hidden';
         lastFocused = document.activeElement;
@@ -176,15 +206,30 @@
         if (lastFocused) lastFocused.focus();
       }
 
-      document.querySelectorAll('.photo-item img').forEach(function (photo) {
-        photo.addEventListener('click', function () { open(photo); });
+      /* Each photograph is a button, for the keyboard as much as the
+         pointer. */
+      photos.forEach(function (photo, i) {
+        var item = photo.parentElement;
+        item.tabIndex = 0;
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', 'Enlarge: ' + photo.alt);
+        item.addEventListener('click', function () { open(i); });
+        item.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(i); }
+        });
       });
       closeButton.addEventListener('click', close);
+      lightbox.querySelectorAll('[data-step]').forEach(function (b) {
+        b.addEventListener('click', function () { show(current + Number(b.dataset.step)); });
+      });
       lightbox.addEventListener('click', function (event) {
         if (event.target === lightbox) close();
       });
       document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !lightbox.hidden) close();
+        if (lightbox.hidden) return;
+        if (event.key === 'Escape') close();
+        else if (event.key === 'ArrowRight') show(current + 1);
+        else if (event.key === 'ArrowLeft') show(current - 1);
       });
     })();
   </script>

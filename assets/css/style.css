@@ -629,7 +629,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   border-radius: 0.06em;
   background: var(--rule);
   text-indent: 0;
-  transition: width 0.7s var(--ease), clip-path 1.2s var(--ease);
+  transition: clip-path 1.2s var(--ease);
 }
 .inl img {
   position: absolute;
@@ -637,12 +637,17 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Each photo is framed on its subject (--fx, --fy in the markup), and
+     zooms towards it on hover. The frame itself never changes size, so
+     the line around it never moves. */
+  object-position: var(--fx, 50%) var(--fy, 50%);
+  transform-origin: var(--fx, 50%) var(--fy, 50%);
   opacity: 0;
-  transition: opacity 0.9s ease;
+  transition: opacity 0.9s ease, transform 0.9s var(--ease);
 }
 .inl img.on { opacity: 1; }
 @media (hover: hover) {
-  .inl:hover { width: 2.7em; }
+  .inl:hover img { transform: scale(1.7); }
 }
 
 /* Load: each word rises out of its own line, the photographs open
@@ -999,6 +1004,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   background: var(--rule);
 }
 .now__art img { width: 100%; height: 100%; object-fit: cover; }
+.now__art img[hidden] { display: none; }
 .now__when {
   display: flex;
   align-items: center;
@@ -1264,6 +1270,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 }
 
 @media (max-width: 560px) {
+  .hero { padding-top: 76px; }
   .hero__foot > :nth-child(1),
   .hero__foot > :nth-child(2) { grid-column: 1 / 13; }
   .sec__t { grid-column: 1 / 13; }

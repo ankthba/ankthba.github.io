@@ -77,8 +77,10 @@
     $('[data-music-empty]').hidden = true;
     $('[data-music-body]').hidden = false;
 
-    /* Until the live answer comes back, the last play the Action saw. */
-    showNow(null, data.recent[0]);
+    /* The live answer comes first; only if it hasn't arrived after a few
+       seconds is the last play the Action saw shown instead, since that
+       can be a quarter of an hour old. */
+    setTimeout(function () { if (!answered) showNow(null, data.recent[0]); }, 3000);
 
     /* Most listened to right now: the last seven days. */
     var count = function (item) { return plural(item.plays, 'play', 'plays'); };
@@ -114,8 +116,16 @@
     $('[data-now-by]').textContent = item.artists;
     var link = $('[data-now-link]');
     if (spotify(item.url)) link.href = item.url; else link.removeAttribute('href');
+    /* No picture that passed, or none yet: a plain square, never the
+       previous song's cover. */
     var img = $('[data-now-img]');
-    if (https(item.image) && img.getAttribute('src') !== item.image) img.src = item.image;
+    if (https(item.image)) {
+      if (img.getAttribute('src') !== item.image) img.src = item.image;
+      img.hidden = false;
+    } else {
+      img.removeAttribute('src');
+      img.hidden = true;
+    }
     $('[data-now]').classList.toggle('now--live', playing);
 
     var bar = $('[data-now-bar]');
@@ -139,6 +149,7 @@
      for thirty seconds or more joins the log the moment the next one
      starts. When Spotify's own record of that play arrives it takes the
      page's place, rather than appearing twice. */
+  var answered = false; // whether the Worker has replied yet
   var heard = [];       // plays the page saw finish, newest first
   var watching = null;  // { track, longest } for the song playing now
 
@@ -180,6 +191,7 @@
       fetch(LIVE, { cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
         .then(function (now) {
+          answered = true;
           follow(now);
           var plays = merged(now.recent);
           log(plays, now.playing ? now.track : null);

@@ -44,54 +44,13 @@ function image(images = []) {
   return (bySize.find((i) => (i.width || 0) >= 300) || bySize.at(-1) || {}).url || null;
 }
 
-// Covers that must never be shown: Spotify IDs of tracks, albums or
-// artists, comma-separated, in the HIDE variable in wrangler.toml.
-const hidden = (t, env) => {
-  const ids = String(env.HIDE || '').split(',').map((x) => x.trim()).filter(Boolean);
-  return [t.id, t.album?.id, ...t.artists.map((a) => a.id)].some((id) => id && ids.includes(id));
-};
-
-const song = (t, env) => {
-  const hide = hidden(t, env);
-  return {
-    name: t.name,
-    artists: t.artists.map((a) => a.name).join(', '),
-    url: t.external_urls?.spotify || null,
-    image: hide ? null : image(t.album?.images),
-    duration_ms: t.duration_ms,
-  };
-};
-
-// An artist's photo, from Spotify's public oEmbed endpoint, remembered
-// for a week.
-async function artistPhoto(id) {
-  if (!id) return null;
-  const key = new Request('https://aniketh-now.cache/artist/' + id);
-  const hit = await caches.default.match(key);
-  if (hit) return (await hit.text()) || null;
-  let url = '';
-  try {
-    const res = await fetch('https://open.spotify.com/oembed?url=' +
-      encodeURIComponent('https://open.spotify.com/artist/' + id), { signal: AbortSignal.timeout(4000) });
-    if (res.ok) url = (await res.json()).thumbnail_url || '';
-  } catch {}
-  await caches.default.put(key, new Response(url, { headers: { 'Cache-Control': 'public, max-age=604800' } }));
-  return url || null;
-}
-
-// The one picture the home page's headline shows beside "music". There is
-// no rating for cover art, so it is careful by rule: an explicit song, or
-// anything on the hide list, shows the artist's photo instead of the
-// cover, and a hidden artist shows nothing.
-async function headline(t, env) {
-  if (!t) return null;
-  const lead = t.artists[0] || {};
-  const artistHidden = String(env.HIDE || '').split(',').map((x) => x.trim()).includes(lead.id);
-  let picture = null;
-  if (!t.explicit && !hidden(t, env)) picture = image(t.album?.images);
-  else if (!artistHidden) picture = await artistPhoto(lead.id);
-  return { name: t.name, artists: t.artists.map((a) => a.name).join(', '), image: picture };
-}
+const song = (t) => ({
+  name: t.name,
+  artists: t.artists.map((a) => a.name).join(', '),
+  url: t.external_urls?.spotify || null,
+  image: image(t.album?.images),
+  duration_ms: t.duration_ms,
+});
 
 async function build(env) {
   const [now, recent] = await Promise.all([
@@ -113,9 +72,8 @@ async function build(env) {
     playing: Boolean(track && now.is_playing && !stale),
     stale: Boolean(stale),
     progress_ms: track && !stale ? now.progress_ms : null,
-    track: track && !stale ? song(track, env) : null,
-    recent: (recent?.items || []).map((i) => ({ ...song(i.track, env), played_at: i.played_at })),
-    headline: await headline(track && !stale && now.is_playing ? track : recent?.items?.[0]?.track, env),
+    track: track && !stale ? song(track) : null,
+    recent: (recent?.items || []).map((i) => ({ ...song(i.track), played_at: i.played_at })),
   };
 }
 

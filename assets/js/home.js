@@ -34,26 +34,65 @@
     });
   })(title);
 
-  /* On a phone, or a tablet held upright, the headline is sized to fill the first screen: the
-     largest type at which it still ends above the bottom of the window.
-     Measured once the fonts are in, and again only if the width changes,
-     not when the browser's address bar slides away. */
+  /* On a phone, or a tablet held upright, the headline's clauses stack
+     (see style.css) and fill the first screen: the type is as large as
+     it can be up to a comfortable size, and whatever height is left is
+     shared out between the clauses. Measured once the fonts are in, and
+     again only if the width changes, not when the browser's address bar
+     slides away. */
+  var stacked = matchMedia('(max-width: 700px), (max-width: 1023px) and (orientation: portrait)');
   var fitWidth = 0;
   function fit() {
-    var upright = innerWidth <= 700 || (innerWidth < 1024 && innerHeight > innerWidth * 1.15);
-    if (!upright) { title.style.fontSize = ''; fitWidth = 0; return; }
+    if (!stacked.matches) {
+      title.style.fontSize = '';
+      title.style.removeProperty('--cl-gap');
+      fitWidth = 0;
+      return;
+    }
     if (innerWidth === fitWidth) return;
     fitWidth = innerWidth;
     var room = innerHeight - (title.getBoundingClientRect().top + scrollY) - 28;
-    var lo = 26, hi = 96;
+    var clauses = title.querySelectorAll('.cl').length;
+    var lo = 24, hi = Math.min(96, innerWidth * 0.1);
+    title.style.setProperty('--cl-gap', '0px');
     while (hi - lo > 0.5) {
       var mid = (lo + hi) / 2;
       title.style.fontSize = mid + 'px';
       if (title.offsetHeight <= room) lo = mid; else hi = mid;
     }
     title.style.fontSize = lo + 'px';
+    var spare = room - title.offsetHeight;
+    title.style.setProperty('--cl-gap', Math.max(0, Math.min(spare / (clauses - 1), lo * 0.8)) + 'px');
   }
   addEventListener('resize', fit);
+
+  /* The photographs in the headline open wider on hover, but only as far
+     as their line has room for: one that ran past the edge would jump to
+     the next line, lose the pointer, close, jump back, and flicker. */
+  if (hover) {
+    title.querySelectorAll('.inl').forEach(function (inl) {
+      inl.addEventListener('mouseenter', function () {
+        var em = parseFloat(getComputedStyle(inl).fontSize);
+        var box = inl.getBoundingClientRect();
+        var edge = title.getBoundingClientRect().right - parseFloat(getComputedStyle(title).paddingRight);
+        var grow = Math.min(1.2 * em, edge - box.right - 0.35 * em);
+        if (grow > 0.2 * em) {
+          inl.style.width = (box.width + grow) + 'px';
+        } else {
+          /* No room left on the line: it grows where it stands instead,
+             into the margin, without moving anything around it. */
+          var scale = Math.min(1.4, 1 + (document.documentElement.clientWidth - 10 - box.right) / box.width);
+          inl.style.transform = 'scale(' + Math.max(1, scale) + ')';
+        }
+        inl.classList.add('open');
+      });
+      inl.addEventListener('mouseleave', function () {
+        inl.style.width = '';
+        inl.style.transform = '';
+        inl.classList.remove('open');
+      });
+    });
+  }
 
   var started = false;
   function go() {

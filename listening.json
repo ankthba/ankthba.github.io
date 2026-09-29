@@ -1,0 +1,75 @@
+{
+  "from": "2026-11-01",
+  "to": "2026-11-07",
+  "timeZone": "America/New_York",
+  "plays": 540,
+  "tracks": [
+    {
+      "name": "the cure",
+      "artists": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/track/55pBIZO1cqoldeqpp5WR7H",
+      "image": "https://i.scdn.co/image/ab67616d00001e025cf234eeb7a2edf44bf64a46",
+      "plays": 12
+    },
+    {
+      "name": "pure colour (feat. Erykah Badu)",
+      "artists": "Steve Lacy, Erykah Badu",
+      "url": "https://open.spotify.com/track/4BgZNZ8hKrfyU4jiCKoAIg",
+      "image": "https://i.scdn.co/image/ab67616d00001e024ea9ba86cd9506a004bab042",
+      "plays": 9
+    },
+    {
+      "name": "show you me",
+      "artists": "Steve Lacy",
+      "url": "https://open.spotify.com/track/4f50UTC41M2Ah5itifSGE5",
+      "image": "https://i.scdn.co/image/ab67616d00001e024ea9ba86cd9506a004bab042",
+      "plays": 9
+    },
+    {
+      "name": "Bags",
+      "artists": "Clairo",
+      "url": "https://open.spotify.com/track/1wicceeNVtcnym2YjiOmyj",
+      "image": "https://i.scdn.co/image/ab67616d00001e023e4fc846c2b52b9cb6ff2e1f",
+      "plays": 7
+    },
+    {
+      "name": "sing it all again",
+      "artists": "wave to earth",
+      "url": "https://open.spotify.com/track/1pmFLmqdLGcIbmSpYRWATO",
+      "image": "https://i.scdn.co/image/ab67616d00001e029a03ff40f308fea55054aa68",
+      "plays": 7
+    }
+  ],
+  "artists": [
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 69
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 61
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 44
+    },
+    {
+      "name": "Steve Lacy",
+      "url": "https://open.spotify.com/artist/57vWImR43h4CaDao012Ofp",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab676161000051747e3150cffbfda40c6eaf28dd",
+      "plays": 33
+    },
+    {
+      "name": "wave to earth",
+      "url": "https://open.spotify.com/artist/5069JTmv5ZDyPeZaCCXiCg",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab6761610000517411fa75d331351ecfc2e93faf",
+      "plays": 30
+    }
+  ]
+}

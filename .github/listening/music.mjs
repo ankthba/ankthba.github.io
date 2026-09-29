@@ -1,6 +1,6 @@
 // Builds music.json, everything the /music/ page shows, from the private
 // log. Only summaries leave the log: the day's top song for the calendar,
-// top songs and artists over a few ranges, totals, and the last few plays.
+// top songs and artists over a few ranges, totals, and the last fifty plays.
 // Run after log.mjs by .github/workflows/listening.yml.
 //
 //   node music.mjs <logdir> <outdir>
@@ -19,7 +19,7 @@ if (!logDir || !outDir) {
 
 const TZ = 'America/New_York';
 const TOP = 10;
-const RECENT = 12;
+const RECENT = 50;
 
 const dayFormat = new Intl.DateTimeFormat('en-CA', {
   timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit',

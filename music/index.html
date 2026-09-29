@@ -27,8 +27,8 @@
       if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
-  <title>Work | Aniketh Bandlamudi</title>
-  <meta name="description" content="Work and professional background of Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
+  <title>Music | Aniketh Bandlamudi</title>
+  <meta name="description" content="What Aniketh Bandlamudi is listening to: this week, this month, and a calendar of the song of each day, from Spotify.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
@@ -38,11 +38,11 @@
     <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
     <span class="bar__clock">Charlottesville<span data-clock></span></span>
     <nav class="bar__nav" aria-label="Site">
-      <a class="u" href="/work/" aria-current="page">Work</a>
+      <a class="u" href="/work/">Work</a>
       <a class="u" href="/education/">Education</a>
       <a class="u" href="/projects/">Projects</a>
       <a class="u" href="/research/">Research</a>
-      <a class="u" href="/music/">Music</a>
+      <a class="u" href="/music/" aria-current="page">Music</a>
       <a class="u" href="/photos/">Photos</a>
       <a class="u" href="/press/">Press</a>
       <a class="u" href="/resume/">Resume</a>
@@ -54,11 +54,11 @@
   <div class="menu" id="menu" data-menu>
     <nav class="menu__nav" aria-label="Menu">
       <a href="/" style="--i:0">Home</a>
-      <a href="/work/" style="--i:1" aria-current="page">Work</a>
+      <a href="/work/" style="--i:1">Work</a>
       <a href="/education/" style="--i:2">Education</a>
       <a href="/projects/" style="--i:3">Projects</a>
       <a href="/research/" style="--i:4">Research</a>
-      <a href="/music/" style="--i:5">Music</a>
+      <a href="/music/" style="--i:5" aria-current="page">Music</a>
       <a href="/photos/" style="--i:6">Photos</a>
       <a href="/press/" style="--i:7">Press</a>
       <a href="/resume/" style="--i:8">Resume</a>
@@ -73,54 +73,62 @@
     </div>
   </div>
 
-  <main class="page">
-        <h1 class="page-title">Work</h1>
-        <div class="projects__list">
+  <main class="page music" data-music data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json">
+        <h1 class="page-title">Music</h1>
+        <p class="music__lede">What I&rsquo;m listening to, counted from Spotify every fifteen minutes.</p>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Pragmatic</h3>
-              <span class="project-item__role">Founder · Jan 2026 – Present · Incorporated as Pragmatic Research, Inc.</span>
+        <p class="music__empty" data-music-empty>Nothing to show just yet.</p>
+
+        <div class="music__body" data-music-body hidden>
+          <section class="now" data-now aria-label="Last played">
+            <a class="now__art" data-now-link target="_blank" rel="noopener"><img alt="" data-now-img></a>
+            <div class="now__text">
+              <p class="now__when" data-now-when></p>
+              <p class="now__name" data-now-name></p>
+              <p class="now__by" data-now-by></p>
             </div>
-            <p class="project-item__description">Building a durable execution runtime in Rust for nondeterministic AI agents. It journals every step of a run so agents survive any crash, resume exactly where they stopped, and replay faithfully for debugging and audit.</p>
-            <a href="https://aniketh.net/pragmatic" class="project-item__link">Visit site</a>
-          </article>
+          </section>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">Alarm.com</h3>
-              <span class="project-item__role">Engineering Intern · May 2026</span>
+          <section class="music__sec" aria-labelledby="top-heading">
+            <div class="music__head">
+              <h2 class="sec__t" id="top-heading">Most played</h2>
+              <div class="seg" role="tablist" aria-label="Range" data-ranges>
+                <button type="button" role="tab" aria-selected="true" data-range="week">This week</button>
+                <button type="button" role="tab" aria-selected="false" data-range="month">This month</button>
+              </div>
             </div>
-            <p class="project-item__description">Supported hardware QA for home security systems by configuring and integrating devices (locks, sensors, lighting) into automated testing workflows. Performed hands-on lab work including soldering buck converters and embedded boards, assembling RJ45 Ethernet cables, and provisioning Raspberry Pi units for test automation. Built an internal software tool for lab device management.</p>
-            <a href="https://www.alarm.com" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
-          </article>
-
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">OCRadar</h3>
-              <span class="project-item__role">Founder & President · May 2022 – Present</span>
+            <p class="music__range" data-range-note></p>
+            <div class="listening grid music__tops">
+              <div class="listening__col">
+                <h3 class="listening__label">Songs</h3>
+                <ol class="plays" data-top-tracks></ol>
+              </div>
+              <div class="listening__col">
+                <h3 class="listening__label">Artists</h3>
+                <ol class="plays plays--artists" data-top-artists></ol>
+              </div>
             </div>
-            <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
-            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
-          </article>
+          </section>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">FRC Robotics</h3>
-              <span class="project-item__role">Software Lead · Dec 2023 – Oct 2025</span>
+          <section class="music__sec" aria-labelledby="cal-heading">
+            <div class="music__head">
+              <h2 class="sec__t" id="cal-heading">Song of the day</h2>
+              <div class="cal__nav">
+                <button type="button" class="cal__step" data-cal-prev aria-label="Previous month"><span class="arr arr--r cal__back" aria-hidden="true"></span></button>
+                <span class="cal__month" data-cal-month aria-live="polite"></span>
+                <button type="button" class="cal__step" data-cal-next aria-label="Next month"><span class="arr arr--r" aria-hidden="true"></span></button>
+              </div>
             </div>
-            <p class="project-item__description">Led systems engineering and control software for competition robots, integrating advanced algorithms, CAD, electronics, and autonomous functions.</p>
-            <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-          </article>
+            <div class="cal" data-cal role="grid" aria-labelledby="cal-heading"></div>
+            <p class="cal__caption" data-cal-caption aria-live="polite"></p>
+          </section>
 
-          <article class="project-item">
-            <div class="project-item__header">
-              <h3 class="project-item__title">FTC Robotics</h3>
-              <span class="project-item__role">R&amp;D Captain / Software Lead · Sep 2022 – May 2026</span>
+          <section class="music__sec" aria-labelledby="log-heading">
+            <div class="music__head">
+              <h2 class="sec__t" id="log-heading">Listening log</h2>
             </div>
-            <p class="project-item__description">Served as R&amp;D captain and software lead, driving robot design, code, and FTC programming while mentoring and managing STEM workshops and outreach.</p>
-          </article>
-
+            <div class="log" data-log></div>
+          </section>
         </div>
   </main>
 
@@ -149,5 +157,6 @@
   </footer>
   <script src="/assets/js/theme.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
+  <script src="/assets/js/music.js" defer></script>
 </body>
 </html>

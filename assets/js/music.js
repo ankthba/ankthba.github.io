@@ -206,7 +206,9 @@
         .catch(function () {});
     };
     ask();
-    setInterval(ask, 8000);
+    /* The Worker only asks Spotify every fifteen seconds; asking it any
+       more often than that would only fetch the same answer. */
+    setInterval(ask, 15000);
     document.addEventListener('visibilitychange', function () { if (!document.hidden) ask(); });
   }
 

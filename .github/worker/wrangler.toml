@@ -1,0 +1,5 @@
+# The now-playing Worker for aniketh.net. See now.js.
+name = "aniketh-now"
+main = "now.js"
+compatibility_date = "2026-09-01"
+workers_dev = true

@@ -1,12 +1,14 @@
-// One-time setup for the listening Action. Run from the repository root:
+// One-time setup for the listening Action and the now-playing Worker. Run
+// from the repository root:
 //
 //   node .github/listening/auth.mjs
 //
 // It asks for your Spotify app's Client ID and Client Secret, opens
-// Spotify in the browser to approve read access to your recently played
-// tracks, and stores all three secrets in the repository with `gh`, so the
-// long-lived token is never printed or pasted anywhere. Then it starts
-// the first run.
+// Spotify in the browser to approve read access to what you're playing
+// and have played, and stores all three secrets in the repository with
+// `gh` and, if you're logged in to Cloudflare, in the Worker with
+// wrangler, so the long-lived token is never printed or pasted anywhere.
+// Then it starts a run of the Action.
 //
 // The Spotify app needs this exact Redirect URI:
 //   http://127.0.0.1:8888/callback
@@ -19,7 +21,8 @@ import readline from 'node:readline';
 const REPO = 'ankthba/ankthba.github.io';
 const PORT = 8888;
 const REDIRECT = `http://127.0.0.1:${PORT}/callback`;
-const SCOPE = 'user-read-recently-played';
+const SCOPE = 'user-read-recently-played user-read-currently-playing';
+const WORKER_DIR = new URL('../worker/', import.meta.url).pathname;
 
 function ask(question, { hidden = false } = {}) {
   return new Promise((resolve) => {
@@ -112,6 +115,23 @@ try {
   console.error('  SPOTIFY_CLIENT_SECRET  (the secret you just entered)');
   console.error('  SPOTIFY_REFRESH_TOKEN  ' + refreshToken + '\n');
   process.exit(1);
+}
+
+// The Worker, if Cloudflare is logged in on this machine.
+try {
+  execFileSync('npx', ['--yes', 'wrangler', 'whoami'], { cwd: WORKER_DIR, stdio: 'ignore' });
+  for (const [name, value] of [
+    ['SPOTIFY_CLIENT_ID', clientId],
+    ['SPOTIFY_CLIENT_SECRET', clientSecret],
+    ['SPOTIFY_REFRESH_TOKEN', refreshToken],
+  ]) {
+    execFileSync('npx', ['--yes', 'wrangler', 'secret', 'put', name], {
+      cwd: WORKER_DIR, input: value, stdio: ['pipe', 'ignore', 'inherit'],
+    });
+  }
+  console.log('Saved the same three to the now-playing Worker.');
+} catch {
+  console.log('Not logged in to Cloudflare (npx wrangler login), so the Worker was skipped.');
 }
 
 try {

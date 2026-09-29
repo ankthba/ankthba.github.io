@@ -16,7 +16,6 @@
   if (local && override && override.charAt(0) === '/') src = override;
 
   var TZ = 'America/New_York';
-  var touch = matchMedia('(hover: none)').matches;
   var spotify = function (url) { return /^https:\/\/open\.spotify\.com\//.test(url || '') ? url : null; };
   var https = function (url) { return /^https:\/\//.test(url || '') || (local && /^\//.test(url || '')) ? url : null; };
   var $ = function (sel) { return page.querySelector(sel); };
@@ -78,38 +77,84 @@
     $('[data-music-empty]').hidden = true;
     $('[data-music-body]').hidden = false;
 
-    /* Last played. Spotify reports a play once it has run for thirty
-       seconds, so within a few minutes it is probably still going. */
-    var last = data.recent[0];
-    var fresh = Date.now() - Date.parse(last.played_at) < 8 * 60000;
-    $('[data-now-when]').textContent = (fresh ? 'Playing now' : 'Last played') + ' · ' + ago(last.played_at);
-    $('[data-now-name]').textContent = last.name;
-    $('[data-now-by]').textContent = last.artists;
+    /* Until the live answer comes back, the last play the Action saw. */
+    showNow(null, data.recent[0]);
+
+    /* Most listened to right now: the last seven days. */
+    var count = function (item) { return plural(item.plays, 'play', 'plays'); };
+    fill($('[data-top-tracks]'), data.ranges.week.tracks, { count: count });
+    fill($('[data-top-artists]'), data.ranges.week.artists, { count: count });
+
+    logged = data.recent;
+    log(logged);
+    live();
+  }
+
+  /* What's playing, from the Worker at data-live (.github/worker/now.js),
+     which asks Spotify at most every ten seconds. The page asks every
+     fifteen while it is in view; between answers the progress bar runs
+     on its own clock. */
+  var LIVE = page.getAttribute('data-live');
+  var logged = [];
+  var tick = null;
+
+  function mmss(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000));
+    return Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60);
+  }
+
+  function showNow(live, fallback) {
+    /* Playing, paused part-way through, or failing both, the last play. */
+    var track = live && live.track ? live.track : null;
+    var playing = Boolean(track && live.playing);
+    var item = track || fallback;
+    if (!item) return;
+    $('[data-now-when]').textContent = playing ? 'Playing now' : track ? 'Paused' : 'Last played \u00b7 ' + ago(item.played_at);
+    $('[data-now-name]').textContent = item.name;
+    $('[data-now-by]').textContent = item.artists;
     var link = $('[data-now-link]');
-    if (spotify(last.url)) link.href = last.url; else link.removeAttribute('href');
-    if (https(last.image)) $('[data-now-img]').src = last.image;
-    $('[data-now]').classList.toggle('now--live', fresh);
+    if (spotify(item.url)) link.href = item.url; else link.removeAttribute('href');
+    var img = $('[data-now-img]');
+    if (https(item.image) && img.getAttribute('src') !== item.image) img.src = item.image;
+    $('[data-now]').classList.toggle('now--live', playing);
 
-    /* Most played, over a range chosen with the switch. */
-    var tabs = page.querySelectorAll('[data-range]');
-    function show(key) {
-      var r = data.ranges[key];
-      tabs.forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-range') === key ? 'true' : 'false'); });
-      var span = dayName(r.from, { month: 'short', day: 'numeric' }) +
-        (r.from === r.to ? '' : ' – ' + dayName(r.to, { month: 'short', day: 'numeric' }));
-      $('[data-range-note]').textContent = span;
-      var count = function (item) { return plural(item.plays, 'play', 'plays'); };
-      fill($('[data-top-tracks]'), r.tracks, { count: count });
-      fill($('[data-top-artists]'), r.artists, { count: count });
-    }
-    tabs.forEach(function (b) {
-      b.addEventListener('click', function () { show(b.getAttribute('data-range')); });
-    });
-    show('week');
+    var bar = $('[data-now-bar]');
+    var time = $('[data-now-time]');
+    clearInterval(tick);
+    bar.hidden = time.hidden = !track;
+    if (!track) return;
+    var start = Date.now() - live.progress_ms;
+    var draw = function () {
+      var at = playing ? Math.min(Date.now() - start, track.duration_ms) : live.progress_ms;
+      $('[data-now-fill]').style.transform = 'scaleX(' + (at / track.duration_ms) + ')';
+      time.textContent = mmss(at) + ' / ' + mmss(track.duration_ms);
+    };
+    draw();
+    if (playing) tick = setInterval(draw, 500);
+  }
 
-    calendar(data);
-
-    log(data.recent);
+  function live() {
+    if (!LIVE) return;
+    var ask = function () {
+      if (document.hidden) return;
+      fetch(LIVE, { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (now) {
+          /* New plays go on top of the log, once each. */
+          var seen = {};
+          logged = (now.recent || []).concat(logged).filter(function (p) {
+            if (seen[p.played_at]) return false;
+            seen[p.played_at] = true;
+            return true;
+          }).sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); }).slice(0, 50);
+          log(logged);
+          showNow(now, logged[0]);
+        })
+        .catch(function () {});
+    };
+    ask();
+    setInterval(ask, 15000);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) ask(); });
   }
 
   /* The listening log: every recent play with its time, under a heading
@@ -150,89 +195,6 @@
       li.appendChild(row);
       list.appendChild(li);
     });
-  }
-
-  /* Song of the day: a month at a time, Monday first, each day showing
-     the cover of its most played song. */
-  function calendar(data) {
-    var grid = $('[data-cal]');
-    var caption = $('[data-cal-caption]');
-    var first = data.since.slice(0, 7);
-    var lastMonth = data.today.slice(0, 7);
-    var month = lastMonth;
-
-    function step(ym, n) {
-      var y = +ym.slice(0, 4);
-      var m = +ym.slice(5, 7) - 1 + n;
-      return new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 7);
-    }
-
-    function describe(day) {
-      var c = data.calendar[day];
-      var date = dayName(day, { weekday: 'long', month: 'long', day: 'numeric' });
-      if (day < data.since) return date + ': before counting began.';
-      if (day > data.today) return date + ': still to come.';
-      if (!c || !c.top) return date + ': nothing played.';
-      return date + ': ' + c.top.name + ' by ' + c.top.artists + '.';
-    }
-
-    function draw() {
-      grid.textContent = '';
-      $('[data-cal-month]').textContent = dayName(month + '-01', { month: 'long', year: 'numeric' });
-      $('[data-cal-prev]').disabled = month <= first;
-      $('[data-cal-next]').disabled = month >= lastMonth;
-
-      ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(function (d) {
-        grid.appendChild(el('span', 'cal__dow mono', d));
-      });
-      var start = noon(month + '-01');
-      var lead = (start.getUTCDay() + 6) % 7;
-      for (var i = 0; i < lead; i++) grid.appendChild(el('span', 'cal__pad'));
-      var days = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0)).getUTCDate();
-
-      for (var d = 1; d <= days; d++) {
-        var day = month + '-' + (d < 10 ? '0' : '') + d;
-        var c = data.calendar[day];
-        var top = c && c.top;
-        var href = top && spotify(top.url);
-        var cell = el(href ? 'a' : 'span', 'cal__day');
-        if (href) { cell.href = href; cell.target = '_blank'; cell.rel = 'noopener'; }
-        if (day > data.today) cell.classList.add('cal__day--future');
-        if (day < data.since) cell.classList.add('cal__day--before');
-        if (day === data.today) cell.classList.add('cal__day--today');
-        if (top && https(top.image)) {
-          var img = el('img');
-          img.alt = '';
-          img.loading = 'lazy';
-          img.src = top.image;
-          cell.appendChild(img);
-          cell.classList.add('cal__day--played');
-        }
-        cell.appendChild(el('span', 'cal__num mono', String(d)));
-        cell.setAttribute('aria-label', describe(day));
-        (function (day, cell) {
-          var say = function () {
-            caption.textContent = describe(day);
-            grid.querySelectorAll('.cal__day--picked').forEach(function (c) { c.classList.remove('cal__day--picked'); });
-            cell.classList.add('cal__day--picked');
-          };
-          cell.addEventListener('mouseenter', say);
-          cell.addEventListener('focus', say);
-          /* On a touch screen the first tap says what the day was and the
-             second opens the song, rather than leaving for Spotify blind. */
-          cell.addEventListener('click', function (e) {
-            if (touch && !cell.classList.contains('cal__day--picked')) { e.preventDefault(); say(); }
-          });
-        })(day, cell);
-        grid.appendChild(cell);
-      }
-      var latest = Object.keys(data.calendar).filter(function (k) { return k.slice(0, 7) === month; }).sort().pop();
-      caption.textContent = latest ? describe(latest) : 'Nothing counted this month.';
-    }
-
-    $('[data-cal-prev]').addEventListener('click', function () { if (month > first) { month = step(month, -1); draw(); } });
-    $('[data-cal-next]').addEventListener('click', function () { if (month < lastMonth) { month = step(month, 1); draw(); } });
-    draw();
   }
 
   fetch(src, { cache: 'no-cache' })

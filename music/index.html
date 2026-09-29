@@ -28,7 +28,7 @@
     })();
   </script>
   <title>Music | Aniketh Bandlamudi</title>
-  <meta name="description" content="What Aniketh Bandlamudi is listening to: this week, this month, and a calendar of the song of each day, from Spotify.">  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="What Aniketh Bandlamudi is listening to, live from Spotify.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
@@ -73,9 +73,9 @@
     </div>
   </div>
 
-  <main class="page music" data-music data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json">
+  <main class="page music" data-music data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/">
         <h1 class="page-title">Music</h1>
-        <p class="music__lede">What I&rsquo;m listening to, counted from Spotify every fifteen minutes.</p>
+        <p class="music__lede">What I&rsquo;m listening to, live from Spotify.</p>
 
         <p class="music__empty" data-music-empty>Nothing to show just yet.</p>
 
@@ -86,18 +86,22 @@
               <p class="now__when" data-now-when></p>
               <p class="now__name" data-now-name></p>
               <p class="now__by" data-now-by></p>
+              <div class="now__bar" data-now-bar hidden><i data-now-fill></i></div>
+              <p class="now__time mono" data-now-time hidden></p>
             </div>
+          </section>
+
+          <section class="music__sec" aria-labelledby="log-heading">
+            <div class="music__head">
+              <h2 class="sec__t" id="log-heading">Listening log</h2>
+            </div>
+            <div class="log" data-log></div>
           </section>
 
           <section class="music__sec" aria-labelledby="top-heading">
             <div class="music__head">
-              <h2 class="sec__t" id="top-heading">Most played</h2>
-              <div class="seg" role="tablist" aria-label="Range" data-ranges>
-                <button type="button" role="tab" aria-selected="true" data-range="week">This week</button>
-                <button type="button" role="tab" aria-selected="false" data-range="month">This month</button>
-              </div>
+              <h2 class="sec__t" id="top-heading">Most listened to right now</h2>
             </div>
-            <p class="music__range" data-range-note></p>
             <div class="listening grid music__tops">
               <div class="listening__col">
                 <h3 class="listening__label">Songs</h3>
@@ -108,26 +112,6 @@
                 <ol class="plays plays--artists" data-top-artists></ol>
               </div>
             </div>
-          </section>
-
-          <section class="music__sec" aria-labelledby="cal-heading">
-            <div class="music__head">
-              <h2 class="sec__t" id="cal-heading">Song of the day</h2>
-              <div class="cal__nav">
-                <button type="button" class="cal__step" data-cal-prev aria-label="Previous month"><span class="arr arr--r cal__back" aria-hidden="true"></span></button>
-                <span class="cal__month" data-cal-month aria-live="polite"></span>
-                <button type="button" class="cal__step" data-cal-next aria-label="Next month"><span class="arr arr--r" aria-hidden="true"></span></button>
-              </div>
-            </div>
-            <div class="cal" data-cal role="grid" aria-labelledby="cal-heading"></div>
-            <p class="cal__caption" data-cal-caption aria-live="polite"></p>
-          </section>
-
-          <section class="music__sec" aria-labelledby="log-heading">
-            <div class="music__head">
-              <h2 class="sec__t" id="log-heading">Listening log</h2>
-            </div>
-            <div class="log" data-log></div>
           </section>
         </div>
   </main>

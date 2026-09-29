@@ -1013,6 +1013,22 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   font-style: italic;
   color: var(--muted);
 }
+.now__bar {
+  max-width: 440px;
+  height: 2px;
+  margin-top: 22px;
+  background: var(--rule);
+  overflow: hidden;
+}
+.now__bar i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 0.5s linear;
+}
+.now__time { margin-top: 8px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
 
 .music__sec { padding-top: clamp(80px, 13vh, 150px); }
@@ -1024,97 +1040,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   gap: 14px 24px;
   padding-bottom: 12px;
 }
-.music__range { margin-bottom: 28px; color: var(--muted); font-size: 1.05rem; }
 .music__tops { padding-inline: 0; }
-
-/* A segmented switch: the choice in force is filled. */
-.seg {
-  display: inline-flex;
-  padding: 3px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-}
-.seg button {
-  min-height: 36px;
-  padding: 0 14px;
-  border-radius: 999px;
-  font-size: 1rem;
-  color: var(--muted);
-  transition: background-color 0.25s ease, color 0.25s ease;
-}
-.seg button:hover { color: var(--ink); }
-.seg button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
-
-/* Song of the day. */
-.cal__nav { display: inline-flex; align-items: center; gap: 12px; }
-.cal__month { min-width: 9.5em; text-align: center; font-size: 1.15rem; }
-.cal__step {
-  display: inline-grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  font-size: 1.1rem;
-  transition: border-color 0.25s ease;
-}
-.cal__step:hover:not(:disabled) { border-color: var(--ink); }
-.cal__step:disabled { opacity: 0.3; cursor: default; }
-.cal__step .arr { margin: 0; }
-.cal__back { transform: rotate(180deg); }
-
-.cal {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: clamp(4px, 0.8vw, 12px);
-  margin-top: 8px;
-}
-.cal__dow { padding-bottom: 4px; color: var(--muted); }
-.cal__day {
-  position: relative;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border: 1px solid var(--rule);
-  background: transparent;
-  transition: transform 0.4s var(--ease), border-color 0.25s ease;
-}
-.cal__day img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.cal__day--played { border-color: transparent; }
-.cal__day--future { opacity: 0.35; border-style: dashed; }
-.cal__day--before { opacity: 0.4; border-color: transparent; }
-.cal__day--today { outline: 2px solid var(--accent); outline-offset: 2px; }
-.cal__num {
-  position: absolute;
-  top: 6px;
-  left: 7px;
-  color: var(--muted);
-}
-/* Over a cover the date sits on a small tab of paper, readable on any
-   picture. */
-.cal__day--played .cal__num {
-  padding: 1px 4px;
-  background: var(--paper);
-  color: var(--ink);
-  top: 5px;
-  left: 5px;
-}
-@media (hover: hover) {
-  a.cal__day:hover { transform: scale(1.04); z-index: 1; }
-}
-.cal__day--picked { border-color: var(--ink); }
-.cal__caption {
-  min-height: 3em;
-  margin-top: 18px;
-  font-size: 1.15rem;
-  font-style: italic;
-  color: var(--muted);
-}
 
 /* The listening log: a time instead of a rank, under each day. */
 .log__day {
@@ -1134,10 +1060,6 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 }
 
 @media (max-width: 560px) {
-  .cal__num { top: 3px; left: 4px; font-size: 9px; }
-  .cal__day--played .cal__num { padding: 0 3px; top: 3px; left: 3px; }
-  .cal__dow { font-size: 9px; }
-  .seg button { padding: 0 11px; font-size: 0.95rem; }
 }
 
 /* ---------------------------------------------------------

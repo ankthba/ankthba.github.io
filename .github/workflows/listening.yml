@@ -1,0 +1,59 @@
+name: Listening
+
+# Every hour: fold new Spotify plays into this week's counts and publish
+# the top fives to the listening-data branch, which the home page reads.
+# main is never touched, so the site isn't rebuilt every hour.
+
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: listening
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check out the data branch
+        run: |
+          if git ls-remote --exit-code --heads origin listening-data >/dev/null; then
+            git fetch --depth=1 origin listening-data
+            git worktree add -B listening-data data FETCH_HEAD
+          else
+            git worktree add --orphan -b listening-data data
+          fi
+
+      - name: Count this week's plays
+        run: node .github/listening/update.mjs data
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
+
+      # The branch is kept to a single commit, replaced each time: it holds
+      # the current week and nothing older.
+      - name: Publish
+        working-directory: data
+        run: |
+          git add -A
+          if git rev-parse -q --verify HEAD >/dev/null && git diff --cached --quiet; then
+            echo "Nothing new."
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit --quiet $(git rev-parse -q --verify HEAD >/dev/null && echo --amend) -m 'This week in listening'
+          git push --force origin listening-data

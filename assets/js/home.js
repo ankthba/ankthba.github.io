@@ -96,6 +96,70 @@
     });
   }
 
+  /* This week's listening, written hourly by the Action in
+     .github/workflows/listening.yml. The section stays hidden unless
+     there is something to show. Links must go to Spotify and pictures
+     must be https, whatever the file says. */
+  var listening = document.querySelector('[data-listening]');
+  if (listening && window.fetch) {
+    var src = listening.getAttribute('data-src');
+    /* A local preview can point it at a sample: ?listening=/path.json */
+    var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    var override = new URLSearchParams(location.search).get('listening');
+    if (local && override && override.charAt(0) === '/') src = override;
+
+    var spotify = function (url) { return /^https:\/\/open\.spotify\.com\//.test(url || '') ? url : null; };
+    var https = function (url) { return /^https:\/\//.test(url || '') || (local && /^\//.test(url || '')) ? url : null; };
+    var el = function (tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text != null) e.textContent = text;
+      return e;
+    };
+    var fill = function (list, items, by) {
+      items.forEach(function (item, i) {
+        var li = el('li');
+        var href = spotify(item.url);
+        var row = el(href ? 'a' : 'div', 'play');
+        if (href) { row.href = href; row.target = '_blank'; row.rel = 'noopener'; }
+        row.appendChild(el('span', 'play__n mono', (i < 9 ? '0' : '') + (i + 1)));
+        var art = el('img', 'play__art');
+        art.alt = '';
+        art.loading = 'lazy';
+        if (https(item.image)) art.src = item.image;
+        row.appendChild(art);
+        var text = el('span', 'play__text');
+        text.appendChild(el('span', 'play__name', item.name));
+        if (by && item.artists) text.appendChild(el('span', 'play__by', item.artists));
+        row.appendChild(text);
+        row.appendChild(el('span', 'play__count mono', item.plays + (item.plays === 1 ? ' play' : ' plays')));
+        li.appendChild(row);
+        list.appendChild(li);
+      });
+    };
+    var range = function (from, to) {
+      var f = new Date(from + 'T12:00:00Z');
+      var t = new Date(to + 'T12:00:00Z');
+      var md = { month: 'short', day: 'numeric', timeZone: 'UTC' };
+      var start = f.toLocaleDateString('en-US', md);
+      var end = f.getUTCMonth() === t.getUTCMonth()
+        ? t.toLocaleDateString('en-US', { day: 'numeric', timeZone: 'UTC' })
+        : t.toLocaleDateString('en-US', md);
+      return start + ' \u2013 ' + end;
+    };
+    fetch(src, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        if (!data || !data.tracks || !data.tracks.length) return;
+        fill(listening.querySelector('[data-listening-tracks]'), data.tracks.slice(0, 5), true);
+        fill(listening.querySelector('[data-listening-artists]'), (data.artists || []).slice(0, 5), false);
+        listening.querySelector('[data-listening-range]').textContent =
+          range(data.from, data.to) + ' \u00b7 ' + data.plays + ' plays on Spotify';
+        listening.hidden = false;
+      })
+      .catch(function () {});
+  }
+
   /* Photographs: pin the strip and turn vertical scroll into sideways
      travel. Below 900px, or with reduced motion, it is a swipe strip. */
   var gallery = document.querySelector('[data-gallery]');

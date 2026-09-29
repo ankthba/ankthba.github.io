@@ -136,6 +136,34 @@ p { text-wrap: pretty; }
 .u:focus-visible,
 .u[aria-current="page"] { background-size: 100% 1px; }
 
+/* Arrows are drawn, not typed. iOS sets U+2197 and its neighbours as
+   emoji, and EB Garamond draws the rest in a weight of its own; a mask
+   filled with currentColor matches whatever text it follows. */
+:root {
+  --arr-r: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M2 8.5h11M9.2 4.7l3.8 3.8-3.8 3.8'/></svg>");
+  --arr-ne: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M4 12.5l8-8M6 4.5h6v6'/></svg>");
+  --arr-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M8 14V3M4.2 6.8L8 3l3.8 3.8'/></svg>");
+  --arr-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M8 2v11M4.2 9.2L8 13l3.8-3.8'/></svg>");
+}
+
+.arr,
+.project-item__link::after,
+.photos__links a::after {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-left: 0.3em;
+  vertical-align: -0.04em;
+  background: currentColor;
+  -webkit-mask: var(--arr) center / contain no-repeat;
+  mask: var(--arr) center / contain no-repeat;
+}
+.arr--r { --arr: var(--arr-r); }
+.arr--ne { --arr: var(--arr-ne); }
+.arr--up { --arr: var(--arr-up); }
+.arr--down { --arr: var(--arr-down); }
+.mono .arr { width: 1.05em; height: 1.05em; vertical-align: -0.2em; }
+
 /* Things rise into view once, as /assets/js/site.js finds them. */
 .js .rise {
   opacity: 0;
@@ -153,10 +181,12 @@ p { text-wrap: pretty; }
   position: fixed;
   inset: 0 0 auto;
   z-index: 40;
-  padding-top: 18px;
-  color: #fff;
-  mix-blend-mode: difference;
-  align-items: start;
+  padding-block: 11px;
+  /* The page inverted: ink with paper-coloured type, whichever theme is
+     in force, so it reads the same over text, photographs or nothing. */
+  background: var(--ink);
+  color: var(--paper);
+  align-items: center;
   transition: transform 0.5s var(--ease), opacity 0.4s ease;
 }
 
@@ -203,7 +233,7 @@ p { text-wrap: pretty; }
   flex-direction: column;
   justify-content: space-between;
   gap: 32px;
-  padding: calc(18px + 56px) var(--gutter) calc(24px + env(safe-area-inset-bottom));
+  padding: calc(38px + 40px) var(--gutter) calc(24px + env(safe-area-inset-bottom));
   background: var(--paper);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -348,10 +378,10 @@ body.menu-open { overflow: hidden; }
   background-image: linear-gradient(var(--accent), var(--accent));
   background-size: 100% 0.14em;
 }
-.project-item__link::after { content: " →"; }
-.project-item__link[target="_blank"]::after { content: " ↗"; }
+.project-item__link::after { content: ""; --arr: var(--arr-r); }
+.project-item__link[target="_blank"]::after { --arr: var(--arr-ne); }
 .project-item__link[href^="mailto:"]::after,
-.project-item__link[download]::after { content: ""; }
+.project-item__link[download]::after { display: none; }
 
 .project-item__links {
   display: flex;
@@ -414,7 +444,7 @@ body.menu-open { overflow: hidden; }
   background-image: linear-gradient(var(--accent), var(--accent));
   background-size: 100% 0.14em;
 }
-.photos__links a::after { content: " ↗"; }
+.photos__links a::after { content: ""; --arr: var(--arr-ne); }
 
 .lightbox {
   position: fixed;
@@ -718,7 +748,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   font-style: italic;
   white-space: nowrap;
 }
-.shot--end span { color: var(--accent-ink); font-style: normal; }
+.shot--end .arr { color: var(--accent-ink); }
 .gallery__count {
   position: absolute;
   left: var(--gutter);
@@ -825,6 +855,67 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 .about__side ul { list-style: none; }
 
 /* ---------------------------------------------------------
+   13b. Home: this week's listening, filled in by home.js from
+   the hourly Action's output
+   --------------------------------------------------------- */
+
+.listening { row-gap: 56px; }
+.listening__col:first-child { grid-column: 1 / 7; }
+.listening__col:last-child { grid-column: 7 / 13; }
+
+.listening__label {
+  margin-bottom: 14px;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.plays {
+  list-style: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.play {
+  display: grid;
+  grid-template-columns: 2.4em 56px minmax(0, 1fr) auto;
+  column-gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--rule);
+  transition: opacity 0.45s ease;
+}
+.play__n { color: var(--muted); }
+.play__art {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  background: var(--rule);
+}
+.plays--artists .play__art { border-radius: 50%; }
+.play__name {
+  display: block;
+  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  transition: color 0.3s ease;
+}
+.play__by {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.98rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.play__count { color: var(--muted); text-align: right; white-space: nowrap; }
+
+@media (hover: hover) {
+  .plays:hover .play { opacity: 0.3; }
+  .plays .play:hover { opacity: 1; }
+  .play:hover .play__name { font-style: italic; color: var(--accent-ink); }
+}
+
+/* ---------------------------------------------------------
    14. Responsive
    --------------------------------------------------------- */
 
@@ -847,7 +938,7 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   .bar__nav { display: none; }
   .bar__id { grid-column: 1 / 10; }
   .bar__menu { display: block; }
-  .bar { padding-top: max(18px, env(safe-area-inset-top)); }
+  .bar { padding-top: max(11px, env(safe-area-inset-top)); }
   .menu { display: flex; }
 }
 
@@ -886,6 +977,9 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   .row__desc { grid-column: 3 / 10; font-size: 0.98rem; }
   .row__role { display: none; }
 
+  .listening__col:first-child,
+  .listening__col:last-child { grid-column: 1 / 13; }
+
   .about__body { grid-column: 1 / 13; }
   .about__side { grid-column: 1 / 13; flex-direction: row; flex-wrap: wrap; gap: 24px 40px; padding-top: 44px; }
 
@@ -905,6 +999,8 @@ a:hover > .resume__frame { transform: translateY(-4px); }
   .sec__t { grid-column: 1 / 13; }
   .sec__aside { grid-column: 1 / 13; text-align: left; margin-top: 6px; }
   .shot img { height: var(--hs, 46vh); }
+  .play { grid-template-columns: 2em 48px minmax(0, 1fr) auto; column-gap: 12px; }
+  .play__art { width: 48px; height: 48px; }
 }
 
 /* ---------------------------------------------------------

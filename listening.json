@@ -1,0 +1,75 @@
+{
+  "from": "2026-10-11",
+  "to": "2026-10-17",
+  "timeZone": "America/New_York",
+  "plays": 359,
+  "tracks": [
+    {
+      "name": "ARE YOU OK?",
+      "artists": "Daniel Caesar",
+      "url": "https://open.spotify.com/track/5Ji2rXNyEQfTIGz1PEkLK9",
+      "image": "https://i.scdn.co/image/ab67616d00001e02969c21ea34fe372a3e468947",
+      "plays": 10
+    },
+    {
+      "name": "nothing",
+      "artists": "Steve Lacy",
+      "url": "https://open.spotify.com/track/3lIHa4fUwNKOCSS5k3Za0i",
+      "image": "https://i.scdn.co/image/ab67616d00001e024ea9ba86cd9506a004bab042",
+      "plays": 8
+    },
+    {
+      "name": "Ivy",
+      "artists": "Frank Ocean",
+      "url": "https://open.spotify.com/track/2ZWlPOoWh0626oTaHrnl2a",
+      "image": "https://i.scdn.co/image/ab67616d00001e02c5649add07ed3720be9d5526",
+      "plays": 7
+    },
+    {
+      "name": "Obsessica",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/2XhmIDdUVi7f44eW5wZEO8",
+      "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+      "plays": 7
+    },
+    {
+      "name": "Good Bye",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/473BM0PexRkwNdthzo0IQO",
+      "image": "https://i.scdn.co/image/ab67616d00001e02a1cac678024bb37d83ab012c",
+      "plays": 7
+    }
+  ],
+  "artists": [
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 71
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 61
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 32
+    },
+    {
+      "name": "Mac DeMarco",
+      "url": "https://open.spotify.com/artist/3Sz7ZnJQBIHsXLUSo0OQtM",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c9aca5b6d4c528caf75e8a1d",
+      "plays": 23
+    },
+    {
+      "name": "wave to earth",
+      "url": "https://open.spotify.com/artist/5069JTmv5ZDyPeZaCCXiCg",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab6761610000517411fa75d331351ecfc2e93faf",
+      "plays": 18
+    }
+  ]
+}

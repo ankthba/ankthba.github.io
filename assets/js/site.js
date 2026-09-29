@@ -19,6 +19,38 @@
     setInterval(tick, 1000);
   }
 
+  /* "At a glance": the switch in the bar turns the home page into a
+     one-page brief. The choice is remembered; the inline script in the
+     head applies it before paint, and ?brief in the address turns it on
+     for anyone the link is sent to. From any other page, turning it on
+     goes to the brief. */
+  var root = document.documentElement;
+  var modeToggle = document.querySelector('[data-mode-toggle]');
+  var home = location.pathname === '/' || location.pathname === '/index.html';
+  var brief = function () { return root.getAttribute('data-mode') === 'brief'; };
+  if (modeToggle) {
+    modeToggle.setAttribute('aria-checked', brief() ? 'true' : 'false');
+    modeToggle.addEventListener('click', function () {
+      var on = !brief();
+      try {
+        if (on) localStorage.setItem('mode', 'brief');
+        else localStorage.removeItem('mode');
+      } catch (e) {}
+      /* A ?brief left in the address would turn it back on at the next
+         load, so it goes once the switch has been used. */
+      if (/[?&]brief/.test(location.search)) {
+        history.replaceState(null, '', location.pathname + location.hash);
+      }
+      if (on && !home) { location.href = '/'; return; }
+      if (on) root.setAttribute('data-mode', 'brief');
+      else root.removeAttribute('data-mode');
+      modeToggle.setAttribute('aria-checked', on ? 'true' : 'false');
+      scrollTo(0, 0);
+      /* The pinned photographs measure themselves on resize. */
+      dispatchEvent(new Event('resize'));
+    });
+  }
+
   /* The menu on small screens. While it is open the page behind it is
      inert and doesn't scroll; Escape, the button or a link closes it. */
   var bar = document.querySelector('.bar');

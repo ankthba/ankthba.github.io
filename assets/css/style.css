@@ -9,7 +9,7 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 /* ---------------------------------------------------------
    2. Tokens
@@ -180,7 +180,10 @@ p { text-wrap: pretty; }
 .bar {
   position: fixed;
   inset: 0 0 auto;
-  z-index: 40;
+  /* Above the paper grain, so the grain is inverted with everything else
+     rather than laid over the inverted type as a grey haze. */
+  z-index: 55;
+  font-weight: 500;
   padding-top: 18px;
   /* White, differenced against whatever is under it: the type is always
      the inverse of the page, a photograph, or the menu. */

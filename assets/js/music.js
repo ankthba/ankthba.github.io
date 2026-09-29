@@ -204,7 +204,7 @@
       : dayOf(resumes) === dayOf(new Date(Date.now() + 864e5)) ? 'tomorrow'
       : resumes.toLocaleDateString('en-US', { weekday: 'long' });
     $('[data-notice-text]').textContent =
-      'Spotify needs a breather. The music hasn\u2019t stopped; you just can\u2019t see it for a bit.';
+      'Spotify needs a breather. Aniketh\u2019s almost certainly still jamming.';
     $('[data-notice-at]').textContent = time(resumes) + ' ' + day;
 
     /* The time left, to the second. */

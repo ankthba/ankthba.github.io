@@ -1,0 +1,75 @@
+{
+  "from": "2026-11-21",
+  "to": "2026-11-27",
+  "timeZone": "America/New_York",
+  "plays": 253,
+  "tracks": [
+    {
+      "name": "TOO DEEP TO TURN BACK",
+      "artists": "Daniel Caesar",
+      "url": "https://open.spotify.com/track/3EOzLBxti9kA01UvwfbPxs",
+      "image": "https://i.scdn.co/image/ab67616d00001e02969c21ea34fe372a3e468947",
+      "plays": 5
+    },
+    {
+      "name": "the cure",
+      "artists": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/track/55pBIZO1cqoldeqpp5WR7H",
+      "image": "https://i.scdn.co/image/ab67616d00001e025cf234eeb7a2edf44bf64a46",
+      "plays": 4
+    },
+    {
+      "name": "Death & Taxes",
+      "artists": "Daniel Caesar",
+      "url": "https://open.spotify.com/track/1epujjBDhuqmYAwAhR29xI",
+      "image": "https://i.scdn.co/image/ab67616d00001e02b04a0b90111899130bf4bdd0",
+      "plays": 4
+    },
+    {
+      "name": "Out for the Night - Live",
+      "artists": "The Marías",
+      "url": "https://open.spotify.com/track/5XHgo8eXtKTK0xLKMNiOll",
+      "image": "https://i.scdn.co/image/ab67616d00001e0251a17b5a4427adaf9e6aca4f",
+      "plays": 4
+    },
+    {
+      "name": "homesick",
+      "artists": "wave to earth",
+      "url": "https://open.spotify.com/track/2FZIabCRMEWAYfN69Ijn1U",
+      "image": "https://i.scdn.co/image/ab67616d00001e0224f8c3ad20b7c6cfecb5832e",
+      "plays": 4
+    }
+  ],
+  "artists": [
+    {
+      "name": "Lamp",
+      "url": "https://open.spotify.com/artist/0rFHElzeddB9ymDjgpBENX",
+      "image": "https://image-cdn-ak.spotifycdn.com/image/ab676161000051740200ae3b8094a3b795e51f59",
+      "plays": 49
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 34
+    },
+    {
+      "name": "Mac DeMarco",
+      "url": "https://open.spotify.com/artist/3Sz7ZnJQBIHsXLUSo0OQtM",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c9aca5b6d4c528caf75e8a1d",
+      "plays": 22
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 18
+    },
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 17
+    }
+  ]
+}

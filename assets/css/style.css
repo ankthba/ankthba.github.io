@@ -598,13 +598,21 @@ a:hover > .resume__frame { transform: translateY(-4px); }
 
 .hero__title {
   padding-inline: var(--gutter);
-  font-size: clamp(2.35rem, 6.3vw, 10rem);
+  font-size: clamp(2.3rem, 5.8vw, 9.4rem);
   line-height: 0.99;
   letter-spacing: -0.022em;
   text-indent: 25%;
 }
 .hero__title em { font-style: italic; }
 .hero__title .nb { white-space: nowrap; }
+/* "music" goes to the music page: underlined in marigold, italic word
+   and live cover together. */
+.hero__link {
+  background: linear-gradient(var(--accent), var(--accent)) 0 90% / 100% 0.035em no-repeat;
+  transition: color 0.3s ease, background-size 0.4s var(--ease);
+}
+.hero__link .inl { vertical-align: -0.02em; }
+.hero__link:hover { color: var(--accent-ink); background-size: 100% 0.08em; }
 /* text-indent inherits into inline-blocks, and every word is one. */
 .hero__title .w,
 .hero__title .w > span { text-indent: 0; }

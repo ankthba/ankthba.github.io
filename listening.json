@@ -1,0 +1,75 @@
+{
+  "from": "2026-10-25",
+  "to": "2026-10-31",
+  "timeZone": "America/New_York",
+  "plays": 564,
+  "tracks": [
+    {
+      "name": "Ain't That The Truth",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/6cEFXDnzk2tA1tG7RJiWNm",
+      "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+      "plays": 17
+    },
+    {
+      "name": "Do That Again",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/4Dopg5XLw6JHlaqHHHYe0l",
+      "image": "https://i.scdn.co/image/ab67616d00001e02a1cac678024bb37d83ab012c",
+      "plays": 12
+    },
+    {
+      "name": "the cure",
+      "artists": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/track/55pBIZO1cqoldeqpp5WR7H",
+      "image": "https://i.scdn.co/image/ab67616d00001e025cf234eeb7a2edf44bf64a46",
+      "plays": 12
+    },
+    {
+      "name": "24 Songs",
+      "artists": "void",
+      "url": "https://open.spotify.com/track/3if0fm9lvXFX0ck9awYROe",
+      "image": "https://i.scdn.co/image/ab67616d00001e026f114bd0eed04546fc6fa470",
+      "plays": 12
+    },
+    {
+      "name": "stupid song",
+      "artists": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/track/4LfCY65LvojKjWEnU7fNN4",
+      "image": "https://i.scdn.co/image/ab67616d00001e025cf234eeb7a2edf44bf64a46",
+      "plays": 10
+    }
+  ],
+  "artists": [
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 124
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 43
+    },
+    {
+      "name": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG",
+      "image": "https://i.scdn.co/image/ab67616100005174b14eb4dcfd2f3858bed06e44",
+      "plays": 31
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 29
+    },
+    {
+      "name": "wave to earth",
+      "url": "https://open.spotify.com/artist/5069JTmv5ZDyPeZaCCXiCg",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab6761610000517411fa75d331351ecfc2e93faf",
+      "plays": 23
+    }
+  ]
+}

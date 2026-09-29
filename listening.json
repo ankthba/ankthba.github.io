@@ -1,0 +1,75 @@
+{
+  "from": "2026-10-04",
+  "to": "2026-10-10",
+  "timeZone": "America/New_York",
+  "plays": 444,
+  "tracks": [
+    {
+      "name": "sing it all again",
+      "artists": "wave to earth",
+      "url": "https://open.spotify.com/track/1pmFLmqdLGcIbmSpYRWATO",
+      "image": "https://i.scdn.co/image/ab67616d00001e029a03ff40f308fea55054aa68",
+      "plays": 17
+    },
+    {
+      "name": "Ain't That The Truth",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/6cEFXDnzk2tA1tG7RJiWNm",
+      "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+      "plays": 15
+    },
+    {
+      "name": "Cheer Me On",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/1uhkCvJALethci3eokMkbU",
+      "image": "https://i.scdn.co/image/ab67616d00001e0287607b2c8f5f52f1f057be0d",
+      "plays": 14
+    },
+    {
+      "name": "Quarterback",
+      "artists": "Wallows",
+      "url": "https://open.spotify.com/track/2OwIGCjx7e7J1HHdAqIv21",
+      "image": "https://i.scdn.co/image/ab67616d00001e029ba6d8b37406b37026e5f3e4",
+      "plays": 12
+    },
+    {
+      "name": "Nemo",
+      "artists": "Malcolm Todd",
+      "url": "https://open.spotify.com/track/6VEONsWw5rc4Ya9ep3wuQY",
+      "image": "https://i.scdn.co/image/ab67616d00001e02436145513f91113c10292b12",
+      "plays": 11
+    }
+  ],
+  "artists": [
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 97
+    },
+    {
+      "name": "wave to earth",
+      "url": "https://open.spotify.com/artist/5069JTmv5ZDyPeZaCCXiCg",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab6761610000517411fa75d331351ecfc2e93faf",
+      "plays": 94
+    },
+    {
+      "name": "Wallows",
+      "url": "https://open.spotify.com/artist/0NIPkIjTV8mB795yEIiPYL",
+      "image": "https://i.scdn.co/image/ab67616100005174fde4e7d59f6d8868e2ffdaf5",
+      "plays": 32
+    },
+    {
+      "name": "Lorde",
+      "url": "https://open.spotify.com/artist/163tK9Wjr9P9DmM0AVK7lm",
+      "image": "https://i.scdn.co/image/ab67616100005174678a3a4bc2d8a84074f22c71",
+      "plays": 18
+    },
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 17
+    }
+  ]
+}

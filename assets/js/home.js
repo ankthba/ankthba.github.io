@@ -122,9 +122,10 @@
           var slot = cover.parentNode;
           if (!item) return;
           liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;
-          if (!/^https:\/\//.test(item.image || '')) { slot.hidden = true; return; }
+          var src = item.cover || item.image;
+          if (!/^https:\/\//.test(src || '')) { slot.hidden = true; return; }
           slot.hidden = false;
-          if (cover.getAttribute('src') !== item.image) cover.src = item.image;
+          if (cover.getAttribute('src') !== src) cover.src = src;
           cover.classList.add('on');
         })
         .catch(function () {});

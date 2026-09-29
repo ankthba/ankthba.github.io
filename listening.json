@@ -1,0 +1,75 @@
+{
+  "from": "2026-11-08",
+  "to": "2026-11-14",
+  "timeZone": "America/New_York",
+  "plays": 371,
+  "tracks": [
+    {
+      "name": "Seigfried",
+      "artists": "Frank Ocean",
+      "url": "https://open.spotify.com/track/1BViPjTT585XAhkUUrkts0",
+      "image": "https://i.scdn.co/image/ab67616d00001e02c5649add07ed3720be9d5526",
+      "plays": 8
+    },
+    {
+      "name": "Louise",
+      "artists": "TV Girl",
+      "url": "https://open.spotify.com/track/263KsGZODTZouh3RFGNaLX",
+      "image": "https://i.scdn.co/image/ab67616d00001e02e1bc1af856b42dd7fdba9f84",
+      "plays": 8
+    },
+    {
+      "name": "the cure",
+      "artists": "Olivia Rodrigo",
+      "url": "https://open.spotify.com/track/55pBIZO1cqoldeqpp5WR7H",
+      "image": "https://i.scdn.co/image/ab67616d00001e025cf234eeb7a2edf44bf64a46",
+      "plays": 7
+    },
+    {
+      "name": "What Kind of Love",
+      "artists": "Childish Gambino",
+      "url": "https://open.spotify.com/track/5e7ZRnsm4RyLcinXHfXRIk",
+      "image": "https://i.scdn.co/image/ab67616d00001e02d952550d4e23c1ce1f1860cc",
+      "plays": 6
+    },
+    {
+      "name": "Skyline To",
+      "artists": "Frank Ocean",
+      "url": "https://open.spotify.com/track/4xR3MAscflQ262kMeiKshQ",
+      "image": "https://i.scdn.co/image/ab67616d00001e02c5649add07ed3720be9d5526",
+      "plays": 6
+    }
+  ],
+  "artists": [
+    {
+      "name": "Daniel Caesar",
+      "url": "https://open.spotify.com/artist/20wkVLutqVOYrc0kxFs7rA",
+      "image": "https://i.scdn.co/image/ab67616100005174e4d94f7cbebb17504c25d419",
+      "plays": 65
+    },
+    {
+      "name": "Frank Ocean",
+      "url": "https://open.spotify.com/artist/2h93pZq0e7k5yf4dywlkpM",
+      "image": "https://i.scdn.co/image/ab67616100005174ee3123e593174208f9754fab",
+      "plays": 49
+    },
+    {
+      "name": "Mac DeMarco",
+      "url": "https://open.spotify.com/artist/3Sz7ZnJQBIHsXLUSo0OQtM",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab67616100005174c9aca5b6d4c528caf75e8a1d",
+      "plays": 29
+    },
+    {
+      "name": "Malcolm Todd",
+      "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+      "image": "https://i.scdn.co/image/ab676161000051749f6f7c2d12975d2a4b3a0fd8",
+      "plays": 26
+    },
+    {
+      "name": "Rex Orange County",
+      "url": "https://open.spotify.com/artist/7pbDxGE6nQSZVfiFdq9lOL",
+      "image": "https://image-cdn-fa.spotifycdn.com/image/ab676161000051747f6cc3c192e15b0b402ee6c3",
+      "plays": 21
+    }
+  ]
+}

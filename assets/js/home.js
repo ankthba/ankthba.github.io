@@ -48,6 +48,27 @@
   if (document.fonts) document.fonts.ready.then(go);
   setTimeout(go, 900);
 
+  /* After "music" in the headline, the cover of whatever is playing on
+     Spotify now, or was last, from the Worker the music page uses. */
+  var liveLink = document.querySelector('[data-live-link]');
+  if (liveLink && window.fetch) {
+    var cover = liveLink.querySelector('[data-live-cover] img');
+    var paint = function () {
+      fetch('https://aniketh-now.ankthba.workers.dev/', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+        .then(function (now) {
+          var item = now.playing && now.track ? now.track : (now.recent || [])[0];
+          if (!item || !/^https:\/\//.test(item.image || '')) return;
+          if (cover.getAttribute('src') !== item.image) cover.src = item.image;
+          cover.classList.add('on');
+          liveLink.title = (now.playing ? 'Listening to ' : 'Last listened to ') + item.name + ' by ' + item.artists;
+        })
+        .catch(function () {});
+    };
+    paint();
+    setInterval(function () { if (!document.hidden) paint(); }, 30000);
+  }
+
   /* The photographs in the headline turn over, one at a time. */
   if (!still) {
     var cycles = document.querySelectorAll('[data-cycle]');

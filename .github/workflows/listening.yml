@@ -17,6 +17,12 @@ on:
     # starts a run; update.mjs reads those back. This is the fallback.
     - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
+  # A change to the listening scripts runs them straight away.
+  push:
+    branches: [main]
+    paths:
+      - '.github/listening/**'
+      - '.github/workflows/listening.yml'
 
 permissions:
   contents: write

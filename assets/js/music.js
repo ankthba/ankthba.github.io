@@ -117,14 +117,30 @@
     if (!box || !since) return;
     var today = dayOf(new Date());
 
-    $('[data-cal-since]').textContent = 'Tracking began on ' +
+    var began = 'Tracking began on ' +
       fmtDay(since, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) +
       '. Nothing before then is counted.';
-    var t = data.totals;
-    if (t) {
-      $('[data-cal-totals]').textContent = 'Since then: ' + plural(t.plays, 'play', 'plays') + ' and ' +
-        duration(t.minutes) + ' of listening, across ' + plural(t.tracks, 'song', 'songs') + ' and ' +
-        plural(t.artists, 'artist', 'artists') + '.';
+
+    /* Above the grid, the month on show: so far for this one, in full
+       for one that's over, with the note on when tracking began on its
+       first month and before. */
+    function summary() {
+      var name = fmtDay(month + '-01', { month: 'long' });
+      var current = month === today.slice(0, 7);
+      var m = (data.months || {})[month];
+      var line;
+      if (month > today.slice(0, 7)) line = name + ' hasn\u2019t happened yet.';
+      else if (month < since.slice(0, 7)) line = 'Nothing counted in ' + name + '.';
+      else if (!m) line = current ? 'Nothing yet this month.' : 'Nothing played in ' + name + '.';
+      else {
+        line = (current ? name + ' so far: ' : 'In ' + name + ': ') +
+          plural(m.plays, 'play', 'plays') + ' and ' + duration(m.minutes) + ' of listening, across ' +
+          plural(m.tracks, 'song', 'songs') + ' and ' + plural(m.artists, 'artist', 'artists') + '.';
+      }
+      var note = $('[data-cal-since]');
+      note.textContent = began;
+      note.hidden = month > since.slice(0, 7);
+      $('[data-cal-totals]').textContent = line;
     }
 
     /* Today if it has plays yet, otherwise the latest day that does,
@@ -139,6 +155,7 @@
 
     function draw() {
       $('[data-cal-month]').textContent = fmtDay(month + '-01', { month: 'long', year: 'numeric' });
+      summary();
       var grid = $('[data-cal-grid]');
       grid.textContent = '';
       ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(function (d) {

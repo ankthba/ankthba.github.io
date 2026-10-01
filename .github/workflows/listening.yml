@@ -11,8 +11,9 @@ name: Listening
 on:
   schedule:
     # Spotify only reports the last fifty plays, about two and a half hours
-    # of listening, and GitHub can delay or drop scheduled runs, so this
-    # checks well inside that.
+    # of listening. GitHub delays and drops scheduled runs (in practice
+    # this ran every four to six hours), so the now-playing Worker starts a
+    # run every fifteen minutes too (.github/worker); this is the fallback.
     - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
 

@@ -374,15 +374,18 @@ a.masthead__name:hover {
 }
 
 /* Square crops from the photographs page, a new four on every visit. */
+.photos-mini[hidden] {
+  display: none;
+}
+
 .shuffle {
   display: grid;
   grid-template-columns: repeat(2, 6.25rem);
   gap: 0.5rem;
-  margin-top: 0.4rem;
 }
 
-.shuffle[hidden] {
-  display: none;
+.photos-mini__more {
+  margin-top: 0.75rem;
 }
 
 .shuffle a {
@@ -410,9 +413,12 @@ a.masthead__name:hover {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .home__row .photos-mini {
+    margin-top: var(--space-md);
+  }
+
   .shuffle {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    margin-top: var(--space-md);
   }
 }
 

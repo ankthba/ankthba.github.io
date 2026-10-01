@@ -4,7 +4,8 @@
 'use strict';
 
 (function () {
-  var box = document.querySelector('[data-shuffle]');
+  var section = document.querySelector('[data-shuffle]');
+  var box = section && section.querySelector('[data-shuffle-grid]');
   if (!box || !window.fetch || !window.DOMParser) return;
 
   fetch('/photos/')
@@ -29,7 +30,7 @@
         a.appendChild(img);
         box.appendChild(a);
       });
-      if (box.children.length) box.hidden = false;
+      if (box.children.length) section.hidden = false;
     })
     .catch(function () {});
 })();

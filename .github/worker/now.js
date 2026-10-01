@@ -36,7 +36,8 @@
 // The sweep also stands in for the recent-plays call, so it costs
 // Spotify one call every fifteen minutes, inside the daily budget.
 //
-// Deploy from this folder with `npx wrangler deploy`. Secrets:
+// Deployed by .github/workflows/worker.yml on every change here, or from
+// this folder with `npx wrangler deploy`. Secrets:
 //   SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN
 //     set by .github/listening/auth.mjs;
 //   GITHUB_TOKEN  a fine-grained token for this repository with Actions

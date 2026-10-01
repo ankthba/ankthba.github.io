@@ -423,6 +423,18 @@ export default {
       },
       body: JSON.stringify({ ref: 'main' }),
     });
-    if (!res.ok) console.error('listening: dispatch ' + res.status + ' ' + (await res.text()).slice(0, 200));
+    if (!res.ok) {
+      // The token's shape, never the token, to tell a bad paste from a bad scope.
+      const t = env.GITHUB_TOKEN;
+      const shape = {
+        prefix: (t.match(/^[a-z]+_(pat_)?/) || ['?'])[0],
+        length: t.length,
+        whitespace: /\s/.test(t),
+        nonAscii: /[^\x20-\x7e]/.test(t),
+      };
+      console.error('listening: dispatch ' + res.status + ' ' + (await res.text()).slice(0, 200)
+        + ' ' + JSON.stringify(shape)
+        + ' server=' + res.headers.get('server') + ' id=' + res.headers.get('x-github-request-id'));
+    }
   },
 };

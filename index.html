@@ -130,25 +130,32 @@
       <p>In a previous life, I was an engineering intern at Alarm.com, led software at Oakton Robotics for four years, attended Y Combinator Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>. Outside work, I photograph aircraft at Dulles and landscapes around the world, enjoy hiking, and love listening to <a href="/music/">music</a>.</p>
     </div>
 
-    <section class="writing">
-      <h2 class="writing__heading">Latest writing</h2>
-      <div class="writing__list">
-        <a href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener" class="writing__link" data-text="What You Owe">What You Owe</a>
-      </div>
-    </section>
+    <div class="home__row">
+      <div class="home__col">
+        <section class="writing">
+          <h2 class="writing__heading">Latest writing</h2>
+          <div class="writing__list">
+            <a href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener" class="writing__link" data-text="What You Owe">What You Owe</a>
+          </div>
+        </section>
 
-    <!-- Filled in by /assets/js/listening.js; hidden until it has a song. -->
-    <section class="writing listening" data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden>
-      <h2 class="writing__heading" data-listening-heading>Most recently listened to</h2>
-      <a class="listening__song" data-listening-link target="_blank" rel="noopener">
-        <img class="listening__art" alt="" data-listening-art>
-        <span class="listening__text">
-          <span class="listening__name" data-listening-name></span>
-          <span class="listening__by" data-listening-by></span>
-        </span>
-      </a>
-      <a class="writing__link listening__more" href="/music/">More music</a>
-    </section>
+        <!-- Filled in by /assets/js/listening.js; hidden until it has a song. -->
+        <section class="writing listening" data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden>
+          <h2 class="writing__heading" data-listening-heading>Most recently listened to</h2>
+          <a class="listening__song" data-listening-link target="_blank" rel="noopener">
+            <img class="listening__art" alt="" data-listening-art>
+            <span class="listening__text">
+              <span class="listening__name" data-listening-name></span>
+              <span class="listening__by" data-listening-by></span>
+            </span>
+          </a>
+          <a class="writing__link listening__more" href="/music/">More music</a>
+        </section>
+      </div>
+
+      <!-- Four photographs from /photos/, picked at random by /assets/js/shuffle.js. -->
+      <div class="shuffle" data-shuffle hidden></div>
+    </div>
   </main>
 
   <footer class="colophon">
@@ -163,5 +170,6 @@
   </footer>
   <script src="/assets/js/theme.js" defer></script>
   <script src="/assets/js/listening.js" defer></script>
+  <script src="/assets/js/shuffle.js" defer></script>
 </body>
 </html>

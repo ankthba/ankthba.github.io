@@ -354,6 +354,68 @@ a.masthead__name:hover {
   text-decoration-color: var(--color-link-hover);
 }
 
+/* The latest writing and the listening note on the left, four
+   photographs on the right, sharing the column's two edges. */
+
+.home__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.home__row .writing {
+  margin-top: 0;
+}
+
+.home__row .writing + .writing {
+  margin-top: var(--space-md);
+}
+
+/* Square crops from the photographs page, a new four on every visit. */
+.shuffle {
+  display: grid;
+  grid-template-columns: repeat(2, 6.25rem);
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.shuffle[hidden] {
+  display: none;
+}
+
+.shuffle a {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.shuffle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--transition-base);
+}
+
+.shuffle a:hover img {
+  opacity: 0.85;
+}
+
+/* Too narrow to sit side by side: the four go under, in a row across
+   the full measure. */
+@media (max-width: 480px) {
+  .home__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shuffle {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: var(--space-md);
+  }
+}
+
 /* Listening: the song playing now, or the last one, under the
    latest writing. Filled in by /assets/js/listening.js. */
 

@@ -1,8 +1,8 @@
-// Builds music.json, everything the /music/ page shows, from the private
-// log. Only summaries leave the log: the day's top song for the calendar,
-// top songs and artists over a few ranges, totals, and every play since
-// midnight yesterday (the page's log shows today from 12 am; yesterday's
-// are there so the page still has a last play just after midnight).
+// Builds what the /music/ page shows from the private log: music.json,
+// with the calendar, top songs and artists over a few ranges, totals, and
+// every play since midnight yesterday (the page's log shows today from
+// 12 am; yesterday's are there so it still has a last play just after
+// midnight), and days/YYYY-MM-DD.json, each counted day's plays in full.
 // Run after log.mjs by .github/workflows/listening.yml.
 //
 //   node music.mjs <logdir> <outdir>
@@ -10,7 +10,7 @@
 // <outdir> is the listening-data branch; artists.json there caches artist
 // photos between runs.
 
-import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const [logDir, outDir] = process.argv.slice(2);
@@ -213,4 +213,18 @@ const music = {
 
 await writeFile(photosPath, JSON.stringify(photos, null, 1) + '\n');
 await writeFile(join(outDir, 'music.json'), JSON.stringify(music) + '\n');
+
+// Each day's full log, 12 am to 11:59 pm in order, one file a day in
+// days/, fetched by the page only when that day's log is opened.
+await mkdir(join(outDir, 'days'), { recursive: true });
+for (const [day, list] of byDay) {
+  const log = list.map((p) => ({
+    name: p.name,
+    artists: p.artists.map((a) => a.name).join(', '),
+    url: trackUrl(p.id),
+    image: p.image,
+    played_at: p.played_at,
+  }));
+  await writeFile(join(outDir, 'days', day + '.json'), JSON.stringify(log) + '\n');
+}
 console.log(`music.json: ${plays.length} plays over ${byDay.size} days since ${since}.`);

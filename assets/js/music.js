@@ -14,6 +14,8 @@
   var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   var override = new URLSearchParams(location.search).get('music');
   if (local && override && override.charAt(0) === '/') src = override;
+  /* Each day's log sits beside music.json, in days/. */
+  var base = src.replace(/[^/]*$/, '');
 
   var TZ = 'America/New_York';
   var spotify = function (url) { return /^https:\/\/open\.spotify\.com\//.test(url || '') ? url : null; };
@@ -143,10 +145,9 @@
       $('[data-cal-totals]').textContent = line;
     }
 
-    /* Today if it has plays yet, otherwise the latest day that does,
-       in its own month. */
-    var picked = days[today] ? today : Object.keys(days).sort().pop() || today;
-    var month = picked.slice(0, 7);
+    /* Always today, in this month, even before its first play. */
+    var picked = today;
+    var month = today.slice(0, 7);
 
     function shift(ym, n) {
       var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + n;
@@ -276,7 +277,52 @@
         panel.appendChild(album);
       }
       if (day === today) panel.appendChild(el('p', 'cal__note', 'Today’s numbers catch up each time the log is updated.'));
+
+      /* The day's whole log, 12 AM to 11:59 PM, fetched only when asked
+         for, from the file the Action writes for each day. */
+      var open = el('button', 'cal__step cal__open', 'View listening log');
+      open.type = 'button';
+      open.setAttribute('aria-expanded', 'false');
+      var holder = el('div', 'cal__log');
+      holder.hidden = true;
+      var loaded = false;
+      open.addEventListener('click', function () {
+        var showing = holder.hidden;
+        holder.hidden = !showing;
+        open.setAttribute('aria-expanded', String(showing));
+        open.textContent = showing ? 'Hide listening log' : 'View listening log';
+        if (!showing || loaded) return;
+        loaded = true;
+        holder.appendChild(el('p', 'cal__none', 'Loading…'));
+        fetch(base + 'days/' + day + '.json', { cache: 'no-cache' })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+          .then(function (plays) {
+            holder.textContent = '';
+            holder.appendChild(el('p', 'music__label', fmtDay(day, { month: 'long', day: 'numeric' }) +
+              ', 12 AM to 11:59 PM · ' + plural(plays.length, 'play', 'plays')));
+            var list = el('ol', 'plays plays--log');
+            plays.forEach(function (item) { list.appendChild(logRow(item)); });
+            holder.appendChild(list);
+          })
+          .catch(function () {
+            loaded = false;
+            holder.textContent = '';
+            holder.appendChild(el('p', 'cal__none', 'That day’s log couldn’t be loaded. Try again in a moment.'));
+          });
+      });
+      panel.appendChild(open);
+      panel.appendChild(holder);
     }
+
+    /* Left open past midnight, the calendar moves on to the new day:
+       to its month and onto it, unless another day has been picked. */
+    setInterval(function () {
+      var now = dayOf(new Date());
+      if (now === today) return;
+      if (picked === today) { picked = now; month = now.slice(0, 7); }
+      today = now;
+      draw();
+    }, 60000);
 
     $('[data-cal-prev]').addEventListener('click', function () { month = shift(month, -1); draw(); });
     $('[data-cal-next]').addEventListener('click', function () { month = shift(month, 1); draw(); });
@@ -454,27 +500,30 @@
     }
     var list = el('ol', 'plays plays--log');
     box.appendChild(list);
-    plays.forEach(function (item) {
-      var li = el('li');
-      var href = spotify(item.url);
-      var row = el(href ? 'a' : 'div', item.now ? 'play play--now' : 'play');
-      if (href) { row.href = href; row.target = '_blank'; row.rel = 'noopener'; }
-      var time = el('time', 'play__n mono', item.now ? 'Now'
-        : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ }));
-      time.dateTime = item.played_at;
-      row.appendChild(time);
-      var art = el('img', 'play__art');
-      art.alt = '';
-      art.loading = 'lazy';
-      if (https(item.image)) art.src = item.image;
-      row.appendChild(art);
-      var text = el('span', 'play__text');
-      text.appendChild(el('span', 'play__name', item.name));
-      if (item.artists) text.appendChild(el('span', 'play__by', item.artists));
-      row.appendChild(text);
-      li.appendChild(row);
-      list.appendChild(li);
-    });
+    plays.forEach(function (item) { list.appendChild(logRow(item)); });
+  }
+
+  /* One play in a log: its time, its cover, the song and who by. */
+  function logRow(item) {
+    var li = el('li');
+    var href = spotify(item.url);
+    var row = el(href ? 'a' : 'div', item.now ? 'play play--now' : 'play');
+    if (href) { row.href = href; row.target = '_blank'; row.rel = 'noopener'; }
+    var time = el('time', 'play__n mono', item.now ? 'Now'
+      : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ }));
+    time.dateTime = item.played_at;
+    row.appendChild(time);
+    var art = el('img', 'play__art');
+    art.alt = '';
+    art.loading = 'lazy';
+    if (https(item.image)) art.src = item.image;
+    row.appendChild(art);
+    var text = el('span', 'play__text');
+    text.appendChild(el('span', 'play__name', item.name));
+    if (item.artists) text.appendChild(el('span', 'play__by', item.artists));
+    row.appendChild(text);
+    li.appendChild(row);
+    return li;
   }
 
   fetch(src, { cache: 'no-cache' })

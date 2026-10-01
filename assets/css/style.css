@@ -1231,6 +1231,19 @@ a.masthead__name:hover {
   display: none;
 }
 
+.cal__open {
+  display: block;
+  margin-top: var(--space-sm);
+}
+
+.cal__log[hidden] {
+  display: none;
+}
+
+.cal__log {
+  margin-top: var(--space-sm);
+}
+
 /* Plays by the hour: 24 bars on a hairline. */
 .cal__hours {
   display: grid;

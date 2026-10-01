@@ -24,18 +24,25 @@
 // workers.dev address; every page's poll went to Spotify, and the account
 // was rate-limited for most of a day.)
 //
-// It also keeps the listening Action on time. GitHub's own schedule for
-// it is best effort, and in practice ran every four to six hours, long
-// enough for more than Spotify's last fifty plays to go by unrecorded.
-// So every fifteen minutes (the cron in wrangler.toml) the Worker starts
-// a run itself. That costs GitHub one API call and Spotify nothing here;
-// the run itself makes two Spotify calls.
+// It also makes sure every play is kept. Spotify only ever reports the
+// last fifty, and GitHub's schedule for the listening Action is best
+// effort (in practice it ran every four to six hours), long enough for
+// plays to fall out of those fifty unrecorded. So every fifteen minutes
+// (the cron in wrangler.toml) the Worker itself asks Spotify for the
+// last fifty and keeps every play in the Object's storage for KEEP_DAYS,
+// then starts a run of the Action, which reads them back from /plays
+// (with LOG_KEY) along with Spotify's own fifty. However late or often
+// GitHub fails, nothing is lost as long as a run comes within KEEP_DAYS.
+// The sweep also stands in for the recent-plays call, so it costs
+// Spotify one call every fifteen minutes, inside the daily budget.
 //
-// Deploy from this folder with `npx wrangler deploy`. Secrets
-// (SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN) are
-// set by .github/listening/auth.mjs; GITHUB_TOKEN, a fine-grained token
-// for this repository with Actions read and write and nothing else, by
-// `npx wrangler secret put GITHUB_TOKEN`.
+// Deploy from this folder with `npx wrangler deploy`. Secrets:
+//   SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN
+//     set by .github/listening/auth.mjs;
+//   GITHUB_TOKEN  a fine-grained token for this repository with Actions
+//     read and write and nothing else;
+//   LOG_KEY       any long random string, the same as the repository's
+//     LISTENING_BUFFER_KEY secret, so only the Action can read /plays.
 
 const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://localhost:4599'];
 
@@ -45,6 +52,8 @@ const DAILY_BUDGET = 2000;   // Spotify Web API calls a UTC day, at most
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
 const EDGE = 5;              // seconds each Worker copy reuses an answer
+
+const KEEP_DAYS = 30;        // days every play is kept for the Action
 
 const WORKFLOW = 'https://api.github.com/repos/ankthba/ankthba.github.io/actions/workflows/listening.yml/dispatches';
 
@@ -202,7 +211,90 @@ export class NowPlaying {
     return reason ? { paused: reason, resumes: new Date(this.quietUntil).toISOString() } : null;
   }
 
-  async fetch() {
+  async fetch(request) {
+    const { pathname, searchParams } = new URL(request.url);
+    if (pathname === '/sweep') return this.sweep();
+    if (pathname === '/plays') return this.plays(searchParams.get('after'));
+    return this.now();
+  }
+
+  // What a 429 or a spent budget means: say nothing to Spotify until it
+  // has passed. Any other failure waits only NOW_EVERY.
+  async quieten(err) {
+    let wait = NOW_EVERY;
+    this.pausedFor = null;
+    if (err.status === 429) {
+      wait = err.retryAfter || BACKOFF;
+      this.pausedFor = 'rate-limit';
+    } else if (err.status === 'budget') {
+      const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
+      wait = Math.ceil((midnight - Date.now()) / 1000);
+      this.pausedFor = 'budget';
+    }
+    this.quietUntil = Date.now() + wait * 1000;
+    await this.state.storage.put({ quietUntil: this.quietUntil, pausedFor: this.pausedFor });
+  }
+
+  // Every fifteen minutes, from the cron: the last fifty plays, each kept
+  // under its time ("play:" + played_at, so they list in order) in the
+  // shape Spotify gives them, trimmed to what the Action reads.
+  async sweep() {
+    await this.load();
+    if (Date.now() < this.quietUntil) return Response.json({ skipped: 'quiet' });
+    let recent;
+    try {
+      recent = await this.spotify('/me/player/recently-played?limit=50');
+    } catch (err) {
+      console.error('sweep:', err.message);
+      await this.quieten(err);
+      return Response.json({ error: err.message }, { status: 502 });
+    }
+    const items = recent?.items || [];
+    const plays = {};
+    for (const { track, played_at, context } of items) {
+      plays['play:' + played_at] = {
+        played_at,
+        context: context ? { type: context.type, uri: context.uri } : null,
+        track: track && {
+          id: track.id || null,
+          name: track.name,
+          duration_ms: track.duration_ms,
+          external_urls: { spotify: track.external_urls?.spotify || null },
+          artists: (track.artists || []).map((a) => ({
+            id: a.id || null, name: a.name, external_urls: { spotify: a.external_urls?.spotify || null },
+          })),
+          album: track.album && { id: track.album.id || null, name: track.album.name, images: track.album.images || [] },
+        },
+      };
+    }
+    // put() takes at most 128 keys at once; fifty is well inside.
+    if (items.length) await this.state.storage.put(plays);
+    // These double as the page's recent plays, saving it a call.
+    this.recent = { items: items.slice(0, 10) };
+    this.recentAt = Date.now();
+
+    // Forget what's older than KEEP_DAYS.
+    const cutoff = 'play:' + new Date(Date.now() - KEEP_DAYS * 864e5).toISOString();
+    const old = await this.state.storage.list({ prefix: 'play:', end: cutoff, limit: 128 });
+    if (old.size) await this.state.storage.delete([...old.keys()]);
+    return Response.json({ swept: items.length });
+  }
+
+  // Every play kept after a time, oldest first, for the Action.
+  async plays(after) {
+    const start = 'play:' + (after || '');
+    const out = [];
+    let cursor = start;
+    for (;;) {
+      const page = await this.state.storage.list({ prefix: 'play:', start: cursor, limit: 500 });
+      for (const [key, play] of page) if (key > start) out.push(play);
+      if (page.size < 500) break;
+      cursor = [...page.keys()].at(-1) + '\0';
+    }
+    return Response.json(out);
+  }
+
+  async now() {
     await this.load();
     const fresh = this.data && Date.now() - this.dataAt < NOW_EVERY * 1000;
     const quiet = Date.now() < this.quietUntil;
@@ -219,18 +311,7 @@ export class NowPlaying {
         await this.pending;
       } catch (err) {
         console.error('now-playing:', err.message);
-        let wait = NOW_EVERY;
-        this.pausedFor = null;
-        if (err.status === 429) {
-          wait = err.retryAfter || BACKOFF;
-          this.pausedFor = 'rate-limit';
-        } else if (err.status === 'budget') {
-          const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
-          wait = Math.ceil((midnight - Date.now()) / 1000);
-          this.pausedFor = 'budget';
-        }
-        this.quietUntil = Date.now() + wait * 1000;
-        await this.state.storage.put({ quietUntil: this.quietUntil, pausedFor: this.pausedFor });
+        await this.quieten(err);
       }
     }
 
@@ -247,6 +328,13 @@ export class NowPlaying {
    --------------------------------------------------------------------- */
 
 let edge = null; // { status, body, retry, at }, per copy of the Worker
+
+// Two strings compared in constant time, for the key.
+async function same(a, b) {
+  const enc = new TextEncoder();
+  const [x, y] = await Promise.all([a, b].map((s) => crypto.subtle.digest('SHA-256', enc.encode(s))));
+  return crypto.subtle.timingSafeEqual(x, y);
+}
 
 function headers(origin, extra = {}) {
   return {
@@ -265,6 +353,17 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: headers(origin) });
     if (request.method !== 'GET') return new Response('Method not allowed', { status: 405 });
 
+    // Every play kept, for the listening Action only.
+    const url = new URL(request.url);
+    if (url.pathname === '/plays') {
+      if (!env.LOG_KEY || !(await same(request.headers.get('Authorization') || '', 'Bearer ' + env.LOG_KEY))) {
+        return new Response('Not found', { status: 404 });
+      }
+      const gate = env.NOW.get(env.NOW.idFromName('spotify'));
+      const res = await gate.fetch('https://gate/plays?after=' + encodeURIComponent(url.searchParams.get('after') || ''));
+      return new Response(res.body, { status: res.status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+    }
+
     if (!edge || Date.now() - edge.at > EDGE * 1000) {
       const gate = env.NOW.get(env.NOW.idFromName('spotify'));
       const res = await gate.fetch('https://gate/now');
@@ -279,9 +378,14 @@ export default {
     return new Response(edge.body, { status: edge.status, headers: headers(origin, extra) });
   },
 
-  // Start the listening Action. A failure is only logged: the next tick
-  // is fifteen minutes away, and GitHub's own schedule is still there.
+  // Keep the last fifty plays, then start the listening Action. A failure
+  // is only logged: the next tick is fifteen minutes away, and GitHub's
+  // own schedule is still there.
   async scheduled(event, env) {
+    const gate = env.NOW.get(env.NOW.idFromName('spotify'));
+    const swept = await gate.fetch('https://gate/sweep');
+    if (!swept.ok) console.error('sweep: ' + (await swept.text()).slice(0, 200));
+
     if (!env.GITHUB_TOKEN) {
       console.error('listening: GITHUB_TOKEN is not set');
       return;

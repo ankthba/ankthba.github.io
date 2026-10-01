@@ -103,6 +103,31 @@ const token = await accessToken();
 // Fold in anything newer than the last play already counted. Local files
 // have no id and can't be linked to, so they aren't counted.
 const recent = await api('/me/player/recently-played?limit=50', token);
+
+// Spotify only reports the last fifty, so the now-playing Worker keeps
+// every play it sees (every fifteen minutes, however late this run is).
+// Take any it has from before the oldest play already counted here or
+// logged, and fold them in with Spotify's fifty.
+const { LISTENING_BUFFER_URL, LISTENING_BUFFER_KEY, LOG_CURSOR } = process.env;
+if (LISTENING_BUFFER_URL && LISTENING_BUFFER_KEY) {
+  const logged = (await readJSON(LOG_CURSOR || '', {})).last || null;
+  const after = [state.last, logged].filter(Boolean).sort()[0] || '';
+  try {
+    const res = await fetch(LISTENING_BUFFER_URL + '?after=' + encodeURIComponent(after), {
+      headers: { Authorization: 'Bearer ' + LISTENING_BUFFER_KEY },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error(res.status + ' ' + (await res.text()).slice(0, 200));
+    const kept = await res.json();
+    const seen = new Set(recent.items.map((i) => Date.parse(i.played_at)));
+    const extra = kept.filter((i) => !seen.has(Date.parse(i.played_at)));
+    recent.items.push(...extra);
+    console.log(`${extra.length} plays from the Worker beyond Spotify's last fifty.`);
+  } catch (err) {
+    // Spotify's fifty still go through; the Worker keeps the rest for next time.
+    console.warn('Worker plays unavailable:', err.message);
+  }
+}
 const last = state.last ? Date.parse(state.last) : 0;
 const fresh = recent.items
   .filter((item) => Date.parse(item.played_at) > last)

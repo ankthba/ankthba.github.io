@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the footer toggle is only shown where it can actually work. */
+       the colophon toggle is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -16,15 +16,6 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
-      /* "At a glance", remembered, or asked for with ?brief */
-      var q = /[?&]brief(=([^&]*))?/.exec(location.search);
-      var on;
-      try { on = localStorage.getItem('mode') === 'brief'; } catch (e) {}
-      if (q) {
-        on = !/^(0|false|off)$/.test(q[2] || '');
-        try { on ? localStorage.setItem('mode', 'brief') : localStorage.removeItem('mode'); } catch (e) {}
-      }
-      if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
   <title>Music | Aniketh Bandlamudi</title>
@@ -42,45 +33,27 @@
 </head>
 <body>
   
-  <header class="bar grid mono">
-    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
-    <span class="bar__clock">Charlottesville<span data-clock></span></span>
-    <nav class="bar__nav" aria-label="Site">
-      <a class="u" href="/work/">Work</a>
-      <a class="u" href="/education/">Education</a>
-      <a class="u" href="/projects/">Projects</a>
-      <a class="u" href="/research/">Research</a>
-      <a class="u" href="/music/" aria-current="page">Music</a>
-      <a class="u" href="/photos/">Photos</a>
-      <a class="u" href="/press/">Press</a>
-      <a class="u" href="/resume/">Resume</a>
-      <a class="u" href="/contact/">Contact</a>
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link" data-text="About">About</a>
+      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
+      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="/music/" class="masthead__nav-link active" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
+      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
     </nav>
-    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
   </header>
-
-  <div class="menu" id="menu" data-menu>
-    <nav class="menu__nav" aria-label="Menu">
-      <a href="/" style="--i:0">Home</a>
-      <a href="/work/" style="--i:1">Work</a>
-      <a href="/education/" style="--i:2">Education</a>
-      <a href="/projects/" style="--i:3">Projects</a>
-      <a href="/research/" style="--i:4">Research</a>
-      <a href="/music/" style="--i:5" aria-current="page">Music</a>
-      <a href="/photos/" style="--i:6">Photos</a>
-      <a href="/press/" style="--i:7">Press</a>
-      <a href="/resume/" style="--i:8">Resume</a>
-      <a href="/contact/" style="--i:9">Contact</a>
-    </nav>
-    <div class="menu__foot mono">
-      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </div>
-  </div>
 
   <main class="page music" data-music data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/">
         <h1 class="page-title">Music</h1>
@@ -88,12 +61,9 @@
 
         <!-- Shown by music.js while the Worker can't ask Spotify. -->
         <section class="off" role="status" aria-label="Off the air" data-notice hidden>
-          <span class="off__eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <div class="off__text">
-            <h2 class="off__title">Off the air.</h2>
-            <p class="off__why" data-notice-text></p>
-          </div>
-          <p class="off__clock mono"><span class="off__label">Back in</span><span class="off__count" data-notice-count>--:--:--</span><span class="off__at" data-notice-at></span></p>
+          <h2 class="off__title">Off the air.</h2>
+          <p class="off__why" data-notice-text></p>
+          <p class="off__clock"><span class="off__label">Back in</span> <span class="off__count" data-notice-count>--:--:--</span> <span class="off__at" data-notice-at></span></p>
         </section>
 
         <p class="music__empty" data-music-empty>Nothing to show just yet.</p>
@@ -106,60 +76,36 @@
               <p class="now__name" data-now-name></p>
               <p class="now__by" data-now-by></p>
               <div class="now__bar" data-now-bar hidden><i data-now-fill></i></div>
-              <p class="now__time mono" data-now-time hidden></p>
+              <p class="now__time" data-now-time hidden></p>
             </div>
-          </section>
-
-          <section class="music__sec" aria-labelledby="log-heading">
-            <div class="music__head">
-              <h2 class="sec__t" id="log-heading">Listening log</h2>
-            </div>
-            <div class="log" data-log></div>
           </section>
 
           <section class="music__sec" aria-labelledby="top-heading">
-            <div class="music__head">
-              <h2 class="sec__t" id="top-heading">Most listened to right now</h2>
-            </div>
-            <div class="listening grid music__tops">
-              <div class="listening__col">
-                <h3 class="listening__label">Songs</h3>
-                <ol class="plays" data-top-tracks></ol>
-              </div>
-              <div class="listening__col">
-                <h3 class="listening__label">Artists</h3>
-                <ol class="plays plays--artists" data-top-artists></ol>
-              </div>
-            </div>
+            <h2 class="music__heading" id="top-heading">Most listened to this week</h2>
+            <h3 class="music__label">Songs</h3>
+            <ol class="plays" data-top-tracks></ol>
+            <h3 class="music__label">Artists</h3>
+            <ol class="plays plays--artists" data-top-artists></ol>
+          </section>
+
+          <section class="music__sec" aria-labelledby="log-heading">
+            <h2 class="music__heading" id="log-heading">Listening log</h2>
+            <div class="log" data-log></div>
           </section>
         </div>
   </main>
 
-  <footer class="foot">
-    <div class="sec__head grid rise">
-      <span class="sec__t">Say hello</span>
-    </div>
-    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
-    <div class="foot__row grid mono">
-      <nav aria-label="Elsewhere">
-        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
-      </nav>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
       </span>
-      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
-      <a class="u" href="#top" data-top>Back to top<span class="arr arr--up" aria-hidden="true"></span></a>
-    </div>
+    </p>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/site.js" defer></script>
   <script src="/assets/js/music.js" defer></script>
 </body>
 </html>

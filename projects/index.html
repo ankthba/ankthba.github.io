@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the footer toggle is only shown where it can actually work. */
+       the colophon toggle is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -16,71 +16,35 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
-      /* "At a glance", remembered, or asked for with ?brief */
-      var q = /[?&]brief(=([^&]*))?/.exec(location.search);
-      var on;
-      try { on = localStorage.getItem('mode') === 'brief'; } catch (e) {}
-      if (q) {
-        on = !/^(0|false|off)$/.test(q[2] || '');
-        try { on ? localStorage.setItem('mode', 'brief') : localStorage.removeItem('mode'); } catch (e) {}
-      }
-      if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
   <title>Projects | Aniketh Bandlamudi</title>
-  <meta name="description" content="Projects by Aniketh Bandlamudi.">
-  <link rel="canonical" href="https://aniketh.net/projects/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Projects | Aniketh Bandlamudi">
-  <meta property="og:description" content="Projects by Aniketh Bandlamudi.">
-  <meta property="og:url" content="https://aniketh.net/projects/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="Projects by Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
   
-  <header class="bar grid mono">
-    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
-    <span class="bar__clock">Charlottesville<span data-clock></span></span>
-    <nav class="bar__nav" aria-label="Site">
-      <a class="u" href="/work/">Work</a>
-      <a class="u" href="/education/">Education</a>
-      <a class="u" href="/projects/" aria-current="page">Projects</a>
-      <a class="u" href="/research/">Research</a>
-      <a class="u" href="/music/">Music</a>
-      <a class="u" href="/photos/">Photos</a>
-      <a class="u" href="/press/">Press</a>
-      <a class="u" href="/resume/">Resume</a>
-      <a class="u" href="/contact/">Contact</a>
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link" data-text="About">About</a>
+      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="/projects/" class="masthead__nav-link active" data-text="Projects">Projects</a>
+      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
+      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
     </nav>
-    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
   </header>
-
-  <div class="menu" id="menu" data-menu>
-    <nav class="menu__nav" aria-label="Menu">
-      <a href="/" style="--i:0">Home</a>
-      <a href="/work/" style="--i:1">Work</a>
-      <a href="/education/" style="--i:2">Education</a>
-      <a href="/projects/" style="--i:3" aria-current="page">Projects</a>
-      <a href="/research/" style="--i:4">Research</a>
-      <a href="/music/" style="--i:5">Music</a>
-      <a href="/photos/" style="--i:6">Photos</a>
-      <a href="/press/" style="--i:7">Press</a>
-      <a href="/resume/" style="--i:8">Resume</a>
-      <a href="/contact/" style="--i:9">Contact</a>
-    </nav>
-    <div class="menu__foot mono">
-      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </div>
-  </div>
 
   <main class="page">
         <h1 class="page-title">Projects</h1>
@@ -101,9 +65,7 @@
               <h3 class="project-item__title">Aperta</h3>
               <span class="project-item__role">Co-creator</span>
             </div>
-            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient still understands at home: a hand-drawn body with a red spot on the place, one plain sentence for what happened, every medicine with what it is for and how to take it, what to do next, and step-by-step walkthroughs for the things a note assumes you already know, like rinsing a tooth socket with a syringe or using an inhaler with a spacer. In the patient's language, read aloud one idea per screen, and printed on one sheet for the fridge. Then the clinician turns the screen around.</p>
-            <p class="project-item__description">The note parser, the library of 205 conditions in 21 categories, drug resolution and duplicate-ingredient detection through RxNorm, and a prescriber check that quotes the FDA label are deterministic code running in the page itself, so the published site needs no server and no API keys.</p>
-            <p class="project-item__description">Nothing clinical is generated: a model only translates or fills a parsing gap, and any line that cannot be read as a drug order is handed back to the clinician under "Not used" rather than guessed at. All eighteen anatomical views and nine walkthroughs are drawn by hand. Built at VTHacks 14.</p>
+            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient still understands at home: a hand-drawn body with a red spot on the place, one plain sentence for what happened, every medicine with what it is for and how to take it, what to do next, and step-by-step walkthroughs for the things a note assumes you already know, like rinsing a tooth socket with a syringe or using an inhaler with a spacer. In the patient's language, read aloud one idea per screen, and printed on one sheet for the fridge. Then the clinician turns the screen around. The note parser, the library of 205 conditions in 21 categories, drug resolution and duplicate-ingredient detection through RxNorm, and a prescriber check that quotes the FDA label are deterministic code running in the page itself, so the published site needs no server and no API keys. Nothing clinical is generated: a model only translates or fills a parsing gap, and any line that cannot be read as a drug order is handed back to the clinician under "Not used" rather than guessed at. All eighteen anatomical views and nine walkthroughs are drawn by hand. Built at VTHacks 14.</p>
             <div class="project-item__links">
               <a href="https://aperta.health" target="_blank" rel="noopener" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/VTHacks14" target="_blank" rel="noopener" class="project-item__link">View repo</a>
@@ -115,10 +77,7 @@
               <h3 class="project-item__title">Hypnagogia</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep.</p>
-            <p class="project-item__description">144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles.</p>
-            <p class="project-item__description">The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load.</p>
-            <p class="project-item__description">Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
+            <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep. 144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles. The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load. Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
             <div class="project-item__links">
               <a href="https://aniketh.net/hypnagogia" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>
@@ -128,7 +87,7 @@
           <article class="project-item">
             <div class="project-item__header">
               <h3 class="project-item__title">Haze</h3>
-              <span class="project-item__role">Creator</span>
+              <span class="project-item__role">Weather App</span>
             </div>
             <p class="project-item__description">Beautiful, full-featured weather app designed for fast, accurate daily decisions, with current conditions, hourly trends, multi-day forecasts, air quality, wind, humidity, pressure, UV, visibility, sunrise and sunset details, and severe-weather awareness in one polished interface.</p>
             <div class="project-item__links">
@@ -151,8 +110,7 @@
               <h3 class="project-item__title">Graphite</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser.</p>
-            <p class="project-item__description">It plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
+            <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser. Plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
             <div class="project-item__links">
               <a href="https://aniketh.net/graphite" class="project-item__link">Use it</a>
               <a href="https://github.com/ankthba/graphite" target="_blank" rel="noopener" class="project-item__link">View repo</a>
@@ -211,7 +169,7 @@
               <h3 class="project-item__title">Oakton Codebase</h3>
               <span class="project-item__role">Co-President</span>
             </div>
-            <p class="project-item__description">Led Oakton High School’s coding club: competitive programming, web development, USACO and LeetCode prep, and mentoring for its members.</p>
+            <p class="project-item__description">Leading Oakton HS’s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep while mentoring members.</p>
             <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener" class="project-item__link">View site</a>
           </article>
 
@@ -243,30 +201,16 @@
         </div>
   </main>
 
-  <footer class="foot">
-    <div class="sec__head grid rise">
-      <span class="sec__t">Say hello</span>
-    </div>
-    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
-    <div class="foot__row grid mono">
-      <nav aria-label="Elsewhere">
-        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
-      </nav>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
       </span>
-      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
-      <a class="u" href="#top" data-top>Back to top<span class="arr arr--up" aria-hidden="true"></span></a>
-    </div>
+    </p>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

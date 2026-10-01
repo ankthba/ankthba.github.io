@@ -1,60 +1,99 @@
 /* =========================================================
    style.css - Portfolio
-   A twelve-column page set in EB Garamond, with IBM Plex Mono
-   for the small print: the bar, numbers, captions. One accent,
-   a marigold. Hairline rules for structure.
+   One centered column, serif throughout. Italic serif for
+   names and titles, letterspaced caps for labels and nav,
+   hairline rules for structure.
    ========================================================= */
 
 /* ---------------------------------------------------------
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
 
 /* ---------------------------------------------------------
-   2. Tokens
+   2. CSS Variables & Theme
    --------------------------------------------------------- */
 
 /* The light palette, and the whole palette as far as a browser without
-   light-dark() is concerned. */
+   light-dark() is concerned. Those browsers stay on ivory, which is
+   where the site was before dark mode existed. */
 :root {
-  --paper: #f2f0e9;
-  --ink: #151513;
-  --muted: #78736a;
-  --rule: rgba(21, 21, 19, 0.16);
-  --rule-strong: rgba(21, 21, 19, 0.38);
+  --color-bg: #faf9f5;
+  --color-bg-alt: #f0eee8;
+  --color-fg: #262624;
+  --color-muted: #6f695e;
+  --color-border: rgba(38, 38, 36, 0.14);
+  --color-border-hover: rgba(38, 38, 36, 0.3);
 
-  /* A marigold. On the dark page it is bright enough to set anything
-     in. On ivory it only holds up at display sizes, so there it colours
-     large type (--accent-ink) and marks small links with a marigold
-     underline under ink, never marigold words. */
-  --accent: #f2b705;
-  --accent-ink: #e8a80c;
+  /* The gallery mat behind a photo. White in both themes: a print is
+     mounted on white board whatever the room's lighting, and on the dark
+     page the mat becomes the thing that reads as paper. */
+  --color-mat: #ffffff;
+  --color-scrim: rgba(250, 249, 245, 0.96);
 
-  --scrim: rgba(242, 240, 233, 0.97);
+  /* Muted Prussian blue: cool enough to read as a link on the warm
+     ivory, desaturated enough to sit beside the ink without shouting */
+  --color-link: #2f5575;
+  --color-link-hover: #4a749b;
+  --color-link-underline: rgba(47, 85, 117, 0.35);
 
-  --serif: "EB Garamond", Garamond, Georgia, serif;
-  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  /* A link underline drawn in ink instead of blue, for the colophon
+     controls: they set the page's appearance, they don't go anywhere. */
+  --color-underline-quiet: rgba(38, 38, 36, 0.32);
 
-  --gutter: clamp(16px, 2.2vw, 36px);
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --font-serif: "EB Garamond", Garamond, Georgia, serif;
+  --font-display: "EB Garamond", Garamond, Georgia, serif;
+  --font-sans: "EB Garamond", Garamond, Georgia, serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2.5rem;
+  --space-lg: 4.5rem;
+  --space-xl: 7rem;
+
+  --measure: 36rem;
+
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   color-scheme: light;
 }
 
+/* Both palettes, in one place. Each token carries its light and its dark
+   value, and light-dark() reads whichever the used color-scheme calls
+   for, so switching themes means changing one property rather than
+   restating twenty. The dark side is not an inversion: the ivory becomes
+   a warm near-black of the same temperature, the ink a warm off-white
+   rather than #fff, and the Prussian blue rises to a tint that still
+   reads as a link against it.
+
+   Guarded by @supports so that a browser without light-dark() also
+   keeps color-scheme: light above, and doesn't end up with dark
+   scrollbars framing an ivory page. */
 @supports (color: light-dark(#000, #fff)) {
   :root {
-    --paper: light-dark(#f2f0e9, #121210);
-    --ink: light-dark(#151513, #ecebe4);
-    --muted: light-dark(#78736a, #8d887e);
-    --rule: light-dark(rgba(21, 21, 19, 0.16), rgba(236, 235, 228, 0.14));
-    --rule-strong: light-dark(rgba(21, 21, 19, 0.38), rgba(236, 235, 228, 0.36));
-    --accent: light-dark(#f2b705, #f5c030);
-    --accent-ink: light-dark(#e8a80c, #f5c030);
-    --scrim: light-dark(rgba(242, 240, 233, 0.97), rgba(18, 18, 16, 0.97));
+    --color-bg: light-dark(#faf9f5, #1a1917);
+    --color-bg-alt: light-dark(#f0eee8, #22211e);
+    --color-fg: light-dark(#262624, #e8e6df);
+    --color-muted: light-dark(#6f695e, #a49d90);
+    --color-border: light-dark(rgba(38, 38, 36, 0.14), rgba(232, 230, 223, 0.16));
+    --color-border-hover: light-dark(rgba(38, 38, 36, 0.3), rgba(232, 230, 223, 0.32));
 
-    /* No data-theme defers to the system. The footer toggle writes the
-       attribute to override it, and removes it again for "System". */
+    /* --color-mat is deliberately absent: the gallery mat is white in
+       both themes, so it keeps its single definition above. Only the
+       paper the lightbox lays over the page follows the theme. */
+    --color-scrim: light-dark(rgba(250, 249, 245, 0.96), rgba(26, 25, 23, 0.96));
+
+    --color-link: light-dark(#2f5575, #8fb3d4);
+    --color-link-hover: light-dark(#4a749b, #b3cde5);
+    --color-link-underline: light-dark(rgba(47, 85, 117, 0.35), rgba(143, 179, 212, 0.38));
+
+    --color-underline-quiet: light-dark(rgba(38, 38, 36, 0.32), rgba(232, 230, 223, 0.3));
+
+    /* No data-theme is the default state, and it defers to the system.
+       The colophon toggle writes the attribute to override it, and
+       removes it again for "System". */
     color-scheme: light dark;
   }
 
@@ -72,431 +111,330 @@
   padding: 0;
 }
 
-html { -webkit-text-size-adjust: 100%; }
+::selection {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
 
 body {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-fg);
+  background-color: var(--color-bg);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--serif);
-  font-size: 1.0625rem;
-  line-height: 1.5;
-  /* Garamond's own old-style figures sit in a line of lowercase the way
-     lining ones don't; the mono keeps its lining, tabular ones. */
-  font-variant-numeric: oldstyle-nums proportional-nums;
-  font-kerning: normal;
-  text-rendering: optimizeLegibility;
-  hanging-punctuation: first allow-end;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-/* Paper grain, fixed over everything and never in the way. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  pointer-events: none;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-main { flex: 1; }
-
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
-button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-
-h1, h2, h3 { font-weight: 400; }
-p { text-wrap: pretty; }
-
-::selection { background: var(--accent); color: #151513; }
-
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-.mono {
-  font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.45;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  font-variant-numeric: lining-nums tabular-nums;
-}
-
-.muted { color: var(--muted); }
-.nowrap { white-space: nowrap; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  padding-inline: var(--gutter);
-}
-
-/* A link that underlines from the left on hover. */
-.u {
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
-  transition: background-size 0.5s var(--ease);
-}
-.u:hover,
-.u:focus-visible,
-.u[aria-current="page"] { background-size: 100% 1px; }
-
-/* Arrows are drawn, not typed. iOS sets U+2197 and its neighbours as
-   emoji, and EB Garamond draws the rest in a weight of its own; a mask
-   filled with currentColor matches whatever text it follows. */
-:root {
-  --arr-r: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M2 8.5h11M9.2 4.7l3.8 3.8-3.8 3.8'/></svg>");
-  --arr-ne: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M4 12.5l8-8M6 4.5h6v6'/></svg>");
-  --arr-l: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M14 8.5H3M6.8 4.7L3 8.5l3.8 3.8'/></svg>");
-  --arr-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M8 14V3M4.2 6.8L8 3l3.8 3.8'/></svg>");
-  --arr-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='square'><path d='M8 2v11M4.2 9.2L8 13l3.8-3.8'/></svg>");
-}
-
-.arr,
-.project-item__link::after,
-.photos__links a::after {
-  display: inline-block;
-  width: 0.72em;
-  height: 0.72em;
-  margin-left: 0.3em;
-  vertical-align: -0.04em;
-  background: currentColor;
-  -webkit-mask: var(--arr) center / contain no-repeat;
-  mask: var(--arr) center / contain no-repeat;
-}
-.arr--r { --arr: var(--arr-r); }
-.arr--l { --arr: var(--arr-l); }
-.arr--ne { --arr: var(--arr-ne); }
-.arr--up { --arr: var(--arr-up); }
-.arr--down { --arr: var(--arr-down); }
-.mono .arr { width: 1.05em; height: 1.05em; vertical-align: -0.2em; }
-
-/* Things rise into view once, as /assets/js/site.js finds them. */
-.js .rise {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 1s ease, transform 1.2s var(--ease);
-}
-.js .rise.in { opacity: 1; transform: none; }
-
-/* ---------------------------------------------------------
-   4. Bar (every page): fixed, and inverted against whatever
-   passes under it
-   --------------------------------------------------------- */
-
-.bar {
-  position: fixed;
-  inset: 0 0 auto;
-  /* Above the paper grain, so the grain is inverted with everything else
-     rather than laid over the inverted type as a grey haze. */
-  z-index: 55;
-  font-weight: 500;
-  padding-top: 18px;
-  /* White, differenced against whatever is under it: the type is always
-     the inverse of the page, a photograph, or the menu. */
-  color: #fff;
-  mix-blend-mode: difference;
-  align-items: start;
-  transition: transform 0.5s var(--ease), opacity 0.4s ease;
-}
-
-/* Out of the way while reading down the page, back as soon as the
-   reader scrolls up for it. Set by /assets/js/site.js. */
-.bar.away {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-.bar__id { grid-column: 1 / 3; }
-.bar__mode { grid-column: 3 / 5; justify-self: start; }
-.bar__clock { grid-column: 5 / 7; font-variant-numeric: tabular-nums; }
-.bar__nav {
-  grid-column: 7 / 13;
-  display: flex;
-  justify-content: space-between;
-  gap: 0 12px;
-  flex-wrap: wrap;
-}
-
-/* The button that stands in for the nav on small screens. */
-.bar__menu {
-  display: none;
-  grid-column: 10 / 13;
-  justify-self: end;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: inherit;
-  /* A thumb-sized target around eleven pixels of type. */
-  padding: 12px 0 12px 20px;
-  margin: -12px 0;
-}
-
-/* "At a glance": a switch in the bar. It is inverted along with the
-   rest of the bar, so it is drawn only in white (which inverts) and
-   black (which leaves the page alone): off is an outline, on is solid. */
-.bar__mode {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: inherit;
-  white-space: nowrap;
-  /* A thumb-sized target around the switch. */
-  padding: 12px 0;
-  margin: -12px 0;
-}
-.switch {
-  position: relative;
-  width: 24px;
-  height: 13px;
-  flex: none;
-  border: 1px solid currentColor;
-  border-radius: 7px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-.switch::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-  transition: transform 0.35s var(--ease), background-color 0.3s ease;
-}
-.bar__mode[aria-checked="true"] .switch { background: currentColor; }
-.bar__mode[aria-checked="true"] .switch::after { transform: translateX(11px); background: #000; }
-
-/* The menu: the whole screen, paper-coloured, the pages set large. It
-   sits under the bar, so the button that opened it stays in reach to
-   close it. */
-.menu {
-  position: fixed;
-  inset: 0;
-  z-index: 35;
-  display: none;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
-  padding: calc(18px + 56px) var(--gutter) calc(24px + env(safe-area-inset-bottom));
-  background: var(--paper);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-}
-.menu.open {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.35s ease;
-}
-.menu__nav a {
+img {
+  max-width: 100%;
+  height: auto;
   display: block;
-  width: fit-content;
-  font-size: min(clamp(2.5rem, 11.5vw, 4.4rem), 7.4svh);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: transform 0.7s var(--ease), opacity 0.5s ease;
-}
-.menu.open .menu__nav a {
-  opacity: 1;
-  transform: none;
-  transition-delay: calc(var(--i) * 35ms + 60ms);
-}
-.menu__nav a[aria-current="page"] { font-style: italic; color: var(--accent-ink); }
-.menu__nav a:active { font-style: italic; }
-.menu__foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 20px;
-  color: var(--muted);
 }
 
-body.menu-open { overflow: hidden; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
 
 /* ---------------------------------------------------------
-   5. Section heads: set like an editorial running head, the
-   name in italic and a quiet link opposite it
+   4. Masthead (every page)
    --------------------------------------------------------- */
 
-.sec {
-  padding-top: clamp(96px, 16vh, 180px);
+.masthead {
+  width: 100%;
+  /* Was 48rem, which put the masthead in a wider box than the text and
+     gave the page three different column edges. One measure now. */
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) 0;
+  text-align: center;
+  /* Makes this box the reference the name sizes itself against. */
+  container-type: inline-size;
 }
-.sec__head {
-  align-items: baseline;
-  padding-bottom: 20px;
-}
-.sec__t {
-  grid-column: 1 / 9;
-  font-style: italic;
-  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+
+.masthead__name {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  /* Fallback for browsers without container query units. */
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  /* "Aniketh Bandlamudi" advances 8.068em in EB Garamond, so the column
+     width divided by that sets the name to exactly one measure — the same
+     left and right edge as the nav and the body copy, at every viewport.
+     The constant is tied to this string in this face: change either and
+     re-measure, or the name stops meeting the column. */
+  font-size: calc(100cqi / 8.068);
+  white-space: nowrap;
   line-height: 1.1;
-  letter-spacing: -0.01em;
+  color: var(--color-fg);
+  transition: opacity var(--transition-fast);
 }
-.sec__aside {
-  grid-column: 9 / 13;
-  text-align: right;
-  font-size: 1.05rem;
+
+a.masthead__name:hover {
+  opacity: 0.6;
+}
+
+/* The masthead's own content box is already exactly one measure, so the
+   nav just fills it — no second copy of the column arithmetic to drift.
+   text-wrap: balance is gone: it evened the rows against each other but
+   pulled them to ~300px inside a 496px column, which read as a third
+   width on the page. Filling the measure matters more than a balanced
+   last line. */
+.masthead__nav {
+  max-width: 100%;
+  margin: 2rem auto 0;
+  /* The body copy on this site is justified, so the nav is too: every row
+     meets both edges of the same measure the name and the text meet.
+     balance still picks the break points, which keeps the rows to an even
+     number of links each — without it the 15th link strands alone on a
+     line, and justifying a lone link would stretch it across the column. */
+  text-wrap: balance;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+/* Keep handles and other unbreakable tokens on one line */
+.nowrap {
+  white-space: nowrap;
+}
+
+.masthead__nav-link {
+  display: inline-block;
+  /* No side margins: justification supplies the horizontal gaps, and
+     margins here would inset the first and last link of every row, leaving
+     the nav a few px narrower than the column it is supposed to match. */
+  margin: 0 0 0.65rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--color-fg);
+  transition: color var(--transition-fast);
+}
+
+/* Invisible ghosts reserve both the upright and italic widths
+   (EB Garamond italic runs narrower) so the italic current-page
+   link sits at the same width as the rest of the row */
+.masthead__nav-link::before,
+.masthead__nav-link::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.masthead__nav-link::before {
+  font-style: normal;
+}
+
+.masthead__nav-link::after {
+  font-style: italic;
+}
+
+.masthead__nav-link:hover {
+  color: var(--color-muted);
+}
+
+/* Current page reads quiet, like the reference */
+.masthead__nav-link.active {
+  font-style: italic;
+  color: var(--color-muted);
 }
 
 /* ---------------------------------------------------------
-   6. Inner pages: a very large title, then entries on the grid
+   5. Page column
    --------------------------------------------------------- */
 
 .page {
-  padding: clamp(120px, 22vh, 240px) var(--gutter) 0;
+  flex: 1;
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+}
+
+/* Body text justifies to both column edges, like the nav */
+.page p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .page-title {
-  font-size: clamp(3.6rem, 12vw, 12rem);
-  line-height: 0.9;
-  letter-spacing: -0.035em;
-  margin: 0 0 clamp(56px, 10vh, 120px) -0.04em;
-  animation: title-in 1.3s var(--ease) both;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.25rem, 5vw, 2.9rem);
+  line-height: 1.15;
+  margin-bottom: var(--space-md);
+  color: var(--color-fg);
 }
 
-@keyframes title-in {
-  from { opacity: 0; transform: translateY(0.25em); }
-  to { opacity: 1; transform: none; }
+/* ---------------------------------------------------------
+   6. Home intro
+   --------------------------------------------------------- */
+
+.about__text p {
+  color: var(--color-fg);
+  margin-bottom: 1.6rem;
 }
 
-/* Entries: work, education, projects, research, press. The title and
-   its role take the left of the page, the account of it the right. */
+.about__text p:last-child {
+  margin-bottom: 0;
+}
+
+.about__text a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.about__text a:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
+}
+
+/* Latest writing: the nav link treatment, stacked and left-aligned */
+
+.writing {
+  margin-top: var(--space-md);
+}
+
+.writing__heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  margin-bottom: 0.9rem;
+  color: var(--color-fg);
+}
+
+.writing__list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.writing__link {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.writing__link:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
+}
+
+/* ---------------------------------------------------------
+   7. Entry lists (work, projects, education, research)
+   --------------------------------------------------------- */
+
 .projects__list {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid var(--rule);
-  counter-reset: entry;
 }
 
 .project-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  align-content: start;
-  align-items: baseline;
-  padding: 58px 0 48px;
-  border-top: 1px solid var(--rule);
-  counter-increment: entry;
-}
-.project-item::before {
-  content: counter(entry, decimal-leading-zero);
-  position: absolute;
-  top: 18px;
-  left: 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  color: var(--muted);
+  padding: var(--space-md) 0;
 }
 
-.project-item > * { grid-column: 7 / 12; }
+.project-item:first-child {
+  padding-top: 0;
+}
+
+.project-item:last-child {
+  padding-bottom: 0;
+}
 
 .project-item__header {
-  /* Spans however many rows the right column needs. Empty implicit
-     rows are zero tall, so the number only has to be big enough. */
-  grid-column: 1 / 7 !important;
-  grid-row: 1 / span 12;
-  padding-right: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
 }
 
 .project-item__title {
-  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.018em;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
 }
 
 .project-item__role {
-  display: block;
-  margin-top: 0.8rem;
-  font-size: 1.02rem;
+  font-size: 0.95rem;
   font-style: italic;
-  color: var(--muted);
+  color: var(--color-muted);
 }
 
 .project-item__description {
-  font-size: 1.12rem;
-  line-height: 1.55;
-  margin-bottom: 0.9rem;
-  max-width: 62ch;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-fg);
+  margin: 0 0 0.5rem;
 }
 
-.project-item__link,
-.photos__links a,
-.hero__foot a {
-  text-decoration: underline;
-  text-decoration-color: var(--rule-strong);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.24em;
-  text-decoration-skip-ink: auto;
-  transition: text-decoration-color 0.3s ease;
-}
-.project-item__link:hover,
-.photos__links a:hover,
-.hero__foot a:hover {
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 2px;
+.project-item__description:last-child {
+  margin-bottom: 0;
 }
 
 .project-item__link {
-  justify-self: start;
-  margin-top: 0.3rem;
-  font-size: 1.05rem;
-  color: var(--ink);
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  margin-top: 0.35rem;
+  transition: color var(--transition-fast);
 }
-.project-item__link::after { content: ""; --arr: var(--arr-r); }
-.project-item__link[target="_blank"]::after { --arr: var(--arr-ne); }
-.project-item__link[href^="mailto:"]::after,
-.project-item__link[download]::after { display: none; }
 
 .project-item__links {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
 }
-.project-item__links .project-item__link { margin-top: 0; }
 
-/* Facts about an entry, set as a small table: the label in mono, the
-   fact in the text face, a hairline between each. */
-.facts {
-  display: grid;
-  grid-template-columns: minmax(7em, max-content) minmax(0, 1fr);
-  max-width: 62ch;
-  margin: 0.2rem 0 0.9rem;
-  border-top: 1px solid var(--rule);
+.project-item__links .project-item__link {
+  margin-top: 0;
 }
-.facts dt,
-.facts dd {
-  padding: 10px 0 9px;
-  border-bottom: 1px solid var(--rule);
+
+.project-item__link:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
 }
-.facts dt {
-  padding-top: 14px;
-  padding-right: 24px;
-  font-family: var(--mono);
-  font-size: 11px;
-  line-height: 1.45;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.facts dd { font-size: 1.05rem; line-height: 1.45; }
 
 .project-item__link--disabled {
   cursor: default;
@@ -504,1254 +442,679 @@ body.menu-open { overflow: hidden; }
   pointer-events: none;
 }
 
-/* Contact and 404: one large sentence and a way on. */
-.contact__text {
-  max-width: 22ch;
-  margin-bottom: 2rem;
-  font-size: clamp(1.7rem, 3.6vw, 3.4rem);
-  line-height: 1.12;
-  letter-spacing: -0.015em;
-}
-/* The way on is the point of these pages, so it's set to be seen. */
-.contact__text + .project-item__link {
-  font-size: clamp(1.3rem, 2vw, 1.9rem);
-  letter-spacing: -0.01em;
-}
-
-/* Long-form documents, like the Haze privacy policy: one column of
-   reading, set where every entry's account starts, at column seven. */
-.legal {
-  max-width: 40rem;
-  margin-left: calc((100% - 11 * var(--gutter)) / 2 + 6 * var(--gutter));
-  font-size: 1.12rem;
-  line-height: 1.6;
-}
-.legal__updated {
-  margin-bottom: 2rem;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.legal h2 {
-  margin: 2.6rem 0 0.6rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-  font-size: clamp(1.4rem, 2vw, 1.8rem);
-  font-style: italic;
-  line-height: 1.15;
-}
-.legal p + p { margin-top: 0.9rem; }
-.legal ul { margin-top: 0.9rem; padding-left: 1.1em; }
-.legal li + li { margin-top: 0.4rem; }
-.legal li::marker { color: var(--muted); }
-.legal strong { font-weight: 500; }
-.legal a {
-  text-decoration: underline;
-  text-decoration-color: var(--rule-strong);
-  text-underline-offset: 0.2em;
-  transition: text-decoration-color 0.3s ease;
-}
-.legal a:hover { text-decoration-color: var(--accent); }
-@media (max-width: 900px) {
-  .legal { margin-left: 0; }
-}
-
 /* ---------------------------------------------------------
-   7. Photography
+   8. Photos
    --------------------------------------------------------- */
 
+/* Masonry columns; photos keep their native aspect ratio,
+   each in a white gallery mat */
 .photos__grid {
-  columns: 4;
-  column-gap: var(--gutter);
+  columns: 3;
+  column-gap: 0.9rem;
 }
 
 .photo-item {
   break-inside: avoid;
-  margin-bottom: var(--gutter);
+  margin-bottom: 0.9rem;
+  padding: 1.85rem;
+  background: var(--color-mat);
   cursor: zoom-in;
 }
 
 .photo-item img {
+  display: block;
   width: 100%;
   height: auto;
-  background: var(--rule);
-  transition: opacity 0.4s ease;
+  transition: opacity var(--transition-base);
 }
 
-.photo-item:hover img { opacity: 0.82; }
-.photo-item:focus-visible { outline-offset: 4px; }
+.photo-item:hover img {
+  opacity: 0.85;
+}
 
 .photos__links {
   display: flex;
-  gap: 2rem;
-  margin-top: clamp(40px, 6vh, 72px);
-  font-size: 1.15rem;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
-.photos__links a::after { content: ""; --arr: var(--arr-ne); }
+.photos__links a {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
 
+.photos__links a:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: var(--color-link-hover);
+}
+
+/* Full-screen viewer: same ivory paper, photo centered,
+   a quiet Close in the corner */
 .lightbox {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(48px, 7vh, 80px) var(--gutter);
-  background: var(--scrim);
-  animation: lightbox-in 0.3s ease;
+  padding: var(--space-md);
+  background: var(--color-scrim);
+  animation: lightbox-fade var(--transition-base);
 }
 
-.lightbox[hidden] { display: none; }
+.lightbox[hidden] {
+  display: none;
+}
 
-@keyframes lightbox-in {
+@keyframes lightbox-fade {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 .lightbox__img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  animation: lightbox-in 0.4s ease;
+  display: block;
+  max-width: min(60rem, 100%);
+  max-height: 82vh;
+  padding: 2.5rem;
+  background: var(--color-mat);
 }
-
-/* Where it falls in the set, under the photograph. */
-.lightbox__foot {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: 16px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  color: var(--muted);
-}
-.lightbox__nav { display: flex; align-items: center; gap: 14px; flex: none; font-variant-numeric: tabular-nums; }
-.lightbox__nav button { padding: 10px; margin: -10px; color: var(--ink); }
-.lightbox__nav button:hover { color: var(--accent-ink); }
-.lightbox__nav .arr { margin: 0; }
 
 .lightbox__close {
   position: absolute;
-  top: 18px;
-  right: var(--gutter);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  top: 1.25rem;
+  right: 1.75rem;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--color-fg);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
 }
-.lightbox__close:hover { color: var(--muted); }
+
+.lightbox__close:hover {
+  color: var(--color-muted);
+}
+
+.lightbox__close:focus {
+  outline: none;
+}
+
+.lightbox__close:focus-visible {
+  outline: 1px solid var(--color-border-hover);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .photos__grid {
+    columns: 2;
+    column-gap: 0.6rem;
+  }
+
+  .photo-item {
+    margin-bottom: 0.6rem;
+    padding: 1.2rem;
+  }
+}
 
 /* ---------------------------------------------------------
-   8. Resume
+   9. Contact & Resume
    --------------------------------------------------------- */
+
+.contact__text {
+  max-width: 34rem;
+  margin-bottom: var(--space-md);
+}
 
 .resume__frame {
   width: 100%;
-  max-width: 52rem;
-  height: auto;
-  /* Stays white in both themes on purpose: the SVG is black glyph
-     paths on nothing, and a resume should read as a sheet of paper
-     whatever the page behind it is doing. */
-  background: #fff;
-  box-shadow: 0 2px 24px rgba(21, 21, 19, 0.08);
-  transition: transform 0.6s var(--ease);
+  border: 1px solid var(--color-border);
 }
-a:hover > .resume__frame { transform: translateY(-4px); }
 
 .resume__download {
-  display: inline-block;
-  margin-top: 1.5rem;
+  margin-top: var(--space-sm);
 }
 
 /* ---------------------------------------------------------
-   9. Footer (every page)
+   10. Colophon (footer, every page)
    --------------------------------------------------------- */
 
-.foot { padding-top: clamp(110px, 18vh, 200px); }
-
-/* Set to exactly the width of the page by /assets/js/site.js; 13vw is
-   close enough for the moment before it runs. */
-.foot__mail {
-  display: block;
-  padding-inline: var(--gutter);
-  white-space: nowrap;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  font-size: 13vw;
-  transition: color 0.35s ease;
+.colophon {
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
 }
-.foot__mail:hover { color: var(--accent-ink); font-style: italic; }
 
-.foot__row {
-  padding-block: 34px 26px;
-  margin-top: 26px;
-  border-top: 1px solid var(--rule);
-  row-gap: 18px;
-  align-items: start;
+.colophon__meta {
+  /* The copyright takes the left edge of the measure and the theme
+     control the right, so this row meets the same two edges the name,
+     the nav and the body copy meet. They drop onto two lines rather
+     than crowd on a narrow screen. */
+  display: flex;
+  flex-wrap: wrap;
+  /* Centred, not baseline-aligned: the buttons carry the invisible width
+     ghosts below, and a zero-height block after the text moves a
+     button's baseline down past the copyright's. Both boxes are the same
+     height, so centring lines the two lots of text up exactly. */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-muted);
 }
-.foot__row > :nth-child(1) { grid-column: 1 / 6; display: flex; flex-wrap: wrap; gap: 6px 18px; }
-.foot__row > :nth-child(2) { grid-column: 6 / 8; }
-.foot__row > :nth-child(3) { grid-column: 8 / 11; white-space: nowrap; }
-.foot__row > :nth-child(4) { grid-column: 11 / 13; text-align: right; white-space: nowrap; }
 
 /* Hidden until the inline head script has proved scripting is on:
-   without it these three buttons would do nothing. */
-.theme-toggle { display: none; }
-:root.js .theme-toggle { display: inline-flex; gap: 12px; }
-.theme-toggle__option { text-transform: uppercase; color: var(--muted); }
-.theme-toggle__option:hover { color: var(--ink); }
-.theme-toggle__option[aria-pressed="true"] { color: var(--ink); }
-.theme-toggle__option[aria-pressed="true"]::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin-right: 6px;
-  vertical-align: 0.1em;
-  border-radius: 50%;
-  background: var(--accent);
+   without it these three buttons would sit in the footer doing
+   nothing, and the page would still be following the system anyway. */
+.theme-toggle {
+  display: none;
 }
 
-/* ---------------------------------------------------------
-   10. Home: the headline
-   --------------------------------------------------------- */
-
-.hero {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-top: clamp(96px, 17vh, 190px);
+:root.js .theme-toggle {
+  display: inline-flex;
+  gap: 0.8rem;
 }
 
-.hero__title {
-  padding-inline: var(--gutter);
-  font-size: clamp(2.3rem, 5.8vw, 9.4rem);
-  line-height: 0.99;
-  letter-spacing: -0.022em;
-  text-indent: 25%;
+.theme-toggle__option {
+  /* Underlined like a link, in ink rather than blue: these change how
+     the page looks, they don't go anywhere. Upright against the italic
+     colophon line, so that italic is left to mean "in force". */
+  font-family: inherit;
+  font-size: inherit;
+  font-style: normal;
+  line-height: inherit;
+  padding: 0;
+  color: var(--color-muted);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-underline-quiet);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
 }
-.hero__title em { font-style: italic; }
-.hero__title .nb { white-space: nowrap; }
-/* The headline is one sentence in clauses. On a wide screen they run on
-   as a paragraph; on a phone or an upright tablet each starts its own
-   line, the name larger, and a few take shorter wording. */
-.hero__title .sh { display: none; }
-@media (max-width: 700px), (max-width: 1023px) and (orientation: portrait) {
-  .hero__title .cl { display: block; }
-  .hero__title .cl + .cl { margin-top: var(--cl-gap, 0.2em); }
-  .hero__title .cl--hi { font-size: 1.3em; line-height: 1; }
-  .hero__title .lg { display: none; }
-  .hero__title .sh { display: inline; }
-  .hero__title .inl { width: 1.9em; height: 0.9em; vertical-align: -0.08em; }
-}
-/* "music" goes to the music page: underlined in marigold, italic word
-   and live cover together. */
-.hero__link {
-  background: linear-gradient(var(--accent), var(--accent)) 0 90% / 100% 0.035em no-repeat;
-  transition: color 0.3s ease, background-size 0.4s var(--ease);
-}
-.hero__link .inl { vertical-align: -0.02em; }
-.hero__link:hover { color: var(--accent-ink); background-size: 100% 0.08em; }
-/* text-indent inherits into inline-blocks, and every word is one. */
-.hero__title .w,
-.hero__title .w > span { text-indent: 0; }
 
-/* Photographs set in the line like words. */
-.inl {
-  display: inline-block;
-  position: relative;
-  width: 1.5em;
-  height: 0.72em;
-  margin: 0 0.06em;
-  vertical-align: -0.02em;
+/* The same invisible ghosts the nav uses: each button reserves both its
+   upright and its italic width, so switching the setting doesn't change
+   how wide these three words are and shove the centred row sideways. */
+.theme-toggle__option::before,
+.theme-toggle__option::after {
+  content: attr(data-text);
+  display: block;
+  height: 0;
   overflow: hidden;
-  border-radius: 0.06em;
-  background: var(--rule);
-  text-indent: 0;
-  transform-origin: 0 50%;
-  transition: width 0.7s var(--ease), transform 0.7s var(--ease), clip-path 1.2s var(--ease);
-}
-.inl.open { z-index: 2; }
-/* Its display would otherwise beat the hidden attribute's. */
-.inl[hidden] { display: none; }
-.inl img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* Each photo is framed on its subject (--fx, --fy in the markup), and
-     zooms a little towards it as the frame opens on hover. How far the
-     frame opens is set by home.js, so that it never runs past the end of
-     its line. */
-  object-position: var(--fx, 50%) var(--fy, 50%);
-  transform-origin: var(--fx, 50%) var(--fy, 50%);
-  opacity: 0;
-  transition: opacity 0.9s ease, transform 0.9s var(--ease);
-}
-.inl img.on { opacity: 1; }
-@media (hover: hover) {
-  .inl.open img { transform: scale(1.12); }
+  visibility: hidden;
 }
 
-/* Load: each word rises out of its own line, the photographs open
-   from the left. Only when scripting is on to finish the job. */
-.js .hero__title .w {
-  display: inline-block;
-  clip-path: inset(-0.2em -0.3em -0.3em -0.3em);
-}
-.js .hero__title .w > span {
-  display: inline-block;
-  transform: translateY(125%);
-  transition: transform 1.25s var(--ease);
-  transition-delay: var(--d, 0s);
-}
-.js .hero__title .inl { clip-path: inset(0 100% 0 0); transition-delay: 0s, 0s, var(--d, 0s); }
-.ready .hero__title .w > span { transform: none; }
-.ready .hero__title .inl { clip-path: inset(0 0 0 0); }
-.settled .hero__title .w { clip-path: none; }
-
-.hero__foot {
-  padding-block: 28px 22px;
-  align-items: start;
-}
-.hero__foot > :nth-child(1) { grid-column: 1 / 4; }
-.hero__foot > :nth-child(2) { grid-column: 4 / 8; }
-.hero__foot > :nth-child(3) { grid-column: 8 / 11; }
-.hero__foot > :nth-child(4) { grid-column: 11 / 13; text-align: right; align-self: end; }
-.hero__foot b { font-weight: 400; color: var(--muted); display: block; margin-bottom: 4px; }
-
-/* The arrow under "Scroll" drops a little, now and then. */
-.hero__cue .arr { animation: cue 2.8s var(--ease) 3s infinite; }
-@keyframes cue {
-  0%, 60%, 100% { transform: none; }
-  30% { transform: translateY(3px); }
+.theme-toggle__option:last-child {
+  text-align: right;
 }
 
-.js .fade { opacity: 0; transition: opacity 1.4s ease 0.9s; }
-.ready .fade { opacity: 1; }
+.theme-toggle__option::before {
+  font-style: normal;
+}
+
+.theme-toggle__option::after {
+  font-style: italic;
+}
+
+.theme-toggle__option:hover {
+  color: var(--color-fg);
+}
+
+/* The setting in force goes italic and full ink, the way the current
+   page reads in the nav. */
+.theme-toggle__option[aria-pressed="true"] {
+  font-style: italic;
+  color: var(--color-fg);
+  text-decoration-color: var(--color-fg);
+}
+
+.theme-toggle__option:focus-visible {
+  outline: 1px solid var(--color-border-hover);
+  outline-offset: 3px;
+}
 
 /* ---------------------------------------------------------
-   11. Home: the louder layer. The name set the width of the page,
-   the rest of the headline hung from the fourth column, and the
-   work in an asymmetric grid.
+   11. Labels shared by inline page styles
    --------------------------------------------------------- */
 
-/* Headline: the name enormous, the rest of the sentence hung
-   from the fourth column, a small technical block beside it.
+.section-label {
+  display: block;
+  color: var(--color-muted);
+  margin: var(--space-lg) 0 var(--space-md);
+}
+
+.section-label:first-child {
+  margin-top: 0;
+}
+
+/* ---------------------------------------------------------
+   12. Responsive
    --------------------------------------------------------- */
 
-@media (min-width: 701px) {
-  .hero--bold { padding-top: clamp(84px, 13vh, 150px); }
-  .hero--bold .hero__title {
-    display: grid;
-    grid-template-columns: 25% minmax(0, 1fr);
-    align-items: start;
-    text-indent: 0;
-    font-size: clamp(2rem, 4.2vw, 7rem);
-    line-height: 1.02;
+@media (max-width: 640px) {
+  :root {
+    --space-xl: 4.5rem;
+    --space-lg: 3rem;
+    --space-md: 2rem;
   }
-  .hero--bold .cl--hi {
-    grid-column: 1 / -1;
-    display: block;
-    margin: 0 0 0.12em -0.055em;
-    font-size: 3.18em;
-    line-height: 0.84;
-    letter-spacing: -0.045em;
-    white-space: nowrap;
+
+  .masthead {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
-  .hero--bold .rest { grid-column: 2; display: block; }
-  .hero--bold .hb__meta {
-    grid-column: 1;
-    grid-row: 2;
+
+  .masthead__nav-link {
+    margin: 0 0 0.45rem;
+  }
+
+  .page {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  /* Matches the masthead and the page column, so the colophon's two
+     edges stay the same two edges at every width. */
+  .colophon {
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+  }
+
+  /* Center only the page title under the centered masthead;
+     entry titles, roles, and links stay left-aligned */
+  .page-title {
+    text-align: center;
+  }
+
+  .contact__text {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ---------------------------------------------------------
+   13. Home layout and the portrait
+
+   The home page is the one page that is not a single centred
+   column. The column is unchanged: same measure, same masthead,
+   same justified nav, same colophon. It is simply moved off
+   centre so that a picture can sit beside it, and the pair of
+   them is centred instead.
+
+   The picture is a photograph sampled down to a grid of tones
+   and redrawn in EB Garamond by /assets/js/plate.js.
+   --------------------------------------------------------- */
+
+.layout {
+  flex: 1;
+  width: 100%;
+  /* Stops the picture running away with itself on a very wide monitor. */
+  max-width: 80rem;
+  margin-inline: auto;
+  display: grid;
+  /* The text column keeps its own measure to the pixel; the picture
+     takes whatever is left, so it grows with the window instead of
+     sitting at a fixed size in the middle of it. */
+  grid-template-columns: minmax(0, var(--measure)) minmax(16rem, 1fr);
+  /* Four rows: the name, the prose, a spacer that takes up whatever is
+     left of the window, and the colophon. The slack is parked in its
+     own row rather than inside the prose row, so the prose row keeps
+     its natural height and the picture beside it can be centred on the
+     text rather than on the empty half of the page. */
+  grid-template-rows: auto auto 1fr auto;
+  justify-content: center;
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+.layout > .masthead { grid-column: 1; grid-row: 1; }
+.layout > .page     { grid-column: 1; grid-row: 2; }
+.layout > .colophon { grid-column: 1; grid-row: 4; }
+
+/* The picture stands against the text and nothing else: it spans the
+   name and the prose, not the spacer under them, so it is centred on
+   the body of the page rather than on the window. */
+.layout > .plate {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: stretch;
+  position: relative;
+  min-height: 0;
+  /* The masthead opens with this much space above the name and the
+     prose closes with the same below it. Matching it here makes the
+     picture's content box exactly as tall as the text beside it, so
+     the face spans the text and nothing more. */
+  padding: var(--space-xl) 0;
+}
+
+/* The photograph sits behind the plate permanently, as an ordinary
+   image the browser paints for us. The canvas above it is opaque: it
+   fills with the page colour and punches holes in itself along the
+   trail, and the photograph shows through them. Nothing about the
+   picture depends on it being redrawn. */
+.plate__photo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.plate canvas {
+  display: block;
+  position: relative;
+  cursor: crosshair;
+  /* Read by the renderer, not painted. A custom property holding
+     light-dark() comes back from getPropertyValue() as the literal
+     function text, which canvas cannot use, so the ink is taken off a
+     real property that does resolve. */
+  color: var(--color-fg);
+}
+
+/* Laid over its column and centred on it, rather than sitting in the
+   flow at the top of it. Taking the picture out of flow also means it
+   can be sized against the column's height without its own height
+   feeding back into that measurement. */
+@media (min-width: 1041px) {
+  .plate canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Below this the text column could no longer hold its full measure
+   beside the picture, so the page goes back to being one centred
+   column and the picture takes its place in the flow, between the nav
+   and the prose. */
+@media (max-width: 1040px) {
+  /* A flex column rather than a plain block, so that .page keeps its
+     flex: 1 and the colophon still sits at the foot of a short page. */
+  .layout {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    padding: 0.62em 2em 0 0;
-    font-size: 11px;
-    line-height: 1.45;
-    color: var(--muted);
   }
-  .hb__meta .w, .hb__meta .w > span { text-indent: 0; }
-  .hb__clock { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  .layout > .plate {
+    position: relative;
+    width: 100%;
+    max-width: 17rem;
+    margin: var(--space-md) auto 0;
+    padding: 0;
+  }
 }
 
-/* On a phone the sentence stacks as it always has; the block goes. */
-@media (max-width: 700px), (max-width: 1023px) and (orientation: portrait) {
-  .hero--bold .hero__title { display: block; }
-  .hero--bold .cl--hi { margin: 0; white-space: normal; }
-  .hero--bold .rest { display: contents; }
-  .hero--bold .hb__meta { display: none; }
-  .hero--bold .hero__title .cl--hi { font-size: 1.75em; line-height: 0.9; letter-spacing: -0.035em; }
-}
+@media (max-width: 560px) {
+  /* Justification needs room. At this measure it opens rivers between
+     the words and hyphenates every other line, so the prose and the
+     nav both go ragged. The column edges still line up on the left,
+     which is what the page is actually built on. */
+  .page p {
+    text-align: left;
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
 
-/* The letters of the name lift towards the pointer. */
-.ch {
-  display: inline-block;
-  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-  will-change: transform;
-}
+  .masthead__nav {
+    text-align: center;
+    text-align-last: center;
+  }
 
-/* ---------------------------------------------------------
-   Work: an asymmetric grid. Every picture starts and ends on a
-   column line; each has the same caption under it, the name on
-   the left and its number on the right, on one baseline.
-   --------------------------------------------------------- */
+  .masthead__nav-link {
+    margin: 0 0.55rem 0.5rem;
+  }
 
-.bwork .sec__head { margin-bottom: clamp(20px, 3vh, 36px); }
-
-.wg {
-  align-items: start;
-  row-gap: clamp(72px, 12vh, 150px);
-}
-.wg__item--prag { grid-column: 1 / 13; }
-.wg__item--ocr  { grid-column: 1 / 8; }
-.wg__item--apt  { grid-column: 9 / 13; margin-top: clamp(96px, 18vh, 220px); }
-.wg__item--haze { grid-column: 1 / 5; margin-top: clamp(-120px, -8vh, -48px); }
-.wg__item--hyp  { grid-column: 6 / 13; margin-top: clamp(64px, 12vh, 150px); }
-
-.wg__media { display: block; }
-.wg__frame {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 4 / 3;
-  background: var(--rule);
-}
-.wg__item--prag .wg__frame { aspect-ratio: 21 / 9; }
-.wg__item--apt .wg__frame,
-.wg__item--haze .wg__frame { aspect-ratio: 4 / 5; }
-.wg__frame > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.4s var(--ease);
-}
-.wg__media:hover .wg__frame > img { transform: scale(1.035); }
-
-/* The caption: name and number on one baseline, then a line about it,
-   then the facts in small print. */
-.wg__cap {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  column-gap: 16px;
-  padding-top: 16px;
-}
-.wg__name {
-  font-size: clamp(2rem, 3.4vw, 4rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-.wg__item--prag .wg__name { font-size: clamp(2.6rem, 5.2vw, 6.4rem); }
-.wg__name a { transition: color 0.3s ease; }
-.wg__item:hover .wg__name a { font-style: italic; }
-.wg__n { color: var(--muted); font-variant-numeric: tabular-nums; }
-.wg__desc {
-  grid-column: 1 / -1;
-  max-width: 36ch;
-  margin-top: 10px;
-  font-size: clamp(1.05rem, 1.2vw, 1.22rem);
-  line-height: 1.35;
-  text-wrap: balance;
-}
-.wg__spec { grid-column: 1 / -1; margin-top: 8px; color: var(--muted); }
-
-/* Pragmatic: its mark, and two lines of small print. */
-.wg__frame--mark { background: #1c1a15; color: rgba(236, 235, 228, 0.5); }
-.wg__diamond {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 8%;
-  aspect-ratio: 1;
-  background: #f2f0e9;
-  transform: translate(-50%, -50%) rotate(45deg);
-  transition: transform 1.6s var(--ease);
-}
-.wg__media:hover .wg__diamond { transform: translate(-50%, -50%) rotate(135deg); }
-.wg__tl, .wg__br { position: absolute; }
-.wg__tl { left: 24px; top: 20px; color: #f2b705; }
-.wg__br { right: 24px; bottom: 20px; }
-
-/* Aperta: the drawings as a plate of nine. */
-.wg__frame--plates {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(0, 1fr));
-  gap: 4%;
-  padding: 9%;
-  background: #fff;
-}
-.wg__frame--plates img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 1.2s var(--ease);
-}
-.wg__media:hover .wg__frame--plates img { transform: scale(1.06); }
-
-/* Haze: the phone standing up out of a dusk the colour of the app. */
-.wg__frame--dusk { background: linear-gradient(170deg, #d3cbd9 0%, #dcc8ba 55%, #e9d8c0 100%); }
-.wg__frame--dusk > img {
-  position: absolute;
-  left: 50%;
-  top: 11%;
-  width: 62%;
-  height: auto;
-  transform: translateX(-50%);
-  filter: drop-shadow(0 26px 36px rgba(40, 28, 40, 0.24));
-}
-.wg__media:hover .wg__frame--dusk > img { transform: translate(-50%, -2.5%); }
-
-.wg__frame--night { background: #0a0a09; }
-
-/* Everything else, in a row of four. */
-.also {
-  margin-top: clamp(80px, 13vh, 160px);
-  padding-top: 18px;
-  border-top: 1px solid var(--rule);
-  row-gap: 24px;
-}
-.also__label { grid-column: 1 / 13; color: var(--muted); }
-.also__item { grid-column: span 3; display: flex; flex-direction: column; gap: 4px; }
-.also__name { font-size: clamp(1.5rem, 2.3vw, 2.3rem); line-height: 1.05; letter-spacing: -0.015em; transition: color 0.3s ease; }
-.also__desc { font-style: italic; color: var(--muted); line-height: 1.35; }
-.also__item:hover .also__name { color: var(--accent-ink); font-style: italic; }
-
-@media (max-width: 900px) {
-  .wg { row-gap: 64px; }
-  .wg__item--prag, .wg__item--ocr, .wg__item--apt, .wg__item--haze, .wg__item--hyp { grid-column: 1 / 13; margin-top: 0; }
-  .wg__item--prag .wg__frame { aspect-ratio: 4 / 3; }
-  .wg__diamond { width: 16%; }
-  .wg__br { display: none; }
-  .also__item { grid-column: span 6; }
-}
-}
+  .layout > .plate {
+    max-width: 15rem;
+    margin-top: var(--space-sm);
+  }
 }
 
 /* ---------------------------------------------------------
-   The press marquee, louder.
-   --------------------------------------------------------- */
-.marquee__item { font-size: clamp(2.6rem, 8vw, 9rem); }
+   13b. Music
 
-@media (prefers-reduced-motion: reduce) {
-  .ch { transition: none; }
-}
-
-/* ---------------------------------------------------------
-   12. Home: photographs, a pinned strip that scrolls sideways
+   The music page, drawn by /assets/js/music.js. The same column
+   as every other page: the song playing now set like an entry
+   title, then ranked lists and a log in hairline rows.
    --------------------------------------------------------- */
 
-.gallery {
-  position: relative;
-  padding-top: 0;
-  margin-top: clamp(40px, 6vh, 80px);
-}
-.gallery__pin {
-  position: sticky;
-  top: 0;
-  height: 100svh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.gallery .sec__head {
-  position: absolute;
-  top: clamp(64px, 11vh, 110px);
-  left: 0;
-  right: 0;
-}
-.track {
-  display: flex;
-  align-items: flex-end;
-  gap: clamp(20px, 3.4vw, 64px);
-  /* Enough room at the end for "See them all" to arrive, not a blank
-     third of the screen after it. */
-  padding-inline: var(--gutter) max(var(--gutter), 10vw);
-  width: max-content;
-  will-change: transform;
-}
-.shot { flex: none; }
-.shot img {
-  height: var(--h, 56vh);
-  width: auto;
-  background: var(--rule);
-}
-.shot figcaption {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  color: var(--muted);
-}
-.shot--end {
-  align-self: center;
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1;
-  font-style: italic;
-  white-space: nowrap;
-}
-.shot--end .arr { color: var(--accent-ink); }
-.gallery__count {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: 22px;
-  display: flex;
-  justify-content: space-between;
-  font-variant-numeric: tabular-nums;
-}
-.gallery__hint { transition: opacity 0.4s ease; }
-.gallery__hint.done { opacity: 0; }
-.gallery__bar {
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: 16px;
-  height: 1px;
-  background: var(--rule);
-}
-.gallery__bar i {
-  display: block;
-  height: 100%;
-  background: var(--accent);
-  transform-origin: 0 50%;
-  transform: scaleX(0);
-}
-
-/* Without the pinning (small screens, reduced motion) it is just a
-   strip you swipe. */
-.gallery.static { height: auto !important; }
-.gallery.static .gallery__pin { position: relative; height: auto; overflow: visible; }
-.gallery.static .sec__head { position: static; }
-.gallery.static .track {
-  width: auto;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--gutter);
-  padding-right: var(--gutter);
-  padding-bottom: 16px;
-  transform: none !important;
-  scrollbar-width: none;
-}
-.gallery.static .track::-webkit-scrollbar { display: none; }
-.gallery.static .shot { scroll-snap-align: start; }
-.gallery.static .gallery__count,
-.gallery.static .gallery__bar { display: none; }
-
-/* ---------------------------------------------------------
-   13. Home: press marquee and about
-   --------------------------------------------------------- */
-
-.marquee {
-  display: block;
-  overflow: hidden;
-  border-block: 1px solid var(--rule);
-  padding-block: clamp(14px, 2vw, 26px);
-}
-.marquee__track {
-  display: flex;
-  width: max-content;
-  animation: marquee 48s linear infinite;
-}
-.marquee:hover .marquee__track { animation-play-state: paused; }
-.marquee__item {
-  display: flex;
-  align-items: center;
-  font-size: clamp(2.3rem, 6.2vw, 6.6rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-  transition: color 0.3s ease;
-}
-.marquee__item:nth-child(even) { font-style: italic; }
-.marquee__item::after {
-  content: "";
-  width: 0.16em;
-  height: 0.16em;
-  margin: 0 0.55em;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.marquee:hover .marquee__item { color: var(--muted); }
-@keyframes marquee { to { transform: translateX(-50%); } }
-
-.about__body {
-  grid-column: 1 / 10;
-  font-size: clamp(1.45rem, 2.3vw, 2.3rem);
-  line-height: 1.22;
-  letter-spacing: -0.01em;
-}
-.about__body p + p { margin-top: 0.8em; }
-.about__body a {
-  background: linear-gradient(var(--accent), var(--accent)) 0 92% / 100% 0.12em no-repeat;
-  transition: background-size 0.4s var(--ease);
-}
-.about__body a:hover { background-size: 100% 0.5em; }
-.about__side {
-  grid-column: 10 / 13;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  padding-top: 0.6em;
-}
-.about__side b { font-weight: 400; color: var(--muted); display: block; margin-bottom: 6px; }
-.about__side a { font-size: 1.15rem; line-height: 1.5; }
-.about__side ul { list-style: none; }
-
-/* ---------------------------------------------------------
-   13b. Home: this week's listening, filled in by home.js from
-   the hourly Action's output
-   --------------------------------------------------------- */
-
-.listening { row-gap: 56px; }
-.listening__more { display: inline-block; }
-.sec__aside [data-listening-range] { color: var(--muted); }
-.sec__aside [data-listening-range]:not(:empty)::after { content: "\00a0\00a0\00b7\00a0\00a0"; }
-.listening__col:first-child { grid-column: 1 / 7; }
-.listening__col:last-child { grid-column: 7 / 13; }
-
-.listening__label {
-  margin-bottom: 14px;
-  font-size: 1.15rem;
-  font-style: italic;
-  color: var(--muted);
-}
-
-.plays {
-  list-style: none;
-  border-bottom: 1px solid var(--rule);
-}
-
-.play {
-  display: grid;
-  grid-template-columns: 2.4em 56px minmax(0, 1fr) auto;
-  column-gap: 16px;
-  align-items: center;
-  padding: 12px 0;
-  border-top: 1px solid var(--rule);
-  transition: opacity 0.45s ease;
-}
-.play__n { color: var(--muted); }
-.play__art {
-  width: 56px;
-  height: 56px;
-  object-fit: cover;
-  background: var(--rule);
-}
-.plays--artists .play__art { border-radius: 50%; }
-.play__name {
-  display: block;
-  font-size: clamp(1.25rem, 1.9vw, 1.75rem);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  overflow-wrap: anywhere;
-  transition: color 0.3s ease;
-}
-.play__by {
-  display: block;
-  margin-top: 3px;
-  font-size: 0.98rem;
-  font-style: italic;
-  color: var(--muted);
-}
-.play__count { color: var(--muted); text-align: right; white-space: nowrap; }
-
-@media (hover: hover) {
-  .plays:hover .play { opacity: 0.3; }
-  .plays .play:hover { opacity: 1; }
-  .play:hover .play__name { font-style: italic; color: var(--accent-ink); }
-}
-
-/* ---------------------------------------------------------
-   13b2. The music page, drawn by /assets/js/music.js
-   --------------------------------------------------------- */
-
-/* The whole of what's playing fits the first screen: a smaller title
-   than the other pages, and a cover sized to the window's height. */
-.music.page { padding-top: clamp(84px, 12vh, 140px); }
-.music .page-title {
-  font-size: clamp(2.8rem, 7vw, 6.5rem);
-  margin-bottom: 8px;
-}
 .music__lede {
-  margin: 0 0 clamp(22px, 4vh, 44px);
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
-  line-height: 1.3;
+  margin-top: calc(var(--space-md) * -0.6);
+  margin-bottom: var(--space-md);
   font-style: italic;
-  color: var(--muted);
+  color: var(--color-muted);
 }
-.music__empty { font-size: 1.15rem; color: var(--muted); }
 
-/* While Spotify can't be asked: a notice set like the rest of the
-   page, between two rules. A marigold equaliser still bouncing (it's
-   almost certainly still playing somewhere), the news in the italic of
-   the section heads, and on the right the time left, to the second. */
+.music__empty {
+  color: var(--color-muted);
+}
+
+/* While Spotify can't be asked: a quiet note between two rules. */
 .off {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  column-gap: clamp(18px, 2.4vw, 36px);
-  align-items: start;
-  margin: 0 0 clamp(28px, 5vh, 56px);
-  padding-block: 18px 20px;
-  border-block: 1px solid var(--rule);
-  animation: title-in 0.9s var(--ease) both;
+  margin-bottom: var(--space-md);
+  padding: 1.1rem 0 1.2rem;
+  border-block: 1px solid var(--color-border);
 }
-.off[hidden] { display: none; }
 
-.off__eq {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  width: 26px;
-  height: 22px;
-  margin-top: 0.45em;
-}
-.off__eq i {
-  flex: 1;
-  height: 100%;
-  background: var(--accent);
-  transform-origin: 50% 100%;
-  animation: eq 1.1s ease-in-out infinite;
-}
-.off__eq i:nth-child(2) { animation-duration: 0.9s; animation-delay: -0.3s; }
-.off__eq i:nth-child(3) { animation-duration: 1.3s; animation-delay: -0.6s; }
-.off__eq i:nth-child(4) { animation-duration: 0.8s; animation-delay: -0.15s; }
-@keyframes eq {
-  0%, 100% { transform: scaleY(0.25); }
-  50% { transform: scaleY(1); }
+.off[hidden] {
+  display: none;
 }
 
 .off__title {
-  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+  font-size: 1.5rem;
   font-style: italic;
-  line-height: 1.05;
-  letter-spacing: -0.015em;
-}
-.off__why {
-  max-width: 52ch;
-  margin-top: 8px;
-  font-size: 1.05rem;
-  line-height: 1.45;
-  color: var(--muted);
 }
 
-.off__clock {
-  display: grid;
-  justify-items: end;
-  row-gap: 4px;
-  padding-top: 0.35em;
-  color: var(--muted);
+.page .off__why,
+.page .off__clock {
+  margin-top: 0.35rem;
+  text-align: left;
+  color: var(--color-muted);
 }
+
 .off__count {
-  font-family: var(--serif);
-  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  text-transform: none;
-  color: var(--ink);
-  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 700px) {
-  .off { grid-template-columns: auto minmax(0, 1fr); row-gap: 14px; }
-  .off__clock { grid-column: 2; justify-items: start; padding-top: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .off__eq i { animation: none; transform: scaleY(0.6); }
-  .off__eq i:nth-child(2) { transform: scaleY(1); }
-  .off__eq i:nth-child(3) { transform: scaleY(0.4); }
-  .off__eq i:nth-child(4) { transform: scaleY(0.8); }
-}
-
-/* Last played: the cover large, the song set like a headline. */
-.now {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: clamp(20px, 3vw, 48px);
-  align-items: end;
-}
+/* Playing now, or the last play: the cover, then the song. */
 .now__art {
   display: block;
-  width: min(42vw, 54svh);
+  width: min(100%, 20rem);
   aspect-ratio: 1;
-  background: var(--rule);
+  background: var(--color-bg-alt);
 }
-.now__art img { width: 100%; height: 100%; object-fit: cover; }
-.now__art img[hidden] { display: none; }
-.now__when {
+
+.now__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.now__art img[hidden] {
+  display: none;
+}
+
+.now__text {
+  margin-top: 1.25rem;
+}
+
+.page .now__when {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  text-align: left;
+  color: var(--color-muted);
 }
+
 .now--live .now__when::before {
   content: "";
-  width: 8px;
-  height: 8px;
+  width: 0.45rem;
+  height: 0.45rem;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--color-link);
   animation: pulse 1.6s ease-in-out infinite;
 }
-@keyframes pulse { 50% { opacity: 0.25; } }
-.now__name {
-  margin-top: 14px;
-  font-size: clamp(2.4rem, 6vw, 6.4rem);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+
+@keyframes pulse {
+  50% { opacity: 0.25; }
+}
+
+.page .now__name {
+  margin-top: 0.2rem;
+  font-size: 2rem;
+  line-height: 1.15;
+  text-align: left;
   overflow-wrap: anywhere;
 }
-.now__by {
-  margin-top: 12px;
-  font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+
+.page .now__by {
   font-style: italic;
-  color: var(--muted);
+  text-align: left;
+  color: var(--color-muted);
 }
+
 .now__bar {
-  max-width: 440px;
-  height: 2px;
-  margin-top: 22px;
-  background: var(--rule);
+  max-width: 20rem;
+  height: 1px;
+  margin-top: 1rem;
+  background: var(--color-border);
   overflow: hidden;
 }
+
+.now__bar[hidden],
+.now__time[hidden] {
+  display: none;
+}
+
 .now__bar i {
   display: block;
   height: 100%;
-  background: var(--accent);
+  background: var(--color-fg);
   transform-origin: 0 50%;
   transform: scaleX(0);
   transition: transform 0.5s linear;
 }
-.now__time { margin-top: 8px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-
-.music__sec { padding-top: clamp(80px, 13vh, 150px); }
-.music__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 14px 24px;
-  padding-bottom: 12px;
+.page .now__time {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  text-align: left;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
 }
-.music__tops { padding-inline: 0; }
 
-/* The listening log: a time instead of a rank, under each day. */
-.play--now .play__n { color: var(--accent-ink); }
+.music__sec {
+  margin-top: var(--space-lg);
+}
+
+.music__heading {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-sm);
+}
+
+.music__label,
 .log__day {
-  margin: 34px 0 10px;
-  font-size: 1.15rem;
+  margin: 1.75rem 0 0.4rem;
+  font-size: 0.95rem;
   font-style: italic;
-  color: var(--muted);
-}
-.log__day:first-child { margin-top: 0; }
-.plays--log .play { grid-template-columns: 5.2em 48px minmax(0, 1fr); }
-.plays--log .play__art { width: 48px; height: 48px; }
-.plays--log .play__name { font-size: clamp(1.15rem, 1.6vw, 1.45rem); }
-
-@media (max-width: 900px) {
-  .now { grid-template-columns: minmax(0, 1fr); }
-  .now__art { width: min(100%, 44svh); }
+  color: var(--color-muted);
 }
 
-@media (max-width: 560px) {
+.music__heading + .music__label,
+.log__day:first-child {
+  margin-top: 0;
 }
 
-/* ---------------------------------------------------------
-   13c. At a glance: the home page becomes a one-page brief
-   --------------------------------------------------------- */
-
-.brief { display: none; }
-:root[data-mode="brief"] .brief { display: block; }
-/* Only the home page has a brief; every other page is left alone. */
-:root[data-mode="brief"] .home > :not(.brief) { display: none; }
-
-.brief {
-  padding-top: clamp(110px, 17vh, 170px);
-  animation: title-in 0.8s var(--ease) both;
+/* Ranked songs and artists, and the log: one hairline row each. */
+.plays {
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.brief__head { row-gap: 18px; padding-bottom: clamp(48px, 8vh, 88px); }
-.brief__head > * { grid-column: 1 / 11; }
-.brief__kicker { font-style: italic; color: var(--muted); font-size: 1.15rem; }
-.brief__name {
-  font-size: clamp(3rem, 9vw, 8.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  margin-left: -0.04em;
-}
-.brief__lede {
-  max-width: 34ch;
-  font-size: clamp(1.35rem, 2.2vw, 2.1rem);
-  line-height: 1.22;
-  letter-spacing: -0.01em;
-}
-.brief__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-  font-size: 1.05rem;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-.btn:hover { background: var(--ink); color: var(--paper); }
-.btn--solid { background: var(--ink); color: var(--paper); }
-.btn--solid:hover { background: var(--accent); border-color: var(--accent); color: #151513; }
-
-.brief__sec {
-  padding-block: 26px 34px;
-  border-top: 1px solid var(--rule);
-}
-.brief__sec:last-child { border-bottom: 1px solid var(--rule); }
-.brief__label {
-  grid-column: 1 / 4;
-  font-size: clamp(1.4rem, 2vw, 1.9rem);
-  font-style: italic;
-  line-height: 1.1;
-}
-.brief__body {
-  grid-column: 4 / 12;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-}
-/* One measure for the whole entry, so the dates sit at the right edge
-   of the text they belong to, not out at the edge of the page. */
-.brief__entry,
-.brief__press,
-.brief__skills { max-width: 38rem; }
-.brief__title {
-  font-size: clamp(1.3rem, 1.8vw, 1.65rem);
-  line-height: 1.15;
-}
-.brief__meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2px 16px;
-  margin: 4px 0 8px;
-  font-style: italic;
-  color: var(--muted);
-}
-.brief__meta a { color: var(--ink); }
-.brief__when { font-family: var(--mono); font-style: normal; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
-.brief__entry p:last-child,
-.brief__press {
-  font-size: 1.08rem;
-  line-height: 1.55;
-}
-.brief__skills {
+.play {
   display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 10px 28px;
-  font-size: 1.08rem;
-}
-.brief__skills dt { font-style: italic; color: var(--muted); }
-
-/* ---------------------------------------------------------
-   14. Responsive
-   --------------------------------------------------------- */
-
-/* Between tablet and a full desktop there isn't room for everything in
-   one line of the bar: the role goes, and the nav takes its columns. */
-@media (min-width: 1024px) and (max-width: 1280px) {
-  .bar__id { grid-column: 1 / 3; }
-  .bar__mode { grid-column: 3 / 6; }
-  .bar__clock { display: none; }
-  .bar__nav { grid-column: 6 / 13; }
-}
-
-.bar__id, .bar__clock, .bar__nav a { white-space: nowrap; }
-
-/* Below that the nav no longer fits on one line, so the bar keeps the
-   name and a button for the rest. */
-@media (max-width: 1023px) {
-  .bar__clock,
-  .bar__nav { display: none; }
-  /* Name, switch, menu: a row rather than the grid, so the name can
-     give way to the other two on the narrowest phones. */
-  .bar { display: flex; align-items: flex-start; gap: 18px; }
-  .bar__id { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-  .bar__menu { display: block; flex: none; }
-  .bar { padding-top: max(18px, env(safe-area-inset-top)); }
-  .menu { display: flex; }
-}
-
-@media (max-width: 1100px) {
-  .photos__grid { columns: 3; }
-}
-
-@media (max-width: 900px) {
-  .page { padding-top: clamp(130px, 20vh, 200px); }
-
-  .project-item > *,
-  .project-item__header { grid-column: 1 / 13 !important; }
-  .project-item__header { grid-row: auto; padding: 0 0 1.1rem; }
-  .project-item { padding: 50px 0 36px; }
-  .project-item::before { top: 16px; }
-
-  .hero__title { text-indent: 0; }
-  .hero__foot { row-gap: 18px; }
-  .hero__foot > :nth-child(1) { grid-column: 1 / 7; }
-  .hero__foot > :nth-child(2) { grid-column: 7 / 13; }
-  .hero__foot > :nth-child(3) { grid-column: 1 / 10; }
-  .hero__foot > :nth-child(4) { grid-column: 10 / 13; }
-
-
-  .listening__col:first-child,
-  .listening__col:last-child { grid-column: 1 / 13; }
-
-  .brief__head > *,
-  .brief__label,
-  .brief__body { grid-column: 1 / 13; }
-  .brief__label { margin-bottom: 18px; }
-
-  .about__body { grid-column: 1 / 13; }
-  .about__side { grid-column: 1 / 13; flex-direction: row; flex-wrap: wrap; gap: 24px 40px; padding-top: 44px; }
-
-  .foot__row > :nth-child(1),
-  .foot__row > :nth-child(2) { grid-column: 1 / 13; }
-  .foot__row > :nth-child(3) { grid-column: 1 / 9; }
-  .foot__row > :nth-child(4) { grid-column: 9 / 13; }
-}
-
-@media (max-width: 640px) {
-  .photos__grid { columns: 2; }
-}
-
-@media (max-width: 560px) {
-  .hero { padding-top: 76px; }
-  .hero__foot > :nth-child(1),
-  .hero__foot > :nth-child(2) { grid-column: 1 / 13; }
-  .sec__t { grid-column: 1 / 13; }
-  .sec__aside { grid-column: 1 / 13; text-align: left; margin-top: 6px; }
-  .shot img { height: var(--hs, 46vh); }
-  .play { grid-template-columns: 2em 48px minmax(0, 1fr) auto; column-gap: 12px; }
-  .play__art { width: 48px; height: 48px; }
-}
-
-/* ---------------------------------------------------------
-   14b. The pointer (every page, drawn by site.js where there's a
-   mouse): a small marigold dot that takes the shape of a link it's
-   over, and becomes a labelled disc over a project's picture.
-   --------------------------------------------------------- */
-
-.has-cursor,
-.has-cursor * { cursor: none !important; }
-
-.cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.cursor.is-in { opacity: 1; }
-/* Size, position and corners are eased by site.js; only the fill and
-   the blend change here. Whatever shape it takes, it stays the same
-   marigold as the dot, so it reads as the pointer grown, not something
-   else appearing. Over a link it's multiplied into the page (screened
-   on the dark one), which leaves the words on it as dark (or as light)
-   as they were: a highlighter, not a lid. */
-.cursor__shape {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background: var(--accent);
-  transform: translate(-50%, -50%);
-  transition: scale 0.25s var(--ease), background-color 0.3s ease;
-}
-/* Stretched over something larger than a word, a lighter marigold. */
-.cursor.is-link .cursor__shape { background: color-mix(in srgb, var(--accent) 72%, #fff); }
-/* The blend has to be on .cursor itself: it's fixed, so it's its own
-   stacking context, and a blend inside it would only meet the empty
-   layer it makes. */
-.cursor.is-link { mix-blend-mode: multiply; }
-.cursor.is-down .cursor__shape { scale: 0.94; }
-/* On the dark page it's screened, so it's a darker gold that the light
-   words stay bright against. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .cursor.is-link { mix-blend-mode: screen; }
-  :root:not([data-theme="light"]) .cursor.is-link .cursor__shape { background: color-mix(in srgb, var(--accent) 45%, #000); }
-}
-:root[data-theme="dark"] .cursor.is-link { mix-blend-mode: screen; }
-:root[data-theme="dark"] .cursor.is-link .cursor__shape { background: color-mix(in srgb, var(--accent) 45%, #000); }
-/* Where the cursor becomes a button, it is the button's hover: the
-   outlined buttons keep their own colours rather than filling in
-   under it. */
-.has-cursor .btn:not(.btn--solid):hover { background: transparent; color: var(--ink); }
-
-.cursor__tag {
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: flex;
+  grid-template-columns: 1.75rem 2.75rem minmax(0, 1fr) auto;
+  column-gap: 0.85rem;
   align-items: center;
-  gap: 6px;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.plays--log .play {
+  grid-template-columns: 4.5rem 2.75rem minmax(0, 1fr);
+}
+
+.play__n,
+.play__count {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.play--now .play__n {
+  font-style: italic;
+  color: var(--color-fg);
+}
+
+.play__count {
+  text-align: right;
   white-space: nowrap;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #151513;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.5);
-  transition: opacity 0.2s ease, transform 0.5s var(--ease);
 }
-.cursor.is-card .cursor__tag {
-  opacity: 1;
-  transform: translate(-50%, -50%);
-  transition-delay: 0.06s;
+
+.play__art {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: cover;
+  background: var(--color-bg-alt);
 }
-.cursor__arr { width: 1.1em; height: 1.1em; margin: 0; }
+
+.plays--artists .play__art {
+  border-radius: 50%;
+}
+
+.play__name {
+  display: block;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  transition: color var(--transition-fast);
+}
+
+.play__by {
+  display: block;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+
+a.play:hover .play__name {
+  font-style: italic;
+  color: var(--color-muted);
+}
 
 /* ---------------------------------------------------------
-   15. Reduced motion and view transitions
+   14. Reduced Motion & View Transitions
    --------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    transition-delay: 0s !important;
   }
-  .marquee__track { flex-wrap: wrap; width: auto; }
-  .marquee__item:nth-child(n + 7) { display: none; }
-}
-
-/* Printed, the brief is a page of plain type. */
-@media print {
-  .bar, .menu, .foot, .cursor, body::after { display: none !important; }
-  body { background: #fff; color: #000; }
-  :root { --paper: #fff; --ink: #000; --muted: #444; --rule: #ccc; }
-  .brief { padding-top: 0; animation: none; }
-  .brief__actions { display: none; }
-  .brief__sec { break-inside: avoid; }
-  .rise { opacity: 1 !important; transform: none !important; }
 }
 
 @view-transition {

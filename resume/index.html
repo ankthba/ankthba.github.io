@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the footer toggle is only shown where it can actually work. */
+       the colophon toggle is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -16,73 +16,58 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
-      /* "At a glance", remembered, or asked for with ?brief */
-      var q = /[?&]brief(=([^&]*))?/.exec(location.search);
-      var on;
-      try { on = localStorage.getItem('mode') === 'brief'; } catch (e) {}
-      if (q) {
-        on = !/^(0|false|off)$/.test(q[2] || '');
-        try { on ? localStorage.setItem('mode', 'brief') : localStorage.removeItem('mode'); } catch (e) {}
-      }
-      if (on) document.documentElement.setAttribute('data-mode', 'brief');
     })();
   </script>
   <title>Resume | Aniketh Bandlamudi</title>
-  <meta name="description" content="Resume of Aniketh Bandlamudi.">
-  <link rel="canonical" href="https://aniketh.net/resume/">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Resume | Aniketh Bandlamudi">
-  <meta property="og:description" content="Resume of Aniketh Bandlamudi.">
-  <meta property="og:url" content="https://aniketh.net/resume/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="Resume of Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
+  <style>
+    .resume__frame {
+      display: block;
+      width: 100%;
+      max-width: 44rem;
+      height: auto;
+      margin-top: var(--space-md);
+      border-radius: 4px;
+      /* Stays white in both themes on purpose: the SVG is black glyph
+         paths on nothing, and a resume should read as a sheet of paper
+         whatever the page behind it is doing. */
+      background: #fff;
+      box-shadow: 0 2px 16px rgba(38, 38, 36, 0.08);
+    }
+    .resume__download {
+      margin-top: var(--space-sm);
+    }
+    @media (max-width: 768px) {
+      .resume__frame { margin-left: auto; margin-right: auto; }
+    }
+  </style>
 </head>
 <body>
   
-  <header class="bar grid mono">
-    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
-    <span class="bar__clock">Charlottesville<span data-clock></span></span>
-    <nav class="bar__nav" aria-label="Site">
-      <a class="u" href="/work/">Work</a>
-      <a class="u" href="/education/">Education</a>
-      <a class="u" href="/projects/">Projects</a>
-      <a class="u" href="/research/">Research</a>
-      <a class="u" href="/music/">Music</a>
-      <a class="u" href="/photos/">Photos</a>
-      <a class="u" href="/press/">Press</a>
-      <a class="u" href="/resume/" aria-current="page">Resume</a>
-      <a class="u" href="/contact/">Contact</a>
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link" data-text="About">About</a>
+      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
+      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
+      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="/resume/" class="masthead__nav-link active" data-text="Resume">Resume</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
     </nav>
-    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
   </header>
 
-  <div class="menu" id="menu" data-menu>
-    <nav class="menu__nav" aria-label="Menu">
-      <a href="/" style="--i:0">Home</a>
-      <a href="/work/" style="--i:1">Work</a>
-      <a href="/education/" style="--i:2">Education</a>
-      <a href="/projects/" style="--i:3">Projects</a>
-      <a href="/research/" style="--i:4">Research</a>
-      <a href="/music/" style="--i:5">Music</a>
-      <a href="/photos/" style="--i:6">Photos</a>
-      <a href="/press/" style="--i:7">Press</a>
-      <a href="/resume/" style="--i:8" aria-current="page">Resume</a>
-      <a href="/contact/" style="--i:9">Contact</a>
-    </nav>
-    <div class="menu__foot mono">
-      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </div>
-  </div>
-
-  <main class="page">
+  <main class="page page--centered">
         <h1 class="page-title">Resume</h1>
         <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
           <img class="resume__frame" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
@@ -90,30 +75,16 @@
         <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" download="Aniketh-Bandlamudi-Resume.pdf" class="project-item__link resume__download">Download PDF</a>
   </main>
 
-  <footer class="foot">
-    <div class="sec__head grid rise">
-      <span class="sec__t">Say hello</span>
-    </div>
-    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
-    <div class="foot__row grid mono">
-      <nav aria-label="Elsewhere">
-        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
-      </nav>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
       </span>
-      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
-      <a class="u" href="#top" data-top>Back to top<span class="arr arr--up" aria-hidden="true"></span></a>
-    </div>
+    </p>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

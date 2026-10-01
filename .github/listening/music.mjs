@@ -166,6 +166,24 @@ for (const [day, list] of byDay) {
   for (const id of ids) heardBefore.add(id);
 }
 
+// Each month: its plays, time, and how many different songs and artists,
+// counted across the month rather than added up from its days.
+const months = {};
+const byMonth = new Map();
+for (const p of plays) {
+  const m = p.day.slice(0, 7);
+  (byMonth.get(m) || byMonth.set(m, []).get(m)).push(p);
+}
+for (const [month, list] of byMonth) {
+  months[month] = {
+    plays: list.length,
+    minutes: minutes(list),
+    tracks: new Set(list.map((p) => p.id).filter(Boolean)).size,
+    artists: new Set(list.map((p) => p.artists[0]?.id).filter(Boolean)).size,
+    days: new Set(list.map((p) => p.day)).size,
+  };
+}
+
 const music = {
   since,
   today,
@@ -190,6 +208,7 @@ const music = {
     all: await range(since, today),
   },
   calendar,
+  months,
 };
 
 await writeFile(photosPath, JSON.stringify(photos, null, 1) + '\n');

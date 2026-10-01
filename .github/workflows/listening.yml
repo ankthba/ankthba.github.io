@@ -12,8 +12,9 @@ on:
   schedule:
     # Spotify only reports the last fifty plays, about two and a half hours
     # of listening. GitHub delays and drops scheduled runs (in practice
-    # this ran every four to six hours), so the now-playing Worker starts a
-    # run every fifteen minutes too (.github/worker); this is the fallback.
+    # this ran every four to six hours), so the now-playing Worker
+    # (.github/worker) keeps every play itself every fifteen minutes and
+    # starts a run; update.mjs reads those back. This is the fallback.
     - cron: '8,23,38,53 * * * *'
   workflow_dispatch:
 
@@ -61,6 +62,9 @@ jobs:
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
           SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN }}
           RECENT_OUT: ${{ runner.temp }}/recent.json
+          LISTENING_BUFFER_URL: https://aniketh-now.ankthba.workers.dev/plays
+          LISTENING_BUFFER_KEY: ${{ secrets.LISTENING_BUFFER_KEY }}
+          LOG_CURSOR: log/cursor.json
 
       - name: Log every play
         if: env.HAS_LOG == 'true'

@@ -7,8 +7,8 @@
 // instance however many copies of the Worker are running around the
 // world. It is the account's one gate, and it holds three limits:
 //
-//   - what's playing is asked for at most every 15 seconds, and the
-//     recent plays at most every 5 minutes, and only while someone is
+//   - what's playing is asked for at most every 30 seconds, and the
+//     recent plays at most every 15 minutes, and only while someone is
 //     looking (no visitors, no calls);
 //   - no more than DAILY_BUDGET calls in a UTC day, counted in storage so
 //     a restart doesn't reset it;
@@ -47,9 +47,9 @@
 
 const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://localhost:4599'];
 
-const NOW_EVERY = 15;        // seconds between "what's playing" calls
-const RECENT_EVERY = 300;    // seconds between "recent plays" calls
-const DAILY_BUDGET = 2000;   // Spotify Web API calls a UTC day, at most
+const NOW_EVERY = 30;        // seconds between "what's playing" calls
+const RECENT_EVERY = 900;    // seconds between "recent plays" calls (the sweep refreshes them too)
+const DAILY_BUDGET = 1500;   // Spotify Web API calls a UTC day, at most
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
 const EDGE = 5;              // seconds each Worker copy reuses an answer

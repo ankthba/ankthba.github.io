@@ -1105,10 +1105,6 @@ a.masthead__name:hover {
   color: var(--color-link-hover);
 }
 
-.cal__step:disabled {
-  visibility: hidden;
-}
-
 .cal__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -1124,24 +1120,42 @@ a.masthead__name:hover {
 }
 
 .cal__cell {
+  position: relative;
   aspect-ratio: 1;
-  padding: 0.3rem 0.4rem;
-  font-size: 0.85rem;
-  line-height: 1;
-  text-align: left;
-  vertical-align: top;
-  display: flex;
-  align-items: flex-start;
+  overflow: hidden;
+  padding: 0;
   color: var(--color-fg);
-  background: color-mix(in srgb, var(--color-fg) 4%, transparent);
-  outline-offset: 2px;
+  background: var(--color-bg-alt);
   font-variant-numeric: tabular-nums;
 }
 
-.cal__cell--l1 { background: color-mix(in srgb, var(--color-fg) 16%, transparent); }
-.cal__cell--l2 { background: color-mix(in srgb, var(--color-fg) 34%, transparent); }
-.cal__cell--l3 { background: color-mix(in srgb, var(--color-fg) 56%, transparent); color: var(--color-bg); }
-.cal__cell--l4 { background: color-mix(in srgb, var(--color-fg) 80%, transparent); color: var(--color-bg); }
+.cal__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--transition-fast);
+}
+
+.cal__cell--art:hover .cal__art {
+  opacity: 0.85;
+}
+
+/* The date, in the corner: on a cover, set on a small patch of paper
+   so it reads whatever the art behind it. */
+.cal__n {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.3rem;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+.cal__cell--art .cal__n {
+  padding: 0.15rem 0.25rem;
+  background: var(--color-bg);
+}
 
 .cal__cell--off {
   background: none;
@@ -1149,16 +1163,18 @@ a.masthead__name:hover {
   cursor: default;
 }
 
-.cal__cell--today {
+.cal__cell--today .cal__n {
   font-style: italic;
 }
 
 .cal__cell[aria-pressed="true"] {
   outline: 1px solid var(--color-fg);
+  outline-offset: 2px;
 }
 
 .cal__cell:focus-visible {
   outline: 1px dashed var(--color-fg);
+  outline-offset: 2px;
 }
 
 .cal__day {
@@ -1186,7 +1202,7 @@ a.masthead__name:hover {
 
 .cal__stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem 1rem;
   margin-bottom: 1.5rem;
 }
@@ -1207,12 +1223,37 @@ a.masthead__name:hover {
   margin-top: 1.25rem;
 }
 
-.cal__day .play {
+.cal__day .play:has(.play__n:empty) {
   grid-template-columns: 2.75rem minmax(0, 1fr) auto;
 }
 
 .cal__day .play__n:empty {
   display: none;
+}
+
+/* Plays by the hour: 24 bars on a hairline. */
+.cal__hours {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  align-items: end;
+  gap: 2px;
+  height: 4.5rem;
+  border-bottom: 1px solid var(--color-border-hover);
+}
+
+.cal__bar {
+  display: block;
+  background: var(--color-fg);
+  opacity: 0.75;
+}
+
+.cal__axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--color-muted);
 }
 
 .page .cal__artist {
@@ -1237,9 +1278,10 @@ a.masthead__name:hover {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .cal__cell {
-    padding: 0.2rem 0.25rem;
-    font-size: 0.75rem;
+  .cal__n {
+    top: 0.15rem;
+    left: 0.15rem;
+    font-size: 0.7rem;
   }
 }
 

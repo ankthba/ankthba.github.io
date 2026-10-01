@@ -250,7 +250,6 @@
     var today = dayOf(new Date());
     plays = plays.filter(function (item) { return dayOf(new Date(item.played_at)) === today; });
     if (playing) plays = [Object.assign({ now: true, played_at: new Date().toISOString() }, playing)].concat(plays);
-    box.appendChild(el('h3', 'log__day', 'Today, from 12 am'));
     if (!plays.length) {
       box.appendChild(el('p', 'log__empty', 'Nothing yet today.'));
       return;

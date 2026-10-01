@@ -19,7 +19,17 @@
     })();
   </script>
   <title>Projects | Aniketh Bandlamudi</title>
-  <meta name="description" content="Projects by Aniketh Bandlamudi.">  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <link rel="canonical" href="https://aniketh.net/projects/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Projects | Aniketh Bandlamudi">
+  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <meta property="og:url" content="https://aniketh.net/projects/">
+  <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Projects | Aniketh Bandlamudi">
+  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <meta name="twitter:image" content="https://aniketh.net/assets/img/aniketh.jpeg">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
@@ -56,7 +66,7 @@
               <span class="project-item__role">Creator</span>
             </div>
             <p class="project-item__description">A durable execution runtime in Rust for nondeterministic AI agents. It journals every step of a run so agents survive any crash, resume exactly where they stopped, and replay faithfully for debugging and audit.</p>
-            <a href="https://aniketh.net/pragmatic" class="project-item__link">Visit site</a>
+            <a href="/pragmatic/" class="project-item__link">Visit site</a>
           </article>
           -->
 
@@ -65,7 +75,9 @@
               <h3 class="project-item__title">Aperta</h3>
               <span class="project-item__role">Co-creator</span>
             </div>
-            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient still understands at home: a hand-drawn body with a red spot on the place, one plain sentence for what happened, every medicine with what it is for and how to take it, what to do next, and step-by-step walkthroughs for the things a note assumes you already know, like rinsing a tooth socket with a syringe or using an inhaler with a spacer. In the patient's language, read aloud one idea per screen, and printed on one sheet for the fridge. Then the clinician turns the screen around. The note parser, the library of 205 conditions in 21 categories, drug resolution and duplicate-ingredient detection through RxNorm, and a prescriber check that quotes the FDA label are deterministic code running in the page itself, so the published site needs no server and no API keys. Nothing clinical is generated: a model only translates or fills a parsing gap, and any line that cannot be read as a drug order is handed back to the clinician under "Not used" rather than guessed at. All eighteen anatomical views and nine walkthroughs are drawn by hand. Built at VTHacks 14.</p>
+            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient still understands at home: a hand-drawn body with a red spot on the place, one plain sentence for what happened, every medicine with what it is for and how to take it, what to do next, and step-by-step walkthroughs for the things a note assumes you already know, like rinsing a tooth socket with a syringe or using an inhaler with a spacer. In the patient's language, read aloud one idea per screen, and printed on one sheet for the fridge. Then the clinician turns the screen around.</p>
+            <p class="project-item__description">The note parser, the library of 205 conditions in 21 categories, drug resolution and duplicate-ingredient detection through RxNorm, and a prescriber check that quotes the FDA label are deterministic code running in the page itself, so the published site needs no server and no API keys.</p>
+            <p class="project-item__description">Nothing clinical is generated: a model only translates or fills a parsing gap, and any line that cannot be read as a drug order is handed back to the clinician under "Not used" rather than guessed at. All eighteen anatomical views and nine walkthroughs are drawn by hand. Built at VTHacks 14.</p>
             <div class="project-item__links">
               <a href="https://aperta.health" target="_blank" rel="noopener" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/VTHacks14" target="_blank" rel="noopener" class="project-item__link">View repo</a>
@@ -77,9 +89,12 @@
               <h3 class="project-item__title">Hypnagogia</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep. 144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles. The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load. Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
+            <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep.</p>
+            <p class="project-item__description">144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles.</p>
+            <p class="project-item__description">The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load.</p>
+            <p class="project-item__description">Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
             <div class="project-item__links">
-              <a href="https://aniketh.net/hypnagogia" class="project-item__link">Open it</a>
+              <a href="/hypnagogia/" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             </div>
           </article>
@@ -87,11 +102,11 @@
           <article class="project-item">
             <div class="project-item__header">
               <h3 class="project-item__title">Haze</h3>
-              <span class="project-item__role">Weather App</span>
+              <span class="project-item__role">Creator</span>
             </div>
             <p class="project-item__description">Beautiful, full-featured weather app designed for fast, accurate daily decisions, with current conditions, hourly trends, multi-day forecasts, air quality, wind, humidity, pressure, UV, visibility, sunrise and sunset details, and severe-weather awareness in one polished interface.</p>
             <div class="project-item__links">
-              <a href="https://aniketh.net/haze" class="project-item__link">Learn more</a>
+              <a href="/haze/" class="project-item__link">Learn more</a>
               <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
             </div>
           </article>
@@ -110,9 +125,10 @@
               <h3 class="project-item__title">Graphite</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser. Plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
+            <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser.</p>
+            <p class="project-item__description">It plots function, cylindrical, spherical, parametric, and implicit surfaces alongside space curves and vector fields, with click-to-inspect calculus tools for tangent planes, symbolic partial derivatives, gradients, divergence and curl, level curves, Riemann sums, and animated Frenet frames. The expression parser, symbolic differentiation, and marching cubes geometry are written from scratch with no dependencies.</p>
             <div class="project-item__links">
-              <a href="https://aniketh.net/graphite" class="project-item__link">Use it</a>
+              <a href="/graphite/" class="project-item__link">Use it</a>
               <a href="https://github.com/ankthba/graphite" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             </div>
           </article>
@@ -121,7 +137,7 @@
           <article class="project-item">
             <div class="project-item__header">
               <h3 class="project-item__title">OCRadar</h3>
-              <span class="project-item__role">Founder & President</span>
+              <span class="project-item__role">Founder &amp; President</span>
             </div>
             <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
             <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
@@ -158,7 +174,7 @@
           <article class="project-item">
             <div class="project-item__header">
               <h3 class="project-item__title">IllumiSign</h3>
-              <span class="project-item__role">Hack the Nest 2025 Winner</span>
+              <span class="project-item__role">Hack The Nest 2025 Winner</span>
             </div>
             <p class="project-item__description">Open-source, browser-based communication tool for people with ALS using real-time eye tracking to select letters and speak them aloud.</p>
             <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener" class="project-item__link">View project</a>
@@ -169,7 +185,7 @@
               <h3 class="project-item__title">Oakton Codebase</h3>
               <span class="project-item__role">Co-President</span>
             </div>
-            <p class="project-item__description">Leading Oakton HS’s premier coding club, organizing competitive programming, web dev, and USACO/LeetCode prep while mentoring members.</p>
+            <p class="project-item__description">Led Oakton High School’s coding club: competitive programming, web development, USACO and LeetCode prep, and mentoring for its members.</p>
             <a href="https://oaktoncodebase.com/" target="_blank" rel="noopener" class="project-item__link">View site</a>
           </article>
 
@@ -191,10 +207,10 @@
 
           <article class="project-item">
             <div class="project-item__header">
-              <h3 class="project-item__title">CS DS&A</h3>
+              <h3 class="project-item__title">CS DS&amp;A</h3>
               <span class="project-item__role">Coursework</span>
             </div>
-            <p class="project-item__description">Assignments for the Oakton High School AV CS Data Structures & Algorithms course.</p>
+            <p class="project-item__description">Assignments for the Oakton High School AV CS Data Structures &amp; Algorithms course.</p>
             <a href="https://github.com/ankthba/csdsav" target="_blank" rel="noopener" class="project-item__link">View repo</a>
           </article>
 

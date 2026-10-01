@@ -595,6 +595,15 @@ a.masthead__name:hover {
   opacity: 0.85;
 }
 
+.photo-item img:focus {
+  outline: none;
+}
+
+.photo-item img:focus-visible {
+  outline: 1px solid var(--color-fg);
+  outline-offset: 0.6rem;
+}
+
 .photos__links {
   display: flex;
   justify-content: center;
@@ -697,8 +706,14 @@ a.masthead__name:hover {
 }
 
 .resume__frame {
+  display: block;
   width: 100%;
+  height: auto;
   border: 1px solid var(--color-border);
+  /* Stays white in both themes on purpose: the SVG is black glyph
+     paths on nothing, and a resume should read as a sheet of paper
+     whatever the page behind it is doing. */
+  background: #fff;
 }
 
 .resume__download {

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#121210" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
        the colophon toggle is only shown where it can actually work. */
@@ -20,18 +20,14 @@
   </script>
   <title>Haze Support</title>
   <meta name="description" content="Support for Haze. Email me@aniketh.net and I'll get back to you.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Haze Support">
-  <meta property="og:description" content="Support for Haze. Email me@aniketh.net and I'll get back to you.">
-  <meta property="og:url" content="https://aniketh.net/haze/support/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  
   <meta name="robots" content="noindex">
   <link rel="canonical" href="https://aniketh.net/haze/support/">
   <!-- Forward to email; the page below stays visible as a fallback contact. -->
   <meta http-equiv="refresh" content="0;url=mailto:me@aniketh.net?subject=Haze%20Support">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
   <script>
@@ -41,45 +37,28 @@
 </head>
 <body>
   
-  <header class="bar grid mono">
-    <a class="bar__id" href="/">Aniketh Bandlamudi</a>
-    <button class="bar__mode" type="button" role="switch" aria-checked="false" data-mode-toggle><span class="bar__mode-label">At a glance</span><span class="switch" aria-hidden="true"></span></button>
-    <span class="bar__clock">Charlottesville<span data-clock></span></span>
-    <nav class="bar__nav" aria-label="Site">
-      <a class="u" href="/work/">Work</a>
-      <a class="u" href="/education/">Education</a>
-      <a class="u" href="/projects/">Projects</a>
-      <a class="u" href="/research/">Research</a>
-      <a class="u" href="/music/">Music</a>
-      <a class="u" href="/photos/">Photos</a>
-      <a class="u" href="/press/">Press</a>
-      <a class="u" href="/resume/">Resume</a>
-      <a class="u" href="/contact/">Contact</a>
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav">
+      <a href="/" class="masthead__nav-link">About</a>
+      <a href="/work/" class="masthead__nav-link">Work</a>
+      <a href="/education/" class="masthead__nav-link">Education</a>
+      <a href="/projects/" class="masthead__nav-link">Projects</a>
+      <a href="/research/" class="masthead__nav-link">Research</a>
+      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link">Photography</a>
+      <a href="/contact/" class="masthead__nav-link">Contact</a>
+      <a href="/resume/" class="masthead__nav-link">Resume</a>
     </nav>
-    <button class="bar__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>Menu</button>
+    <nav class="masthead__social">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
+    </nav>
   </header>
-
-  <div class="menu" id="menu" data-menu>
-    <nav class="menu__nav" aria-label="Menu">
-      <a href="/" style="--i:0">Home</a>
-      <a href="/work/" style="--i:1">Work</a>
-      <a href="/education/" style="--i:2">Education</a>
-      <a href="/projects/" style="--i:3">Projects</a>
-      <a href="/research/" style="--i:4">Research</a>
-      <a href="/music/" style="--i:5">Music</a>
-      <a href="/photos/" style="--i:6">Photos</a>
-      <a href="/press/" style="--i:7">Press</a>
-      <a href="/resume/" style="--i:8">Resume</a>
-      <a href="/contact/" style="--i:9">Contact</a>
-    </nav>
-    <div class="menu__foot mono">
-      <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </div>
-  </div>
 
   <main class="page">
         <h1 class="page-title">Support</h1>
@@ -87,30 +66,16 @@
         <a href="mailto:me@aniketh.net?subject=Haze%20Support" class="project-item__link">me@aniketh.net</a>
   </main>
 
-  <footer class="foot">
-    <div class="sec__head grid rise">
-      <span class="sec__t">Say hello</span>
-    </div>
-    <a class="foot__mail" href="mailto:me@aniketh.net" data-fit><span>me@aniketh.net</span></a>
-    <div class="foot__row grid mono">
-      <nav aria-label="Elsewhere">
-        <a class="u" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="u" href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-        <a class="u" href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-        <a class="u" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-        <a class="u" href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-        <a class="u" href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener">Spotify</a>
-      </nav>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
       <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
       </span>
-      <span class="muted">&copy; 2026 Aniketh Bandlamudi</span>
-      <a class="u" href="#top" data-top>Back to top<span class="arr arr--up" aria-hidden="true"></span></a>
-    </div>
+    </p>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

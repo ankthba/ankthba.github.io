@@ -88,10 +88,10 @@
     live();
   }
 
-  /* The listening calendar: a month at a time, from the day tracking
-     began, each day shaded by how long was spent listening, and the
-     day picked out below it. The days come from music.json's calendar,
-     written each time the Action runs. */
+  /* The listening calendar: a month at a time, any month, each day
+     since tracking began shown by the cover of its top song, and the
+     day picked out below it in full. The days come from music.json's
+     calendar, written each time the Action runs. */
   var noonOf = function (day) { return new Date(day + 'T12:00:00Z'); };
   var fmtDay = function (day, opts) {
     return noonOf(day).toLocaleDateString('en-US', Object.assign({ timeZone: 'UTC' }, opts));
@@ -101,7 +101,14 @@
     if (!h) return plural(m, 'minute', 'minutes');
     return plural(h, 'hour', 'hours') + (m ? ' ' + plural(m, 'minute', 'minutes') : '');
   };
+  var clock = function (iso) {
+    return new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ });
+  };
+  var hourName = function (h) { return (h % 12 || 12) + (h < 12 ? ' AM' : ' PM'); };
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  /* A day's top songs: a list now, a single song in older files. */
+  var topsOf = function (info) { return Array.isArray(info.top) ? info.top : info.top ? [info.top] : []; };
+  var playCount = function (item) { return plural(item.plays, 'play', 'plays'); };
 
   function calendar(data) {
     var box = $('[data-cal]');
@@ -109,7 +116,6 @@
     var since = data.since;
     if (!box || !since) return;
     var today = dayOf(new Date());
-    var max = Object.keys(days).reduce(function (n, d) { return Math.max(n, days[d].minutes || 0); }, 0);
 
     $('[data-cal-since]').textContent = 'Tracking began on ' +
       fmtDay(since, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) +
@@ -121,10 +127,10 @@
         plural(t.artists, 'artist', 'artists') + '.';
     }
 
-    var first = since.slice(0, 7);
-    var last = today.slice(0, 7);
-    var month = last;
+    /* Today if it has plays yet, otherwise the latest day that does,
+       in its own month. */
     var picked = days[today] ? today : Object.keys(days).sort().pop() || today;
+    var month = picked.slice(0, 7);
 
     function shift(ym, n) {
       var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + n;
@@ -133,8 +139,6 @@
 
     function draw() {
       $('[data-cal-month]').textContent = fmtDay(month + '-01', { month: 'long', year: 'numeric' });
-      $('[data-cal-prev]').disabled = month <= first;
-      $('[data-cal-next]').disabled = month >= last;
       var grid = $('[data-cal-grid]');
       grid.textContent = '';
       ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(function (d) {
@@ -142,51 +146,70 @@
         h.setAttribute('aria-hidden', 'true');
         grid.appendChild(h);
       });
-      var start = new Date(month + '-01T12:00:00Z');
+      var start = noonOf(month + '-01');
       for (var i = 0; i < start.getUTCDay(); i++) grid.appendChild(el('span', 'cal__blank'));
       var length = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0)).getUTCDate();
       for (var d = 1; d <= length; d++) {
         var day = month + '-' + pad(d);
         var info = days[day];
-        var cell = el('button', 'cal__cell', String(d));
-        cell.type = 'button';
         var label = fmtDay(day, { month: 'long', day: 'numeric' });
+        var cell = el('button', 'cal__cell');
+        cell.type = 'button';
         if (day < since || day > today) {
           cell.disabled = true;
           cell.classList.add('cal__cell--off');
           cell.setAttribute('aria-label', label + (day < since ? ', before tracking began' : ''));
         } else {
-          var level = info && info.minutes ? Math.max(1, Math.ceil(4 * info.minutes / (max || 1))) : 0;
-          cell.classList.add('cal__cell--l' + level);
-          cell.setAttribute('aria-label', label + ': ' + (info ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) : 'nothing played'));
+          var cover = info && topsOf(info)[0];
+          if (cover && https(cover.image)) {
+            var img = el('img', 'cal__art');
+            img.alt = '';
+            img.loading = 'lazy';
+            img.src = cover.image;
+            cell.appendChild(img);
+            cell.classList.add('cal__cell--art');
+          }
+          cell.setAttribute('aria-label', label + ': ' + (info
+            ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? ', top song ' + cover.name : '')
+            : 'nothing played'));
           if (day === today) cell.classList.add('cal__cell--today');
-          if (day === picked) cell.setAttribute('aria-pressed', 'true');
-          else cell.setAttribute('aria-pressed', 'false');
+          cell.setAttribute('aria-pressed', day === picked ? 'true' : 'false');
           cell.addEventListener('click', (function (day) {
             return function () { picked = day; draw(); };
           })(day));
         }
+        cell.appendChild(el('span', 'cal__n', String(d)));
         grid.appendChild(cell);
       }
       show(picked);
     }
 
-    /* The day picked: its numbers, then its top song and artist. */
+    /* The day picked: its numbers, its hours, then its top songs,
+       artists and album. */
     function show(day) {
       var panel = $('[data-cal-day]');
       var info = days[day];
       panel.textContent = '';
       panel.appendChild(el('h3', 'cal__date', (day === today ? 'Today, ' : '') +
-        fmtDay(day, { weekday: 'long', month: 'long', day: 'numeric' })));
+        fmtDay(day, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })));
       if (!info) {
         panel.appendChild(el('p', 'cal__none', day === today ? 'Nothing yet today.' : 'Nothing played.'));
         return;
       }
+
+      var hours = info.hours || null;
+      var busiest = hours ? hours.indexOf(Math.max.apply(null, hours)) : -1;
+      var num = function (n) { return n == null ? null : n.toLocaleString('en-US'); };
       var stats = el('dl', 'cal__stats');
-      [['Plays', info.plays.toLocaleString('en-US')],
+      [['Plays', num(info.plays)],
        ['Listened', duration(info.minutes)],
-       ['Songs', info.tracks != null ? info.tracks.toLocaleString('en-US') : null],
-       ['Artists', info.artists != null ? info.artists.toLocaleString('en-US') : null]]
+       ['Songs', num(info.tracks)],
+       ['New songs', num(info.newTracks)],
+       ['Artists', num(info.artists)],
+       ['Albums', num(info.albums)],
+       ['First play', info.first ? clock(info.first) : null],
+       ['Last play', info.last ? clock(info.last) : null],
+       ['Busiest hour', busiest >= 0 ? hourName(busiest) + ' to ' + hourName((busiest + 1) % 24) : null]]
         .forEach(function (pair) {
           if (pair[1] == null) return;
           var row = el('div');
@@ -195,27 +218,51 @@
           stats.appendChild(row);
         });
       panel.appendChild(stats);
-      if (info.top) {
-        panel.appendChild(el('p', 'music__label', 'Top song'));
-        var list = el('ol', 'plays');
-        fill(list, [info.top], { numbered: false, count: function (item) { return plural(item.plays, 'play', 'plays'); } });
-        panel.appendChild(list);
+
+      /* Plays in each hour of the day, as a row of bars. */
+      if (hours) {
+        panel.appendChild(el('p', 'music__label', 'By the hour'));
+        var most = Math.max.apply(null, hours) || 1;
+        var chart = el('div', 'cal__hours');
+        chart.setAttribute('role', 'img');
+        chart.setAttribute('aria-label', 'Plays by hour. Busiest: ' + hourName(busiest) + ', ' + plural(hours[busiest], 'play', 'plays') + '.');
+        hours.forEach(function (n, h) {
+          var bar = el('span', 'cal__bar');
+          bar.style.height = (n ? Math.max(4, 100 * n / most) : 0) + '%';
+          bar.title = hourName(h) + ': ' + plural(n, 'play', 'plays');
+          chart.appendChild(bar);
+        });
+        panel.appendChild(chart);
+        var axis = el('div', 'cal__axis');
+        axis.setAttribute('aria-hidden', 'true');
+        ['12 AM', '6 AM', '12 PM', '6 PM', '12 AM'].forEach(function (label) { axis.appendChild(el('span', null, label)); });
+        panel.appendChild(axis);
       }
-      if (info.topArtist) {
-        panel.appendChild(el('p', 'music__label', 'Top artist'));
-        var p = el('p', 'cal__artist');
-        var href = spotify(info.topArtist.url);
-        var name = el(href ? 'a' : 'span', null, info.topArtist.name);
-        if (href) { name.href = href; name.target = '_blank'; name.rel = 'noopener'; }
-        p.appendChild(name);
-        p.appendChild(el('span', 'cal__artist-n', ', ' + plural(info.topArtist.plays, 'play', 'plays')));
-        panel.appendChild(p);
+
+      var tops = topsOf(info);
+      if (tops.length) {
+        panel.appendChild(el('p', 'music__label', tops.length > 1 ? 'Top songs' : 'Top song'));
+        var songs = el('ol', 'plays');
+        fill(songs, tops, { count: playCount });
+        panel.appendChild(songs);
+      }
+      if (info.topArtists && info.topArtists.length) {
+        panel.appendChild(el('p', 'music__label', info.topArtists.length > 1 ? 'Top artists' : 'Top artist'));
+        var artists = el('ol', 'plays plays--artists');
+        fill(artists, info.topArtists, { count: playCount });
+        panel.appendChild(artists);
+      }
+      if (info.topAlbum) {
+        panel.appendChild(el('p', 'music__label', 'Top album'));
+        var album = el('ol', 'plays');
+        fill(album, [info.topAlbum], { numbered: false, count: playCount });
+        panel.appendChild(album);
       }
       if (day === today) panel.appendChild(el('p', 'cal__note', 'Today’s numbers catch up each time the log is updated.'));
     }
 
-    $('[data-cal-prev]').addEventListener('click', function () { if (month > first) { month = shift(month, -1); draw(); } });
-    $('[data-cal-next]').addEventListener('click', function () { if (month < last) { month = shift(month, 1); draw(); } });
+    $('[data-cal-prev]').addEventListener('click', function () { month = shift(month, -1); draw(); });
+    $('[data-cal-next]').addEventListener('click', function () { month = shift(month, 1); draw(); });
     draw();
     box.hidden = false;
   }

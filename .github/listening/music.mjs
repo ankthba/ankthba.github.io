@@ -104,9 +104,9 @@ async function photo(id) {
   } catch {}
   return null;
 }
-async function artists(list) {
+async function artists(list, n = TOP) {
   const out = [];
-  for (const t of top(list, (p) => p.artists[0]?.id)) {
+  for (const t of top(list, (p) => p.artists[0]?.id, n)) {
     const lead = t.play.artists[0];
     out.push({ name: lead.name, url: artistUrl(lead.id), image: (await photo(lead.id)) || t.play.image, plays: t.plays });
   }
@@ -131,21 +131,39 @@ const weekFrom = shiftDay(today, -6);
 const monthFrom = today.slice(0, 8) + '01';
 
 // The calendar: for every day with plays, how many and for how long,
-// how many different songs and artists, and its top song and artist.
+// how many different songs, artists and albums, how many songs were new
+// (not heard on any day before), when the first and last plays were, the
+// plays in each hour, and the day's top songs, artists and album.
+const hourFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', hourCycle: 'h23' });
 const calendar = {};
 const byDay = new Map();
 for (const p of plays) (byDay.get(p.day) || byDay.set(p.day, []).get(p.day)).push(p);
+const heardBefore = new Set();
 for (const [day, list] of byDay) {
-  const [best] = top(list, (p) => p.id, 1);
-  const [lead] = top(list, (p) => p.artists[0]?.id, 1);
+  const ids = new Set(list.map((p) => p.id).filter(Boolean));
+  const hours = Array(24).fill(0);
+  for (const p of list) hours[Number(hourFormat.format(new Date(p.played_at))) % 24] += 1;
+  const [album] = top(list, (p) => p.album?.id, 1);
   calendar[day] = {
     plays: list.length,
     minutes: minutes(list),
-    tracks: new Set(list.map((p) => p.id).filter(Boolean)).size,
+    tracks: ids.size,
     artists: new Set(list.map((p) => p.artists[0]?.id).filter(Boolean)).size,
-    top: best ? track(best) : null,
-    topArtist: lead ? { name: lead.play.artists[0].name, url: artistUrl(lead.play.artists[0].id), plays: lead.plays } : null,
+    albums: new Set(list.map((p) => p.album?.id).filter(Boolean)).size,
+    newTracks: [...ids].filter((id) => !heardBefore.has(id)).length,
+    first: list[0].played_at,
+    last: list.at(-1).played_at,
+    hours,
+    top: top(list, (p) => p.id, 5).map(track),
+    topArtists: await artists(list, 3),
+    topAlbum: album ? {
+      name: album.play.album.name,
+      artists: album.play.artists.map((a) => a.name).join(', '),
+      image: album.play.image,
+      plays: album.plays,
+    } : null,
   };
+  for (const id of ids) heardBefore.add(id);
 }
 
 const music = {

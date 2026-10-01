@@ -926,9 +926,11 @@ a.masthead__name:hover {
 }
 
 /* Playing now, or the last play: the cover, then the song. */
+/* The full measure, so the cover and the bar under it meet the same
+   two edges as the name, the nav and the rows below. */
 .now__art {
   display: block;
-  width: min(100%, 20rem);
+  width: 100%;
   aspect-ratio: 1;
   background: var(--color-bg-alt);
 }
@@ -985,7 +987,6 @@ a.masthead__name:hover {
 }
 
 .now__bar {
-  max-width: 20rem;
   height: 1px;
   margin-top: 1rem;
   background: var(--color-border);

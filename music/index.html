@@ -91,6 +91,21 @@
             <ol class="plays plays--artists" data-top-artists></ol>
           </section>
 
+          <section class="music__sec cal" aria-labelledby="cal-heading" data-cal hidden>
+            <h2 class="music__heading" id="cal-heading">Listening calendar</h2>
+            <p class="cal__since" data-cal-since></p>
+            <p class="cal__totals" data-cal-totals></p>
+
+            <div class="cal__head">
+              <button class="cal__step" type="button" data-cal-prev aria-label="Previous month">Earlier</button>
+              <h3 class="cal__month" data-cal-month aria-live="polite"></h3>
+              <button class="cal__step" type="button" data-cal-next aria-label="Next month">Later</button>
+            </div>
+            <div class="cal__grid" data-cal-grid></div>
+
+            <div class="cal__day" data-cal-day aria-live="polite"></div>
+          </section>
+
           <section class="music__sec" aria-labelledby="log-heading">
             <h2 class="music__heading" id="log-heading">Today&rsquo;s listening log</h2>
             <div class="log" data-log></div>

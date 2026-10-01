@@ -30,7 +30,27 @@
         a.appendChild(img);
         box.appendChild(a);
       });
-      if (box.children.length) section.hidden = false;
+      if (!box.children.length) return;
+      section.hidden = false;
+      even();
     })
     .catch(function () {});
+
+  /* Squares sized so the photographs' column is exactly as tall as the
+     writing and listening beside it, "More photos" level with "More
+     music". The headings and links match on both sides, so only the
+     squares need to give. Re-measured whenever the left side changes,
+     as it does when the song arrives. Side by side only. */
+  var left = document.querySelector('.home__col');
+  var wide = matchMedia('(min-width: 481px)');
+  function even() {
+    if (section.hidden || !left) return;
+    if (!wide.matches) { box.style.removeProperty('--tile'); return; }
+    var tile = box.firstElementChild.getBoundingClientRect().width;
+    var gap = left.getBoundingClientRect().height - section.getBoundingClientRect().height;
+    var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+    box.style.setProperty('--tile', Math.max(4 * rem, Math.min(9 * rem, tile + gap / 2)) + 'px');
+  }
+  if (window.ResizeObserver && left) new ResizeObserver(function () { even(); }).observe(left);
+  wide.addEventListener('change', even);
 })();

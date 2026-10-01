@@ -378,9 +378,11 @@ a.masthead__name:hover {
   display: none;
 }
 
+/* --tile is set by /assets/js/shuffle.js so that the photographs end
+   on the same line as the column beside them; 6.25rem until it has. */
 .shuffle {
   display: grid;
-  grid-template-columns: repeat(2, 6.25rem);
+  grid-template-columns: repeat(2, var(--tile, 6.25rem));
   gap: 0.5rem;
 }
 

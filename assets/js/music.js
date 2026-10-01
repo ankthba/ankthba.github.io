@@ -27,12 +27,6 @@
   };
   var plural = function (n, one, many) { return n.toLocaleString('en-US') + ' ' + (n === 1 ? one : many); };
 
-  /* Dates arrive as YYYY-MM-DD in America/New_York; noon UTC keeps them
-     on the right day whatever the reader's own zone. */
-  var noon = function (day) { return new Date(day + 'T12:00:00Z'); };
-  var dayName = function (day, opts) {
-    return noon(day).toLocaleDateString('en-US', Object.assign({ timeZone: 'UTC' }, opts));
-  };
   var dayOf = function (date) {
     return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date);
   };
@@ -172,8 +166,7 @@
       });
     });
     return heard.concat(logged)
-      .sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); })
-      .slice(0, 50);
+      .sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); });
   }
 
   function follow(now) {
@@ -248,32 +241,29 @@
     document.addEventListener('visibilitychange', function () { if (!document.hidden) ask(); });
   }
 
-  /* The listening log: every recent play with its time, under a heading
-     for each day. */
+  /* The listening log: every play since 12 am today in Charlottesville,
+     newest first, with its time. Before the first song of the day, a
+     line saying so. */
   function log(plays, playing) {
     var box = $('[data-log]');
     box.textContent = '';
-    if (playing) plays = [Object.assign({ now: true, played_at: new Date().toISOString() }, playing)].concat(plays);
     var today = dayOf(new Date());
-    var yesterday = dayOf(new Date(Date.now() - 864e5));
-    var list = null;
-    var current = null;
+    plays = plays.filter(function (item) { return dayOf(new Date(item.played_at)) === today; });
+    if (playing) plays = [Object.assign({ now: true, played_at: new Date().toISOString() }, playing)].concat(plays);
+    box.appendChild(el('h3', 'log__day', 'Today, from 12 am'));
+    if (!plays.length) {
+      box.appendChild(el('p', 'log__empty', 'Nothing yet today.'));
+      return;
+    }
+    var list = el('ol', 'plays plays--log');
+    box.appendChild(list);
     plays.forEach(function (item) {
-      var day = dayOf(new Date(item.played_at));
-      if (day !== current) {
-        current = day;
-        var label = day === today ? 'Today' : day === yesterday ? 'Yesterday'
-          : dayName(day, { weekday: 'long', month: 'long', day: 'numeric' });
-        box.appendChild(el('h3', 'log__day', label));
-        list = el('ol', 'plays plays--log');
-        box.appendChild(list);
-      }
       var li = el('li');
       var href = spotify(item.url);
       var row = el(href ? 'a' : 'div', item.now ? 'play play--now' : 'play');
       if (href) { row.href = href; row.target = '_blank'; row.rel = 'noopener'; }
       var time = el('time', 'play__n mono', item.now ? 'Now'
-        : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }));
+        : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ }));
       time.dateTime = item.played_at;
       row.appendChild(time);
       var art = el('img', 'play__art');

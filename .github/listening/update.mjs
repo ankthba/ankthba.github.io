@@ -44,6 +44,13 @@ async function api(path, token) {
     headers: { Authorization: 'Bearer ' + token },
     signal: AbortSignal.timeout(15000),
   });
+  if (res.status === 429) {
+    // Rate limited: ask nothing more this run. The plays wait in Spotify's
+    // last fifty for the next one.
+    console.warn(`${path}: rate limited, retry after ${res.headers.get('Retry-After') || '?'}s. Skipping this run.`);
+    if (process.env.RECENT_OUT) await writeFile(process.env.RECENT_OUT, '[]');
+    process.exit(0);
+  }
   if (!res.ok) throw new Error(`${path}: ${res.status} ${await res.text()}`);
   return res.json();
 }
@@ -145,16 +152,12 @@ const topTracks = rankedTracks.slice(0, TOP);
 const topArtists = rank(artists, state.artists).slice(0, TOP);
 
 // Artists come back from recently-played without pictures. For the ones
-// in the top five that don't have one yet, ask the Web API for that
-// artist; apps in Spotify's development mode are refused (403) there, so
-// fall back to the public oEmbed endpoint, which gives the same picture
-// Spotify shows on the artist's page. If both fail, their most played
-// cover this week stands in, and it is tried again next hour.
+// in the top five that don't have one yet, ask Spotify's public oEmbed
+// endpoint, which gives the same picture Spotify shows on the artist's
+// page. (The Web API's /artists refuses apps in development mode with a
+// 403, so asking it only spent calls.) If that fails, their most played
+// cover this week stands in, and it is tried again next run.
 async function artistPicture(id) {
-  try {
-    const url = image((await api('/artists/' + id, token)).images);
-    if (url) return url;
-  } catch {}
   try {
     const res = await fetch('https://open.spotify.com/oembed?url=' +
       encodeURIComponent('https://open.spotify.com/artist/' + id), { signal: AbortSignal.timeout(5000) });

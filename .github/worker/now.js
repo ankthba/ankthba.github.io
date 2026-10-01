@@ -24,9 +24,18 @@
 // workers.dev address; every page's poll went to Spotify, and the account
 // was rate-limited for most of a day.)
 //
+// It also keeps the listening Action on time. GitHub's own schedule for
+// it is best effort, and in practice ran every four to six hours, long
+// enough for more than Spotify's last fifty plays to go by unrecorded.
+// So every fifteen minutes (the cron in wrangler.toml) the Worker starts
+// a run itself. That costs GitHub one API call and Spotify nothing here;
+// the run itself makes two Spotify calls.
+//
 // Deploy from this folder with `npx wrangler deploy`. Secrets
 // (SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN) are
-// set by .github/listening/auth.mjs.
+// set by .github/listening/auth.mjs; GITHUB_TOKEN, a fine-grained token
+// for this repository with Actions read and write and nothing else, by
+// `npx wrangler secret put GITHUB_TOKEN`.
 
 const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://localhost:4599'];
 
@@ -36,6 +45,8 @@ const DAILY_BUDGET = 2000;   // Spotify Web API calls a UTC day, at most
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
 const EDGE = 5;              // seconds each Worker copy reuses an answer
+
+const WORKFLOW = 'https://api.github.com/repos/ankthba/ankthba.github.io/actions/workflows/listening.yml/dispatches';
 
 class SpotifyError extends Error {
   constructor(message, status, retryAfter) {
@@ -266,5 +277,25 @@ export default {
     }
     const extra = edge.retry ? { 'Retry-After': edge.retry } : {};
     return new Response(edge.body, { status: edge.status, headers: headers(origin, extra) });
+  },
+
+  // Start the listening Action. A failure is only logged: the next tick
+  // is fifteen minutes away, and GitHub's own schedule is still there.
+  async scheduled(event, env) {
+    if (!env.GITHUB_TOKEN) {
+      console.error('listening: GITHUB_TOKEN is not set');
+      return;
+    }
+    const res = await fetch(WORKFLOW, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + env.GITHUB_TOKEN,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'aniketh-now',
+      },
+      body: JSON.stringify({ ref: 'main' }),
+    });
+    if (!res.ok) console.error('listening: dispatch ' + res.status + ' ' + (await res.text()).slice(0, 200));
   },
 };

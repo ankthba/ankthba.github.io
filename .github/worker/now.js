@@ -10,8 +10,11 @@
 //   - what's playing is asked for at most every 30 seconds, and the
 //     recent plays at most every 15 minutes, and only while someone is
 //     looking (no visitors, no calls);
-//   - no more than DAILY_BUDGET calls in a UTC day, counted in storage so
-//     a restart doesn't reset it;
+//   - DAILY_BUDGET calls in a UTC day, counted in storage so a restart
+//     doesn't reset it, and paced rather than spent: as the day's calls
+//     run low, what's playing is asked for less often, so the page slows
+//     down instead of ever going off the air for the budget. The sweep
+//     (below) keeps SWEEP_RESERVE of them for itself;
 //   - after a 429, nothing at all until Spotify's Retry-After has passed,
 //     also kept in storage.
 //
@@ -49,7 +52,8 @@ const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://local
 
 const NOW_EVERY = 30;        // seconds between "what's playing" calls
 const RECENT_EVERY = 900;    // seconds between "recent plays" calls (the sweep refreshes them too)
-const DAILY_BUDGET = 1500;   // Spotify Web API calls a UTC day, at most
+const DAILY_BUDGET = 2500;   // Spotify Web API calls a UTC day, at most
+const SWEEP_RESERVE = 150;   // of those, kept for the fifteen-minute sweep
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
 const EDGE = 5;              // seconds each Worker copy reuses an answer
@@ -115,7 +119,25 @@ export class NowPlaying {
     this.quietUntil = saved.get('quietUntil') || 0;
     this.pausedFor = saved.get('pausedFor') || null;
     this.budget = saved.get('budget') || this.budget;
+    if (this.budget.day !== today()) this.budget = { day: today(), used: 0 };
+    // A budget pause from an older, smaller budget doesn't hold.
+    if (this.pausedFor === 'budget' && this.budget.used < DAILY_BUDGET) {
+      this.quietUntil = 0;
+      this.pausedFor = null;
+      await this.state.storage.put({ quietUntil: 0, pausedFor: null });
+    }
     this.loaded = true;
+  }
+
+  // Seconds between "what's playing" calls: NOW_EVERY, or longer if that
+  // pace would spend the rest of the day's budget before UTC midnight.
+  // Each check can cost two calls (what's playing and recent plays).
+  interval() {
+    if (this.budget.day !== today()) return NOW_EVERY;
+    const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
+    const left = DAILY_BUDGET - SWEEP_RESERVE - this.budget.used;
+    if (left <= 2) return (midnight - Date.now()) / 1000;
+    return Math.max(NOW_EVERY, Math.ceil(((midnight - Date.now()) / 1000) * 1.2 / (left / 2)));
   }
 
   // One more call to Spotify, if the day's budget allows it.
@@ -196,7 +218,7 @@ export class NowPlaying {
   answer() {
     if (!this.data) return null;
     const paused = this.pause();
-    const data = Date.now() - this.dataAt < STALE * 1000
+    const data = Date.now() - this.dataAt < Math.max(STALE, this.interval() * 2) * 1000
       ? this.data
       : { ...this.data, playing: false, stale: true, progress_ms: null, track: null };
     return paused ? { ...data, ...paused, checked: new Date(this.dataAt).toISOString() } : data;
@@ -297,7 +319,7 @@ export class NowPlaying {
 
   async now() {
     await this.load();
-    const fresh = this.data && Date.now() - this.dataAt < NOW_EVERY * 1000;
+    const fresh = this.data && Date.now() - this.dataAt < this.interval() * 1000;
     const quiet = Date.now() < this.quietUntil;
 
     if (!fresh && !quiet) {

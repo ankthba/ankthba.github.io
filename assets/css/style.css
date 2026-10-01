@@ -1062,6 +1062,187 @@ a.masthead__name:hover {
   margin-top: 0;
 }
 
+/* The listening calendar: a month of squares shaded in ink by how long
+   was spent listening, and the day picked out below. */
+
+.cal[hidden] {
+  display: none;
+}
+
+.page .cal__since,
+.page .cal__totals {
+  font-style: italic;
+  color: var(--color-muted);
+  text-align: left;
+}
+
+.cal__totals {
+  margin-top: 0.25rem;
+}
+
+.cal__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: var(--space-md) 0 0.75rem;
+}
+
+.cal__month {
+  font-size: 1.25rem;
+}
+
+.cal__step {
+  font-size: 0.95rem;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.cal__step:hover {
+  color: var(--color-link-hover);
+}
+
+.cal__step:disabled {
+  visibility: hidden;
+}
+
+.cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+.cal__wd {
+  padding-bottom: 0.2rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.cal__cell {
+  aspect-ratio: 1;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  text-align: left;
+  vertical-align: top;
+  display: flex;
+  align-items: flex-start;
+  color: var(--color-fg);
+  background: color-mix(in srgb, var(--color-fg) 4%, transparent);
+  outline-offset: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cal__cell--l1 { background: color-mix(in srgb, var(--color-fg) 16%, transparent); }
+.cal__cell--l2 { background: color-mix(in srgb, var(--color-fg) 34%, transparent); }
+.cal__cell--l3 { background: color-mix(in srgb, var(--color-fg) 56%, transparent); color: var(--color-bg); }
+.cal__cell--l4 { background: color-mix(in srgb, var(--color-fg) 80%, transparent); color: var(--color-bg); }
+
+.cal__cell--off {
+  background: none;
+  color: var(--color-border-hover);
+  cursor: default;
+}
+
+.cal__cell--today {
+  font-style: italic;
+}
+
+.cal__cell[aria-pressed="true"] {
+  outline: 1px solid var(--color-fg);
+}
+
+.cal__cell:focus-visible {
+  outline: 1px dashed var(--color-fg);
+}
+
+.cal__day {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.cal__date {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.page .cal__none,
+.page .cal__note {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: left;
+}
+
+.cal__note {
+  margin-top: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.cal__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cal__stats dt {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.cal__stats dd {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+.cal__day .music__label {
+  margin-top: 1.25rem;
+}
+
+.cal__day .play {
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+}
+
+.cal__day .play__n:empty {
+  display: none;
+}
+
+.page .cal__artist {
+  text-align: left;
+}
+
+.cal__artist a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+}
+
+.cal__artist-n {
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+@media (max-width: 480px) {
+  .cal__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cal__cell {
+    padding: 0.2rem 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
 /* Ranked songs and artists, and the log: one hairline row each. */
 .plays {
   list-style: none;

@@ -49,6 +49,13 @@ for (const f of files) {
 plays.sort((a, b) => Date.parse(a.played_at) - Date.parse(b.played_at));
 for (const p of plays) p.day = localDay(p.played_at);
 
+// Counting starts on the first full day of tracking. The log began part
+// way through 28 September; those plays stay in the log but aren't counted
+// anywhere on the page, so every number starts from the same day.
+const START = '2026-09-29';
+const counted = plays.findIndex((p) => p.day >= START);
+plays.splice(0, counted === -1 ? plays.length : counted);
+
 const trackUrl = (id) => id && 'https://open.spotify.com/track/' + id;
 const artistUrl = (id) => id && 'https://open.spotify.com/artist/' + id;
 const minutes = (list) => Math.round(list.reduce((n, p) => n + (p.duration_ms || 0), 0) / 60000);
@@ -123,13 +130,22 @@ const since = plays.length ? plays[0].day : today;
 const weekFrom = shiftDay(today, -6);
 const monthFrom = today.slice(0, 8) + '01';
 
-// The calendar: for every day with plays, how many, and its top song.
+// The calendar: for every day with plays, how many and for how long,
+// how many different songs and artists, and its top song and artist.
 const calendar = {};
 const byDay = new Map();
 for (const p of plays) (byDay.get(p.day) || byDay.set(p.day, []).get(p.day)).push(p);
 for (const [day, list] of byDay) {
   const [best] = top(list, (p) => p.id, 1);
-  calendar[day] = { plays: list.length, minutes: minutes(list), top: best ? track(best) : null };
+  const [lead] = top(list, (p) => p.artists[0]?.id, 1);
+  calendar[day] = {
+    plays: list.length,
+    minutes: minutes(list),
+    tracks: new Set(list.map((p) => p.id).filter(Boolean)).size,
+    artists: new Set(list.map((p) => p.artists[0]?.id).filter(Boolean)).size,
+    top: best ? track(best) : null,
+    topArtist: lead ? { name: lead.play.artists[0].name, url: artistUrl(lead.play.artists[0].id), plays: lead.plays } : null,
+  };
 }
 
 const music = {

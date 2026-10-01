@@ -136,6 +136,19 @@
         <a href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener" class="writing__link" data-text="What You Owe">What You Owe</a>
       </div>
     </section>
+
+    <!-- Filled in by /assets/js/listening.js; hidden until it has a song. -->
+    <section class="writing listening" data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden>
+      <h2 class="writing__heading" data-listening-heading>Most recently listened to</h2>
+      <a class="listening__song" data-listening-link target="_blank" rel="noopener">
+        <img class="listening__art" alt="" data-listening-art>
+        <span class="listening__text">
+          <span class="listening__name" data-listening-name></span>
+          <span class="listening__by" data-listening-by></span>
+        </span>
+      </a>
+      <a class="writing__link listening__more" href="/music/">More music</a>
+    </section>
   </main>
 
   <footer class="colophon">
@@ -149,5 +162,6 @@
     </p>
   </footer>
   <script src="/assets/js/theme.js" defer></script>
+  <script src="/assets/js/listening.js" defer></script>
 </body>
 </html>

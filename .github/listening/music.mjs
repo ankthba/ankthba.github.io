@@ -1,6 +1,8 @@
 // Builds music.json, everything the /music/ page shows, from the private
 // log. Only summaries leave the log: the day's top song for the calendar,
-// top songs and artists over a few ranges, totals, and the last fifty plays.
+// top songs and artists over a few ranges, totals, and every play since
+// midnight yesterday (the page's log shows today from 12 am; yesterday's
+// are there so the page still has a last play just after midnight).
 // Run after log.mjs by .github/workflows/listening.yml.
 //
 //   node music.mjs <logdir> <outdir>
@@ -19,7 +21,7 @@ if (!logDir || !outDir) {
 
 const TZ = 'America/New_York';
 const TOP = 10;
-const RECENT = 50;
+const RECENT = 1000; // a ceiling on the plays since midnight yesterday
 
 const dayFormat = new Intl.DateTimeFormat('en-CA', {
   timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit',
@@ -141,7 +143,7 @@ const music = {
     artists: new Set(plays.map((p) => p.artists[0]?.id).filter(Boolean)).size,
     days: byDay.size,
   },
-  recent: plays.slice(-RECENT).reverse().map((p) => ({
+  recent: plays.filter((p) => p.day >= shiftDay(today, -1)).slice(-RECENT).reverse().map((p) => ({
     name: p.name,
     artists: p.artists.map((a) => a.name).join(', '),
     url: trackUrl(p.id),

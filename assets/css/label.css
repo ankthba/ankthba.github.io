@@ -1,0 +1,174 @@
+/* Diptyque-style labels, layered over style.css.
+   Black ink on cream, one oval label per page carrying the whole page,
+   capitals that drift, and no colour except what the photographs bring. */
+
+@supports (color: light-dark(#000, #fff)) {
+  :root {
+    --color-bg: light-dark(#f3eee2, #151412);
+    --color-bg-alt: light-dark(#ebe4d4, #1d1b18);
+    --color-fg: light-dark(#141311, #ece6d6);
+    --color-muted: light-dark(#5f594d, #a59e8e);
+    --color-border: light-dark(rgba(20, 19, 17, 0.2), rgba(236, 230, 214, 0.2));
+    --color-border-hover: light-dark(rgba(20, 19, 17, 0.45), rgba(236, 230, 214, 0.45));
+    --color-scrim: light-dark(rgba(243, 238, 226, 0.97), rgba(21, 20, 18, 0.97));
+    --color-link: var(--color-fg);
+    --color-link-hover: var(--color-muted);
+    --color-link-underline: var(--color-border-hover);
+    --color-underline-quiet: var(--color-border-hover);
+  }
+}
+
+.lbl-hidden { display: none !important; }
+.lbl-sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Before the script has built the label, hold its space and keep the
+   plain name and title out of sight, so nothing jumps on load. */
+html.js:not(.look-label) .masthead__name,
+html.js:not(.look-label) .page-title { visibility: hidden; }
+html.js:not(.look-label) .masthead::before {
+  content: "";
+  display: block;
+  width: min(17rem, 70vw);
+  aspect-ratio: 100 / 130;
+  margin: clamp(3rem, 8vh, 5.5rem) auto 1rem;
+}
+html.js:not(.look-label) .masthead--home::before { width: min(23rem, 84vw); }
+html.js:not(.look-label) .masthead { padding-top: 0; }
+
+/* ---------- The label ---------- */
+
+.look-label .masthead {
+  max-width: none;
+  padding-top: clamp(3rem, 8vh, 5.5rem);
+  container-type: normal;
+}
+
+.lbl {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0 0 1rem;
+  color: var(--color-fg);
+}
+
+.lbl__oval {
+  display: block;
+  width: min(17rem, 70vw);
+  color: inherit;
+}
+.lbl--home .lbl__oval { width: min(23rem, 84vw); }
+
+a.lbl__oval { transition: opacity var(--transition-fast); }
+a.lbl__oval:hover { opacity: 0.8; }
+
+.lbl__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.lbl__paper { fill: var(--color-bg); }
+.lbl__ink { fill: currentColor; }
+
+.lbl__rule { fill: none; stroke: currentColor; }
+.lbl__rule--outer { stroke-width: 1.55; }
+.lbl__rule--inner { stroke-width: 1.05; }
+.lbl__rule--hair { stroke-width: 0.28; }
+
+/* The band lettering: lowercase roman, like the address on the bottles */
+.lbl__band {
+  fill: currentColor;
+  font-family: var(--font-serif);
+  font-size: 7.4px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* Capitals set over the drawing. A paper-coloured outline drawn under
+   each letter clears the pen lines around it, so the letters sit on
+   the scene the way they do on the label. */
+.lbl__ch {
+  fill: currentColor;
+  font-family: var(--font-display);
+  font-weight: 500;
+  stroke: var(--color-bg);
+  stroke-width: 1.8px;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+}
+
+/* ---------- Navigation: small engraved capitals ---------- */
+
+.look-label .masthead__nav {
+  max-width: 34rem;
+  margin: 1.5rem auto 0;
+  padding: 0 var(--space-md);
+  text-align: center;
+  text-align-last: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.15rem 1.1rem;
+}
+
+.look-label .masthead__nav-link {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.look-label .masthead__nav-link::before,
+.look-label .masthead__nav-link::after { display: none; }
+.look-label .masthead__nav-link.active {
+  font-style: normal;
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Text column ---------- */
+
+.look-label .page { padding-top: clamp(3rem, 8vh, 5rem); }
+
+.look-label .about__text a,
+.look-label .page p a {
+  color: var(--color-fg);
+  text-decoration-color: var(--color-border-hover);
+}
+
+.look-label .writing__heading,
+.look-label .project-item__title,
+.look-label .music__heading,
+.look-label .music__label {
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.look-label .project-item__title { font-size: 0.95rem; }
+
+.look-label .project-item__role {
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.look-label .project-item__link,
+.look-label .writing__link {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.look-label .colophon,
+.look-label .colophon__meta {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}

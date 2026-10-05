@@ -1368,12 +1368,59 @@ a.play:hover .play__name {
 /* ---------------------------------------------------------
    13c. Fragrance
 
-   The music page's hairline rows, without the artwork: a number,
-   then the name and its house.
+   The music page's hairline rows: the name and its house. Each row opens to its year, perfumer and notes.
    --------------------------------------------------------- */
 
-.plays--scents .play {
-  grid-template-columns: 1.75rem minmax(0, 1fr);
+.scent {
+  list-style: none;
+}
+
+.scent .play {
+  grid-template-columns: minmax(0, 1fr) auto;
+  cursor: pointer;
+  list-style: none;
+}
+
+.scent .play::-webkit-details-marker {
+  display: none;
+}
+
+.scent .play:hover .play__name {
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.scent .play:focus-visible {
+  outline: 1px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* A plus that becomes a minus while the row is open */
+.scent__toggle::before {
+  content: "+";
+  font-size: 1.1rem;
+  color: var(--color-muted);
+}
+
+.scent details[open] .scent__toggle::before {
+  content: "\2013";
+}
+
+.scent__info {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.3rem 0.85rem;
+  padding: 0.15rem 0 1rem;
+}
+
+.scent__info dt {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.scent__info dd {
+  line-height: 1.4;
 }
 
 /* ---------------------------------------------------------

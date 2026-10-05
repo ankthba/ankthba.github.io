@@ -172,3 +172,55 @@ a.lbl__oval:hover { opacity: 0.8; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
+
+/* ---------- Desktop: label and page side by side ----------
+   On a wide screen the label and nav hold the left half, pinned to the
+   viewport, and the page scrolls past on the right. Keyed to html.js
+   (set before paint) rather than .look-label, so the columns are there
+   from the first frame and nothing jumps when the label is built. */
+
+@media (min-width: 64rem) {
+  html.js body {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: 1fr auto;
+  }
+
+  html.js .masthead {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    max-width: none;
+    height: 100vh;
+    height: 100svh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem var(--space-md);
+    border-right: 1px solid var(--color-border);
+  }
+
+  html.js .page,
+  html.js .colophon {
+    grid-column: 2;
+  }
+  html.js .page { grid-row: 1; }
+  html.js .colophon { grid-row: 2; }
+
+  .look-label .page { padding-top: clamp(4rem, 14vh, 8rem); }
+
+  /* Sized to the column and the screen's height, so the label and the
+     nav always fit in the pinned half without scrolling. */
+  html.js:not(.look-label) .masthead::before,
+  .lbl__oval { width: min(20rem, 30vw, 52svh); }
+  html.js:not(.look-label) .masthead--home::before,
+  .lbl--home .lbl__oval { width: min(25rem, 34vw, 56svh); }
+  html.js:not(.look-label) .masthead::before { margin: 0 auto 1rem; }
+  html.js:not(.look-label) .masthead { padding-top: 2rem; }
+  .look-label .masthead { padding-top: 2rem; }
+
+  .look-label .masthead__nav { max-width: 30rem; }
+}

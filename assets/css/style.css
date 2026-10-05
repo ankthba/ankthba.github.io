@@ -1366,6 +1366,34 @@ a.play:hover .play__name {
 }
 
 /* ---------------------------------------------------------
+   13c. Fragrance
+
+   The music page's hairline rows: a number, the name over its
+   house, and the bottle's label at the right edge, drawn flat,
+   square like the album art beside a song.
+   --------------------------------------------------------- */
+
+.plays--scents .play {
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+}
+
+.scent__label {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+/* Diptyque's oval is the label itself, cut from the photograph, set
+   on a white square so it sits in line with the others */
+.scent__label--oval {
+  box-sizing: border-box;
+  padding: 0.3rem;
+  object-fit: contain;
+  background: #fbfbf8;
+}
+
+/* ---------------------------------------------------------
    14. Reduced Motion & View Transitions
    --------------------------------------------------------- */
 

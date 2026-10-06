@@ -2,8 +2,20 @@
    Black ink on cream, one oval label per page carrying the whole page,
    capitals that drift, and no colour except what the photographs bring. */
 
+/* The label itself is coloured like the real ones, not like the page:
+   a printed white label in soft black ink, sitting on the cream like the
+   eau de toilette label on its bottle; in the dark, the eau de parfum
+   label, near-black with off-white ink. Softer than pure white and black,
+   as printed paper is. */
+:root {
+  --lbl-paper: #fbf8f1;
+  --lbl-ink: #1f1d1a;
+}
+
 @supports (color: light-dark(#000, #fff)) {
   :root {
+    --lbl-paper: light-dark(#fbf8f1, #1c1b19);
+    --lbl-ink: light-dark(#1f1d1a, #eee9dd);
     --color-bg: light-dark(#f3eee2, #151412);
     --color-bg-alt: light-dark(#ebe4d4, #1d1b18);
     --color-fg: light-dark(#141311, #ece6d6);
@@ -55,7 +67,7 @@ html.js:not(.look-label) .masthead { padding-top: 0; }
   place-items: center;
   width: 100%;
   padding: 0 0 1rem;
-  color: var(--color-fg);
+  color: var(--lbl-ink);
 }
 
 /* One size on every page: the label is the site, not a badge that
@@ -71,7 +83,7 @@ a.lbl__oval:hover { opacity: 0.8; }
 
 .lbl__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-.lbl__paper { fill: var(--color-bg); }
+.lbl__paper { fill: var(--lbl-paper); }
 .lbl__ink { fill: currentColor; }
 
 .lbl__rule { fill: none; stroke: currentColor; }
@@ -95,7 +107,7 @@ a.lbl__oval:hover { opacity: 0.8; }
   fill: currentColor;
   font-family: var(--font-display);
   font-weight: 500;
-  stroke: var(--color-bg);
+  stroke: var(--lbl-paper);
   stroke-width: 1.8px;
   stroke-linejoin: round;
   paint-order: stroke fill;

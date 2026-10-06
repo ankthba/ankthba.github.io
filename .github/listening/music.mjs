@@ -49,6 +49,15 @@ for (const f of files) {
 plays.sort((a, b) => Date.parse(a.played_at) - Date.parse(b.played_at));
 for (const p of plays) p.day = localDay(p.played_at);
 
+// How long each play was actually heard. Spotify stamps a play when it
+// stops, so it lasted no longer than the time since the play before it
+// stopped: a song skipped part way counts for what was heard of it, not
+// its whole length. After a break, it counts in full.
+plays.forEach((p, i) => {
+  const since = i ? Date.parse(p.played_at) - Date.parse(plays[i - 1].played_at) : Infinity;
+  p.heard_ms = Math.min(p.duration_ms || 0, since);
+});
+
 // Counting starts on the first full day of tracking. The log began part
 // way through 28 September; those plays stay in the log but aren't counted
 // anywhere on the page, so every number starts from the same day.
@@ -58,7 +67,7 @@ plays.splice(0, counted === -1 ? plays.length : counted);
 
 const trackUrl = (id) => id && 'https://open.spotify.com/track/' + id;
 const artistUrl = (id) => id && 'https://open.spotify.com/artist/' + id;
-const minutes = (list) => Math.round(list.reduce((n, p) => n + (p.duration_ms || 0), 0) / 60000);
+const minutes = (list) => Math.round(list.reduce((n, p) => n + p.heard_ms, 0) / 60000);
 
 // Most played first; a tie goes to whichever was played more recently.
 function top(list, keyOf, n = TOP) {

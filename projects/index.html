@@ -76,9 +76,7 @@
               <h3 class="project-item__title">Meridian</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A native macOS market terminal driven entirely from a command line: type a security and a function mnemonic, press GO, and the screen opens in one of four linked panels. More than thirty functions cover live quote monitors and watchlists, candlestick charts with studies, historical prices, company descriptions, as-reported financials, SEC filings with an AI summary and a diff between versions, analyst ratings, news, option chains valued with Black&ndash;Scholes and binomial models, a screener, correlation and portfolio analytics, a backtester, alerts, an economic calendar, the Treasury curve, FX crosses and crypto.</p>
-            <p class="project-item__description">Everything on screen is real and sourced: Alpaca for US equities, Coinbase and Kraken for crypto, the ECB, the US Treasury and FRED for rates and macro, SEC EDGAR for filings and fundamentals, and Finnhub and press-release feeds for news. Each screen shows where its data came from and how delayed it is, and anything no source provides says NOT AVAILABLE instead of being filled in. ASK is an analyst built on Claude that answers from the terminal's own data through tools and flags any number it cannot trace back to a source.</p>
-            <p class="project-item__description">SwiftUI and AppKit over a Rust core, with DuckDB and SQLite for storage. Quotes cross into Swift as packed 128-byte rows polled once per frame, so in benchmarks a 2,000-symbol monitor streams at 60 fps on under 10% of one core and a million-bar chart pans in under 10 ms a frame. Built for personal use.</p>
+            <p class="project-item__description">A native macOS market terminal driven entirely from a command line: type a security and a function, press GO. More than thirty functions, from live quotes, charts and SEC filings to options, screening and backtesting, run on real data from free official sources, with an AI analyst built on Claude.</p>
           </article>
 
           <article class="project-item">
@@ -86,9 +84,8 @@
               <h3 class="project-item__title">Aperta</h3>
               <span class="project-item__role">Co-creator</span>
             </div>
-            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient still understands at home: a hand-drawn body with a red spot on the place, one plain sentence for what happened, every medicine with what it is for and how to take it, what to do next, and step-by-step walkthroughs for the things a note assumes you already know, like rinsing a tooth socket with a syringe or using an inhaler with a spacer. In the patient's language, read aloud one idea per screen, and printed on one sheet for the fridge. Then the clinician turns the screen around.</p>
-            <p class="project-item__description">The note parser, the library of 205 conditions in 21 categories, drug resolution and duplicate-ingredient detection through RxNorm, and a prescriber check that quotes the FDA label are deterministic code running in the page itself, so the published site needs no server and no API keys.</p>
-            <p class="project-item__description">Nothing clinical is generated: a model only translates or fills a parsing gap, and any line that cannot be read as a drug order is handed back to the clinician under "Not used" rather than guessed at. All eighteen anatomical views and nine walkthroughs are drawn by hand. Built at VTHacks 14.</p>
+            <p class="project-item__description">A clinician pastes the discharge note they already wrote, and Aperta turns it into what the patient understands at home: a hand-drawn body marking the place, one plain sentence for what happened, every medicine with what it is for and how to take it, and walkthroughs for the steps a note assumes you know, in the patient's language.</p>
+            <p class="project-item__description">Nothing clinical is generated; the parsing and drug checks are deterministic code running in the page. Built at VTHacks 14.</p>
             <div class="project-item__links">
               <a href="https://aperta.health" target="_blank" rel="noopener" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/VTHacks14" target="_blank" rel="noopener" class="project-item__link">View repo</a>
@@ -101,9 +98,7 @@
               <span class="project-item__role">Creator</span>
             </div>
             <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation built to test whether a learned memory reactivates on its own during sleep.</p>
-            <p class="project-item__description">144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2, with an odour memory encoded by dopamine-gated plasticity at Kenyon cell to output neuron synapses, followed by an offline period with no sensory input and a search for the same ensemble switching itself back on, scored against a degree-preserving shuffled connectome, an unlearned-weights control and size-matched random ensembles.</p>
-            <p class="project-item__description">The viewer renders all 126,109 soma positions in 3D and lights the neurons that spike, and every figure is read from the simulation's own output files at page load.</p>
-            <p class="project-item__description">Negative results are reported in full, including two published cells the pipeline found to be mis-specified and a positive control establishing that the published model cannot represent a discrete episode at all.</p>
+            <p class="project-item__description">144,209 neurons and 21,868,062 connections from the male CNS connectome, integrated cell by cell in Brian2 and scored against shuffled-connectome and unlearned-weights controls, with negative results reported in full.</p>
             <div class="project-item__links">
               <a href="/hypnagogia/" class="project-item__link">Open it</a>
               <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>

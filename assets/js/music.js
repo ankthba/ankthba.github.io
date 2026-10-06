@@ -91,11 +91,9 @@
   }
 
   /* The listening calendar: a month at a time, any month, each day
-     since tracking began shown by the cover of its top album (the most
-     plays across its songs, so one song played over and over can still
-     carry its album), and the day picked out below it in full. The
-     days come from music.json's calendar, written each time the Action
-     runs. */
+     since tracking began shown by the cover of its top song, and the
+     day picked out below it in full. The days come from music.json's
+     calendar, written each time the Action runs. */
   var noonOf = function (day) { return new Date(day + 'T12:00:00Z'); };
   var fmtDay = function (day, opts) {
     return noonOf(day).toLocaleDateString('en-US', Object.assign({ timeZone: 'UTC' }, opts));
@@ -112,8 +110,6 @@
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   /* A day's top songs: a list now, a single song in older files. */
   var topsOf = function (info) { return Array.isArray(info.top) ? info.top : info.top ? [info.top] : []; };
-  /* A day's cover: its top album's, or its top song's if it has none. */
-  var coverOf = function (info) { return info.topAlbum || topsOf(info)[0]; };
   var playCount = function (item) { return plural(item.plays, 'play', 'plays'); };
 
   function calendar(data) {
@@ -182,7 +178,7 @@
           cell.classList.add('cal__cell--off');
           cell.setAttribute('aria-label', label + (day < since ? ', before tracking began' : ''));
         } else {
-          var cover = info && coverOf(info);
+          var cover = info && topsOf(info)[0];
           if (cover && https(cover.image)) {
             var img = el('img', 'cal__art');
             img.alt = '';
@@ -192,7 +188,7 @@
             cell.classList.add('cal__cell--art');
           }
           cell.setAttribute('aria-label', label + ': ' + (info
-            ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? (info.topAlbum ? ', top album ' : ', top song ') + cover.name : '')
+            ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? ', top song ' + cover.name : '')
             : 'nothing played'));
           if (day === today) cell.classList.add('cal__cell--today');
           cell.setAttribute('aria-pressed', day === picked ? 'true' : 'false');

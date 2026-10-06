@@ -19,16 +19,16 @@
     })();
   </script>
   <title>Projects | Aniketh Bandlamudi</title>
-  <meta name="description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <meta name="description" content="Projects by Aniketh Bandlamudi, including Meridian, Aperta, Hypnagogia, Haze, and Graphite.">
   <link rel="canonical" href="https://aniketh.net/projects/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Projects | Aniketh Bandlamudi">
-  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including Meridian, Aperta, Hypnagogia, Haze, and Graphite.">
   <meta property="og:url" content="https://aniketh.net/projects/">
   <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Projects | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including Aperta, Hypnagogia, Haze, and Graphite.">
+  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including Meridian, Aperta, Hypnagogia, Haze, and Graphite.">
   <meta name="twitter:image" content="https://aniketh.net/assets/img/aniketh.jpeg">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/label.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
@@ -70,6 +70,16 @@
             <a href="/pragmatic/" class="project-item__link">Visit site</a>
           </article>
           -->
+
+          <article class="project-item">
+            <div class="project-item__header">
+              <h3 class="project-item__title">Meridian</h3>
+              <span class="project-item__role">Creator</span>
+            </div>
+            <p class="project-item__description">A native macOS market terminal driven entirely from a command line: type a security and a function mnemonic, press GO, and the screen opens in one of four linked panels. More than thirty functions cover live quote monitors and watchlists, candlestick charts with studies, historical prices, company descriptions, as-reported financials, SEC filings with an AI summary and a diff between versions, analyst ratings, news, option chains valued with Black&ndash;Scholes and binomial models, a screener, correlation and portfolio analytics, a backtester, alerts, an economic calendar, the Treasury curve, FX crosses and crypto.</p>
+            <p class="project-item__description">Everything on screen is real and sourced: Alpaca for US equities, Coinbase and Kraken for crypto, the ECB, the US Treasury and FRED for rates and macro, SEC EDGAR for filings and fundamentals, and Finnhub and press-release feeds for news. Each screen shows where its data came from and how delayed it is, and anything no source provides says NOT AVAILABLE instead of being filled in. ASK is an analyst built on Claude that answers from the terminal's own data through tools and flags any number it cannot trace back to a source.</p>
+            <p class="project-item__description">SwiftUI and AppKit over a Rust core, with DuckDB and SQLite for storage. Quotes cross into Swift as packed 128-byte rows polled once per frame, so in benchmarks a 2,000-symbol monitor streams at 60 fps on under 10% of one core and a million-bar chart pans in under 10 ms a frame. Built for personal use.</p>
+          </article>
 
           <article class="project-item">
             <div class="project-item__header">

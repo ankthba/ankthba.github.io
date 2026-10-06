@@ -49,7 +49,7 @@ html.js:not(.look-label) .masthead::before {
   content: "";
   display: block;
   width: min(23rem, 84vw);
-  aspect-ratio: 100 / 130;
+  aspect-ratio: 100 / 128;
   margin: clamp(3rem, 8vh, 5.5rem) auto 1rem;
 }
 html.js:not(.look-label) .masthead { padding-top: 0; }
@@ -87,16 +87,29 @@ a.lbl__oval:hover { opacity: 0.8; }
 .lbl__ink { fill: currentColor; }
 
 .lbl__rule { fill: none; stroke: currentColor; }
-.lbl__rule--outer { stroke-width: 1.55; }
-.lbl__rule--inner { stroke-width: 1.05; }
-.lbl__rule--hair { stroke-width: 0.28; }
+/* Measured off the real labels, in hundredths of the label's width */
+.lbl__rule--edge { stroke-width: 0.35; }
+.lbl__rule--outer { stroke-width: 1.8; }
+.lbl__rule--thin { stroke-width: 0.45; stroke: none; }
+.lbl__rule--inner { stroke-width: 1.9; }
+.lbl__rule--hair { stroke-width: 0.3; }
 
-/* The band lettering: lowercase roman, like the address on the bottles */
+/* The dark label, like the eau de parfum: the paper runs out to the edge
+   with one fine line set in from it, where the light label has a fine
+   edge and a heavy rule. */
+@supports (color: light-dark(#000, #fff)) {
+  .lbl__rule--edge,
+  .lbl__rule--outer { stroke: light-dark(currentColor, transparent); }
+  .lbl__rule--thin { stroke: light-dark(transparent, currentColor); }
+}
+
+/* The band lettering: lowercase roman, like the address on the bottles.
+   Its size is set by label.js so the line fills the band. */
 .lbl__band {
   fill: currentColor;
   font-family: var(--font-serif);
-  font-size: 7.4px;
-  font-weight: 500;
+  font-size: 7.2px;
+  font-weight: 600;
   letter-spacing: 0;
 }
 
@@ -242,7 +255,7 @@ a.lbl__oval:hover { opacity: 0.8; }
   /* Fills the column, but never so tall that the nav falls off the
      bottom of the screen: 10rem is the nav and the space round it. */
   html.js:not(.look-label) .masthead::before,
-  .lbl__oval { width: min(100%, calc((100svh - var(--top) - 10rem) / 1.3)); }
+  .lbl__oval { width: min(100%, calc((100svh - var(--top) - 10rem) / 1.28)); }
   html.js:not(.look-label) .masthead::before { margin: 0 auto 1rem; }
 
   .look-label .masthead__nav { max-width: none; padding: 0; }

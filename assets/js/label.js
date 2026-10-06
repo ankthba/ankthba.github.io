@@ -51,13 +51,23 @@
     return out;
   }
 
-  /* The label is a cushion oval, between an ellipse and a rounded
-     rectangle: a superellipse. viewBox is 100 x 130. */
-  var CX = 50, CY = 65, A = 49, B = 64, N = 2.5;
+  /* The label is a cushion oval measured off the real bottles: 1.27 times
+     as tall as it is wide, between an ellipse and a rounded rectangle (a
+     superellipse), and squaring up as it goes in, so the window round the
+     drawing is nearly a rounded rectangle. viewBox is 100 x 128. */
+  var VH = 128, CX = 50, CY = 64, A = 49.6, B = 63;
+  var FIELD = 20.4;
+  function nAt(inset) { return 2.55 + 0.25 * Math.min(1, inset / FIELD); }
   function pt(inset, t) {
-    var c = Math.cos(t), s = Math.sin(t);
-    return [CX + (A - inset) * Math.sign(c) * Math.pow(Math.abs(c), 2 / N),
-            CY + (B - inset) * Math.sign(s) * Math.pow(Math.abs(s), 2 / N)];
+    var c = Math.cos(t), s = Math.sin(t), n = nAt(inset);
+    return [CX + (A - inset) * Math.sign(c) * Math.pow(Math.abs(c), 2 / n),
+            CY + (B - inset) * Math.sign(s) * Math.pow(Math.abs(s), 2 / n)];
+  }
+  /* The angle t at which the curve at `inset` passes nearest (x, y). */
+  function angleOf(inset, x, y) {
+    var n = nAt(inset), dx = (x - CX) / (A - inset), dy = (y - CY) / (B - inset);
+    return Math.atan2(Math.sign(dy) * Math.pow(Math.abs(dy), n / 2),
+                      Math.sign(dx) * Math.pow(Math.abs(dx), n / 2));
   }
   function shape(inset) {
     var d = '';
@@ -85,32 +95,37 @@
   }
 
   var deg = Math.PI / 180;
-  var FIELD = 15.5;
 
   function build(words, drawing, seed, isHome) {
-    var svg = el('svg', { viewBox: '0 0 100 130', class: 'lbl__svg', 'aria-hidden': 'true' });
+    var svg = el('svg', { viewBox: '0 0 100 ' + VH, class: 'lbl__svg', 'aria-hidden': 'true' });
     var defs = el('defs', {}, svg);
     var id = 'l' + Math.floor(Math.random() * 1e6);
 
     el('path', { d: shape(FIELD) }, el('clipPath', { id: id + 'clip' }, defs));
-    var mask = el('mask', { id: id + 'ink', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 100, height: 130, style: 'mask-type:alpha' }, defs);
-    el('image', { href: drawing, x: FIELD, y: FIELD, width: 100 - 2 * FIELD, height: 130 - 2 * FIELD, preserveAspectRatio: 'xMidYMid slice' }, mask);
+    var mask = el('mask', { id: id + 'ink', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 100, height: VH, style: 'mask-type:alpha' }, defs);
+    el('image', { href: drawing, x: FIELD, y: FIELD, width: 100 - 2 * FIELD, height: VH - 2 * FIELD, preserveAspectRatio: 'xMidYMid slice' }, mask);
 
     // paper
-    el('path', { d: shape(0.4), class: 'lbl__paper' }, svg);
+    el('path', { d: shape(0.15), class: 'lbl__paper' }, svg);
     // the drawing, inside the field
-    el('rect', { x: 0, y: 0, width: 100, height: 130, class: 'lbl__ink', mask: 'url(#' + id + 'ink)', 'clip-path': 'url(#' + id + 'clip)' }, svg);
-    // rules: heavy outer, heavy inner, hairline
-    el('path', { d: shape(1.6), class: 'lbl__rule lbl__rule--outer' }, svg);
-    el('path', { d: shape(12.6), class: 'lbl__rule lbl__rule--inner' }, svg);
+    el('rect', { x: 0, y: 0, width: 100, height: VH, class: 'lbl__ink', mask: 'url(#' + id + 'ink)', 'clip-path': 'url(#' + id + 'clip)' }, svg);
+    // The four rules of the real labels: a fine line at the very edge, a
+    // heavy rule set in from it, a heavy inner rule, and a hairline round
+    // the picture. On the dark label (the eau de parfum) the first two give
+    // way to a single fine line a little in from the edge.
+    el('path', { d: shape(0.35), class: 'lbl__rule lbl__rule--edge' }, svg);
+    el('path', { d: shape(5), class: 'lbl__rule lbl__rule--outer' }, svg);
+    el('path', { d: shape(2.75), class: 'lbl__rule lbl__rule--thin' }, svg);
+    el('path', { d: shape(18.55), class: 'lbl__rule lbl__rule--inner' }, svg);
     el('path', { d: shape(FIELD), class: 'lbl__rule lbl__rule--hair' }, svg);
 
-    // lettering round the band: up the left, over the top, down the right
-    el('path', { id: id + 'ring', d: arc(10.3, 118 * deg, 422 * deg) }, defs);
+    // lettering round the band: up the left, over the top, down the right,
+    // and upright along the bottom. The paths are laid in layout(), once
+    // the type can be measured.
+    var ringPath = el('path', { id: id + 'ring' }, defs);
     var ring = el('text', { class: 'lbl__band' }, svg);
     el('textPath', { href: '#' + id + 'ring' }, ring).textContent = RING;
-    // and upright along the bottom
-    el('path', { id: id + 'foot', d: arc(4.6, 112 * deg, 68 * deg) }, defs);
+    var footPath = el('path', { id: id + 'foot' }, defs);
     var foot = el('text', { class: 'lbl__band' }, svg);
     el('textPath', { href: '#' + id + 'foot', startOffset: '50%', 'text-anchor': 'middle' }, foot).textContent = FOOT;
 
@@ -118,13 +133,15 @@
 
     // Where the drawing has ink, sampled once from the image itself, so the
     // capitals can be set in its open paper rather than across the subject.
-    var density = null, DW = 69, DH = 99;
+    var density = null, DW = Math.round(100 - 2 * FIELD), DH = Math.round(VH - 2 * FIELD);
     var img = new Image();
     img.onload = function () {
       var c = document.createElement('canvas');
       c.width = DW; c.height = DH;
       var g = c.getContext('2d');
-      g.drawImage(img, 0, 0, DW, DH);
+      // the part of the image the field shows (it is set to cover the field)
+      var sw = Math.min(img.width, img.height * DW / DH), sh = sw * DH / DW;
+      g.drawImage(img, (img.width - sw) / 2, (img.height - sh) / 2, sw, sh, 0, 0, DW, DH);
       var px = g.getImageData(0, 0, DW, DH).data;
       density = new Float32Array(DW * DH);
       for (var i = 0; i < DW * DH; i++) density[i] = px[i * 4 + 3] / 255;
@@ -134,7 +151,7 @@
 
     function inkUnder(x, y, w, h) {
       if (!density) return 0;
-      var fw = 100 - 2 * FIELD, fh = 130 - 2 * FIELD, sum = 0, n = 0;
+      var fw = 100 - 2 * FIELD, fh = VH - 2 * FIELD, sum = 0, n = 0;
       for (var yy = y; yy < y + h; yy += 1) {
         for (var xx = x; xx < x + w; xx += 1) {
           var ix = Math.floor((xx - FIELD) / fw * DW), iy = Math.floor((yy - FIELD) / fh * DH);
@@ -145,21 +162,47 @@
     }
 
     function inside(x, y) {
-      return Math.pow(Math.abs(x - CX) / (A - FIELD - 2), N) + Math.pow(Math.abs(y - CY) / (B - FIELD - 2), N) <= 1;
+      var n = nAt(FIELD);
+      return Math.pow(Math.abs(x - CX) / (A - FIELD - 2), n) + Math.pow(Math.abs(y - CY) / (B - FIELD - 2), n) <= 1;
+    }
+
+    /* The band lettering, set as on the bottles: its middle on the middle
+       of the band between the heavy rules, the town upright at the bottom,
+       and the long line filling the band from one side of the town round
+       to the other, at whatever size makes it fit, as large as it can. */
+    var BAND = 11.5, HALF = 0.24;   // (ascender - descender) / 2, in ems
+    function band() {
+      var f = 7.2;
+      for (var pass = 0; pass < 5; pass++) {
+        ring.style.fontSize = foot.style.fontSize = f + 'px';
+        ring.removeAttribute('textLength');
+        var fi = BAND - HALF * f, ri = BAND + HALF * f;
+        footPath.setAttribute('d', arc(fi, 150 * deg, 30 * deg));
+        var fl = footPath.getTotalLength(), tl = foot.getComputedTextLength(), gap = 0.9 * f;
+        var p0 = footPath.getPointAtLength(Math.max(0, (fl - tl) / 2 - gap));
+        var p1 = footPath.getPointAtLength(Math.min(fl, (fl + tl) / 2 + gap));
+        var a0 = angleOf(fi, p0.x, p0.y), a1 = angleOf(fi, p1.x, p1.y);
+        ringPath.setAttribute('d', arc(ri, a0, a1 + 2 * Math.PI));
+        var room = ringPath.getTotalLength() * 0.99, need = ring.getComputedTextLength();
+        var next = Math.min(8.6, f * room / need);
+        if (Math.abs(next - f) < 0.03 || pass === 4) {
+          ring.setAttribute('textLength', room.toFixed(1));
+          ring.setAttribute('lengthAdjust', 'spacing');
+          return;
+        }
+        f = next;
+      }
     }
 
     function layout() {
-      // fill the band exactly, the way the label's address meets itself
-      var len = svg.querySelector('#' + id + 'ring').getTotalLength();
-      ring.setAttribute('textLength', (len * 0.985).toFixed(1));
-      ring.setAttribute('lengthAdjust', 'spacing');
+      band();
 
       var r = rng(seed);
       while (letters.firstChild) letters.removeChild(letters.firstChild);
       var rows = words.length;
-      var top = 24, bottom = 108;
+      var top = FIELD + 5.5, bottom = VH - FIELD - 4.5;
       var longest = Math.max.apply(null, words.map(function (w) { return w.length; }));
-      var size = Math.min(isHome ? 11.5 : 15, 50 / (longest * 0.78), (bottom - top) / (rows * 1.25));
+      var size = Math.min(isHome ? 10 : 13, 43 / (longest * 0.78), (bottom - top) / (rows * 1.25));
       words.forEach(function (word, n) {
         var y = top + (bottom - top) * (n + 0.78) / rows;
         var chars = word.split('').map(function (ch) {
@@ -174,14 +217,14 @@
         // left and right from row to row like the hand-set labels
         var lean = (n % 2 ? 1 : -1) * (5 + r() * 11);
         var best = null;
-        for (var cx = FIELD + 4; cx <= 100 - FIELD - 4 - width; cx += 0.5) {
+        for (var cx = FIELD + 3.5; cx <= 100 - FIELD - 3.5 - width; cx += 0.5) {
           if (!inside(cx, y - size * 0.7) || !inside(cx + width, y - size * 0.7) ||
               !inside(cx, y + size * 0.15) || !inside(cx + width, y + size * 0.15)) continue;
           var cost = inkUnder(cx, y - size * 0.72, width, size * 0.9) +
                      0.004 * Math.abs(cx + width / 2 - (CX + lean));
           if (!best || cost < best.cost) best = { x: cx, cost: cost };
         }
-        var x = best ? best.x : Math.max(FIELD + 6, Math.min(CX - width / 2 + lean, 100 - FIELD - 6 - width));
+        var x = best ? best.x : Math.max(FIELD + 5, Math.min(CX - width / 2 + lean, 100 - FIELD - 5 - width));
         chars.forEach(function (c) {
           c.t.setAttribute('x', x.toFixed(2));
           c.t.setAttribute('y', (y + c.dy).toFixed(2));

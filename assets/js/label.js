@@ -25,6 +25,17 @@
     resume:      ['RE', 'SU', 'ME']
   };
 
+  /* Drawings with a face in them: the size of the capitals, where each
+     row's baseline sits, as a fraction of the field's height, and the box
+     (fractions of the field) the capitals keep off. The portrait has the
+     name set above the head and over the jacket, never across the face,
+     a little smaller so three rows fit under the chin. `dark` means the
+     drawing has its own white-ink version for the dark label, since a face
+     can't simply be printed in negative the way the other drawings are. */
+  var PLACE = {
+    '': { dark: true, size: 8.5, rows: [0.155, 0.27, 0.765, 0.852, 0.938], clear: [0.24, 0.3, 0.77, 0.68] }
+  };
+
   var RING = 'aniketh bandlamudi\u00a0\u00a0\u00a0computer science & applied mathematics\u00a0\u00a0\u00a0aniketh.net';
   var FOOT = 'charlottesville';
 
@@ -96,14 +107,20 @@
 
   var deg = Math.PI / 180;
 
-  function build(words, drawing, seed, isHome) {
+  function build(words, drawing, seed, isHome, place) {
     var svg = el('svg', { viewBox: '0 0 100 ' + VH, class: 'lbl__svg', 'aria-hidden': 'true' });
     var defs = el('defs', {}, svg);
     var id = 'l' + Math.floor(Math.random() * 1e6);
 
     el('path', { d: shape(FIELD) }, el('clipPath', { id: id + 'clip' }, defs));
     var mask = el('mask', { id: id + 'ink', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: 100, height: VH, style: 'mask-type:alpha' }, defs);
-    el('image', { href: drawing, x: FIELD, y: FIELD, width: 100 - 2 * FIELD, height: VH - 2 * FIELD, preserveAspectRatio: 'xMidYMid slice' }, mask);
+    var art = { href: drawing, x: FIELD, y: FIELD, width: 100 - 2 * FIELD, height: VH - 2 * FIELD, preserveAspectRatio: 'xMidYMid slice' };
+    if (place && place.dark) {
+      art['class'] = 'lbl__art--light';
+      el('image', art, mask);
+      art = Object.assign({}, art, { href: drawing.replace(/\.webp$/, '-dark.webp'), 'class': 'lbl__art--dark' });
+    }
+    el('image', art, mask);
 
     // paper
     el('path', { d: shape(0.15), class: 'lbl__paper' }, svg);
@@ -161,6 +178,15 @@
       return n ? sum / n : 0;
     }
 
+    // how much of a box lies over the part of the drawing kept clear
+    function overClear(x, y, w, h) {
+      if (!place) return 0;
+      var fw = 100 - 2 * FIELD, fh = VH - 2 * FIELD, c = place.clear;
+      var ox = Math.min(x + w, FIELD + c[2] * fw) - Math.max(x, FIELD + c[0] * fw);
+      var oy = Math.min(y + h, FIELD + c[3] * fh) - Math.max(y, FIELD + c[1] * fh);
+      return ox > 0 && oy > 0 ? ox * oy / (w * h) : 0;
+    }
+
     function inside(x, y) {
       var n = nAt(FIELD);
       return Math.pow(Math.abs(x - CX) / (A - FIELD - 2), n) + Math.pow(Math.abs(y - CY) / (B - FIELD - 2), n) <= 1;
@@ -202,32 +228,76 @@
       var rows = words.length;
       var top = FIELD + 5.5, bottom = VH - FIELD - 4.5;
       var longest = Math.max.apply(null, words.map(function (w) { return w.length; }));
-      var size = Math.min(isHome ? 10 : 13, 43 / (longest * 0.78), (bottom - top) / (rows * 1.25));
+      var size = Math.min(place && place.size || (isHome ? 10 : 13), 43 / (longest * 0.78), (bottom - top) / (rows * 1.25));
+      var placed = [];
       words.forEach(function (word, n) {
-        var y = top + (bottom - top) * (n + 0.78) / rows;
+        var y = place ? FIELD + (VH - 2 * FIELD) * place.rows[n]
+                      : top + (bottom - top) * (n + 0.78) / rows;
         var chars = word.split('').map(function (ch) {
           var t = el('text', { class: 'lbl__ch' }, letters);
           t.textContent = ch;
-          t.setAttribute('font-size', (size * (0.78 + r() * 0.5)).toFixed(2));
-          return { t: t, w: t.getComputedTextLength(), dy: (r() - 0.5) * size * 0.32 };
+          var s = size * (0.78 + r() * 0.5);
+          t.setAttribute('font-size', s.toFixed(2));
+          return { t: t, s: s, w: t.getComputedTextLength(), dy: (r() - 0.5) * size * 0.32 };
         });
         var gap = size * 0.06;
-        var width = chars.reduce(function (a, c) { return a + c.w + gap; }, -gap);
+        var width = chars.reduce(function (a, c) { c.o = a + gap; return c.o + c.w; }, -gap);
         // put the row where the drawing is emptiest, still drifting
         // left and right from row to row like the hand-set labels
         var lean = (n % 2 ? 1 : -1) * (5 + r() * 11);
-        var best = null;
-        for (var cx = FIELD + 3.5; cx <= 100 - FIELD - 3.5 - width; cx += 0.5) {
-          if (!inside(cx, y - size * 0.7) || !inside(cx + width, y - size * 0.7) ||
-              !inside(cx, y + size * 0.15) || !inside(cx + width, y + size * 0.15)) continue;
-          var cost = inkUnder(cx, y - size * 0.72, width, size * 0.9) +
-                     0.004 * Math.abs(cx + width / 2 - (CX + lean));
-          if (!best || cost < best.cost) best = { x: cx, cost: cost };
+        // Rows set close together (as round the portrait's face) must
+        // not run into each other: how much of this row, set at x, lands
+        // on the capitals already placed, with a little air round each.
+        function clash(x) {
+          var hit = 0, area = 0;
+          chars.forEach(function (c) {
+            var x0 = x + c.o - 0.6, x1 = x0 + c.w + 1.2;
+            var y1 = y + c.dy + 0.6, y0 = y1 - 0.66 * c.s - 1.2;
+            area += (x1 - x0) * (y1 - y0);
+            placed.forEach(function (b) {
+              var ox = Math.min(x1, b[2]) - Math.max(x0, b[0]);
+              var oy = Math.min(y1, b[3]) - Math.max(y0, b[1]);
+              if (ox > 0 && oy > 0) hit += ox * oy;
+            });
+          });
+          return hit / area;
+        }
+        // Every letter, at its own size and drift, has to clear the
+        // window's edge, not just the row's nominal box: a large first
+        // capital low in the row is the one that runs out over the rule.
+        function fits(x) {
+          return chars.every(function (c) {
+            var x0 = x + c.o, x1 = x0 + c.w;
+            var y1 = y + c.dy + 0.02 * c.s, y0 = y + c.dy - 0.68 * c.s;
+            return inside(x0, y0) && inside(x1, y0) && inside(x0, y1) && inside(x1, y1);
+          });
+        }
+        function search() {
+          var best = null;
+          for (var cx = FIELD + 3.5; cx <= 100 - FIELD - 3.5 - width; cx += 0.5) {
+            if (!inside(cx, y - size * 0.7) || !inside(cx + width, y - size * 0.7) ||
+                !inside(cx, y + size * 0.15) || !inside(cx + width, y + size * 0.15) ||
+                !fits(cx)) continue;
+            var cost = inkUnder(cx, y - size * 0.72, width, size * 0.9) +
+                       10 * overClear(cx, y - size * 0.72, width, size * 0.9) +
+                       10 * clash(cx) +
+                       0.004 * Math.abs(cx + width / 2 - (CX + lean));
+            if (!best || cost < best.cost) best = { x: cx, cost: cost };
+          }
+          return best;
+        }
+        // where the row can't fit at its height, walk it in towards the
+        // middle of the label until it can
+        var best = search();
+        for (var walk = 0; !best && walk < 40; walk++) {
+          y += y < CY ? 0.5 : -0.5;
+          best = search();
         }
         var x = best ? best.x : Math.max(FIELD + 5, Math.min(CX - width / 2 + lean, 100 - FIELD - 5 - width));
         chars.forEach(function (c) {
           c.t.setAttribute('x', x.toFixed(2));
           c.t.setAttribute('y', (y + c.dy).toFixed(2));
+          placed.push([x, y + c.dy - 0.66 * c.s, x + c.w, y + c.dy]);
           x += c.w + gap;
         });
       });
@@ -244,14 +314,15 @@
   var isHome = section === '';
   var known = section in SETS;
   var words = /^404/.test(document.title) ? ['40', '4'] : SETS[section] || chunk(title ? title.textContent : document.title);
-  var drawing = '/assets/img/labels/' + (known && section ? section : 'home') + '.webp';
+  // the portrait is the homepage's own; any other page (the 404) gets the Lawn
+  var drawing = '/assets/img/labels/' + (isHome ? 'home' : known ? section : 'lawn') + '.webp';
 
   var label = document.createElement('div');
   label.className = 'lbl' + (isHome ? ' lbl--home' : '');
   var holder = document.createElement(isHome ? 'div' : 'a');
   holder.className = 'lbl__oval';
   if (!isHome) { holder.href = '/'; holder.setAttribute('aria-label', 'Aniketh Bandlamudi, home'); }
-  var built = build(words, drawing, section || 'home', isHome);
+  var built = build(words, drawing, section || 'home', isHome, known ? PLACE[section] : null);
   holder.appendChild(built.svg);
   label.appendChild(holder);
 

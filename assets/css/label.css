@@ -101,6 +101,17 @@ a.lbl__oval:hover { opacity: 0.8; }
   .lbl__rule--edge,
   .lbl__rule--outer { stroke: light-dark(currentColor, transparent); }
   .lbl__rule--thin { stroke: light-dark(transparent, currentColor); }
+
+  /* The portrait can't be printed in negative as the other drawings are,
+     so it has its own white-ink drawing for the dark label: the face lit
+     out of the black, the garden behind it in white lines. */
+  .lbl__art--dark { display: none; }
+  :root[data-theme="dark"] .lbl__art--light { display: none; }
+  :root[data-theme="dark"] .lbl__art--dark { display: inline; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .lbl__art--light { display: none; }
+    :root:not([data-theme="light"]) .lbl__art--dark { display: inline; }
+  }
 }
 
 /* The band lettering: lowercase roman, like the address on the bottles.

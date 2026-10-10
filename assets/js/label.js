@@ -12,7 +12,7 @@
 
   /* How each word is broken across the label, like a word game. */
   var SETS = {
-    '':          ['ANI', 'KETH', 'BAND', 'LA', 'MUDI'],
+    '':          ['ANI', 'K', 'E', 'T', 'H'],
     work:        ['WO', 'RK'],
     education:   ['EDU', 'CA', 'TION'],
     projects:    ['PRO', 'JE', 'CTS'],
@@ -25,15 +25,21 @@
     resume:      ['RE', 'SU', 'ME']
   };
 
-  /* Drawings with a face in them: the size of the capitals, where each
-     row's baseline sits, as a fraction of the field's height, and the box
-     (fractions of the field) the capitals keep off. The portrait has the
-     name set above the head and over the jacket, never across the face,
-     a little smaller so three rows fit under the chin. `dark` means the
-     drawing has its own white-ink version for the dark label, since a face
-     can't simply be printed in negative the way the other drawings are. */
+  /* Drawings with a face in them, where the capitals are set by hand:
+     their size, each row's baseline and centre as fractions of the field,
+     and the box (fractions of the field) they keep off. The portrait is set
+     like Do Son: ANI across the top and K E T H stepping down beside the
+     face, the surname left to the band. `dark` means the drawing has its
+     own white-ink version for the dark label, since a face can't simply be
+     printed in negative the way the other drawings are. */
   var PLACE = {
-    '': { dark: true, size: 8.5, rows: [0.155, 0.27, 0.765, 0.852, 0.938], clear: [0.24, 0.3, 0.77, 0.68] }
+    '': {
+      dark: true,
+      size: 12.5,
+      rows: [0.165, 0.37, 0.5, 0.63, 0.76],
+      x: [0.34, 0.87, 0.9, 0.87, 0.84],
+      clear: [0.25, 0.3, 0.76, 0.68]
+    }
   };
 
   var RING = 'aniketh bandlamudi\u00a0\u00a0\u00a0computer science & applied mathematics\u00a0\u00a0\u00a0aniketh.net';
@@ -243,8 +249,11 @@
         var gap = size * 0.06;
         var width = chars.reduce(function (a, c) { c.o = a + gap; return c.o + c.w; }, -gap);
         // put the row where the drawing is emptiest, still drifting
-        // left and right from row to row like the hand-set labels
+        // left and right from row to row like the hand-set labels, or
+        // held near the centre the label sets for it
         var lean = (n % 2 ? 1 : -1) * (5 + r() * 11);
+        var aim = place && place.x ? FIELD + (100 - 2 * FIELD) * place.x[n] : CX + lean;
+        var pull = place && place.x ? 0.05 : 0.004;
         // Rows set close together (as round the portrait's face) must
         // not run into each other: how much of this row, set at x, lands
         // on the capitals already placed, with a little air round each.
@@ -281,7 +290,7 @@
             var cost = inkUnder(cx, y - size * 0.72, width, size * 0.9) +
                        10 * overClear(cx, y - size * 0.72, width, size * 0.9) +
                        10 * clash(cx) +
-                       0.004 * Math.abs(cx + width / 2 - (CX + lean));
+                       pull * Math.abs(cx + width / 2 - aim);
             if (!best || cost < best.cost) best = { x: cx, cost: cost };
           }
           return best;

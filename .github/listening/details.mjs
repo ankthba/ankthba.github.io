@@ -111,17 +111,17 @@ export async function details(path, plays) {
   const lastPlay = new Map();
   for (const p of plays) if (p.id) lastPlay.set(p.id, p);
 
-  // Genres and Deezer go one after the other, so a slow or failing one
-  // doesn't hold up the other's share of the time.
-  let mbOk = true, dzOk = true;
+  // Genres and Deezer run side by side, each at its own pace, so the
+  // slower MusicBrainz doesn't hold Deezer back; either stops for this
+  // run if its source fails.
   const genresDue = (e) => !e?.genresChecked || daysSince(e.genresChecked) >= (e.mbid ? FRESH : RETRY);
   const artistIds = most((p) => p.artists[0]?.id).filter((id) => genresDue(cache.artists[id]));
   const trackIds = most((p) => p.id).filter((id) => due(cache.tracks[id]));
-  let a = 0, t = 0;
   const looked = { artists: 0, tracks: 0 };
-  while (Date.now() < deadline && ((mbOk && a < artistIds.length) || (dzOk && t < trackIds.length))) {
-    if (mbOk && a < artistIds.length) {
-      const id = artistIds[a++];
+
+  async function genres() {
+    for (const id of artistIds) {
+      if (Date.now() >= deadline) return;
       try {
         const g = await genresOf(id);
         const entry = (cache.artists[id] ||= {});
@@ -129,10 +129,13 @@ export async function details(path, plays) {
         entry.mbid = g?.mbid || null;
         entry.genres = g?.genres || [];
         looked.artists += 1;
-      } catch (err) { console.warn('Genres:', err.message); mbOk = false; }
+      } catch (err) { console.warn('Genres:', err.message); return; }
     }
-    if (dzOk && t < trackIds.length) {
-      const id = trackIds[t++];
+  }
+
+  async function songs() {
+    for (const id of trackIds) {
+      if (Date.now() >= deadline) return;
       const play = lastPlay.get(id);
       try {
         const song = await songOf(play);
@@ -145,9 +148,11 @@ export async function details(path, plays) {
           entry.fansChecked = today;
         }
         looked.tracks += 1;
-      } catch (err) { console.warn('Deezer:', err.message); dzOk = false; }
+      } catch (err) { console.warn('Deezer:', err.message); return; }
     }
   }
+
+  await Promise.all([genres(), songs()]);
   console.log(`details.json: looked up ${looked.artists} artists and ${looked.tracks} songs; ` +
     `${artistIds.length - looked.artists} artists and ${trackIds.length - looked.tracks} songs wait for later.`);
   await writeFile(path, JSON.stringify(cache) + '\n');

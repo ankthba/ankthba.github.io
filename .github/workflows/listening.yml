@@ -4,7 +4,9 @@ name: Listening
 #   1. update.mjs folds new Spotify plays into this week's counts, for the
 #      home page's top fives (listening.json).
 #   2. log.mjs appends every new play to the private listening-log repo.
-#   3. music.mjs summarises that log for the /music/ page (music.json).
+#   3. music.mjs summarises that log for the /music/ page (music.json),
+#      with genres from MusicBrainz and song details from Deezer
+#      (details.mjs), up to two minutes of looking up a run.
 # listening.json and music.json go to the public listening-data branch,
 # which the site reads. main is never touched, so the site isn't rebuilt.
 
@@ -34,7 +36,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     env:
       HAS_LOG: ${{ secrets.LISTENING_LOG_KEY != '' }}
     steps:

@@ -103,7 +103,15 @@
             </div>
             <div class="cal__grid" data-cal-grid></div>
 
-            <div class="cal__day" data-cal-day aria-live="polite"></div>
+            <div class="cal__day">
+              <p class="cal__by" role="group" aria-label="Show the stats for the day picked, its week, or the month">
+                <span class="cal__by-label">Stats for the</span>
+                <button type="button" class="cal__by-option" data-cal-span="day" data-text="Day" aria-pressed="true">Day</button>
+                <button type="button" class="cal__by-option" data-cal-span="week" data-text="Week" aria-pressed="false">Week</button>
+                <button type="button" class="cal__by-option" data-cal-span="month" data-text="Month" aria-pressed="false">Month</button>
+              </p>
+              <div data-cal-day aria-live="polite"></div>
+            </div>
           </section>
 
           <section class="music__sec" aria-labelledby="top-heading">

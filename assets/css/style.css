@@ -1256,17 +1256,79 @@ a.masthead__name:hover {
   display: none;
 }
 
-.cal__open {
-  display: block;
-  margin-top: var(--space-sm);
+/* Under the grid: Day, Week or Month, then a line summing it up. */
+.cal__day .cal__by {
+  margin: 0 0 1rem;
 }
 
-.cal__log[hidden] {
+.page .cal__summary {
+  font-style: italic;
+  color: var(--color-muted);
+  text-align: left;
+}
+
+/* The stats, in sections that open one at a time: a hairline row with
+   the section's name, and Show or Hide in the link blue. */
+.cal__sections {
+  margin-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.cal__section {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 1.0625rem;
+  color: var(--color-fg);
+  text-align: left;
+}
+
+.cal__section[aria-expanded="true"] {
+  border-bottom-color: transparent;
+}
+
+.cal__section[aria-expanded="true"] .cal__section-name {
+  font-style: italic;
+}
+
+.cal__section-act {
+  font-size: 0.95rem;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-link-underline);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+
+.cal__section:hover .cal__section-act {
+  color: var(--color-link-hover);
+}
+
+.cal__section:focus-visible {
+  outline: 1px dashed var(--color-fg);
+  outline-offset: 2px;
+}
+
+.cal__section-body[hidden] {
   display: none;
 }
 
-.cal__log {
-  margin-top: var(--space-sm);
+.cal__section-body {
+  padding: 0.25rem 0 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cal__section-body > .music__label:first-child {
+  margin-top: 0;
+}
+
+.cal__section-body > :last-child {
+  margin-bottom: 0;
 }
 
 /* Plays by the hour: 24 bars on a hairline. */

@@ -762,7 +762,8 @@ a.masthead__name:hover {
   gap: 0.8rem;
 }
 
-.theme-toggle__option {
+.theme-toggle__option,
+.cal__by-option {
   /* Underlined like a link, in ink rather than blue: these change how
      the page looks, they don't go anywhere. Upright against the italic
      colophon line, so that italic is left to mean "in force". */
@@ -783,7 +784,9 @@ a.masthead__name:hover {
    upright and its italic width, so switching the setting doesn't change
    how wide these three words are and shove the centred row sideways. */
 .theme-toggle__option::before,
-.theme-toggle__option::after {
+.theme-toggle__option::after,
+.cal__by-option::before,
+.cal__by-option::after {
   content: attr(data-text);
   display: block;
   height: 0;
@@ -795,27 +798,32 @@ a.masthead__name:hover {
   text-align: right;
 }
 
-.theme-toggle__option::before {
+.theme-toggle__option::before,
+.cal__by-option::before {
   font-style: normal;
 }
 
-.theme-toggle__option::after {
+.theme-toggle__option::after,
+.cal__by-option::after {
   font-style: italic;
 }
 
-.theme-toggle__option:hover {
+.theme-toggle__option:hover,
+.cal__by-option:hover {
   color: var(--color-fg);
 }
 
 /* The setting in force goes italic and full ink, the way the current
    page reads in the nav. */
-.theme-toggle__option[aria-pressed="true"] {
+.theme-toggle__option[aria-pressed="true"],
+.cal__by-option[aria-pressed="true"] {
   font-style: italic;
   color: var(--color-fg);
   text-decoration-color: var(--color-fg);
 }
 
-.theme-toggle__option:focus-visible {
+.theme-toggle__option:focus-visible,
+.cal__by-option:focus-visible {
   outline: 1px solid var(--color-border-hover);
   outline-offset: 3px;
 }
@@ -1080,6 +1088,23 @@ a.masthead__name:hover {
   margin-top: 0.25rem;
 }
 
+/* What each day's square shows: its top album, song or artist. Set
+   like the theme toggle in the colophon, since it changes how the
+   calendar looks rather than going anywhere. */
+.cal__by {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.cal__by-label {
+  font-style: italic;
+  color: var(--color-muted);
+}
+
 .cal__head {
   display: flex;
   align-items: baseline;
@@ -1269,6 +1294,43 @@ a.masthead__name:hover {
   color: var(--color-muted);
 }
 
+/* Shares as bars: a name, a hairline bar, a percentage. */
+.cal__shares {
+  list-style: none;
+}
+
+.cal__shares li {
+  display: grid;
+  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) 2.75rem;
+  align-items: center;
+  column-gap: 0.85rem;
+  padding: 0.2rem 0;
+}
+
+.cal__share-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cal__share-bar {
+  height: 0.45rem;
+  background: var(--color-bg-alt);
+}
+
+.cal__share-bar i {
+  display: block;
+  height: 100%;
+  background: var(--color-fg);
+  opacity: 0.75;
+}
+
+.cal__share-n {
+  text-align: right;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .page .cal__artist {
   text-align: left;
 }
@@ -1289,6 +1351,10 @@ a.masthead__name:hover {
 @media (max-width: 480px) {
   .cal__stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cal__shares li {
+    grid-template-columns: minmax(0, 9.5rem) minmax(0, 1fr) 2.75rem;
   }
 
   .cal__n {

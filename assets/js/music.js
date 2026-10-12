@@ -93,9 +93,10 @@
   /* The listening calendar: a month at a time, any month, each day
      since tracking began shown by the cover of its top album (the most
      plays across its songs, so one song played over and over can still
-     carry its album), and the day picked out below it in full. The
-     days come from music.json's calendar, written each time the Action
-     runs. */
+     carry its album), the cover of its top song, or the picture of its
+     top artist, whichever is chosen above the grid, and the day picked
+     out below it in full. The days come from music.json's calendar,
+     written each time the Action runs. */
   var noonOf = function (day) { return new Date(day + 'T12:00:00Z'); };
   var fmtDay = function (day, opts) {
     return noonOf(day).toLocaleDateString('en-US', Object.assign({ timeZone: 'UTC' }, opts));
@@ -112,8 +113,17 @@
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   /* A day's top songs: a list now, a single song in older files. */
   var topsOf = function (info) { return Array.isArray(info.top) ? info.top : info.top ? [info.top] : []; };
-  /* A day's cover: its top album's, or its top song's if it has none. */
-  var coverOf = function (info) { return info.topAlbum || topsOf(info)[0]; };
+  /* A day's picture, by what is chosen: its top album's cover (or its
+     top song's, in older files with no album), its top song's cover,
+     or its top artist's picture. */
+  var BY = {
+    album: { of: function (info) { return info.topAlbum || topsOf(info)[0]; },
+             says: function (info) { return info.topAlbum ? 'top album' : 'top song'; } },
+    song: { of: function (info) { return topsOf(info)[0]; },
+            says: function () { return 'top song'; } },
+    artist: { of: function (info) { return (info.topArtists || [])[0]; },
+              says: function () { return 'top artist'; } }
+  };
   var playCount = function (item) { return plural(item.plays, 'play', 'plays'); };
 
   function calendar(data) {
@@ -153,6 +163,26 @@
     var picked = today;
     var month = today.slice(0, 7);
 
+    /* Album, song or artist: the last choice made in this browser, if
+       it can remember one. */
+    var by = 'album';
+    try { if (BY[localStorage.getItem('cal-by')]) by = localStorage.getItem('cal-by'); } catch (e) {}
+    var options = box.querySelectorAll('[data-cal-by]');
+    function choose(next) {
+      by = next;
+      Array.prototype.forEach.call(options, function (b) {
+        b.setAttribute('aria-pressed', String(b.getAttribute('data-cal-by') === by));
+      });
+    }
+    Array.prototype.forEach.call(options, function (b) {
+      b.addEventListener('click', function () {
+        choose(b.getAttribute('data-cal-by'));
+        try { localStorage.setItem('cal-by', by); } catch (e) {}
+        draw();
+      });
+    });
+    choose(by);
+
     function shift(ym, n) {
       var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + n;
       return new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 7);
@@ -182,7 +212,7 @@
           cell.classList.add('cal__cell--off');
           cell.setAttribute('aria-label', label + (day < since ? ', before tracking began' : ''));
         } else {
-          var cover = info && coverOf(info);
+          var cover = info && BY[by].of(info);
           if (cover && https(cover.image)) {
             var img = el('img', 'cal__art');
             img.alt = '';
@@ -192,7 +222,7 @@
             cell.classList.add('cal__cell--art');
           }
           cell.setAttribute('aria-label', label + ': ' + (info
-            ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? (info.topAlbum ? ', top album ' : ', top song ') + cover.name : '')
+            ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? ', ' + BY[by].says(info) + ' ' + cover.name : '')
             : 'nothing played'));
           if (day === today) cell.classList.add('cal__cell--today');
           cell.setAttribute('aria-pressed', day === picked ? 'true' : 'false');
@@ -206,8 +236,61 @@
       show(picked);
     }
 
-    /* The day picked: its numbers, its hours, then its top songs,
-       artists and album. */
+    /* The day picked: its numbers in groups, its hours, the music
+       itself, then its top songs, artists, album and playlist, and the
+       odd ones out. Anything an older file doesn't have is left out. */
+    var num = function (n) { return n == null ? null : n.toLocaleString('en-US'); };
+    var pct = function (n, of) { return n == null || !of ? null : Math.round(100 * n / of) + '%'; };
+    var nth = function (n) {
+      var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    };
+
+    /* A run of numbers under a label, three across. */
+    function stats(panel, title, pairs) {
+      var list = el('dl', 'cal__stats');
+      pairs.forEach(function (pair) {
+        if (pair[1] == null) return;
+        var row = el('div');
+        row.appendChild(el('dt', null, pair[0]));
+        row.appendChild(el('dd', null, pair[1]));
+        list.appendChild(row);
+      });
+      if (!list.children.length) return;
+      if (title) panel.appendChild(el('p', 'music__label', title));
+      panel.appendChild(list);
+    }
+
+    /* Shares of the day as bars: a name, a bar, a percentage. */
+    function shares(panel, title, rows, of) {
+      if (!rows.length || !of) return;
+      panel.appendChild(el('p', 'music__label', title));
+      var list = el('ol', 'cal__shares');
+      var most = Math.max.apply(null, rows.map(function (r) { return r[1]; }));
+      rows.forEach(function (r) {
+        var li = el('li');
+        li.appendChild(el('span', 'cal__share-name', r[0]));
+        var track = el('span', 'cal__share-bar');
+        track.setAttribute('aria-hidden', 'true');
+        var bar = el('i');
+        bar.style.width = (100 * r[1] / most) + '%';
+        track.appendChild(bar);
+        li.appendChild(track);
+        li.appendChild(el('span', 'cal__share-n mono', pct(r[1], of)));
+        list.appendChild(li);
+      });
+      panel.appendChild(list);
+    }
+
+    /* One song, artist or playlist under a label, with a note of why. */
+    function single(panel, title, item, count, artist) {
+      if (!item) return;
+      panel.appendChild(el('p', 'music__label', title));
+      var list = el('ol', artist ? 'plays plays--artists' : 'plays');
+      fill(list, [item], { numbered: false, count: count });
+      panel.appendChild(list);
+    }
+
     function show(day) {
       var panel = $('[data-cal-day]');
       var info = days[day];
@@ -219,27 +302,49 @@
         return;
       }
 
+      stats(panel, null, [
+        ['Plays', num(info.plays)],
+        ['Listened', duration(info.minutes)],
+        ['Share of the day', pct(info.minutes, 1440)],
+        ['Songs', num(info.tracks)],
+        ['Artists', num(info.artists)],
+        ['Albums', num(info.albums)]]);
+
+      /* Against the other days: its place by time listened, the time
+         against the average of every whole day since tracking began
+         (quiet ones included), and how many days running had music. */
+      var listed = Object.keys(days);
+      var rank = 1 + listed.filter(function (d) { return days[d].minutes > info.minutes; }).length;
+      var whole = (Date.parse(today) - Date.parse(since)) / 864e5;
+      var past = listed.filter(function (d) { return d < today; })
+        .reduce(function (n, d) { return n + days[d].minutes; }, 0);
+      var average = whole > 0 ? past / whole : 0;
+      var against = average ? Math.round(100 * (info.minutes - average) / average) : null;
+      var run = 0;
+      for (var d = day; days[d]; d = new Date(Date.parse(d) - 864e5).toISOString().slice(0, 10)) run++;
+      /* Today isn't over, so it isn't ranked or held to a whole day. */
+      var over = day !== today;
+      stats(panel, 'Against other days', [
+        ['Rank by time', over ? nth(rank) + ' of ' + listed.length : null],
+        ['Against average', over && against != null ? (against > 0 ? '+' : against < 0 ? '−' : '') + Math.abs(against) + '%' : null],
+        ['Days in a row', num(run)]]);
+
+      stats(panel, 'Discovery', [
+        ['New songs', num(info.newTracks)],
+        ['New artists', num(info.newArtists)],
+        ['New albums', num(info.newAlbums)],
+        ['Replays', num(info.plays - info.tracks)]]);
+
       var hours = info.hours || null;
       var busiest = hours ? hours.indexOf(Math.max.apply(null, hours)) : -1;
-      var num = function (n) { return n == null ? null : n.toLocaleString('en-US'); };
-      var stats = el('dl', 'cal__stats');
-      [['Plays', num(info.plays)],
-       ['Listened', duration(info.minutes)],
-       ['Songs', num(info.tracks)],
-       ['New songs', num(info.newTracks)],
-       ['Artists', num(info.artists)],
-       ['Albums', num(info.albums)],
-       ['First play', info.first ? clock(info.first) : null],
-       ['Last play', info.last ? clock(info.last) : null],
-       ['Busiest hour', busiest >= 0 ? hourName(busiest) + ' to ' + hourName((busiest + 1) % 24) : null]]
-        .forEach(function (pair) {
-          if (pair[1] == null) return;
-          var row = el('div');
-          row.appendChild(el('dt', null, pair[0]));
-          row.appendChild(el('dd', null, pair[1]));
-          stats.appendChild(row);
-        });
-      panel.appendChild(stats);
+      var session = info.longestSession;
+      stats(panel, 'Timing', [
+        ['First play', info.first ? clock(info.first) : null],
+        ['Last play', info.last ? clock(info.last) : null],
+        ['Busiest hour', busiest >= 0 ? hourName(busiest) + ' to ' + hourName((busiest + 1) % 24) : null],
+        ['Sessions', num(info.sessions)],
+        ['Longest session', session ? duration(session.minutes) : null],
+        ['Longest break', info.longestBreak != null ? duration(info.longestBreak) : null]]);
 
       /* Plays in each hour of the day, as a row of bars. */
       if (hours) {
@@ -259,6 +364,63 @@
         axis.setAttribute('aria-hidden', 'true');
         ['12 AM', '6 AM', '12 PM', '6 PM', '12 AM'].forEach(function (label) { axis.appendChild(el('span', null, label)); });
         panel.appendChild(axis);
+
+        /* Morning 5 to noon, afternoon to 5, evening to 9, night to 5. */
+        var span = function (from, to) {
+          var n = 0;
+          for (var h = from; h !== to; h = (h + 1) % 24) n += hours[h];
+          return n;
+        };
+        stats(panel, 'Time of day', [
+          ['Morning', pct(span(5, 12), info.plays)],
+          ['Afternoon', pct(span(12, 17), info.plays)],
+          ['Evening', pct(span(17, 21), info.plays)],
+          ['Night', pct(span(21, 5), info.plays)]]);
+      }
+
+      /* The music itself, from MusicBrainz and Deezer: each share is of
+         the plays they knew about. */
+      var reach = info.reach, explicit = info.explicit, released = info.released, genres = info.genres;
+      stats(panel, 'The music', [
+        ['Popularity', info.popularity != null ? info.popularity + ' / 100' : null],
+        ['Mainstream', reach ? pct(reach.mainstream, reach.known) : null],
+        ['In between', reach ? pct(reach.middle, reach.known) : null],
+        ['Niche', reach ? pct(reach.niche, reach.known) : null],
+        ['Artist variety', info.variety != null ? info.variety + ' / 100' : null],
+        ['Genres', genres ? num(genres.count) : null],
+        ['Explicit', explicit ? pct(explicit.plays, explicit.known) : null],
+        ['Average year', released ? String(released.average) : null],
+        ['Fresh releases', released ? num(released.fresh) : null]]);
+      if (genres) {
+        shares(panel, 'Top genres', genres.top.map(function (g) { return [g.name, g.plays]; }), genres.known);
+      }
+      if (released && released.decades) {
+        shares(panel, 'By decade', Object.keys(released.decades).sort().reverse().map(function (k) {
+          return [k, released.decades[k]];
+        }), released.known);
+      }
+      if (genres || reach || released) {
+        panel.appendChild(el('p', 'cal__note',
+          'Genres are from MusicBrainz. Popularity, fans, release years and explicit lyrics are from Deezer. ' +
+          'Mainstream means over a million fans there, and niche fewer than 10,000. ' +
+          'Artist variety is 100 when every play is by someone different. ' +
+          'Fresh releases came out in the month before the day.'));
+      }
+
+      var from = info.from;
+      stats(panel, 'Habits', [
+        ['Played through', info.cutShort != null ? pct(info.plays - info.cutShort, info.plays) : null],
+        ['Cut short', num(info.cutShort)],
+        ['Average length', info.averageMs ? mmss(info.averageMs) : null],
+        ['With features', info.features != null ? pct(info.features, info.plays) : null],
+        ['Top artist share', info.topArtists && info.topArtists[0] ? pct(info.topArtists[0].plays, info.plays) : null]]);
+      if (from) {
+        stats(panel, 'Played from', [
+          ['Playlists', from.playlist ? pct(from.playlist, info.plays) : null],
+          ['Albums', from.album ? pct(from.album, info.plays) : null],
+          ['Artist pages', from.artist ? pct(from.artist, info.plays) : null],
+          ['Liked Songs', from.liked ? pct(from.liked, info.plays) : null],
+          ['Elsewhere', from.other ? pct(from.other, info.plays) : null]]);
       }
 
       var tops = topsOf(info);
@@ -274,12 +436,14 @@
         fill(artists, info.topArtists, { count: playCount });
         panel.appendChild(artists);
       }
-      if (info.topAlbum) {
-        panel.appendChild(el('p', 'music__label', 'Top album'));
-        var album = el('ol', 'plays');
-        fill(album, [info.topAlbum], { numbered: false, count: playCount });
-        panel.appendChild(album);
-      }
+      single(panel, 'Top album', info.topAlbum, playCount);
+      single(panel, 'Top playlist', info.topPlaylist, playCount);
+      single(panel, 'On repeat', info.onRepeat, function (item) { return item.times + ' in a row'; });
+      single(panel, 'Longest song', info.longest, function (item) { return mmss(item.duration_ms); });
+      single(panel, 'Deepest cut', info.deepCut, function (item) { return item.popularity + ' / 100'; });
+      single(panel, 'Oldest song', released && released.oldest, function (item) { return String(item.year); });
+      single(panel, 'Most niche artist', info.nichest, function (item) { return plural(item.fans, 'Deezer fan', 'Deezer fans'); }, true);
+      single(panel, 'Most followed artist', info.biggest, function (item) { return plural(item.fans, 'Deezer fan', 'Deezer fans'); }, true);
       if (day === today) panel.appendChild(el('p', 'cal__note', 'Today’s numbers catch up each time the log is updated.'));
 
       /* The day's whole log, 12 AM to 11:59 PM, fetched only when asked

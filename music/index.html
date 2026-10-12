@@ -89,6 +89,13 @@
             <p class="cal__since" data-cal-since></p>
             <p class="cal__totals" data-cal-totals></p>
 
+            <p class="cal__by" role="group" aria-label="Show each day by its top album, song or artist">
+              <span class="cal__by-label">Each day by its top</span>
+              <button type="button" class="cal__by-option" data-cal-by="album" data-text="Album" aria-pressed="true">Album</button>
+              <button type="button" class="cal__by-option" data-cal-by="song" data-text="Song" aria-pressed="false">Song</button>
+              <button type="button" class="cal__by-option" data-cal-by="artist" data-text="Artist" aria-pressed="false">Artist</button>
+            </p>
+
             <div class="cal__head">
               <button class="cal__step" type="button" data-cal-prev aria-label="Previous month">Earlier</button>
               <h3 class="cal__month" data-cal-month aria-live="polite"></h3>

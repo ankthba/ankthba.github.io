@@ -8,10 +8,12 @@
 //   node music.mjs <logdir> <outdir>
 //
 // <outdir> is the listening-data branch; artists.json there caches artist
-// photos between runs.
+// photos between runs, playlists.json playlist names and covers, and
+// details.json genres, popularity and release dates (see details.mjs).
 
 import { readFile, writeFile, readdir, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { details } from './details.mjs';
 
 const [logDir, outDir] = process.argv.slice(2);
 if (!logDir || !outDir) {
@@ -122,6 +124,25 @@ async function artists(list, n = TOP) {
   return out;
 }
 
+// Playlist names and covers, the same way: Spotify's oEmbed answers for
+// public playlists only, so a private one stays nameless and unshown.
+const playlistsPath = join(outDir, 'playlists.json');
+const playlists = await readJSON(playlistsPath, {});
+async function playlist(id) {
+  if (playlists[id]) return playlists[id];
+  if (tried.has(id)) return null;
+  tried.add(id);
+  try {
+    const res = await fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent('https://open.spotify.com/playlist/' + id),
+      { signal: AbortSignal.timeout(5000) });
+    if (res.ok) {
+      const { title, thumbnail_url } = await res.json();
+      if (title) return (playlists[id] = { name: title, image: thumbnail_url || null });
+    }
+  } catch {}
+  return null;
+}
+
 async function range(from, to) {
   const list = plays.filter((p) => p.day >= from && p.day <= to);
   return {
@@ -136,33 +157,192 @@ async function range(from, to) {
 
 const today = localDay(new Date());
 const since = plays.length ? plays[0].day : today;
+const known = await details(join(outDir, 'details.json'), plays);
+const songOf = (p) => (known.tracks[p.id]?.found ? known.tracks[p.id] : null);
+const artistOf = (p) => known.artists[p.artists[0]?.id] || null;
+
+// How mainstream an artist is, by their fans on Deezer.
+const MAINSTREAM = 1000000;
+const NICHE = 10000;
+
+// What the music itself was, from details.json: genres, how popular and
+// how widely followed, how old, how explicit, and how spread across
+// artists. Every share is of the plays whose details are known.
+async function sound(list, day) {
+  const out = {};
+
+  // Each play counts once, split evenly across its artist's genres.
+  const genres = new Map();
+  let genreKnown = 0;
+  for (const p of list) {
+    const g = artistOf(p)?.genres || [];
+    if (!g.length) continue;
+    genreKnown += 1;
+    for (const name of g) genres.set(name, (genres.get(name) || 0) + 1 / g.length);
+  }
+  if (genreKnown) {
+    out.genres = {
+      known: genreKnown,
+      count: genres.size,
+      top: [...genres].sort((a, b) => b[1] - a[1]).slice(0, 6)
+        .map(([name, n]) => ({ name, plays: Math.round(n * 10) / 10 })),
+    };
+  }
+
+  // Mainstream, in between or niche, and the day's least and most
+  // followed artists.
+  const fanned = list.filter((p) => artistOf(p)?.fans != null);
+  if (fanned.length) {
+    const reach = { known: fanned.length, mainstream: 0, middle: 0, niche: 0 };
+    for (const p of fanned) {
+      const fans = artistOf(p).fans;
+      reach[fans >= MAINSTREAM ? 'mainstream' : fans < NICHE ? 'niche' : 'middle'] += 1;
+    }
+    out.reach = reach;
+    const byFans = [...new Map(fanned.map((p) => [p.artists[0].id, p])).values()]
+      .sort((a, b) => artistOf(a).fans - artistOf(b).fans);
+    const who = async (p) => ({
+      name: p.artists[0].name,
+      url: artistUrl(p.artists[0].id),
+      image: (await photo(p.artists[0].id)) || p.image,
+      fans: artistOf(p).fans,
+    });
+    out.nichest = await who(byFans[0]);
+    if (byFans.length > 1) out.biggest = await who(byFans.at(-1));
+  }
+
+  // Songs: popularity (Deezer's rank, out of a million, as a score out
+  // of a hundred), explicit lyrics, release dates, and how many were
+  // out less than a month before the day they were played.
+  const songs = list.filter(songOf);
+  if (songs.length) {
+    const ranked = songs.filter((p) => songOf(p).rank != null);
+    if (ranked.length) {
+      out.popularity = Math.round(ranked.reduce((n, p) => n + songOf(p).rank, 0) / ranked.length / 10000);
+      const deep = ranked.reduce((a, b) => (songOf(b).rank < songOf(a).rank ? b : a));
+      out.deepCut = { ...track({ play: deep, plays: 1 }), popularity: Math.round(songOf(deep).rank / 10000) };
+    }
+    out.explicit = { known: songs.length, plays: songs.filter((p) => songOf(p).explicit).length };
+    const dated = songs.filter((p) => songOf(p).released);
+    if (dated.length) {
+      const year = (p) => Number(songOf(p).released.slice(0, 4));
+      const decades = {};
+      for (const p of dated) {
+        const d = Math.floor(year(p) / 10) * 10 + 's';
+        decades[d] = (decades[d] || 0) + 1;
+      }
+      const oldest = dated.reduce((a, b) => (songOf(b).released < songOf(a).released ? b : a));
+      out.released = {
+        known: dated.length,
+        average: Math.round(dated.reduce((n, p) => n + year(p), 0) / dated.length),
+        decades,
+        fresh: dated.filter((p) => songOf(p).released >= shiftDay(day, -30)).length,
+        oldest: { ...track({ play: oldest, plays: 1 }), year: year(oldest) },
+      };
+    }
+  }
+
+  // How spread the plays were across artists: 100 if every play was by
+  // someone different, 0 if all were by one artist.
+  const counts = new Map();
+  for (const p of list) if (p.artists[0]?.id) counts.set(p.artists[0].id, (counts.get(p.artists[0].id) || 0) + 1);
+  const total = [...counts.values()].reduce((a, b) => a + b, 0);
+  if (total > 1) {
+    const h = -[...counts.values()].reduce((n, c) => n + (c / total) * Math.log(c / total), 0);
+    out.variety = Math.round((100 * h) / Math.log(total));
+  }
+  return out;
+}
 const weekFrom = shiftDay(today, -6);
 const monthFrom = today.slice(0, 8) + '01';
 
 // The calendar: for every day with plays, how many and for how long,
-// how many different songs, artists and albums, how many songs were new
-// (not heard on any day before), when the first and last plays were, the
-// plays in each hour, and the day's top songs, artists and album.
+// how many different songs, artists and albums, how many songs, artists
+// and albums were new (not heard on any day before), when the first and
+// last plays were, the plays in each hour, how the day split into
+// sessions, how many songs were cut short, what they were played from,
+// and the day's top songs, artists, album and playlist, the song played
+// most times in a row, and the longest song.
 const hourFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', hourCycle: 'h23' });
 const calendar = {};
 const byDay = new Map();
 for (const p of plays) (byDay.get(p.day) || byDay.set(p.day, []).get(p.day)).push(p);
+// A session ends after this long without music.
+const BREAK = 20 * 60000;
+// A play heard for less than this much of its length was cut short.
+// Crossfading trims a few seconds off the end of a song played through.
+const THROUGH = 0.8;
 const heardBefore = new Set();
+const artistsBefore = new Set();
+const albumsBefore = new Set();
 for (const [day, list] of byDay) {
   const ids = new Set(list.map((p) => p.id).filter(Boolean));
+  const artistIds = new Set(list.map((p) => p.artists[0]?.id).filter(Boolean));
+  const albumIds = new Set(list.map((p) => p.album?.id).filter(Boolean));
   const hours = Array(24).fill(0);
   for (const p of list) hours[Number(hourFormat.format(new Date(p.played_at))) % 24] += 1;
   const [album] = top(list, (p) => p.album?.id, 1);
+
+  // Sessions: a play starts when it was stamped less what was heard of
+  // it, and a gap of BREAK or more between one play ending and the next
+  // starting begins a new session.
+  const sessions = [];
+  for (const p of list) {
+    const end = Date.parse(p.played_at);
+    const start = end - p.heard_ms;
+    const last = sessions.at(-1);
+    if (last && start - last.end < BREAK) last.end = end;
+    else sessions.push({ start, end });
+  }
+  const longest = sessions.reduce((a, b) => (b.end - b.start > a.end - a.start ? b : a));
+  let gap = 0;
+  for (let i = 1; i < sessions.length; i++) gap = Math.max(gap, sessions[i].start - sessions[i - 1].end);
+
+  // The same song played most times running.
+  let run = { n: 0 };
+  for (let i = 0, n = 0; i < list.length; i++) {
+    n = i && list[i].id && list[i].id === list[i - 1].id ? n + 1 : 1;
+    if (n > run.n) run = { n, play: list[i] };
+  }
+
+  // What each play was started from.
+  const from = { playlist: 0, album: 0, artist: 0, liked: 0, other: 0 };
+  for (const p of list) {
+    const type = p.context?.type;
+    if (type === 'collection' || /:collection$/.test(p.context?.uri || '')) from.liked += 1;
+    else if (type in from) from[type] += 1;
+    else from.other += 1;
+  }
+  const [list1] = top(list, (p) => p.context?.type === 'playlist' && p.context.uri.split(':').pop(), 1);
+  const listId = list1 && list1.play.context.uri.split(':').pop();
+  const listInfo = listId && (await playlist(listId));
+
+  const timed = list.filter((p) => p.duration_ms);
+  const long = timed.reduce((a, b) => (b.duration_ms > a.duration_ms ? b : a), timed[0]);
+
   calendar[day] = {
     plays: list.length,
     minutes: minutes(list),
     tracks: ids.size,
-    artists: new Set(list.map((p) => p.artists[0]?.id).filter(Boolean)).size,
-    albums: new Set(list.map((p) => p.album?.id).filter(Boolean)).size,
+    artists: artistIds.size,
+    albums: albumIds.size,
     newTracks: [...ids].filter((id) => !heardBefore.has(id)).length,
+    newArtists: [...artistIds].filter((id) => !artistsBefore.has(id)).length,
+    newAlbums: [...albumIds].filter((id) => !albumsBefore.has(id)).length,
     first: list[0].played_at,
     last: list.at(-1).played_at,
     hours,
+    sessions: sessions.length,
+    longestSession: {
+      minutes: Math.round((longest.end - longest.start) / 60000),
+      from: new Date(longest.start).toISOString(),
+      to: new Date(longest.end).toISOString(),
+    },
+    longestBreak: sessions.length > 1 ? Math.round(gap / 60000) : null,
+    cutShort: timed.filter((p) => p.heard_ms < p.duration_ms * THROUGH).length,
+    averageMs: timed.length ? Math.round(timed.reduce((n, p) => n + p.duration_ms, 0) / timed.length) : null,
+    features: list.filter((p) => p.artists.length > 1).length,
+    from,
     top: top(list, (p) => p.id, 5).map(track),
     topArtists: await artists(list, 3),
     topAlbum: album ? {
@@ -171,8 +351,19 @@ for (const [day, list] of byDay) {
       image: album.play.image,
       plays: album.plays,
     } : null,
+    topPlaylist: listInfo ? {
+      name: listInfo.name,
+      url: 'https://open.spotify.com/playlist/' + listId,
+      image: listInfo.image,
+      plays: list1.plays,
+    } : null,
+    onRepeat: run.n > 1 ? { ...track({ play: run.play, plays: run.n }), times: run.n } : null,
+    longest: long ? { ...track({ play: long, plays: 1 }), duration_ms: long.duration_ms } : null,
+    ...(await sound(list, day)),
   };
   for (const id of ids) heardBefore.add(id);
+  for (const id of artistIds) artistsBefore.add(id);
+  for (const id of albumIds) albumsBefore.add(id);
 }
 
 // Each month: its plays, time, and how many different songs and artists,
@@ -221,6 +412,7 @@ const music = {
 };
 
 await writeFile(photosPath, JSON.stringify(photos, null, 1) + '\n');
+await writeFile(playlistsPath, JSON.stringify(playlists, null, 1) + '\n');
 await writeFile(join(outDir, 'music.json'), JSON.stringify(music) + '\n');
 
 // Each day's full log, 12 am to 11:59 pm in order, one file a day in

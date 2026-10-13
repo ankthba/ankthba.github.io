@@ -94,11 +94,20 @@
     /* No data-theme is the default state, and it defers to the system.
        The colophon toggle writes the attribute to override it, and
        removes it again for "System". */
-    color-scheme: light dark;
+
+    /* Dark mode is off for now, so every light-dark() above resolves to
+       its light value. To bring it back, restore "light dark" here, the
+       two data-theme rules below, and in each page the dark theme-color
+       meta, the stored-choice lines in the head script, the colophon
+       toggle and theme.js. */
+    /* color-scheme: light dark; */
+    color-scheme: light;
   }
 
+  /*
   :root[data-theme="light"] { color-scheme: light; }
   :root[data-theme="dark"] { color-scheme: dark; }
+  */
 }
 
 /* ---------------------------------------------------------

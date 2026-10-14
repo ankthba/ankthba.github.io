@@ -2,19 +2,16 @@
    Black ink on cream, one oval label per page carrying the whole page,
    capitals that drift, and no colour except what the photographs bring. */
 
-/* The label itself is coloured like the real ones, not like the page:
-   a printed white label in soft black ink, sitting on the cream like the
-   eau de toilette label on its bottle; in the dark, the eau de parfum
-   label, near-black with off-white ink. Softer than pure white and black,
-   as printed paper is. */
+/* The label is printed straight onto the page: its paper is the page's
+   own colour, so only the rules and the ink set it apart. Soft black ink
+   on the cream; in the dark, off-white ink on near-black. */
 :root {
-  --lbl-paper: #fbf8f1;
+  --lbl-paper: var(--color-bg);
   --lbl-ink: #1f1d1a;
 }
 
 @supports (color: light-dark(#000, #fff)) {
   :root {
-    --lbl-paper: light-dark(#fbf8f1, #1c1b19);
     --lbl-ink: light-dark(#1f1d1a, #eee9dd);
     --color-bg: light-dark(#f3eee2, #151412);
     --color-bg-alt: light-dark(#ebe4d4, #1d1b18);

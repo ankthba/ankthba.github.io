@@ -507,6 +507,119 @@ body {
 .cal__section[aria-expanded="true"] .cal__section-act::before { content: "\2013"; }
 .cal__section:hover .cal__section-act::before { color: var(--color-fg); }
 
+/* ---------- Contact ----------
+   The sentence set like the home headline, its second half in italic;
+   the address under it as a headline link, with a quiet Copy beside it;
+   then the profiles elsewhere as hairline rows, the name on the left and
+   the handle on the right, like the fragrance list. */
+
+.contact .contact__text {
+  max-width: none;
+  margin-bottom: var(--head);
+  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
+  color: var(--color-fg);
+  text-wrap: balance;
+}
+.contact .contact__text em { font-style: italic; }
+
+.contact__mail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.4rem;
+}
+
+.contact__address {
+  font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem);
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+  color: var(--color-fg);
+  text-decoration: none;
+  padding-bottom: 1px;
+  background-image: linear-gradient(currentColor, currentColor),
+                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size 0.2s var(--crisp);
+}
+.contact__address:hover,
+.contact__address:focus-visible { background-size: 100% 1px, 100% 1px; }
+
+/* A quiet word, like the nav: its line draws on hover, and it reads
+   Copied, in full ink, for a moment after it is pressed. */
+.contact__copy {
+  position: relative;
+  padding: 0;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.contact__copy[hidden] { display: none; }
+.contact__copy::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.1em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s var(--crisp);
+}
+.contact__copy:hover,
+.contact__copy.is-done { color: var(--color-fg); }
+.contact__copy:hover::after,
+.contact__copy:focus-visible::after,
+.contact__copy.is-done::after { transform: scaleX(1); }
+
+.contact__elsewhere { margin-top: calc(var(--gap) * 1.5); }
+
+.reach {
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
+}
+.reach__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-fg);
+  text-decoration: none;
+}
+.reach__name {
+  font-size: 1.125rem;
+  padding-bottom: 1px;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.2s var(--crisp);
+}
+.reach__handle {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+  font-style: italic;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.reach__row:hover .reach__name,
+.reach__row:focus-visible .reach__name { background-size: 100% 1px; }
+.reach__row:hover .reach__handle,
+.reach__row:focus-visible .reach__handle { color: var(--color-fg); }
+.reach__row:focus-visible { outline: 1px solid var(--color-fg); outline-offset: 4px; }
+
+@media (max-width: 32.5rem) {
+  .contact .contact__text { font-size: clamp(1.75rem, 8vw, 2.125rem); }
+}
+
 /* ---------- Reveal ----------
    As on the Pragmatic pages: a block that starts below the first screen
    fades and rises 14px into place as it comes into view (label.js marks

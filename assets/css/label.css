@@ -254,7 +254,6 @@ body {
 .about__text a,
 .page p a,
 .page .writing__list .writing__link,
-.project-item__link,
 .writing__link,
 .photos__links a,
 .resume__download {
@@ -270,13 +269,11 @@ body {
 }
 .about__text a:hover,
 .page p a:hover,
-.project-item__link:hover,
 .writing__link:hover,
 .photos__links a:hover,
 .resume__download:hover,
 .about__text a:focus-visible,
 .page p a:focus-visible,
-.project-item__link:focus-visible,
 .writing__link:focus-visible,
 .photos__links a:focus-visible,
 .resume__download:focus-visible {
@@ -314,18 +311,6 @@ body {
 
 .home__row { margin-top: var(--gap); }
 .home__row .writing + .writing { margin-top: var(--gap); }
-
-/* Headings inside a section: display type at regular weight */
-.cal__month,
-.cal__date,
-.off__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
-  font-weight: 400;
-  letter-spacing: -0.006em;
-}
-
-.music__sec { margin-top: calc(var(--gap) * 1.5); }
 
 /* ---------- Entries ----------
    Work, education, projects, research and press: each entry stacked in
@@ -366,15 +351,75 @@ body {
   color: var(--color-prose);
 }
 
+/* An entry's links sit side by side, each kept whole. They are
+   underlined as Pragmatic's headlines are, with a real underline (quiet,
+   then full ink on hover), so a long title that wraps is underlined
+   line by line. */
 .project-item__links {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.35rem 1.75rem;
 }
+.project-item__link {
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--color-border-hover);
+  transition: text-decoration-color 0.18s var(--crisp);
+}
+.project-item__link:hover,
+.project-item__link:focus-visible {
+  color: var(--color-fg);
+  text-decoration-color: currentColor;
+}
+
+/* A row that links (a song, an artist, a scent, the song on the home
+   page): its name underlined on hover, as Pragmatic's headlines are,
+   rather than greyed */
+.play__name,
+.listening__name {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.18s var(--crisp);
+}
+a.play:hover .play__name,
+a.play:focus-visible .play__name,
+.scent .play:hover .play__name,
+.listening__song:hover .listening__name,
+.listening__song:focus-visible .listening__name {
+  font-style: normal;
+  color: var(--color-fg);
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Photographs ----------
+   Two prints across the column rather than three, so each is large
+   enough to look at, their mats slimmer in proportion; the viewer's
+   Close a quiet word like the rest. */
+.photos__grid {
+  columns: 2;
+  column-gap: 1.25rem;
+}
+.photo-item {
+  margin-bottom: 1.25rem;
+  padding: 1.25rem;
+}
+.lightbox__close {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.lightbox__close:hover { color: var(--color-fg); }
 
 /* Phones step the type down, as Pragmatic does under 520px */
 @media (max-width: 32.5rem) {
+  .photos__grid { column-gap: 0.6rem; }
+  .photo-item { margin-bottom: 0.6rem; padding: 0.7rem; }
   body { font-size: 1.09375rem; line-height: 1.62; }
   .about__text p:first-child { font-size: clamp(1.75rem, 8vw, 2.125rem); }
   .project-item__title { font-size: clamp(1.5rem, 7.2vw, 1.875rem); line-height: 1.14; }
@@ -383,129 +428,6 @@ body {
   .writing__heading,
   .music__heading { font-size: 1rem; }
 }
-
-/* ---------- Music ----------
-   The page music.js draws, in the same system and on the same single
-   reading column as every other page: the song as the page's headline,
-   quiet italic kept for labels and notes only, figures in display type,
-   every control a quiet word with a line that draws under it, and the
-   rows that open and close marked + and – like the fragrance list. */
-
-.page .now__name {
-  margin-top: 0.3rem;
-  font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.5rem);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
-  color: var(--color-fg);
-}
-.page .now__by { font-size: 1.125rem; }
-.page .music__empty { color: var(--color-muted); }
-
-/* The totals and the day's summary are running lines: upright prose */
-.page .cal__since,
-.page .cal__totals,
-.page .cal__summary {
-  font-style: normal;
-  color: var(--color-prose);
-}
-
-/* Second-level labels (Songs, Artists, Discovery…): upright ink, so they
-   read as headers under the italic section label, not a copy of it */
-.music__label,
-.log__day {
-  font-size: 1.0625rem;
-  font-style: normal;
-  color: var(--color-fg);
-}
-
-/* Album, Song, Artist and Day, Week, Month: quiet words, the chosen one
-   in full ink with its line drawn, as in the nav */
-.cal__by { gap: 0.4rem 1rem; }
-.cal__by-option {
-  position: relative;
-  font-style: normal;
-  color: var(--color-muted);
-  text-decoration: none;
-  transition: color 0.18s var(--crisp);
-}
-.cal__by-option::before { display: none; }
-.cal__by-option::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.15em;
-  height: 1px;
-  overflow: visible;
-  visibility: visible;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s var(--crisp);
-}
-.cal__by-option:hover,
-.cal__by-option[aria-pressed="true"] {
-  font-style: normal;
-  color: var(--color-fg);
-}
-.cal__by-option:hover::after,
-.cal__by-option:focus-visible::after,
-.cal__by-option[aria-pressed="true"]::after { transform: scaleX(1); }
-
-.cal__wd { font-style: normal; }
-
-/* Earlier and Later, and the artist links: italic links on a hairline */
-.cal__step,
-.cal__artist a {
-  font-size: 1.0625rem;
-  font-style: italic;
-  color: var(--color-fg);
-  text-decoration: none;
-  padding-bottom: 1px;
-  background-image: linear-gradient(currentColor, currentColor),
-                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
-  background-repeat: no-repeat;
-  background-position: 0 100%, 0 100%;
-  background-size: 0 1px, 100% 1px;
-  transition: background-size 0.2s var(--crisp);
-}
-.cal__artist a { font-size: inherit; font-style: normal; }
-.cal__step:hover,
-.cal__step:focus-visible,
-.cal__artist a:hover,
-.cal__artist a:focus-visible {
-  color: var(--color-fg);
-  background-size: 100% 1px, 100% 1px;
-}
-
-/* The figures: display numerals over an upright quiet caption */
-.cal__stats dt {
-  font-size: 0.9375rem;
-  font-style: normal;
-  color: var(--color-muted);
-}
-.cal__stats dd {
-  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
-  line-height: 1.2;
-  letter-spacing: -0.006em;
-  font-variant-numeric: lining-nums tabular-nums;
-}
-
-/* Rows that open and close: + and –, as on the fragrance list */
-.cal__section-name,
-.cal__section[aria-expanded="true"] .cal__section-name { font-style: normal; }
-.cal__section-act {
-  font-size: 0;
-  text-decoration: none;
-}
-.cal__section-act::before {
-  content: "+";
-  font-size: 1.1rem;
-  color: var(--color-muted);
-  transition: color 0.18s var(--crisp);
-}
-.cal__section[aria-expanded="true"] .cal__section-act::before { content: "\2013"; }
-.cal__section:hover .cal__section-act::before { color: var(--color-fg); }
 
 /* ---------- Contact ----------
    The sentence set like the home headline, its second half in italic;

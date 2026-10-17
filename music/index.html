@@ -37,6 +37,7 @@
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/label.css">
+  <link rel="stylesheet" href="/assets/css/music.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
 </head>
 <body>
@@ -79,7 +80,8 @@
         <p class="music__empty" data-music-empty>Nothing to show just yet.</p>
 
         <div class="music__body" data-music-body hidden>
-          <section class="now" data-now aria-label="Last played">
+          <!-- The song playing now, paused, or the last one heard. -->
+          <section class="now" data-now aria-label="Now playing">
             <a class="now__art" data-now-link target="_blank" rel="noopener"><img alt="" data-now-img></a>
             <div class="now__text">
               <p class="now__when" data-now-when></p>
@@ -90,42 +92,34 @@
             </div>
           </section>
 
+          <!-- A month of days, each by the cover of its top album; the day
+               picked is summed up under the grid. -->
           <section class="music__sec cal" aria-labelledby="cal-heading" data-cal hidden>
             <h2 class="music__heading" id="cal-heading">Listening calendar</h2>
-            <p class="cal__since" data-cal-since></p>
-            <p class="cal__totals" data-cal-totals></p>
-
-            <p class="cal__by" role="group" aria-label="Show each day by its top album, song or artist">
-              <span class="cal__by-label">Each day by its top</span>
-              <button type="button" class="cal__by-option" data-cal-by="album" data-text="Album" aria-pressed="true">Album</button>
-              <button type="button" class="cal__by-option" data-cal-by="song" data-text="Song" aria-pressed="false">Song</button>
-              <button type="button" class="cal__by-option" data-cal-by="artist" data-text="Artist" aria-pressed="false">Artist</button>
-            </p>
-
             <div class="cal__head">
               <button class="cal__step" type="button" data-cal-prev aria-label="Previous month">Earlier</button>
               <h3 class="cal__month" data-cal-month aria-live="polite"></h3>
               <button class="cal__step" type="button" data-cal-next aria-label="Next month">Later</button>
             </div>
             <div class="cal__grid" data-cal-grid></div>
-
-            <div class="cal__day">
-              <p class="cal__by" role="group" aria-label="Show the stats for the day picked, its week, or the month">
-                <span class="cal__by-label">Stats for the</span>
-                <button type="button" class="cal__by-option" data-cal-span="day" data-text="Day" aria-pressed="true">Day</button>
-                <button type="button" class="cal__by-option" data-cal-span="week" data-text="Week" aria-pressed="false">Week</button>
-                <button type="button" class="cal__by-option" data-cal-span="month" data-text="Month" aria-pressed="false">Month</button>
-              </p>
-              <div data-cal-day aria-live="polite"></div>
-            </div>
+            <div class="cal__day" data-cal-day aria-live="polite"></div>
           </section>
 
-          <section class="music__sec" aria-labelledby="top-heading">
-            <h2 class="music__heading" id="top-heading">Most listened to this week</h2>
+          <!-- This week or this month: four figures, the top songs and
+               artists, and the standouts. -->
+          <section class="music__sec" aria-labelledby="most-heading">
+            <h2 class="music__heading" id="most-heading">Most listened to</h2>
+            <p class="switch" role="group" aria-label="Over this week or this month">
+              <button type="button" class="switch__option" data-range="week" aria-pressed="true">This week</button>
+              <button type="button" class="switch__option" data-range="month" aria-pressed="false">This month</button>
+            </p>
+            <dl class="figures" data-figures></dl>
             <h3 class="music__label">Songs</h3>
             <ol class="plays" data-top-tracks></ol>
             <h3 class="music__label">Artists</h3>
             <ol class="plays plays--artists" data-top-artists></ol>
+            <h3 class="music__label" data-standouts-label>Standouts</h3>
+            <ul class="plays plays--standouts" data-standouts></ul>
           </section>
 
           <section class="music__sec" aria-labelledby="log-heading">

@@ -1,0 +1,375 @@
+/* The music page (music/index.html, drawn by /assets/js/music.js),
+   loaded on that page only, after style.css and label.css. The site's
+   one column: the song playing now as the page's headline, then the
+   listening calendar, the most listened to, and today's log, each opened
+   by a quiet italic label. The rows of songs are style.css's, shared
+   with the fragrance page. */
+
+.page .music__empty,
+.page .log__empty { color: var(--color-muted); }
+
+.music__sec { margin-top: calc(var(--gap) * 1.5); }
+
+/* ---------- Off the air ----------
+   While Spotify can't be asked: a quiet note between two rules. */
+
+.off {
+  margin-bottom: var(--gap);
+  padding: 1.1rem 0 1.2rem;
+  border-block: 1px solid var(--color-border);
+}
+.off[hidden] { display: none; }
+.off__title {
+  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+  font-weight: 400;
+  font-style: italic;
+}
+.page .off__why,
+.page .off__clock {
+  margin-top: 0.35rem;
+  color: var(--color-muted);
+}
+.off__count {
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Now playing ----------
+   One block the width of the cover, like a record sleeve: the cover,
+   what state it's in, the song as the page's headline, who by, and the
+   time on a hairline. */
+
+.now { max-width: 26rem; }
+
+.now__art {
+  display: block;
+  aspect-ratio: 1;
+  background: var(--color-bg-alt);
+}
+.now__art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.now__art img[hidden] { display: none; }
+
+.now__text { margin-top: 1.25rem; }
+
+.page .now__when {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+.now--live .now__when::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: var(--color-fg);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.25; } }
+
+.page .now__name {
+  margin-top: 0.3rem;
+  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
+  color: var(--color-fg);
+  overflow-wrap: anywhere;
+}
+.page .now__by {
+  margin-top: 0.2rem;
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.now__bar {
+  height: 1px;
+  margin-top: 1.1rem;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.now__bar[hidden],
+.now__time[hidden] { display: none; }
+.now__bar i {
+  display: block;
+  height: 100%;
+  background: var(--color-fg);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 0.5s linear;
+}
+.page .now__time {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Quiet words ----------
+   This week, This month; Show all: words in quiet ink with a
+   line that draws under them, the chosen one in full ink with its line
+   drawn, as in the nav. Earlier and Later are italic links on a hairline,
+   like every other link that acts. */
+
+.switch__option,
+.log__more,
+.daylog__toggle { font-family: inherit; }
+
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-bottom: 1.75rem;
+}
+.switch__option,
+.log__more {
+  position: relative;
+  padding: 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.log__more { margin-top: 1rem; font-style: italic; }
+.switch__option::after,
+.log__more::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.1em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s var(--crisp);
+}
+.switch__option:hover,
+.switch__option[aria-pressed="true"],
+.log__more:hover { color: var(--color-fg); }
+.switch__option:hover::after,
+.switch__option:focus-visible::after,
+.switch__option[aria-pressed="true"]::after,
+.log__more:hover::after,
+.log__more:focus-visible::after { transform: scaleX(1); }
+
+.cal__step {
+  padding: 0 0 1px;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: var(--color-fg);
+  background-image: linear-gradient(currentColor, currentColor),
+                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size 0.2s var(--crisp);
+}
+.cal__step:hover,
+.cal__step:focus-visible { background-size: 100% 1px, 100% 1px; }
+.cal__step:disabled {
+  color: var(--color-border-hover);
+  background-image: none;
+  cursor: default;
+}
+
+/* ---------- Most listened to ---------- */
+
+/* Four figures: a display numeral over a quiet word, four across, two
+   by two on a phone */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem var(--cg);
+  margin-bottom: var(--gap);
+}
+.figures__item {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 0.25rem;
+}
+.figures__v {
+  font-size: clamp(1.75rem, 1.3rem + 1.2vw, 2.375rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.figures__t {
+  font-size: 1rem;
+  color: var(--color-muted);
+}
+
+/* Songs, Artists, Standouts: upright ink, under the italic label */
+.music__label {
+  margin: var(--gap) 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  color: var(--color-fg);
+}
+.figures + .music__label { margin-top: 0; }
+.music__label[hidden],
+.plays[hidden] { display: none; }
+
+/* A standout closes on what it stands out for, over its measure */
+.plays--standouts .play {
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+}
+.play__fact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+.play__what {
+  font-size: 0.85rem;
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+.play__fact .play__count {
+  font-size: 0.95rem;
+  color: var(--color-fg);
+}
+
+/* ---------- Listening calendar ----------
+   A month of squares, each day by its top album's cover, the date in
+   the corner on a small patch of paper so it reads whatever the art. */
+
+.cal[hidden] { display: none; }
+
+.cal__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.cal__month,
+.cal__date {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+  font-weight: 400;
+  letter-spacing: -0.006em;
+}
+
+.cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+.cal__wd {
+  padding-bottom: 0.2rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+.cal__cell {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  padding: 0;
+  color: var(--color-fg);
+  background: var(--color-bg-alt);
+  font-variant-numeric: tabular-nums;
+}
+.cal__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.18s var(--crisp);
+}
+.cal__cell--art:hover .cal__art { opacity: 0.85; }
+.cal__n {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.3rem;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+.cal__cell--art .cal__n {
+  padding: 0.15rem 0.25rem;
+  background: var(--color-bg);
+}
+.cal__cell--off {
+  background: none;
+  color: var(--color-border-hover);
+  cursor: default;
+}
+.cal__cell--today .cal__n { font-style: italic; }
+.cal__cell[aria-pressed="true"] {
+  outline: 1px solid var(--color-fg);
+  outline-offset: 2px;
+}
+.cal__cell:focus-visible {
+  outline: 1px dashed var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* The day picked, under the grid: its date, its line, its top songs,
+   and its whole log, opened and closed with + and – */
+.cal__day {
+  margin-top: var(--gap);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+.cal__date { margin-bottom: 0.4rem; }
+.page .cal__line {
+  margin-bottom: 1rem;
+  color: var(--color-prose);
+}
+
+.daylog__toggle {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 0;
+  border-block: 1px solid var(--color-border);
+  font-size: 1.0625rem;
+  color: var(--color-fg);
+  text-align: left;
+}
+.daylog__toggle[aria-expanded="true"] { border-bottom-color: transparent; }
+.daylog__sign::before {
+  content: "+";
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.daylog__toggle[aria-expanded="true"] .daylog__sign::before { content: "\2013"; }
+.daylog__toggle:hover .daylog__sign::before { color: var(--color-fg); }
+.daylog__toggle:focus-visible {
+  outline: 1px dashed var(--color-fg);
+  outline-offset: 2px;
+}
+.daylog__body[hidden] { display: none; }
+.page .daylog__span {
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 32.5rem) {
+  .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cal__n {
+    top: 0.15rem;
+    left: 0.15rem;
+    font-size: 0.7rem;
+  }
+  .plays--log .play { grid-template-columns: 4rem 2.75rem minmax(0, 1fr); }
+}

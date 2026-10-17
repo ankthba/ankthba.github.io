@@ -26,10 +26,11 @@
   --color-border: rgba(38, 38, 36, 0.14);
   --color-border-hover: rgba(38, 38, 36, 0.3);
 
-  /* The gallery mat behind a photo. White in both themes: a print is
-     mounted on white board whatever the room's lighting, and on the dark
-     page the mat becomes the thing that reads as paper. */
-  --color-mat: #ffffff;
+  /* The gallery mat behind a photo, and the sheet behind the resume.
+     The same soft white as the label's paper, so the site has one white,
+     in both themes: a print is mounted on white board whatever the
+     room's lighting, and on the dark page the mat reads as paper. */
+  --color-mat: #fbf8f1;
   --color-scrim: rgba(250, 249, 245, 0.96);
 
   /* Muted Prussian blue: cool enough to read as a link on the warm
@@ -528,8 +529,8 @@ a.masthead__name:hover {
   color: var(--color-muted);
 }
 
+/* Body size, like every other paragraph on the site */
 .project-item__description {
-  font-size: 1rem;
   line-height: 1.7;
   color: var(--color-fg);
   margin: 0 0 0.5rem;
@@ -556,7 +557,9 @@ a.masthead__name:hover {
   flex-direction: column;
   align-items: flex-start;
   gap: 0.25rem;
-  margin-top: 0.35rem;
+  /* Collapses with the paragraph's margin above, so a list of links
+     starts the same distance under the text as a single link does. */
+  margin-top: 0.85rem;
 }
 
 .project-item__links .project-item__link {
@@ -709,9 +712,11 @@ a.masthead__name:hover {
    9. Contact & Resume
    --------------------------------------------------------- */
 
+/* The address sits under the sentence the way every other link on the
+   site sits under its text, not stranded a section's gap below it. */
 .contact__text {
   max-width: 34rem;
-  margin-bottom: var(--space-md);
+  margin-bottom: 0.5rem;
 }
 
 .resume__frame {
@@ -719,10 +724,10 @@ a.masthead__name:hover {
   width: 100%;
   height: auto;
   border: 1px solid var(--color-border);
-  /* Stays white in both themes on purpose: the SVG is black glyph
-     paths on nothing, and a resume should read as a sheet of paper
-     whatever the page behind it is doing. */
-  background: #fff;
+  /* Paper in both themes on purpose: the SVG is black glyph paths on
+     nothing, and a resume should read as a sheet of paper whatever the
+     page behind it is doing. */
+  background: var(--color-mat);
 }
 
 .resume__download {

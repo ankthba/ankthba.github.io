@@ -63,10 +63,25 @@
     </nav>
   </header>
 
-  <main class="page">
+  <main class="page contact">
         <h1 class="page-title">Contact</h1>
-        <p class="contact__text">Have a project in mind, a question, or just want to say hello? I’d love to hear from you.</p>
-        <a href="mailto:me@aniketh.net" class="project-item__link">me@aniketh.net</a>
+        <p class="contact__text">Have a project in mind, a question, or just want to say hello? <em>I’d love to hear from you.</em></p>
+        <p class="contact__mail">
+          <a href="mailto:me@aniketh.net" class="contact__address">me@aniketh.net</a>
+          <!-- Shown by /assets/js/contact.js where the clipboard can be written. -->
+          <button type="button" class="contact__copy" data-copy="me@aniketh.net" aria-live="polite" hidden>Copy</button>
+        </p>
+
+        <section class="contact__elsewhere" aria-labelledby="elsewhere-heading">
+          <h2 class="writing__heading" id="elsewhere-heading">Elsewhere</h2>
+          <ul class="reach">
+            <li><a class="reach__row" href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener"><span class="reach__name">LinkedIn</span><span class="reach__handle">in/anikethb</span></a></li>
+            <li><a class="reach__row" href="https://github.com/ankthba" target="_blank" rel="noopener"><span class="reach__name">GitHub</span><span class="reach__handle">ankthba</span></a></li>
+            <li><a class="reach__row" href="https://x.com/ankthba" target="_blank" rel="noopener"><span class="reach__name">X</span><span class="reach__handle">@ankthba</span></a></li>
+            <li><a class="reach__row" href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener"><span class="reach__name">Instagram</span><span class="reach__handle">@ankthba</span></a></li>
+            <li><a class="reach__row" href="https://ankthba.substack.com/" target="_blank" rel="noopener"><span class="reach__name">Substack</span><span class="reach__handle">ankthba.substack.com</span></a></li>
+          </ul>
+        </section>
   </main>
 
   <footer class="colophon">
@@ -85,5 +100,6 @@
   <script src="/assets/js/theme.js" defer></script>
   -->
   <script src="/assets/js/label.js" defer></script>
+  <script src="/assets/js/contact.js" defer></script>
 </body>
 </html>

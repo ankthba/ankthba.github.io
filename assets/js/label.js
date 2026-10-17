@@ -303,7 +303,8 @@
   if ('IntersectionObserver' in window &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var blocks = document.querySelectorAll(
-      '.about__text > p, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li');
+      '.about__text > p, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li, ' +
+      '.contact > p, .contact__elsewhere');
     var seen = new IntersectionObserver(function (entries) {
       var n = 0;
       entries.forEach(function (e) {

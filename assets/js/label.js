@@ -26,7 +26,7 @@
   };
 
   var RING = 'aniketh bandlamudi\u00a0\u00a0\u00a0computer science & applied mathematics\u00a0\u00a0\u00a0aniketh.net';
-  var FOOT = 'charlottesville';
+  var FOOT = 'university of virginia';
 
   function rng(seed) {
     var h = 1779033703 ^ seed.length;
@@ -96,7 +96,7 @@
 
   var deg = Math.PI / 180;
 
-  function build(words, drawing, seed, isHome) {
+  function build(words, drawing, seed) {
     var svg = el('svg', { viewBox: '0 0 100 ' + VH, class: 'lbl__svg', 'aria-hidden': 'true' });
     var defs = el('defs', {}, svg);
     var id = 'l' + Math.floor(Math.random() * 1e6);
@@ -167,8 +167,8 @@
     }
 
     /* The band lettering, set as on the bottles: its middle on the middle
-       of the band between the heavy rules, the town upright at the bottom,
-       and the long line filling the band from one side of the town round
+       of the band between the heavy rules, the university upright at the
+       bottom, and the long line filling the band from one side of it round
        to the other, at whatever size makes it fit, as large as it can. */
     var BAND = 11.5, HALF = 0.24;   // (ascender - descender) / 2, in ems
     function band() {
@@ -194,41 +194,60 @@
       }
     }
 
+    /* EB Garamond's cap height, and how far the tails of J and Q drop
+       below the line, in ems. */
+    var CAP = 0.7, TAIL = { J: 0.21, Q: 0.26 };
+
     function layout() {
       band();
 
       var r = rng(seed);
       while (letters.firstChild) letters.removeChild(letters.firstChild);
       var rows = words.length;
-      var top = FIELD + 5.5, bottom = VH - FIELD - 4.5;
+      var range = VH - 2 * FIELD - 6;
       var longest = Math.max.apply(null, words.map(function (w) { return w.length; }));
-      var size = Math.min(isHome ? 10 : 13, 43 / (longest * 0.78), (bottom - top) / (rows * 1.25));
+      // As large as the window allows, with the rows stacked close but
+      // not touching, and centred on the window so they use its wide middle.
+      // A single row (the 404) starts larger still and is fitted below.
+      var size = rows === 1 ? 34 : Math.min(19, 62 / (longest * 0.78), range / (rows * 1.25));
+      var pitch = Math.min(range / rows, size * 1.45);
       words.forEach(function (word, n) {
-        var y = top + (bottom - top) * (n + 0.78) / rows;
+        var mid = CY + (n - (rows - 1) / 2) * pitch;
         var chars = word.split('').map(function (ch) {
           var t = el('text', { class: 'lbl__ch' }, letters);
           t.textContent = ch;
-          t.setAttribute('font-size', (size * (0.78 + r() * 0.5)).toFixed(2));
-          return { t: t, w: t.getComputedTextLength(), dy: (r() - 0.5) * size * 0.32 };
+          var fs = size * (0.78 + r() * 0.5);
+          t.setAttribute('font-size', fs.toFixed(2));
+          return { t: t, ch: ch, fs: fs, w: t.getComputedTextLength(), dy: (r() - 0.5) * size * 0.32 };
         });
-        var gap = size * 0.06;
-        var width = chars.reduce(function (a, c) { return a + c.w + gap; }, -gap);
         // put the row where the drawing is emptiest, still drifting
-        // left and right from row to row like the hand-set labels
+        // left and right from row to row like the hand-set labels; if no
+        // place keeps every letter inside the window, set the row smaller
         var lean = (n % 2 ? 1 : -1) * (5 + r() * 11);
         var best = null;
-        for (var cx = FIELD + 3.5; cx <= 100 - FIELD - 3.5 - width; cx += 0.5) {
-          if (!inside(cx, y - size * 0.7) || !inside(cx + width, y - size * 0.7) ||
-              !inside(cx, y + size * 0.15) || !inside(cx + width, y + size * 0.15)) continue;
-          var cost = inkUnder(cx, y - size * 0.72, width, size * 0.9) +
-                     0.004 * Math.abs(cx + width / 2 - (CX + lean));
-          if (!best || cost < best.cost) best = { x: cx, cost: cost };
+        for (var k = 1; k > 0.3 && !best; k *= 0.95) {
+          var y = mid + size * k * CAP / 2, gap = size * k * 0.06;
+          var width = chars.reduce(function (a, c) { return a + c.w * k + gap; }, -gap);
+          var y0 = Infinity, y1 = -Infinity;
+          chars.forEach(function (c) {
+            y0 = Math.min(y0, y + c.dy * k - c.fs * k * CAP);
+            y1 = Math.max(y1, y + c.dy * k + c.fs * k * (TAIL[c.ch] || 0.03));
+          });
+          for (var cx = FIELD; cx <= 100 - FIELD - width; cx += 0.5) {
+            if (!inside(cx, y0) || !inside(cx + width, y0) ||
+                !inside(cx, y1) || !inside(cx + width, y1)) continue;
+            var cost = inkUnder(cx, y0, width, y1 - y0) +
+                       0.004 * Math.abs(cx + width / 2 - (CX + lean));
+            if (!best || cost < best.cost) best = { x: cx, y: y, k: k, gap: gap, cost: cost };
+          }
         }
-        var x = best ? best.x : Math.max(FIELD + 5, Math.min(CX - width / 2 + lean, 100 - FIELD - 5 - width));
+        if (!best) best = { x: CX - width / 2, y: y, k: k, gap: gap };
+        var x = best.x;
         chars.forEach(function (c) {
+          c.t.setAttribute('font-size', (c.fs * best.k).toFixed(2));
           c.t.setAttribute('x', x.toFixed(2));
-          c.t.setAttribute('y', (y + c.dy).toFixed(2));
-          x += c.w + gap;
+          c.t.setAttribute('y', (best.y + c.dy * best.k).toFixed(2));
+          x += c.w * best.k + best.gap;
         });
       });
     }
@@ -243,7 +262,7 @@
   var title = document.querySelector('.page-title');
   var isHome = section === '';
   var known = section in SETS;
-  var words = /^404/.test(document.title) ? ['40', '4'] : SETS[section] || chunk(title ? title.textContent : document.title);
+  var words = /^404/.test(document.title) ? ['404'] : SETS[section] || chunk(title ? title.textContent : document.title);
   var drawing = '/assets/img/labels/' + (known && section ? section : 'home') + '.webp';
 
   var label = document.createElement('div');
@@ -251,7 +270,7 @@
   var holder = document.createElement(isHome ? 'div' : 'a');
   holder.className = 'lbl__oval';
   if (!isHome) { holder.href = '/'; holder.setAttribute('aria-label', 'Aniketh Bandlamudi, home'); }
-  var built = build(words, drawing, section || 'home', isHome);
+  var built = build(words, drawing, section || 'home');
   holder.appendChild(built.svg);
   label.appendChild(holder);
 
@@ -260,9 +279,44 @@
   // the h1 stays for screen readers; the oval is aria-hidden
   if (name) name.classList.add(name.tagName === 'H1' ? 'lbl-sr' : 'lbl-hidden');
   if (title) title.classList.add('lbl-sr');
+
+  // On a wide screen the copyright closes the label column, under the
+  // nav; label.css shows either this copy or the footer, never both.
+  var meta = document.querySelector('.colophon__meta');
+  if (meta) {
+    var sign = document.createElement('div');
+    sign.className = 'lbl__colophon';
+    Array.prototype.forEach.call(meta.children, function (n) {
+      if (/colophon__rights/.test(n.className)) sign.appendChild(n.cloneNode(true));
+    });
+    masthead.appendChild(sign);
+  }
   document.documentElement.classList.add('look-label');
 
   built.layout();
   // measure again once EB Garamond has arrived
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(built.layout);
+
+  /* Blocks below the first screen fade up into place as they come into
+     view, as on the Pragmatic pages; neighbours that arrive together
+     follow one another by a beat. */
+  if ('IntersectionObserver' in window &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var blocks = document.querySelectorAll(
+      '.about__text > p, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li');
+    var seen = new IntersectionObserver(function (entries) {
+      var n = 0;
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = (n++ % 4) * 70 + 'ms';
+        e.target.classList.add('on');
+        seen.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    Array.prototype.forEach.call(blocks, function (b) {
+      if (b.getBoundingClientRect().top < window.innerHeight) return;
+      b.classList.add('reveal');
+      seen.observe(b);
+    });
+  }
 })();

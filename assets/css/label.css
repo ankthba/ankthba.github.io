@@ -1,30 +1,51 @@
 /* Diptyque-style labels, layered over style.css.
    Black ink on cream, one oval label per page carrying the whole page,
-   capitals that drift, and no colour except what the photographs bring. */
+   capitals that drift, and no colour except what the photographs bring.
+   The label lettering is the only thing set in capitals; everything else
+   keeps the case it is written in. */
 
-/* The label is printed straight onto the page: its paper is the page's
-   own colour, so only the rules and the ink set it apart. Soft black ink
-   on the cream; in the dark, off-white ink on near-black. */
+/* The label itself is coloured like the real ones, not like the page:
+   a printed white label in soft black ink, sitting on the cream like the
+   eau de toilette label on its bottle; in the dark, the eau de parfum
+   label, near-black with off-white ink. Softer than pure white and black,
+   as printed paper is. */
 :root {
-  --lbl-paper: var(--color-bg);
+  --lbl-paper: #fbf8f1;
   --lbl-ink: #1f1d1a;
+  --color-prose: rgba(26, 23, 18, 0.72);
 }
 
+/* The page itself is set the way the Pragmatic pages are: warm ivory,
+   one ink, and every quieter tone of text that ink at less strength
+   (body copy at 72%, quiet text at 64%, resting underlines at 32%,
+   hairlines at 13%). */
 @supports (color: light-dark(#000, #fff)) {
   :root {
+    --lbl-paper: light-dark(#fbf8f1, #1c1b19);
     --lbl-ink: light-dark(#1f1d1a, #eee9dd);
-    --color-bg: light-dark(#f3eee2, #151412);
-    --color-bg-alt: light-dark(#ebe4d4, #1d1b18);
-    --color-fg: light-dark(#141311, #ece6d6);
-    --color-muted: light-dark(#5f594d, #a59e8e);
-    --color-border: light-dark(rgba(20, 19, 17, 0.2), rgba(236, 230, 214, 0.2));
-    --color-border-hover: light-dark(rgba(20, 19, 17, 0.45), rgba(236, 230, 214, 0.45));
-    --color-scrim: light-dark(rgba(243, 238, 226, 0.97), rgba(21, 20, 18, 0.97));
+    --color-bg: light-dark(#f2efe6, #151412);
+    --color-bg-alt: light-dark(#e8e4d9, #1d1b18);
+    --color-fg: light-dark(#1a1712, #ece6d6);
+    --color-prose: light-dark(rgba(26, 23, 18, 0.72), rgba(236, 230, 214, 0.78));
+    --color-muted: light-dark(rgba(26, 23, 18, 0.64), rgba(236, 230, 214, 0.6));
+    --color-border: light-dark(rgba(26, 23, 18, 0.13), rgba(236, 230, 214, 0.16));
+    --color-border-hover: light-dark(rgba(26, 23, 18, 0.32), rgba(236, 230, 214, 0.4));
+    --color-scrim: light-dark(rgba(242, 239, 230, 0.97), rgba(21, 20, 18, 0.97));
     --color-link: var(--color-fg);
-    --color-link-hover: var(--color-muted);
+    --color-link-hover: var(--color-fg);
     --color-link-underline: var(--color-border-hover);
     --color-underline-quiet: var(--color-border-hover);
   }
+}
+
+/* Pragmatic's rhythm, in rem so it grows with the big-screen root size:
+   a step between the rows of a list, a smaller one from a section's
+   label to what it opens, and the gap between a row's two columns. */
+:root {
+  --gap: clamp(2.5rem, 4.4vw, 4rem);
+  --head: clamp(1.125rem, 1.8vw, 1.625rem);
+  --cg: clamp(1rem, 2.4vw, 2.25rem);
+  --crisp: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .lbl-hidden { display: none !important; }
@@ -38,6 +59,14 @@
   border: 0;
 }
 
+/* The label's width and the space above it, shared with the placeholder
+   below. One size on every page, but never taller than the screen, so a
+   phone held sideways still shows the whole oval. */
+:root {
+  --lbl-w: min(23rem, 84vw, calc((100svh - 3rem) / 1.28));
+  --lbl-top: clamp(3rem, 8vh, 5.5rem);
+}
+
 /* Before the script has built the label, hold its space and keep the
    plain name and title out of sight, so nothing jumps on load. */
 html.js:not(.look-label) .masthead__name,
@@ -45,9 +74,9 @@ html.js:not(.look-label) .page-title { visibility: hidden; }
 html.js:not(.look-label) .masthead::before {
   content: "";
   display: block;
-  width: min(23rem, 84vw);
+  width: var(--lbl-w);
   aspect-ratio: 100 / 128;
-  margin: clamp(3rem, 8vh, 5.5rem) auto 1rem;
+  margin: var(--lbl-top) auto 1rem;
 }
 html.js:not(.look-label) .masthead { padding-top: 0; }
 
@@ -55,7 +84,7 @@ html.js:not(.look-label) .masthead { padding-top: 0; }
 
 .look-label .masthead {
   max-width: none;
-  padding-top: clamp(3rem, 8vh, 5.5rem);
+  padding-top: var(--lbl-top);
   container-type: normal;
 }
 
@@ -71,7 +100,7 @@ html.js:not(.look-label) .masthead { padding-top: 0; }
    shrinks once you leave the homepage. */
 .lbl__oval {
   display: block;
-  width: min(23rem, 84vw);
+  width: var(--lbl-w);
   color: inherit;
 }
 
@@ -123,7 +152,7 @@ a.lbl__oval:hover { opacity: 0.8; }
   paint-order: stroke fill;
 }
 
-/* ---------- Navigation: small engraved capitals ---------- */
+/* ---------- Navigation: a small centred block ---------- */
 
 /* Inline rather than flex, so the text-wrap: balance from style.css can
    even the rows out and no link is left on a line of its own. */
@@ -131,71 +160,439 @@ a.lbl__oval:hover { opacity: 0.8; }
   max-width: 34rem;
   margin: 1.5rem auto 0;
   padding: 0 var(--space-md);
-  font-size: 0.72rem;
+  font-size: 0.975rem;
   text-align: center;
   text-align-last: center;
 }
 
+/* As in the Pragmatic header: the links in quiet ink, a line drawing
+   under one on hover, and the current page in full ink with that line
+   drawn for good. */
 .look-label .masthead__nav-link {
-  margin: 0 0.45rem 0.15rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  position: relative;
+  margin: 0 0.55rem 0.15rem;
+  font-size: 0.975rem;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
 }
-.look-label .masthead__nav-link::before,
-.look-label .masthead__nav-link::after { display: none; }
+.look-label .masthead__nav-link::before { display: none; }
+.look-label .masthead__nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.2em;
+  height: 1px;
+  overflow: visible;
+  visibility: visible;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s var(--crisp);
+}
+.look-label .masthead__nav-link:hover { color: var(--color-fg); }
+.look-label .masthead__nav-link:hover::after,
+.look-label .masthead__nav-link:focus-visible::after { transform: scaleX(1); }
 .look-label .masthead__nav-link.active {
   font-style: normal;
   color: var(--color-fg);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+}
+.look-label .masthead__nav-link.active::after { transform: scaleX(1); }
+
+/* ---------- Text column: the Pragmatic page ----------
+   Everything right of (or under) the label is set like the Pragmatic
+   site: EB Garamond at 19px on ivory, body copy in ink at 72%, large
+   display headings at regular weight, section labels in quiet italic,
+   and italic links on a quiet hairline that draws in full ink on
+   hover. */
+
+body {
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  color: var(--color-fg);
 }
 
-/* ---------- Text column ---------- */
+/* One reading column on every page: 40rem of text, the same right edge
+   for the prose, the lists, the photographs and the music. */
+.page {
+  max-width: calc(40rem + 2 * var(--space-md));
+  padding-top: clamp(3rem, 8vh, 5rem);
+}
 
-.look-label .page { padding-top: clamp(3rem, 8vh, 5rem); }
+/* Ragged right, as on the Pragmatic pages, not justified */
+.page p {
+  color: var(--color-prose);
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
 
 /* It was pulled up under the page title, which the label now replaces;
    left there it would sit above the page's top line. */
-.look-label .music__lede { margin-top: 0; }
+.music__lede { margin-top: 0; }
 
-.look-label .about__text a,
-.look-label .page p a {
+/* The home introduction opens like the Pragmatic cover: its first
+   sentence in display type, the rest as the deck under it. */
+.about__text p:first-child {
+  margin-bottom: var(--head);
+  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.014em;
   color: var(--color-fg);
-  text-decoration-color: var(--color-border-hover);
+  text-align: left;
+  text-wrap: balance;
+  -webkit-hyphens: none;
+  hyphens: none;
+}
+/* Its second half in italic, as Pragmatic's "The system of record
+   for AI agents." is */
+.about__text p:first-child em { font-style: italic; }
+.about__text p { margin-bottom: 1.1rem; }
+
+/* Links in running text: upright, in ink, on a quiet hairline that a
+   full-strength line draws over from left to right on hover. */
+.about__text a,
+.page p a,
+.page .writing__list .writing__link,
+.project-item__link,
+.writing__link,
+.photos__links a,
+.resume__download {
+  color: var(--color-fg);
+  text-decoration: none;
+  padding-bottom: 1px;
+  background-image: linear-gradient(currentColor, currentColor),
+                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size 0.2s var(--crisp);
+}
+.about__text a:hover,
+.page p a:hover,
+.project-item__link:hover,
+.writing__link:hover,
+.photos__links a:hover,
+.resume__download:hover,
+.about__text a:focus-visible,
+.page p a:focus-visible,
+.project-item__link:focus-visible,
+.writing__link:focus-visible,
+.photos__links a:focus-visible,
+.resume__download:focus-visible {
+  color: var(--color-fg);
+  background-size: 100% 1px, 100% 1px;
 }
 
-.look-label .writing__heading,
-.look-label .project-item__title,
-.look-label .music__heading,
-.look-label .music__label {
-  font-family: var(--font-serif);
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.look-label .project-item__title { font-size: 0.95rem; }
-
-.look-label .project-item__role {
+/* Links that act (open, download, more): italic, like Pragmatic's */
+.project-item__link,
+.writing__link,
+.photos__links a,
+.resume__download {
+  font-size: 1.0625rem;
   font-style: italic;
-  letter-spacing: 0;
-  text-transform: none;
 }
 
-.look-label .project-item__link,
-.look-label .writing__link {
-  font-size: 0.78rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* Section labels: the words in quiet italic, close over what they open */
+.writing__heading,
+.music__heading {
+  margin-bottom: var(--head);
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+/* The latest piece of writing reads as a headline, not a list link */
+.page .writing__list .writing__link {
+  font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem);
+  font-style: normal;
+  line-height: 1.2;
+  letter-spacing: -0.008em;
 }
 
-.look-label .colophon,
-.look-label .colophon__meta {
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+.home__row { margin-top: var(--gap); }
+.home__row .writing + .writing { margin-top: var(--gap); }
+
+/* Headings inside a section: display type at regular weight */
+.cal__month,
+.cal__date,
+.off__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+  font-weight: 400;
+  letter-spacing: -0.006em;
+}
+
+.music__sec { margin-top: calc(var(--gap) * 1.5); }
+
+/* ---------- Entries ----------
+   Work, education, projects, research and press: each entry stacked in
+   the one column, its heading in display type, the caption under it,
+   the text, then its links side by side. Entries are parted by space
+   alone, as Pragmatic's rows are. */
+
+.project-item,
+.project-item:first-child,
+.project-item:last-child { padding: 0; }
+.project-item + .project-item { margin-top: var(--gap); }
+
+.project-item__header {
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.project-item__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 1.15rem + 0.9vw, 2rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.008em;
+}
+
+.project-item__role {
+  display: block;
+  margin-top: 0.45rem;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.project-item__description {
+  font-size: 1.125rem;
+  line-height: 1.72;
+  color: var(--color-prose);
+}
+
+.project-item__links {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1.75rem;
+}
+
+/* Phones step the type down, as Pragmatic does under 520px */
+@media (max-width: 32.5rem) {
+  body { font-size: 1.09375rem; line-height: 1.62; }
+  .about__text p:first-child { font-size: clamp(1.75rem, 8vw, 2.125rem); }
+  .project-item__title { font-size: clamp(1.5rem, 7.2vw, 1.875rem); line-height: 1.14; }
+  .project-item__description { font-size: 1rem; line-height: 1.68; }
+  .project-item__role { font-size: 0.9375rem; }
+  .writing__heading,
+  .music__heading { font-size: 1rem; }
+}
+
+/* ---------- Music ----------
+   The page music.js draws, in the same system and on the same single
+   reading column as every other page: the song as the page's headline,
+   quiet italic kept for labels and notes only, figures in display type,
+   every control a quiet word with a line that draws under it, and the
+   rows that open and close marked + and – like the fragrance list. */
+
+.page .now__name {
+  margin-top: 0.3rem;
+  font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+}
+.page .now__by { font-size: 1.125rem; }
+.page .music__empty { color: var(--color-muted); }
+
+/* The totals and the day's summary are running lines: upright prose */
+.page .cal__since,
+.page .cal__totals,
+.page .cal__summary {
+  font-style: normal;
+  color: var(--color-prose);
+}
+
+/* Second-level labels (Songs, Artists, Discovery…): upright ink, so they
+   read as headers under the italic section label, not a copy of it */
+.music__label,
+.log__day {
+  font-size: 1.0625rem;
+  font-style: normal;
+  color: var(--color-fg);
+}
+
+/* Album, Song, Artist and Day, Week, Month: quiet words, the chosen one
+   in full ink with its line drawn, as in the nav */
+.cal__by { gap: 0.4rem 1rem; }
+.cal__by-option {
+  position: relative;
+  font-style: normal;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.18s var(--crisp);
+}
+.cal__by-option::before { display: none; }
+.cal__by-option::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.15em;
+  height: 1px;
+  overflow: visible;
+  visibility: visible;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s var(--crisp);
+}
+.cal__by-option:hover,
+.cal__by-option[aria-pressed="true"] {
+  font-style: normal;
+  color: var(--color-fg);
+}
+.cal__by-option:hover::after,
+.cal__by-option:focus-visible::after,
+.cal__by-option[aria-pressed="true"]::after { transform: scaleX(1); }
+
+.cal__wd { font-style: normal; }
+
+/* Earlier and Later, and the artist links: italic links on a hairline */
+.cal__step,
+.cal__artist a {
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: var(--color-fg);
+  text-decoration: none;
+  padding-bottom: 1px;
+  background-image: linear-gradient(currentColor, currentColor),
+                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
+  background-repeat: no-repeat;
+  background-position: 0 100%, 0 100%;
+  background-size: 0 1px, 100% 1px;
+  transition: background-size 0.2s var(--crisp);
+}
+.cal__artist a { font-size: inherit; font-style: normal; }
+.cal__step:hover,
+.cal__step:focus-visible,
+.cal__artist a:hover,
+.cal__artist a:focus-visible {
+  color: var(--color-fg);
+  background-size: 100% 1px, 100% 1px;
+}
+
+/* The figures: display numerals over an upright quiet caption */
+.cal__stats dt {
+  font-size: 0.9375rem;
+  font-style: normal;
+  color: var(--color-muted);
+}
+.cal__stats dd {
+  font-size: clamp(1.375rem, 1.2rem + 0.5vw, 1.625rem);
+  line-height: 1.2;
+  letter-spacing: -0.006em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Rows that open and close: + and –, as on the fragrance list */
+.cal__section-name,
+.cal__section[aria-expanded="true"] .cal__section-name { font-style: normal; }
+.cal__section-act {
+  font-size: 0;
+  text-decoration: none;
+}
+.cal__section-act::before {
+  content: "+";
+  font-size: 1.1rem;
+  color: var(--color-muted);
+  transition: color 0.18s var(--crisp);
+}
+.cal__section[aria-expanded="true"] .cal__section-act::before { content: "\2013"; }
+.cal__section:hover .cal__section-act::before { color: var(--color-fg); }
+
+/* ---------- Reveal ----------
+   As on the Pragmatic pages: a block that starts below the first screen
+   fades and rises 14px into place as it comes into view (label.js marks
+   and watches them). Nothing on the first screen is ever hidden. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.reveal.on { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .look-label .masthead__nav-link,
+  .look-label .masthead__nav-link::after { transition: none; }
+}
+
+/* ---------- Elsewhere and colophon ----------
+   Under the pages, set apart by space and a smaller size, the profiles
+   elsewhere: the same quiet words with a line that draws under them.
+   The copyright closes the column under them on a wide screen (label.js
+   copies it there), and the page on a narrow one; always on the label's
+   centre line. */
+
+.look-label .page { padding-bottom: var(--space-lg); }
+.look-label .colophon { padding-top: 0; }
+
+/* Inline and balanced, like the nav, so no profile is left on a line
+   of its own when the row wraps */
+.masthead__elsewhere {
+  max-width: 30rem;
+  margin: 1.1rem auto 0;
+  font-size: 0.875rem;
+  text-align: center;
+  text-wrap: balance;
+}
+.masthead__elsewhere a {
+  display: inline-block;
+  margin: 0 0.5rem;
+  position: relative;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.18s var(--crisp);
+}
+.masthead__elsewhere a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.15em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s var(--crisp);
+}
+.masthead__elsewhere a:hover { color: var(--color-fg); }
+.masthead__elsewhere a:hover::after,
+.masthead__elsewhere a:focus-visible::after { transform: scaleX(1); }
+
+.colophon__meta,
+.lbl__colophon {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.colophon__rights {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+.lbl__colophon { display: none; }
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 40rem) {
+  /* Less air above the label, so it and the nav fit the first screen */
+  :root { --lbl-top: clamp(1.75rem, 5svh, 3rem); }
+
+  /* The masthead already holds the nav in from the screen's edges; a
+     second inset here squeezed the links into extra rows. */
+  .look-label .masthead__nav { padding: 0; }
+  .look-label .masthead__nav-link { margin: 0 0.4rem 0.1rem; }
 }
 
 /* ---------- Desktop: label and page side by side ----------
@@ -220,7 +617,7 @@ a.lbl__oval:hover { opacity: 0.8; }
       minmax(var(--space-md), 1fr)
       minmax(0, 25rem)
       clamp(3rem, 9vw, 10rem)
-      minmax(0, calc(var(--measure) - 2 * var(--space-md)))
+      minmax(0, 40rem)
       minmax(var(--space-md), 1fr);
     grid-template-rows: 1fr auto;
   }
@@ -247,13 +644,27 @@ a.lbl__oval:hover { opacity: 0.8; }
     padding-right: 0;
   }
   html.js .page { grid-row: 1; padding-top: var(--top); }
-  html.js .colophon { grid-row: 2; }
+  html.js .colophon { display: none; }
 
-  /* Fills the column, but never so tall that the nav falls off the
-     bottom of the screen: 10rem is the nav and the space round it. */
+  .lbl__colophon {
+    display: flex;
+    margin-top: 1.25rem;
+  }
+
+  /* Fills the column, but never so tall that the nav and colophon fall
+     off the bottom of the screen: 14rem is those and the space round them. */
   html.js:not(.look-label) .masthead::before,
-  .lbl__oval { width: min(100%, calc((100svh - var(--top) - 10rem) / 1.28)); }
+  .lbl__oval { width: min(100%, calc((100svh - var(--top) - 14rem) / 1.28)); }
   html.js:not(.look-label) .masthead::before { margin: 0 auto 1rem; }
 
   .look-label .masthead__nav { max-width: none; padding: 0; }
+}
+
+/* ---------- Large screens ----------
+   Past 100rem the spread grows with the window rather than sitting at
+   laptop size in the middle of a big monitor. Everything here is set in
+   rem, so raising the root size scales the label, the text and the gaps
+   together: 16px at 1600px wide, about 21px at 2560px, 22px at most. */
+@media (min-width: 100rem) {
+  html { font-size: clamp(100%, 0.5rem + 0.5vw, 137.5%); }
 }

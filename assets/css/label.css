@@ -59,50 +59,20 @@
   border: 0;
 }
 
-/* The label's width and the space above it, shared with the placeholder
-   below. One size on every page, but never taller than the screen, so a
-   phone held sideways still shows the whole oval. */
+/* The grid every page is set on: twelve columns between margins that
+   are the same on every side. --edge is the margin, --gutter the space
+   between columns. */
 :root {
-  --lbl-w: min(23rem, 84vw, calc((100svh - 3rem) / 1.28));
-  --lbl-top: clamp(3rem, 8vh, 5.5rem);
+  --edge: clamp(1.25rem, 4vw, 4rem);
+  --gutter: clamp(0.75rem, 1.8vw, 1.75rem);
 }
 
-/* Before the script has built the label, hold its space and keep the
-   plain name and title out of sight, so nothing jumps on load. */
-html.js:not(.look-label) .masthead__name,
-html.js:not(.look-label) .page-title { visibility: hidden; }
-html.js:not(.look-label) .masthead::before {
-  content: "";
-  display: block;
-  width: var(--lbl-w);
-  aspect-ratio: 100 / 128;
-  margin: var(--lbl-top) auto 1rem;
-}
-html.js:not(.look-label) .masthead { padding-top: 0; }
+/* Before the script has built the head, hold its place, so nothing
+   jumps on load. */
+html.js:not(.look-label) .masthead { min-height: clamp(18rem, 62svh, 38rem); }
+html.js:not(.look-label) .masthead > * { visibility: hidden; }
 
 /* ---------- The label ---------- */
-
-.look-label .masthead {
-  max-width: none;
-  padding-top: var(--lbl-top);
-  container-type: normal;
-}
-
-.lbl {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  padding: 0 0 1rem;
-  color: var(--lbl-ink);
-}
-
-/* One size on every page: the label is the site, not a badge that
-   shrinks once you leave the homepage. */
-.lbl__oval {
-  display: block;
-  width: var(--lbl-w);
-  color: inherit;
-}
 
 a.lbl__oval { transition: opacity var(--transition-fast); }
 a.lbl__oval:hover { opacity: 0.8; }
@@ -110,7 +80,9 @@ a.lbl__oval:hover { opacity: 0.8; }
 .lbl__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
 .lbl__paper { fill: var(--lbl-paper); }
-.lbl__ink { fill: currentColor; }
+/* The drawing in a lighter tone of the ink, so the capitals over it,
+   in full ink, stand clear of it. */
+.lbl__ink { fill: currentColor; opacity: 0.55; }
 
 .lbl__rule { fill: none; stroke: currentColor; }
 /* Measured off the real labels, in hundredths of the label's width */
@@ -139,87 +111,112 @@ a.lbl__oval:hover { opacity: 0.8; }
   letter-spacing: 0;
 }
 
-/* Capitals set over the drawing. A paper-coloured outline drawn under
-   each letter clears the pen lines around it, so the letters sit on
-   the scene the way they do on the label. */
+/* Capitals set over the drawing. As on the real labels, they are printed
+   straight onto the scene, with no paper cleared round them; label.js
+   sets them where the drawing is emptiest, and they are heavier and
+   darker than the drawing, so they still read. */
+.lbl__word {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
 .lbl__ch {
   fill: currentColor;
-  font-family: var(--font-display);
-  font-weight: 500;
-  stroke: var(--lbl-paper);
-  stroke-width: 1.8px;
-  stroke-linejoin: round;
-  paint-order: stroke fill;
+  font-family: inherit;
+  font-weight: inherit;
 }
 
-/* ---------- Navigation: a small centred block ---------- */
+/* ---------- Navigation ----------
+   The plain list of pages in each page's markup is what the index is
+   built from (label.js); once it is built the list itself is not shown. */
+.look-label .masthead__nav { display: none; }
 
-/* Inline rather than flex, so the text-wrap: balance from style.css can
-   even the rows out and no link is left on a line of its own. */
-.look-label .masthead__nav {
-  max-width: 34rem;
-  margin: 1.5rem auto 0;
-  padding: 0 var(--space-md);
-  font-size: 0.975rem;
-  text-align: center;
-  text-align-last: center;
-}
+/* ---------- Page contents ----------
+   Under the head, across the full width of the same twelve columns,
+   laid out the way the head is: the main thing on the left, the smaller
+   things in the last four columns, lists in columns across the page.
+   The names of things large in full ink, what they are in a quiet tone
+   under them, text at a reading size, each section opened by its name
+   as a heading. Space alone between things: no rules. */
 
-/* As in the Pragmatic header: the links in quiet ink, a line drawing
-   under one on hover, and the current page in full ink with that line
-   drawn for good. */
-.look-label .masthead__nav-link {
-  position: relative;
-  margin: 0 0.55rem 0.15rem;
-  font-size: 0.975rem;
-  color: var(--color-muted);
-  transition: color 0.18s var(--crisp);
+:root {
+  --link: #41609b;
+  --link-hover: #2f4c84;
+  --link-line: #a9bfe6;
+  --link-band: #d3e0f5;
+  --band: #e2dccd;
+  --faint: rgba(26, 23, 18, 0.26);
+  --quiet: rgba(26, 23, 18, 0.64);
+  --lead-ink: rgba(26, 23, 18, 0.86);
+  --underline: rgba(26, 23, 18, 0.3);
+  --underline-strong: rgba(26, 23, 18, 0.62);
+  --track: rgba(26, 23, 18, 0.1);
+  --t-name: clamp(2rem, 1.05rem + 2.3vw, 3.5rem);
+  /* (the tones above in the dark, below) */
+  --t-head: clamp(1.75rem, 1.2rem + 1.15vw, 2.5rem);
+  --t-entry: clamp(1.875rem, 1rem + 1.6vw, 2.75rem);
+  --column: 42rem;
+  --t-lead: clamp(1.375rem, 0.95rem + 0.95vw, 2rem);
+  --t-text: 1.1875rem;
+  --t-note: 1.0625rem;
+  --step: clamp(4.5rem, 9vw, 8rem);
 }
-.look-label .masthead__nav-link::before { display: none; }
-.look-label .masthead__nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.2em;
-  height: 1px;
-  overflow: visible;
-  visibility: visible;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s var(--crisp);
-}
-.look-label .masthead__nav-link:hover { color: var(--color-fg); }
-.look-label .masthead__nav-link:hover::after,
-.look-label .masthead__nav-link:focus-visible::after { transform: scaleX(1); }
-.look-label .masthead__nav-link.active {
-  font-style: normal;
-  color: var(--color-fg);
-}
-.look-label .masthead__nav-link.active::after { transform: scaleX(1); }
-
-/* ---------- Text column: the Pragmatic page ----------
-   Everything right of (or under) the label is set like the Pragmatic
-   site: EB Garamond at 19px on ivory, body copy in ink at 72%, large
-   display headings at regular weight, section labels in quiet italic,
-   and italic links on a quiet hairline that draws in full ink on
-   hover. */
 
 body {
-  font-size: 1.1875rem;
-  line-height: 1.65;
+  font-size: var(--t-text);
+  line-height: 1.6;
   color: var(--color-fg);
 }
 
-/* One reading column on every page: 40rem of text, the same right edge
-   for the prose, the lists, the photographs and the music. */
-.page {
-  max-width: calc(40rem + 2 * var(--space-md));
-  padding-top: clamp(3rem, 8vh, 5rem);
+.look-label .page {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-content: start;
+  max-width: none;
+  padding: clamp(5rem, 13vh, 9rem) var(--edge) var(--step);
 }
+.look-label .page > * { grid-column: 1 / -1; min-width: 0; }
+.look-label .page > a { justify-self: start; }
+.look-label .page > .project-item__link { font-size: var(--t-lead); }
 
-/* Ragged right, as on the Pragmatic pages, not justified */
+/* the main text of a page in the first seven columns, like the names */
+.look-label .page > .music__lede,
+.look-label .page > .about__text,
+.look-label .page > .contact__text,
+.look-label .page > .contact__mail,
+.look-label .page > p { grid-column: 1 / 8; }
+
+/* Home: the introduction on the left; the latest writing and the song
+   in the last four columns beside it; the photographs across under */
+.home__row { display: contents; }
+.look-label .page > .about__text { grid-row: 1; }
+.home__col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--step) * 0.6);
+  grid-column: 9 / 13;
+  grid-row: 1;
+}
+.home__row .photos-mini { grid-column: 1 / -1; grid-row: 2; margin-top: var(--step); }
+
+/* Contact: the sentence and the address on the left, the profiles in
+   the last four columns */
+.look-label .page > .contact__text { grid-row: 1; }
+.look-label .page > .contact__mail { grid-row: 2; align-self: start; }
+.look-label .page > .contact__elsewhere { grid-column: 9 / 13; grid-row: 1 / span 2; margin: 0; }
+.look-label .page:has(> .contact__mail) { grid-template-rows: auto 1fr; }
+
+/* Resume: the download first, on the sheet's own left edge, then the
+   sheet under it */
+.look-label .page > .resume__download {
+  grid-column: 1 / 10;
+  grid-row: 1;
+  justify-self: start;
+  margin: 0 0 1.5rem;
+}
+.look-label .page > a:has(.resume__frame) { grid-column: 1 / 10; grid-row: 2; }
+
+/* Ragged right, never justified */
 .page p {
   color: var(--color-prose);
   text-align: left;
@@ -227,157 +224,203 @@ body {
   hyphens: manual;
 }
 
-/* It was pulled up under the page title, which the label now replaces;
-   left there it would sit above the page's top line. */
-.music__lede { margin-top: 0; }
-
-/* The home introduction opens like the Pragmatic cover: its first
-   sentence in display type, the rest as the deck under it. */
-.about__text p:first-child {
-  margin-bottom: var(--head);
-  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.014em;
-  color: var(--color-fg);
-  text-align: left;
-  text-wrap: balance;
-  -webkit-hyphens: none;
-  hyphens: none;
+@supports (color: light-dark(#000, #fff)) {
+  :root {
+    --faint: light-dark(rgba(26, 23, 18, 0.26), rgba(236, 230, 214, 0.32));
+    --quiet: light-dark(rgba(26, 23, 18, 0.64), rgba(236, 230, 214, 0.62));
+    --color-mat: light-dark(#fbf8f1, #f1ece1);
+    --art-edge: light-dark(transparent, rgba(236, 230, 214, 0.12));
+    --lead-ink: light-dark(rgba(26, 23, 18, 0.86), rgba(236, 230, 214, 0.9));
+    --underline: light-dark(rgba(26, 23, 18, 0.3), rgba(236, 230, 214, 0.32));
+    --underline-strong: light-dark(rgba(26, 23, 18, 0.62), rgba(236, 230, 214, 0.6));
+    --track: light-dark(rgba(26, 23, 18, 0.1), rgba(236, 230, 214, 0.14));
+    --link: light-dark(#41609b, #b3c8ee);
+    --link-hover: light-dark(#2f4c84, #d3e0f5);
+    --link-line: light-dark(#a9bfe6, rgba(179, 200, 238, 0.45));
+    --link-band: light-dark(#d3e0f5, rgba(179, 200, 238, 0.16));
+    --band: light-dark(#e2dccd, rgba(236, 230, 214, 0.14));
+  }
 }
-/* Its second half in italic, as Pragmatic's "The system of record
-   for AI agents." is */
-.about__text p:first-child em { font-style: italic; }
-.about__text p { margin-bottom: 1.1rem; }
 
-/* Links in running text: upright, in ink, on a quiet hairline that a
-   full-strength line draws over from left to right on hover. */
-.about__text a,
+/* ---------- Links ----------
+   A fine solid line under every link, just under the baseline and
+   unbroken through the descenders: in a
+   soft ink for the site's own pages, in pastel blue (under blue text)
+   for links that leave the site. Under the pointer it comes up to the
+   text's full colour. Links that
+   act (visit, open, download, more) are in italic, with a small arrow
+   when they leave the site. */
 .page p a,
-.page .writing__list .writing__link,
-.writing__link,
-.photos__links a,
-.resume__download {
-  color: var(--color-fg);
-  text-decoration: none;
-  padding-bottom: 1px;
-  background-image: linear-gradient(currentColor, currentColor),
-                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
-  background-repeat: no-repeat;
-  background-position: 0 100%, 0 100%;
-  background-size: 0 1px, 100% 1px;
-  transition: background-size 0.2s var(--crisp);
-}
-.about__text a:hover,
-.page p a:hover,
-.writing__link:hover,
-.photos__links a:hover,
-.resume__download:hover,
-.about__text a:focus-visible,
-.page p a:focus-visible,
-.writing__link:focus-visible,
-.photos__links a:focus-visible,
-.resume__download:focus-visible {
-  color: var(--color-fg);
-  background-size: 100% 1px, 100% 1px;
-}
-
-/* Links that act (open, download, more): italic, like Pragmatic's */
+.page li a:not(.play):not(.reach__row),
 .project-item__link,
 .writing__link,
 .photos__links a,
-.resume__download {
-  font-size: 1.0625rem;
-  font-style: italic;
-}
-
-/* Section labels: the words in quiet italic, close over what they open */
-.writing__heading,
-.music__heading {
-  margin-bottom: var(--head);
-  font-family: var(--font-serif);
-  font-size: 1.125rem;
-  font-weight: 400;
-  font-style: italic;
-  line-height: 1.4;
-  color: var(--color-muted);
-}
-/* The latest piece of writing reads as a headline, not a list link */
-.page .writing__list .writing__link {
-  font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem);
-  font-style: normal;
-  line-height: 1.2;
-  letter-spacing: -0.008em;
-}
-
-.home__row { margin-top: var(--gap); }
-.home__row .writing + .writing { margin-top: var(--gap); }
-
-/* ---------- Entries ----------
-   Work, education, projects, research and press: each entry stacked in
-   the one column, its heading in display type, the caption under it,
-   the text, then its links side by side. Entries are parted by space
-   alone, as Pragmatic's rows are. */
-
-.project-item,
-.project-item:first-child,
-.project-item:last-child { padding: 0; }
-.project-item + .project-item { margin-top: var(--gap); }
-
-.project-item__header {
-  display: block;
-  margin-bottom: 0.9rem;
-}
-
-.project-item__title {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 1.15rem + 0.9vw, 2rem);
-  font-weight: 400;
-  line-height: 1.12;
-  letter-spacing: -0.008em;
-}
-
-.project-item__role {
-  display: block;
-  margin-top: 0.45rem;
-  font-size: 1rem;
-  font-style: italic;
-  line-height: 1.5;
-  color: var(--color-muted);
-}
-
-.project-item__description {
-  font-size: 1.125rem;
-  line-height: 1.72;
-  color: var(--color-prose);
-}
-
-/* An entry's links sit side by side, each kept whole. They are
-   underlined as Pragmatic's headlines are, with a real underline (quiet,
-   then full ink on hover), so a long title that wraps is underlined
-   line by line. */
-.project-item__links {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 1.75rem;
-}
-.project-item__link {
+.listening__more,
+.photos-mini__more,
+.resume__download,
+.contact__address,
+.reach__name {
+  --line: var(--underline-strong);
   color: var(--color-fg);
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
-  text-decoration-color: var(--color-border-hover);
-  transition: text-decoration-color 0.18s var(--crisp);
+  text-underline-offset: 0.17em;
+  text-decoration-skip-ink: none;
+  text-decoration-color: var(--line);
+  background: none;
+  transition: color 0.18s var(--crisp), text-decoration-color 0.18s var(--crisp);
 }
-.project-item__link:hover,
-.project-item__link:focus-visible {
-  color: var(--color-fg);
+.page p a:is(:hover, :focus-visible),
+.page li a:not(.play):not(.reach__row):hover,
+.project-item__link:is(:hover, :focus-visible),
+.writing__link:is(:hover, :focus-visible),
+.photos__links a:is(:hover, :focus-visible),
+.listening__more:hover,
+.photos-mini__more:hover,
+.resume__download:hover,
+.contact__address:is(:hover, :focus-visible),
+.reach__row:is(:hover, :focus-visible) .reach__name {
   text-decoration-color: currentColor;
 }
 
-/* A row that links (a song, an artist, a scent, the song on the home
-   page): its name underlined on hover, as Pragmatic's headlines are,
-   rather than greyed */
+/* out of the site: blue, on a pastel blue line */
+.page p a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+.page li a:not(.play):not(.reach__row):is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+a.project-item__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+.photos__links a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+.contact__address,
+.reach__row .reach__name {
+  --line: var(--link-line);
+  color: var(--link);
+}
+.contact__address { text-decoration-thickness: 2px; text-underline-offset: 0.12em; }
+
+.project-item__link,
+.writing__link {
+  font-size: var(--t-text);
+  font-style: italic;
+}
+.photos__links a,
+.listening__more,
+.photos-mini__more,
+.look-label .page > .resume__download {
+  font-size: var(--t-lead);
+  font-style: italic;
+}
+a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"])::after,
+.photos__links a[target="_blank"]::after,
+.look-label .resume__download::after {
+  content: "\00a0";
+  padding-right: 0.66em;
+  font-style: normal;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E") right 0.04em center / 0.56em 0.56em no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E") right 0.04em center / 0.56em 0.56em no-repeat;
+}
+.look-label .resume__download::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E");
+}
+
+/* ---------- Section names ----------
+   Headings in italic, in full ink, a step under an entry's name */
+.writing__heading,
+.music__heading {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-serif);
+  font-size: var(--t-head);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+}
+
+/* A page's own opening line (music, fragrance): leading text */
+.look-label .page .music__lede {
+  margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  font-size: var(--t-lead);
+  font-style: italic;
+  line-height: 1.35;
+  letter-spacing: -0.006em;
+  color: var(--color-fg);
+}
+
+/* ---------- Entries ----------
+   Work, education, projects, research, press: each a name in display
+   type, what it was in the quiet tone, the text, then its links. */
+.look-label .projects__list {
+  display: block;
+  columns: 3;
+  column-gap: var(--gutter);
+}
+.projects__list > .project-item {
+  display: block;
+  break-inside: avoid;
+  margin: 0 0 clamp(3.5rem, 7vw, 5.5rem) !important;
+}
+.look-label .projects__list:has(> .project-item:only-child) { columns: 1; }
+.project-item:only-child { max-width: 46rem; }
+@media (max-width: 79.99rem) { .look-label .projects__list { columns: 2; } }
+@media (max-width: 47.99rem) { .look-label .projects__list { columns: 1; } }
+
+.project-item,
+.project-item:first-child,
+.project-item:last-child { padding: 0; margin: 0; }
+.project-item + .project-item { margin-top: 0; }
+.project-item__header { display: block; margin: 0 0 1.4rem; }
+.project-item__title {
+  font-family: var(--font-serif);
+  font-size: var(--t-entry);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
+.project-item__role {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: var(--t-note);
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--quiet);
+  font-variant-numeric: lining-nums;
+  text-wrap: pretty;
+}
+.project-item__description {
+  max-width: 40rem;
+  text-wrap: pretty;
+  font-size: var(--t-text);
+  line-height: 1.6;
+  color: var(--color-prose);
+}
+.project-item__description + .project-item__description { margin-top: 0.8rem; }
+.project-item__links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 1.75rem;
+  margin-top: 1.5rem;
+}
+.project-item > .project-item__link { display: inline-block; margin-top: 1.5rem; }
+
+/* ---------- Rows: songs, artists, scents ----------
+   Parted by space, not lines; a row that links has its name underlined
+   under the pointer. */
+.look-label .plays { border: 0; }
+.look-label .play { border: 0; padding: 0.5rem 0; }
+.play__by,
+.listening__by {
+  font-size: var(--t-note);
+  font-style: italic;
+  color: var(--quiet);
+}
+.look-label .play__n,
+.look-label .play__count { font-size: var(--t-note); color: var(--quiet); }
+.look-label .play__name { font-size: var(--t-text); }
+.look-label .scent .play__name { font-size: var(--t-name); }
+.look-label .scent .play__by { font-size: var(--t-lead); }
 .play__name,
 .listening__name {
   text-decoration: underline;
@@ -396,53 +439,91 @@ a.play:focus-visible .play__name,
   text-decoration-color: currentColor;
 }
 
-/* ---------- Photographs ----------
-   Two prints across the column rather than three, so each is large
-   enough to look at, their mats slimmer in proportion; the viewer's
-   Close a quiet word like the rest. */
-.photos__grid {
-  columns: 2;
-  column-gap: 1.25rem;
+/* ---------- Home ----------
+   The introduction as leading text; then the latest writing and the
+   song side by side, and four photographs across the page. */
+.look-label .about__text p,
+.look-label .about__text p:first-child {
+  max-width: none;
+  margin: 0;
+  font-size: var(--t-lead);
+  line-height: 1.38;
+  letter-spacing: -0.006em;
+  color: var(--lead-ink);
+  text-wrap: pretty;
 }
-.photo-item {
-  margin-bottom: 1.25rem;
-  padding: 1.25rem;
-}
-.lightbox__close {
-  font-size: 1rem;
+.look-label .about__text p + p { margin-top: 1.1rem; }
+
+.home__row .writing,
+.home__row .writing + .writing { margin: 0; }
+.home__row .writing.photos-mini { margin-top: var(--step); }
+.page .writing__list .writing__link {
+  font-size: var(--t-lead);
   font-style: italic;
-  color: var(--color-muted);
+  line-height: 1.2;
+  letter-spacing: -0.006em;
+}
+.listening__song { gap: 1rem; }
+.listening__art { width: 4rem; height: 4rem; }
+.listening__name { font-size: var(--t-lead); line-height: 1.15; letter-spacing: -0.006em; }
+.listening__by { margin-top: 0.15rem; font-size: var(--t-note); }
+.listening__more,
+.photos-mini__more { display: inline-block; margin-top: 1.5rem; }
+.home__row .shuffle { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
+.shuffle a { padding: clamp(0.85rem, 1.6vw, 1.6rem); background: var(--color-mat); }
+.listening__art { outline: 1px solid var(--art-edge, transparent); outline-offset: -1px; }
+
+/* ---------- Photographs ----------
+   Wide, in three columns, each print in its paper mat */
+.photos__grid {
+  columns: 3;
+  column-gap: var(--gutter);
+}
+
+.photo-item {
+  margin-bottom: var(--gutter);
+  padding: clamp(0.9rem, 1.6vw, 1.5rem);
+  background: var(--color-mat);
+}
+.look-label .page > .photos__lede { grid-row: 1; }
+.look-label .page > .photos__links {
+  grid-row: 2;
+  justify-content: flex-start;
+  gap: 0.5rem 2.25rem;
+  margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+}
+.look-label .page > .photos__grid { grid-row: 3; }
+.lightbox__close {
+  font-size: var(--t-note);
+  font-style: italic;
+  color: var(--quiet);
   transition: color 0.18s var(--crisp);
 }
 .lightbox__close:hover { color: var(--color-fg); }
 
-/* Phones step the type down, as Pragmatic does under 520px */
-@media (max-width: 32.5rem) {
-  .photos__grid { column-gap: 0.6rem; }
-  .photo-item { margin-bottom: 0.6rem; padding: 0.7rem; }
-  body { font-size: 1.09375rem; line-height: 1.62; }
-  .about__text p:first-child { font-size: clamp(1.75rem, 8vw, 2.125rem); }
-  .project-item__title { font-size: clamp(1.5rem, 7.2vw, 1.875rem); line-height: 1.14; }
-  .project-item__description { font-size: 1rem; line-height: 1.68; }
-  .project-item__role { font-size: 0.9375rem; }
-  .writing__heading,
-  .music__heading { font-size: 1rem; }
+/* ---------- Resume ---------- */
+.look-label .resume__frame {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  background: var(--color-mat);
 }
 
-/* ---------- Contact ----------
-   The sentence set like the home headline, its second half in italic;
-   the address under it as a headline link, with a quiet Copy beside it;
-   then the profiles elsewhere as hairline rows, the name on the left and
-   the handle on the right, like the fragrance list. */
 
+/* ---------- Contact ----------
+   The sentence as leading text; the address under it as large as the
+   names in the head; the profiles elsewhere as a list of names in ink,
+   each with its handle in the quiet tone. */
+.look-label .contact__text,
 .contact .contact__text {
   max-width: none;
-  margin-bottom: var(--head);
-  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.5rem);
-  line-height: 1.1;
-  letter-spacing: -0.014em;
-  color: var(--color-fg);
-  text-wrap: balance;
+  margin: 0 0 2.25rem;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  letter-spacing: -0.006em;
+  color: var(--lead-ink);
+  text-wrap: pretty;
 }
 .contact .contact__text em { font-style: italic; }
 
@@ -450,102 +531,116 @@ a.play:focus-visible .play__name,
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.4rem 1.4rem;
+  gap: 0.5rem 1.5rem;
 }
-
 .contact__address {
-  font-size: clamp(1.5rem, 1.2rem + 0.8vw, 1.875rem);
-  line-height: 1.25;
-  letter-spacing: -0.008em;
-  color: var(--color-fg);
-  text-decoration: none;
-  padding-bottom: 1px;
-  background-image: linear-gradient(currentColor, currentColor),
-                    linear-gradient(var(--color-border-hover), var(--color-border-hover));
-  background-repeat: no-repeat;
-  background-position: 0 100%, 0 100%;
-  background-size: 0 1px, 100% 1px;
-  transition: background-size 0.2s var(--crisp);
+  font-size: clamp(2.5rem, 0.8rem + 4.2vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
 }
-.contact__address:hover,
-.contact__address:focus-visible { background-size: 100% 1px, 100% 1px; }
-
-/* A quiet word, like the nav: its line draws on hover, and it reads
-   Copied, in full ink, for a moment after it is pressed. */
 .contact__copy {
-  position: relative;
   padding: 0;
-  font-size: 1rem;
+  font-size: var(--t-text);
   font-style: italic;
-  color: var(--color-muted);
+  color: var(--quiet);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--underline);
   transition: color 0.18s var(--crisp);
 }
 .contact__copy[hidden] { display: none; }
-.contact__copy::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.1em;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s var(--crisp);
-}
 .contact__copy:hover,
 .contact__copy.is-done { color: var(--color-fg); }
-.contact__copy:hover::after,
-.contact__copy:focus-visible::after,
-.contact__copy.is-done::after { transform: scaleX(1); }
 
-.contact__elsewhere { margin-top: calc(var(--gap) * 1.5); }
-
+.contact__elsewhere { margin-top: var(--step); }
 .reach {
+  display: grid;
+  gap: 0.35rem;
   list-style: none;
-  border-bottom: 1px solid var(--color-border);
+  border: 0;
 }
 .reach__row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 0.6em;
+  padding: 0;
+  border: 0;
+  font-size: var(--t-lead);
+  line-height: 1.3;
+  color: var(--color-fg);
+  text-decoration: none;
+}
+
+.reach__handle {
+  font-style: italic;
+  color: var(--quiet);
+  overflow-wrap: anywhere;
+}
+.reach__row:focus-visible { outline: 1px solid var(--color-fg); outline-offset: 4px; }
+
+/* ---------- Fragrance ----------
+   Each scent's name large, its house after it in the quiet tone; it
+   opens to its mood, year, perfumer and notes. */
+.look-label .plays--scents {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: 0.25rem;
+  align-items: start;
+}
+.scent .play {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-fg);
-  text-decoration: none;
+  padding: 0.3rem 0;
 }
-.reach__name {
-  font-size: 1.125rem;
-  padding-bottom: 1px;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0 1px;
-  transition: background-size 0.2s var(--crisp);
+.scent .play__text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.55em; }
+.scent .play__name {
+  display: inline;
+  font-size: var(--t-name);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
 }
-.reach__handle {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  text-align: right;
-  font-style: italic;
-  color: var(--color-muted);
-  transition: color 0.18s var(--crisp);
+.scent .play__by { display: inline; font-size: var(--t-lead); line-height: 1.2; }
+.scent__toggle::before { font-size: var(--t-lead); color: var(--color-fg); }
+.scent__info {
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 0.35rem 1.25rem;
+  max-width: 38rem;
+  padding: 0.9rem 0 2rem;
 }
-.reach__row:hover .reach__name,
-.reach__row:focus-visible .reach__name { background-size: 100% 1px; }
-.reach__row:hover .reach__handle,
-.reach__row:focus-visible .reach__handle { color: var(--color-fg); }
-.reach__row:focus-visible { outline: 1px solid var(--color-fg); outline-offset: 4px; }
+.scent__info dt { font-size: var(--t-note); font-style: italic; color: var(--quiet); }
+.scent__info dd { font-size: var(--t-text); line-height: 1.5; color: var(--color-prose); }
 
-@media (max-width: 32.5rem) {
-  .contact .contact__text { font-size: clamp(1.75rem, 8vw, 2.125rem); }
+/* ---------- Phones ---------- */
+@media (max-width: 47.99rem) {
+  .look-label .page { display: block; padding-top: 4.5rem; }
+  .home__col { margin-top: var(--step); }
+  .look-label .page > .contact__elsewhere { margin-top: var(--step); }
+  .look-label .page:has(.resume__frame) { display: flex; flex-direction: column; align-items: flex-start; }
+  .look-label .page > .resume__download { order: -1; margin: 0 0 1.25rem; }
+  .look-label .plays--scents { grid-template-columns: minmax(0, 1fr); }
+  .home__row { display: block; }
+  .home__col { gap: var(--step); }
+  .home__row .writing.photos-mini { margin-top: var(--step); }
+  .look-label .page > .photos__links { flex-direction: column; gap: 0.75rem; }
+  .scent .play__text { display: block; }
+  .scent .play__by { display: block; }
+  .look-label .theme-toggle__option { padding: 0.7rem 0.15rem; }
+  .contact__copy { padding: 0.6rem 0.2rem; }
+  .home__row .shuffle { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .photos__grid { columns: 2; column-gap: 0.6rem; }
+  .photo-item { margin-bottom: 0.6rem; padding: 0.45rem; }
+  .shuffle a { padding: 0.75rem; }
+  .scent__info { grid-template-columns: 5.5rem minmax(0, 1fr); }
 }
 
 /* ---------- Reveal ----------
-   As on the Pragmatic pages: a block that starts below the first screen
-   fades and rises 14px into place as it comes into view (label.js marks
-   and watches them). Nothing on the first screen is ever hidden. */
+   A block that starts below the first screen fades and rises into place
+   as it comes into view (label.js marks and watches them). */
 .reveal {
   opacity: 0;
   transform: translateY(14px);
@@ -553,153 +648,251 @@ a.play:focus-visible .play__name,
               transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .reveal.on { opacity: 1; transform: none; }
-
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .look-label .masthead__nav-link,
-  .look-label .masthead__nav-link::after { transition: none; }
+  .index__list a,
+  .index__label { transition: none; }
 }
 
-/* ---------- Elsewhere and colophon ----------
-   Under the pages, set apart by space and a smaller size, the profiles
-   elsewhere: the same quiet words with a line that draws under them.
-   The copyright closes the column under them on a wide screen (label.js
-   copies it there), and the page on a narrow one; always on the label's
-   centre line. */
+/* ---------- The head ----------
+   The same on every page: the index, the names filling the first eight
+   columns, and in the last four the hello, its first line level with
+   the first line of names, and the profiles level with the last
+   (--names, the names' size, is set by label.js). */
 
-.look-label .page { padding-bottom: var(--space-lg); }
-.look-label .colophon { padding-top: 0; }
+.look-label .masthead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: clamp(3rem, 10vh, 7rem) var(--edge) 0;
+  text-align: left;
+  container-type: normal;
+}
+.head__hello {
+  grid-column: 9 / 13;
+  grid-row: 1;
+  align-self: start;
+  margin: calc(var(--names, 5rem) * 0.17) 0 0;
+  font-size: clamp(1.375rem, 0.85rem + 1.05vw, 2.125rem);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+  text-wrap: pretty;
+}
+.head__hello em { font-style: italic; }
 
-/* Inline and balanced, like the nav, so no profile is left on a line
-   of its own when the row wraps */
 .masthead__elsewhere {
-  max-width: 30rem;
-  margin: 1.1rem auto 0;
-  font-size: 0.875rem;
-  text-align: center;
-  text-wrap: balance;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0;
+  margin: 0;
+}
+.look-label .masthead > .masthead__elsewhere {
+  grid-column: 9 / 13;
+  grid-row: 1;
+  align-self: end;
+  justify-content: flex-start;
+  margin: 0 0 calc(var(--names, 5rem) * 0.12 - var(--icon) * 0.5) calc(var(--icon) * -0.5);
 }
 .masthead__elsewhere a {
-  display: inline-block;
-  margin: 0 0.5rem;
-  position: relative;
-  color: var(--color-muted);
+  display: grid;
+  place-items: center;
+  width: calc(var(--icon) * 2);
+  height: calc(var(--icon) * 2);
+  color: var(--color-fg);
   text-decoration: none;
-  transition: color 0.18s var(--crisp);
+  transition: opacity 0.18s var(--crisp);
 }
-.masthead__elsewhere a::after {
-  content: "";
+.masthead__elsewhere { --icon: clamp(1.5rem, 0.95rem + 0.95vw, 2.125rem); }
+.masthead__elsewhere svg { display: block; width: var(--icon); height: var(--icon); fill: currentColor; }
+.masthead__elsewhere a:hover,
+.masthead__elsewhere a:focus-visible { opacity: 0.55; }
+.masthead__elsewhere a:focus-visible { outline: 1px solid currentColor; outline-offset: -2px; }
+
+/* ---------- The index ---------- */
+
+.index {
+  grid-column: 1 / 8;
+  grid-row: 1;
+  margin: 0;
+}
+.index__list {
+  font-size: clamp(2.75rem, 5.4vw, 8rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+.index__line { display: block; width: max-content; white-space: nowrap; }
+.index__list a {
+  color: var(--faint);
+  text-decoration: none;
+  transition: color 0.2s var(--crisp);
+}
+.index__sep { color: var(--faint); }
+/* the page's own name lit with its comma or full stop */
+.index__list a.is-on + .index__sep { color: var(--color-fg); }
+.index__list a.is-on,
+.index__list a:focus-visible { color: var(--color-fg); outline: none; }
+
+.index__shelf {
+  grid-column: 9 / 13;
+  justify-self: end;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 100 / 128;
+}
+.index__label {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0.15em;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s var(--crisp);
+  inset: 0;
+  color: var(--lbl-ink);
+  opacity: 0;
+  transition: opacity 0.25s var(--crisp);
 }
-.masthead__elsewhere a:hover { color: var(--color-fg); }
-.masthead__elsewhere a:hover::after,
-.masthead__elsewhere a:focus-visible::after { transform: scaleX(1); }
+.index__label.is-on { opacity: 1; }
+.index__label .lbl__svg { width: 100%; height: auto; }
 
-.colophon__meta,
-.lbl__colophon {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
-.colophon__rights {
-  font-size: 0.85rem;
+/* ---------- Colophon ---------- */
+.look-label .colophon { width: 100%; max-width: none; margin: 0; padding: 0 var(--edge) 2.5rem; text-align: center; }
+.colophon__meta { display: flex; justify-content: center; }
+.colophon__rights { font-size: var(--t-note); font-style: italic; color: var(--quiet); }
+.look-label .colophon__meta { flex-wrap: wrap; align-items: baseline; gap: 0.5rem 2rem; }
+.look-label .theme-toggle { display: inline-flex; gap: 1rem; }
+.look-label .theme-toggle__option {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  font-size: var(--t-note);
   font-style: italic;
-  color: var(--color-muted);
+  color: var(--quiet);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: transparent;
+  transition: color 0.18s var(--crisp), text-decoration-color 0.18s var(--crisp);
 }
+.look-label .theme-toggle__option::before,
+.look-label .theme-toggle__option::after { display: none; }
+.look-label .theme-toggle__option:hover { color: var(--color-fg); }
+.look-label .theme-toggle__option[aria-pressed="true"] { color: var(--color-fg); text-decoration-color: currentColor; }
 
-.lbl__colophon { display: none; }
-
-/* ---------- Phones ---------- */
-
-@media (max-width: 40rem) {
-  /* Less air above the label, so it and the nav fit the first screen */
-  :root { --lbl-top: clamp(1.75rem, 5svh, 3rem); }
-
-  /* The masthead already holds the nav in from the screen's edges; a
-     second inset here squeezed the links into extra rows. */
-  .look-label .masthead__nav { padding: 0; }
-  .look-label .masthead__nav-link { margin: 0 0.4rem 0.1rem; }
+/* ---------- The Index button and its panel ----------
+   One word fixed in the top corner, on a scrap of paper so it reads over
+   whatever is under it, once the head has scrolled away; it opens the
+   same index over the page. */
+.jump {
+  position: fixed;
+  top: 0.95rem;
+  left: calc(var(--edge) - 0.55rem);
+  z-index: 60;
+  padding: 0.3rem 0.55rem;
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  color: var(--color-fg);
+  background: var(--color-bg);
+  border: 0;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s var(--crisp), visibility 0.2s;
 }
+html.show-jump .jump,
+html.jump-open .jump { opacity: 1; visibility: visible; }
+/* and the paper fades in across the top under it, so the page scrolls
+   away beneath rather than beside it */
+html.look-label body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 55;
+  height: 3.75rem;
+  background: linear-gradient(var(--color-bg) 55%, transparent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s var(--crisp);
+}
+html.show-jump body::before { opacity: 1; }
 
-/* ---------- Desktop: label and page side by side ----------
-   On a wide screen the label and nav are pinned to the viewport on the
-   left and the page scrolls past on the right. Keyed to html.js (set
-   before paint) rather than .look-label, so the columns are there from
-   the first frame and nothing jumps when the label is built. */
+.jump__panel {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-content: center;
+  column-gap: var(--gutter);
+  padding: 4.5rem var(--edge) 3rem;
+  overflow-y: auto;
+  background: var(--color-bg);
+}
+.jump__panel[hidden] { display: none; }
+.jump__panel > .jump__elsewhere {
+  grid-column: 9 / 13;
+  grid-row: 1;
+  align-self: end;
+  justify-content: flex-start;
+  margin: 0 0 calc(var(--names, 5rem) * 0.12) -0.6rem;
+}
+html.jump-open { overflow: hidden; }
 
-@media (min-width: 64rem) {
-  html.js {
-    /* One top line for both columns: the top of the label and the first
-       line of the page start at the same height. */
-    --top: clamp(4rem, 14svh, 8rem);
-  }
-
-  /* margin | label | gutter | text | margin. The label and the text are
-     set as one spread centred on the screen, so the two outer margins
-     always match and the gutter stays a gutter, however wide the window. */
-  html.js body {
-    display: grid;
-    grid-template-columns:
-      minmax(var(--space-md), 1fr)
-      minmax(0, 25rem)
-      clamp(3rem, 9vw, 10rem)
-      minmax(0, 40rem)
-      minmax(var(--space-md), 1fr);
-    grid-template-rows: 1fr auto;
-  }
-
-  html.js .masthead {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    position: sticky;
-    top: 0;
+/* ---------- Phones ----------
+   One column: the hello, the profiles, the label, then the names, each
+   line free to wrap, at a size that fits the screen. */
+@media (max-width: 47.99rem) {
+  .look-label .masthead { padding-top: 2rem; }
+  .head__hello { grid-column: 1 / -1; grid-row: 1; margin: 0; font-size: 1.5rem; line-height: 1.25; }
+  .look-label .masthead > .masthead__elsewhere {
+    grid-column: 1 / -1;
+    grid-row: 2;
     align-self: start;
-    max-width: none;
-    height: 100vh;
-    height: 100svh;
-    overflow-y: auto;
-    padding: var(--top) 0 2rem;
+    margin: 0.75rem 0 0 -0.6rem;
   }
-  html.js:not(.look-label) .masthead { padding-top: var(--top); }
+  .index { grid-column: 1 / -1; grid-row: 3; display: flex; flex-direction: column; margin-top: 2.25rem; }
+  .jump__panel { align-content: start; }
+  .jump__panel .index { grid-row: 1; margin-top: 0; }
+  .index__shelf { order: -1; align-self: center; width: min(64vw, 17rem); margin-bottom: 2.25rem; }
+  .index__list { font-size: clamp(2.5rem, 11.2vw, 3.5rem); }
+  .index__line { display: inline; width: auto; white-space: normal; }
+  .jump__panel > .jump__elsewhere { grid-column: 1 / -1; grid-row: 2; margin: 2rem 0 0 -0.6rem; }
+  .jump { font-size: 1.125rem; }
+}
 
-  html.js .page,
-  html.js .colophon {
-    grid-column: 4;
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
-  }
-  html.js .page { grid-row: 1; padding-top: var(--top); }
-  html.js .colophon { display: none; }
-
-  .lbl__colophon {
-    display: flex;
-    margin-top: 1.25rem;
-  }
-
-  /* Fills the column, but never so tall that the nav and colophon fall
-     off the bottom of the screen: 14rem is those and the space round them. */
-  html.js:not(.look-label) .masthead::before,
-  .lbl__oval { width: min(100%, calc((100svh - var(--top) - 14rem) / 1.28)); }
-  html.js:not(.look-label) .masthead::before { margin: 0 auto 1rem; }
-
-  .look-label .masthead__nav { max-width: none; padding: 0; }
+/* ---------- How far down the page ----------
+   A fine rule in the right-hand margin, set in from the top and bottom
+   of the screen like a ruler: the track in the faint tone, what has
+   been read in ink (label.js fills it). */
+.progress {
+  position: fixed;
+  top: clamp(1.25rem, 4vh, 2.5rem);
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  right: calc(var(--edge) / 2 - 1px);
+  z-index: 40;
+  width: 2px;
+  background: var(--track);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--crisp);
+}
+.progress.is-on { opacity: 1; }
+.progress i {
+  position: absolute;
+  inset: 0;
+  background: var(--color-fg);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+}
+@media (max-width: 30rem) {
+  .progress { display: none; }
 }
 
 /* ---------- Large screens ----------
-   Past 100rem the spread grows with the window rather than sitting at
-   laptop size in the middle of a big monitor. Everything here is set in
-   rem, so raising the root size scales the label, the text and the gaps
-   together: 16px at 1600px wide, about 21px at 2560px, 22px at most. */
+   Past 100rem everything grows with the window; it is all in rem. */
 @media (min-width: 100rem) {
   html { font-size: clamp(100%, 0.5rem + 0.5vw, 137.5%); }
 }

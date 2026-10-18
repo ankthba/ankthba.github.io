@@ -278,7 +278,7 @@
     function dayLog(note, day) {
       var toggle = el('button', 'daylog__toggle');
       toggle.type = 'button';
-      toggle.appendChild(el('span', 'daylog__name', 'Listening log'));
+      toggle.appendChild(el('span', 'daylog__name', 'Every song played that day'));
       toggle.appendChild(el('span', 'daylog__sign'));
       var body = el('div', 'daylog__body');
       var loaded = false;

@@ -25,8 +25,59 @@
     resume:      ['RE', 'SU', 'ME']
   };
 
-  var RING = 'aniketh bandlamudi\u00a0\u00a0\u00a0computer science & applied mathematics\u00a0\u00a0\u00a0aniketh.net';
-  var FOOT = 'university of virginia';
+  /* What runs round the band, from the bottom left, over the top and down
+     to the bottom right: each page's own, in phrases set apart by wide
+     spaces. Only the name upright along the bottom is the same on every
+     label. Each ring is kept near one length so the lettering is the
+     same size on every page. */
+  var RINGS = {
+    '':          ['studying computer science & applied mathematics', 'university of virginia', 'aniketh.net'],
+    work:        ['pragmatic & ocradar, founder', 'alarm.com, engineering intern', 'robotics, software lead'],
+    education:   ['university of virginia, class of 2030', 'y combinator startup school', 'oakton high school'],
+    projects:    ['meridian, aperta, hypnagogia, haze, sentry, graphite, ocradar, splatify, ejector & edgefabric'],
+    research:    ['a convolutional neural network that detects oral cancer', 'published on arxiv, october 2025'],
+    music:       ['live from spotify', 'now playing', 'listening calendar', 'most listened to', 'today\u2019s listening log'],
+    fragrance:   ['diptyque, herm\u00e8s, le labo, chanel, clive christian, maison margiela, kurkdjian & versace'],
+    photos:      ['aviation & landscape photography', 'lufthansa, united & korean air', 'mountains & sea'],
+    press:       ['wtop news radio, 2025', 'korean air & blackpink', 'star alliance & united airlines, 2024'],
+    contact:     ['say hello at me@aniketh.net', 'ankthba on github, x & instagram', 'anikethb on linkedin'],
+    resume:      ['curriculum vitae', 'education', 'experience', 'projects', 'technical skills', 'download as a pdf'],
+    404:         ['error 404', 'page not found', 'the page you\u2019re looking for can\u2019t be found', 'try aniketh.net']
+  };
+  /* The capitals in the window are set in a face of their own on every
+     label, as each Diptyque scent's name is lettered its own way; the
+     lettering round the band is always EB Garamond. */
+  var FACES = {
+    work:        ['Playfair Display', 700],
+    education:   ['Cinzel', 600],
+    projects:    ['Bodoni Moda', 600],
+    research:    ['IM Fell English', 400],
+    music:       ['Fraunces', 600],
+    fragrance:   ['Cormorant Garamond', 700],
+    photos:      ['Gloock', 400],
+    press:       ['Old Standard TT', 700],
+    contact:     ['Marcellus', 400],
+    resume:      ['Libre Baskerville', 700]
+  };
+  var faces = {};
+  function face(sec) {
+    var f = FACES[sec];
+    if (!f) return Promise.resolve();
+    if (!faces[f[0]]) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=' + f[0].replace(/ /g, '+') + ':wght@' + f[1] + '&display=block';
+      document.head.appendChild(link);
+      faces[f[0]] = new Promise(function (done) { link.onload = done; link.onerror = done; })
+        .then(function () { return document.fonts && document.fonts.load(f[1] + ' 40px "' + f[0] + '"', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'); })
+        .catch(function () {});
+    }
+    return faces[f[0]];
+  }
+
+  var is404 = /^404/.test(document.title);
+  var FOOT = 'aniketh';
+  var ringOf = function (sec) { return RINGS[sec in RINGS ? sec : ''].join('\u00a0\u00a0\u00a0'); };
 
   function rng(seed) {
     var h = 1779033703 ^ seed.length;
@@ -96,7 +147,7 @@
 
   var deg = Math.PI / 180;
 
-  function build(words, drawing, seed) {
+  function build(words, drawing, seed, RING, FACE) {
     var svg = el('svg', { viewBox: '0 0 100 ' + VH, class: 'lbl__svg', 'aria-hidden': 'true' });
     var defs = el('defs', {}, svg);
     var id = 'l' + Math.floor(Math.random() * 1e6);
@@ -130,6 +181,10 @@
     el('textPath', { href: '#' + id + 'foot', startOffset: '50%', 'text-anchor': 'middle' }, foot).textContent = FOOT;
 
     var letters = el('g', { class: 'lbl__word' }, svg);
+    if (FACE) {
+      letters.style.fontFamily = '"' + FACE[0] + '", "EB Garamond", serif';
+      letters.style.fontWeight = FACE[1];
+    }
 
     // Where the drawing has ink, sampled once from the image itself, so the
     // capitals can be set in its open paper rather than across the subject.
@@ -169,10 +224,13 @@
     /* The band lettering, set as on the bottles: its middle on the middle
        of the band between the heavy rules, the university upright at the
        bottom, and the long line filling the band from one side of it round
-       to the other, at whatever size makes it fit, as large as it can. */
+       to the other. Every page sets it at the homepage's size, SIZE, and
+       spaces it out to fill; only a line too long to close up a little
+       is set smaller. */
     var BAND = 11.5, HALF = 0.24;   // (ascender - descender) / 2, in ems
+    var SIZE = 7.1, SQUEEZE = 1.04;
     function band() {
-      var f = 7.2;
+      var f = SIZE;
       for (var pass = 0; pass < 5; pass++) {
         ring.style.fontSize = foot.style.fontSize = f + 'px';
         ring.removeAttribute('textLength');
@@ -184,7 +242,7 @@
         var a0 = angleOf(fi, p0.x, p0.y), a1 = angleOf(fi, p1.x, p1.y);
         ringPath.setAttribute('d', arc(ri, a0, a1 + 2 * Math.PI));
         var room = ringPath.getTotalLength() * 0.99, need = ring.getComputedTextLength();
-        var next = Math.min(8.6, f * room / need);
+        var next = Math.min(SIZE, f * room * SQUEEZE / need);
         if (Math.abs(next - f) < 0.03 || pass === 4) {
           ring.setAttribute('textLength', room.toFixed(1));
           ring.setAttribute('lengthAdjust', 'spacing');
@@ -257,45 +315,246 @@
 
   /* ---------- Build ---------- */
 
+  /* The label for any page of the site, by its section ('' is home). Its
+     capitals are hidden until their face has arrived, then set. */
+  function labelFor(sec) {
+    var known = sec in SETS;
+    var made = build(SETS[sec] || ['404'], '/assets/img/labels/' + (known && sec ? sec : 'home') + '.webp',
+                     sec || 'home', ringOf(sec), FACES[sec]);
+    if (FACES[sec]) {
+      var word = made.svg.querySelector('.lbl__word');
+      word.style.opacity = 0;
+      face(sec).then(function () { made.layout(); word.style.opacity = ''; });
+    }
+    return made;
+  }
+  window.Label = { build: labelFor, sections: Object.keys(SETS) };
+
   var masthead = document.querySelector('.masthead');
   if (!masthead) return;
+  var html = document.documentElement;
   var title = document.querySelector('.page-title');
-  var isHome = section === '';
-  var known = section in SETS;
-  var words = /^404/.test(document.title) ? ['404'] : SETS[section] || chunk(title ? title.textContent : document.title);
-  var drawing = '/assets/img/labels/' + (known && section ? section : 'home') + '.webp';
-
-  var label = document.createElement('div');
-  label.className = 'lbl' + (isHome ? ' lbl--home' : '');
-  var holder = document.createElement(isHome ? 'div' : 'a');
-  holder.className = 'lbl__oval';
-  if (!isHome) { holder.href = '/'; holder.setAttribute('aria-label', 'Aniketh Bandlamudi, home'); }
-  var built = build(words, drawing, section || 'home');
-  holder.appendChild(built.svg);
-  label.appendChild(holder);
+  /* The label is set aside for now (2026-10-18): nothing builds it, and
+     the index has no shelf. To bring it back, restore these lines and
+     the shelf in sheet() below.
+  var built = is404 ? build(['404'], '/assets/img/labels/home.webp', '404', ringOf('404'))
+    : section in SETS ? labelFor(section)
+    : build(chunk(title ? title.textContent : document.title), '/assets/img/labels/home.webp', section, ringOf(''));
+  */
+  var built = null;
 
   var name = masthead.querySelector('.masthead__name');
-  masthead.insertBefore(label, masthead.firstChild);
-  // the h1 stays for screen readers; the oval is aria-hidden
   if (name) name.classList.add(name.tagName === 'H1' ? 'lbl-sr' : 'lbl-hidden');
   if (title) title.classList.add('lbl-sr');
+  html.classList.add('look-label');
 
-  // On a wide screen the copyright closes the label column, under the
-  // nav; label.css shows either this copy or the footer, never both.
-  var meta = document.querySelector('.colophon__meta');
-  if (meta) {
-    var sign = document.createElement('div');
-    sign.className = 'lbl__colophon';
-    Array.prototype.forEach.call(meta.children, function (n) {
-      if (/colophon__rights/.test(n.className)) sign.appendChild(n.cloneNode(true));
+  /* ---------- The head of every page ----------
+     The same on every page: the line of hello and the profiles along the
+     top, then the main nav, every page of the site as one large sentence
+     of names set in lines that each run the full width of their columns,
+     with the page you are on in full ink, so the sentence is the page's
+     title too. Its label stands beside it, exactly as tall as the names.
+     Pointing at another name (or tabbing to it) brings that one up and
+     stands its label there instead. */
+  var wide = window.matchMedia('(min-width: 48rem)');
+  var HELLO = 'Hey, I’m Aniketh, <em>studying CS and Applied Math at the University of Virginia.</em>';
+
+  function lines(list, items) {
+    list.textContent = '';
+    var BUDGET = 23, line = null, used = 0;
+    items.forEach(function (it, i) {
+      var len = it.text.length + 2;
+      if (!line || used + len > BUDGET + 1) {
+        if (line) list.appendChild(document.createTextNode(' '));
+        line = document.createElement('span');
+        line.className = 'index__line';
+        list.appendChild(line);
+        used = 0;
+      } else {
+        line.appendChild(document.createTextNode(' '));
+      }
+      var a = document.createElement('a');
+      a.href = it.href;
+      a.textContent = it.text;
+      a.setAttribute('data-page', it.page);
+      if (it.current) a.setAttribute('aria-current', 'page');
+      var sep = document.createElement('span');
+      sep.className = 'index__sep';
+      sep.textContent = i === items.length - 1 ? '.' : ',';
+      line.appendChild(a);
+      line.appendChild(sep);
+      used += len;
     });
-    masthead.appendChild(sign);
   }
-  document.documentElement.classList.add('look-label');
 
-  built.layout();
-  // measure again once EB Garamond has arrived
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(built.layout);
+  /* The names as large as lets the longest line just fill the columns,
+     and the label beside them exactly as tall as the lines. */
+  function fit(list, shelf) {
+    if (!list.offsetWidth) return;
+    if (!wide.matches) {
+      list.style.fontSize = '';
+      if (shelf) shelf.style.width = '';
+      if (list.parentNode.parentNode) list.parentNode.parentNode.style.removeProperty('--names');
+      return;
+    }
+    list.style.fontSize = '100px';
+    var widest = 0;
+    Array.prototype.forEach.call(list.querySelectorAll('.index__line'), function (l) {
+      widest = Math.max(widest, l.getBoundingClientRect().width);
+    });
+    if (!widest) return;
+    var size = Math.min(100 * list.clientWidth / widest, 150);
+    list.style.fontSize = size + 'px';
+    if (list.parentNode.parentNode) list.parentNode.parentNode.style.setProperty('--names', size + 'px');
+    if (shelf) {
+      // from the top of the first line's capitals to the last baseline
+      var tall = list.getBoundingClientRect().height - size * 0.3;
+      shelf.style.width = Math.min(shelf.parentNode.clientWidth, tall / 1.28) + 'px';
+      shelf.style.marginTop = size * 0.13 + 'px';
+    }
+  }
+
+  var navItems = Array.prototype.map.call(masthead.querySelectorAll('.masthead__nav-link'), function (a) {
+    var href = a.getAttribute('href');
+    return { href: href, text: a.textContent.trim(), page: href.split('/')[1] || '', current: a.classList.contains('active') };
+  });
+  var here = is404 ? '404' : section in SETS ? section : '';
+
+  function sheet() {
+    var box = document.createElement('section');
+    box.className = 'index';
+    box.setAttribute('aria-label', 'Pages');
+    var list = document.createElement('nav');
+    list.className = 'index__list';
+    var shelf = null;
+    /* the label's shelf, set aside for now
+    shelf = document.createElement('div');
+    shelf.className = 'index__shelf';
+    shelf.setAttribute('aria-hidden', 'true');
+    */
+    box.appendChild(list);
+    if (shelf) box.appendChild(shelf);
+    lines(list, navItems);
+    return { box: box, list: list, shelf: shelf };
+  }
+
+  function index(list, shelf, base, baseLabel) {
+    var links = Array.prototype.slice.call(list.querySelectorAll('a[data-page]'));
+    var labels = {};
+    function add(sec, made) {
+      made.box = document.createElement('div');
+      made.box.className = 'index__label';
+      made.box.appendChild(made.svg);
+      shelf.appendChild(made.box);
+      labels[sec] = made;
+      made.layout();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(made.layout);
+    }
+    function show(sec) {
+      links.forEach(function (a) { a.classList.toggle('is-on', a.getAttribute('data-page') === sec); });
+      if (!shelf) return;
+      if (!labels[sec]) {
+        if (sec === base && baseLabel) add(sec, baseLabel);
+        else if (wide.matches) add(sec, labelFor(sec));
+        else return;
+      }
+      Object.keys(labels).forEach(function (k) { labels[k].box.classList.toggle('is-on', k === sec); });
+    }
+    links.forEach(function (a) {
+      a.addEventListener('mouseenter', function () { show(a.getAttribute('data-page')); });
+      a.addEventListener('focus', function () { show(a.getAttribute('data-page')); });
+    });
+    list.addEventListener('mouseleave', function () { show(base); });
+    show(base);
+    var refit = function () { fit(list, shelf); };
+    refit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+    window.addEventListener('resize', refit);
+    wide.addEventListener('change', function () { refit(); show(base); });
+    return refit;
+  }
+
+  if (navItems.length) {
+    var hello = document.createElement('p');
+    hello.className = 'head__hello';
+    hello.innerHTML = HELLO;
+    masthead.insertBefore(hello, masthead.firstChild);
+    var head = sheet();
+    masthead.appendChild(head.box);
+    index(head.list, head.shelf, here, built);
+  }
+
+  /* ---------- The Index button ----------
+     Once the head has scrolled away, one word in the top corner brings
+     the same sentence of names back over the page. Set aside for now
+     (2026-10-18): set INDEX_BUTTON to true to bring it back. */
+  var INDEX_BUTTON = false;
+  if (INDEX_BUTTON && navItems.length) {
+    var jump = document.createElement('button');
+    jump.type = 'button';
+    jump.className = 'jump';
+    jump.textContent = 'Index';
+    jump.setAttribute('aria-expanded', 'false');
+    jump.setAttribute('aria-controls', 'jump-panel');
+
+    var panel = document.createElement('div');
+    panel.className = 'jump__panel';
+    panel.id = 'jump-panel';
+    panel.hidden = true;
+    var logos = masthead.querySelector('.masthead__elsewhere');
+    if (logos) {
+      var more = logos.cloneNode(true);
+      more.className = 'masthead__elsewhere jump__elsewhere';
+      panel.appendChild(more);
+    }
+    var again = sheet();
+    panel.appendChild(again.box);
+    document.body.appendChild(panel);
+    document.body.appendChild(jump);
+
+    var refitPanel = null;
+    var setOpen = function (open) {
+      panel.hidden = !open;
+      html.classList.toggle('jump-open', open);
+      jump.setAttribute('aria-expanded', String(open));
+      jump.textContent = open ? 'Close' : 'Index';
+      if (open && !refitPanel) refitPanel = index(again.list, again.shelf, here);
+      else if (open) refitPanel();
+    };
+    jump.addEventListener('click', function () { setOpen(panel.hidden); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) setOpen(false); });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) {
+        html.classList.toggle('show-jump', !e[0].isIntersecting);
+      }).observe(head.list);
+    } else {
+      html.classList.add('show-jump');
+    }
+  }
+
+  /* ---------- How far down the page ----------
+     A fine rule along the right-hand margin, its track in the faint
+     tone and the part already read in ink, filling as the page
+     scrolls. Not shown on a page that fits the screen. */
+  var rule = document.createElement('div');
+  rule.className = 'progress';
+  rule.setAttribute('aria-hidden', 'true');
+  var fill = document.createElement('i');
+  rule.appendChild(fill);
+  document.body.appendChild(rule);
+  var ticking = false;
+  function measure() {
+    ticking = false;
+    var room = document.documentElement.scrollHeight - window.innerHeight;
+    rule.classList.toggle('is-on', room > window.innerHeight * 0.3);
+    fill.style.transform = 'scaleY(' + (room > 0 ? Math.min(1, Math.max(0, window.scrollY / room)) : 0) + ')';
+  }
+  function soon() { if (!ticking) { ticking = true; requestAnimationFrame(measure); } }
+  window.addEventListener('scroll', soon, { passive: true });
+  window.addEventListener('resize', soon);
+  if (window.ResizeObserver) new ResizeObserver(soon).observe(document.body);
+  measure();
 
   /* Blocks below the first screen fade up into place as they come into
      view, as on the Pragmatic pages; neighbours that arrive together
@@ -303,7 +562,7 @@
   if ('IntersectionObserver' in window &&
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var blocks = document.querySelectorAll(
-      '.about__text > p, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li, ' +
+      '.about__text > p, .index, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li, ' +
       '.contact > p, .contact__elsewhere');
     var seen = new IntersectionObserver(function (entries) {
       var n = 0;

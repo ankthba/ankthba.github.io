@@ -501,6 +501,26 @@ a.play:focus-visible .play__name,
 }
 .lightbox__close:hover { color: var(--color-fg); }
 
+/* Under the pointer a photograph lifts a little toward you rather than
+   fading: the print and its mat grow by a few percent. */
+.photo-item,
+.shuffle a {
+  transition: transform 0.35s var(--crisp), box-shadow 0.35s var(--crisp);
+}
+.photo-item:hover,
+.shuffle a:hover,
+.shuffle a:focus-visible {
+  transform: scale(1.03);
+  box-shadow: 0 0.9rem 2rem -1.2rem rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 1;
+}
+.photo-item:hover img,
+.shuffle a:hover img { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .photo-item, .shuffle a { transition: none; }
+}
+
 /* ---------- Resume ---------- */
 .look-label .resume__frame {
   display: block;

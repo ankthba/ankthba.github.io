@@ -25,6 +25,10 @@
         a.href = '/photos/';
         var img = document.createElement('img');
         img.src = photo.getAttribute('src');
+        if (photo.getAttribute('srcset')) {
+          img.srcset = photo.getAttribute('srcset');
+          img.sizes = '(min-width: 48rem) 24vw, 46vw';
+        }
         img.alt = photo.getAttribute('alt') || '';
         img.decoding = 'async';
         a.appendChild(img);

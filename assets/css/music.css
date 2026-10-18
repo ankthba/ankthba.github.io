@@ -79,7 +79,9 @@
   object-fit: cover;
   transition: opacity 0.2s var(--crisp);
 }
-.music .now__art:hover img { opacity: 0.9; }
+.music .now__art img { transition: transform 0.35s var(--crisp); }
+.music .now__art { overflow: hidden; }
+.music .now__art:hover img { transform: scale(1.03); }
 .music .now__art:not(:has(img:not([hidden])))::before {
   content: "";
   display: block;
@@ -216,7 +218,8 @@
   object-fit: cover;
   transition: opacity 0.2s var(--crisp);
 }
-.music .cal__cell--art:hover .cal__art { opacity: 0.82; }
+.music .cal__cell { transition: transform 0.25s var(--crisp); }
+.music .cal__cell--art:hover { transform: scale(1.08); z-index: 2; }
 .music .cal__n {
   position: absolute;
   top: 0.3rem;

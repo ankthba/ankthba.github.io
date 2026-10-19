@@ -56,6 +56,9 @@ const DAILY_BUDGET = 2500;   // Spotify Web API calls a UTC day, at most
 const SWEEP_RESERVE = 150;   // of those, kept for the fifteen-minute sweep
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
+const TURN = 4;              // seconds after a song should have ended before asking what's next
+const TURN_GAP = 10;         // seconds at least between two of those asks
+const TURN_SPARE = 100;      // calls the day must still have left for them, past the sweep's
 const EDGE = 5;              // seconds each Worker copy reuses an answer
 
 const KEEP_DAYS = 30;        // days every play is kept for the Action
@@ -218,7 +221,7 @@ export class NowPlaying {
   answer() {
     if (!this.data) return null;
     const paused = this.pause();
-    const data = Date.now() - this.dataAt < Math.max(STALE, this.interval() * 2) * 1000
+    const data = Date.now() - this.dataAt < Math.max(STALE, this.interval() * 2) * 1000 && !this.over()
       ? this.data
       : { ...this.data, playing: false, stale: true, progress_ms: null, track: null };
     return paused ? { ...data, ...paused, checked: new Date(this.dataAt).toISOString() } : data;
@@ -317,9 +320,28 @@ export class NowPlaying {
     return Response.json(out);
   }
 
+  // Whether the song playing at the last answer has run out by now.
+  over() {
+    const d = this.data;
+    if (!d || !d.playing || !d.track) return false;
+    return Date.now() - this.dataAt > d.track.duration_ms - d.progress_ms + TURN * 1000;
+  }
+
+  // Spotify is otherwise asked less often as the day's calls run low,
+  // and the page would go on showing a song that ended minutes ago; so
+  // once one should have ended, what's next is asked for. It costs a
+  // call a song at most, never two within TURN_GAP, and only while the
+  // day has TURN_SPARE calls to spare, so the budget is never spent on
+  // it and a 429 still silences everything (quietUntil).
+  turned() {
+    if (!this.over() || Date.now() - this.dataAt < TURN_GAP * 1000) return false;
+    const used = this.budget.day === today() ? this.budget.used : 0;
+    return DAILY_BUDGET - SWEEP_RESERVE - used > TURN_SPARE;
+  }
+
   async now() {
     await this.load();
-    const fresh = this.data && Date.now() - this.dataAt < this.interval() * 1000;
+    const fresh = this.data && Date.now() - this.dataAt < this.interval() * 1000 && !this.turned();
     const quiet = Date.now() < this.quietUntil;
 
     if (!fresh && !quiet) {

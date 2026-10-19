@@ -16,7 +16,9 @@
 //     down instead of ever going off the air for the budget. The sweep
 //     (below) keeps SWEEP_RESERVE of them for itself;
 //   - after a 429, nothing at all until Spotify's Retry-After has passed,
-//     also kept in storage.
+//     also kept in storage, with an alarm for the moment it has: that
+//     sweeps (below) straight away, since the plays made meanwhile are
+//     only in Spotify's last fifty, and a long wait can be most of them.
 //
 // Whenever it can't ask, it hands out the last good answer instead (with
 // "playing" switched off once that answer is more than two minutes old),
@@ -117,8 +119,11 @@ export class NowPlaying {
 
   async load() {
     if (this.loaded) return;
-    const saved = await this.state.storage.get(['data', 'quietUntil', 'pausedFor', 'budget']);
+    const saved = await this.state.storage.get(['data', 'quietUntil', 'pausedFor', 'budget', 'token']);
     if (saved.get('data')) ({ data: this.data, at: this.dataAt } = saved.get('data'));
+    // Kept so a restarted Object doesn't ask for a new one: every ask
+    // counts against the same rate limit as the rest.
+    this.token = saved.get('token') || null;
     this.quietUntil = saved.get('quietUntil') || 0;
     this.pausedFor = saved.get('pausedFor') || null;
     this.budget = saved.get('budget') || this.budget;
@@ -130,6 +135,23 @@ export class NowPlaying {
       await this.state.storage.put({ quietUntil: 0, pausedFor: null });
     }
     this.loaded = true;
+    await this.wake();
+  }
+
+  // While Spotify can't be asked, an alarm for the moment it can again
+  // (alarm(), below).
+  async wake() {
+    if (!this.pause()) return;
+    const at = this.quietUntil + 2000;
+    if ((await this.state.storage.getAlarm()) !== at) await this.state.storage.setAlarm(at);
+  }
+
+  // The moment a 429's wait, or the day's budget, is over: the last fifty
+  // plays, and the Action after them, without waiting for the next cron.
+  async alarm() {
+    await this.load();
+    const swept = await (await this.sweep()).json();
+    if ('swept' in swept) await dispatch(this.env);
   }
 
   // Seconds between "what's playing" calls: NOW_EVERY, or longer if that
@@ -170,6 +192,7 @@ export class NowPlaying {
     }
     const json = await res.json();
     this.token = { value: json.access_token, expires: Date.now() + json.expires_in * 1000 };
+    await this.state.storage.put('token', this.token);
     return this.token.value;
   }
 
@@ -259,6 +282,11 @@ export class NowPlaying {
     }
     this.quietUntil = Date.now() + wait * 1000;
     await this.state.storage.put({ quietUntil: this.quietUntil, pausedFor: this.pausedFor });
+    if (this.pausedFor) {
+      console.error('quiet for ' + wait + 's (' + this.pausedFor + ') after '
+        + this.budget.used + ' calls today: ' + err.message);
+    }
+    await this.wake();
   }
 
   // Every fifteen minutes, from the cron: the last fifty plays, each kept
@@ -392,6 +420,39 @@ function headers(origin, extra = {}) {
   };
 }
 
+// Starts a run of the listening Action. A failure is only logged: the
+// next cron is fifteen minutes away, and GitHub's own schedule is still
+// there.
+async function dispatch(env) {
+  if (!env.GITHUB_TOKEN) {
+    console.error('listening: GITHUB_TOKEN is not set');
+    return;
+  }
+  const res = await fetch(WORKFLOW, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + env.GITHUB_TOKEN,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'aniketh-now',
+    },
+    body: JSON.stringify({ ref: 'main' }),
+  });
+  if (!res.ok) {
+    // The token's shape, never the token, to tell a bad paste from a bad scope.
+    const t = env.GITHUB_TOKEN;
+    const shape = {
+      prefix: (t.match(/^[a-z]+_(pat_)?/) || ['?'])[0],
+      length: t.length,
+      whitespace: /\s/.test(t),
+      nonAscii: /[^\x20-\x7e]/.test(t),
+    };
+    console.error('listening: dispatch ' + res.status + ' ' + (await res.text()).slice(0, 200)
+      + ' ' + JSON.stringify(shape)
+      + ' server=' + res.headers.get('server') + ' id=' + res.headers.get('x-github-request-id'));
+  }
+}
+
 export default {
   async fetch(request, env) {
     const origin = request.headers.get('Origin') || '';
@@ -423,40 +484,12 @@ export default {
     return new Response(edge.body, { status: edge.status, headers: headers(origin, extra) });
   },
 
-  // Keep the last fifty plays, then start the listening Action. A failure
-  // is only logged: the next tick is fifteen minutes away, and GitHub's
-  // own schedule is still there.
+  // Keep the last fifty plays, then start the listening Action. A failed
+  // sweep is only logged, like a failed dispatch.
   async scheduled(event, env) {
     const gate = env.NOW.get(env.NOW.idFromName('spotify'));
     const swept = await gate.fetch('https://gate/sweep');
     if (!swept.ok) console.error('sweep: ' + (await swept.text()).slice(0, 200));
-
-    if (!env.GITHUB_TOKEN) {
-      console.error('listening: GITHUB_TOKEN is not set');
-      return;
-    }
-    const res = await fetch(WORKFLOW, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + env.GITHUB_TOKEN,
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'aniketh-now',
-      },
-      body: JSON.stringify({ ref: 'main' }),
-    });
-    if (!res.ok) {
-      // The token's shape, never the token, to tell a bad paste from a bad scope.
-      const t = env.GITHUB_TOKEN;
-      const shape = {
-        prefix: (t.match(/^[a-z]+_(pat_)?/) || ['?'])[0],
-        length: t.length,
-        whitespace: /\s/.test(t),
-        nonAscii: /[^\x20-\x7e]/.test(t),
-      };
-      console.error('listening: dispatch ' + res.status + ' ' + (await res.text()).slice(0, 200)
-        + ' ' + JSON.stringify(shape)
-        + ' server=' + res.headers.get('server') + ' id=' + res.headers.get('x-github-request-id'));
-    }
+    await dispatch(env);
   },
 };

@@ -113,6 +113,7 @@
      five artists, and the standouts. (No all time: tracking only began
      on September 29, 2026.) */
   var data = null;
+  var range = 'week'; // the range shown, kept when the file is read again
 
   function rangeOf(which) {
     var r = data.ranges && data.ranges[which];
@@ -170,6 +171,7 @@
   function showRange(which) {
     var r = rangeOf(which);
     if (!r) return;
+    range = which;
     Array.prototype.forEach.call(page.querySelectorAll('[data-range]'), function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-range') === which));
     });
@@ -184,16 +186,88 @@
      cover of its top album (its top song's, in older files with none).
      The day picked is summed up under the grid: its plays and time, its
      top songs, and its whole listening log, every song from 12 AM to
-     11:59 PM, kept closed until it is asked for. */
+     11:59 PM, kept closed until it is asked for. Today's is kept live,
+     with the same plays as today's log at the foot of the page. */
+  var cal = null;    // the calendar's redraws, once it is up
+  var dayFiles = {}; // each day's whole log, once fetched
+
+  /* Today's plays as the page knows them, oldest first: the file's, and
+     any the live answers have brought since, less the song playing now. */
+  function todaysPlays() {
+    var today = dayOf(new Date());
+    return merged([]).filter(function (p) { return dayOf(new Date(p.played_at)) === today; }).reverse();
+  }
+
+  /* The file sums today up to its last play, and any the page has had
+     since are added, counted as the Action counts them (music.mjs): a
+     play lasted no longer than the time since the one before it, and a
+     song or an artist (the first one named) is new if it wasn't heard
+     earlier in the day. The top songs are counted again from all of
+     today's plays, a tie going to the one played last. */
+  function liveDay(info, plays) {
+    if (info && !info.last) return info;
+    var last = info ? Date.parse(info.last) : 0;
+    var earlier = plays.filter(function (p) { return Date.parse(p.played_at) <= last; });
+    var extras = plays.filter(function (p) { return Date.parse(p.played_at) > last; });
+    if (!extras.length) return info;
+
+    var firstHeard = function (keyOf) {
+      var had = {};
+      earlier.forEach(function (p) { if (keyOf(p)) had[keyOf(p)] = true; });
+      return function (p) {
+        var key = keyOf(p);
+        if (!key || had[key]) return false;
+        return (had[key] = true);
+      };
+    };
+    var song = function (p) { return p.url; };
+    var artist = function (p) { return p.url ? (p.artists || '').split(', ')[0] : null; };
+
+    var ms = 0;
+    extras.forEach(function (p) {
+      var i = plays.indexOf(p);
+      var since = i ? Date.parse(p.played_at) - Date.parse(plays[i - 1].played_at) : Infinity;
+      ms += Math.min(p.duration_ms || 0, since);
+    });
+
+    var tally = {};
+    plays.forEach(function (p) {
+      if (!p.url) return;
+      var t = tally[p.url] || (tally[p.url] = { plays: 0 });
+      t.plays += 1;
+      t.play = p;
+      t.last = Date.parse(p.played_at);
+    });
+    var top = Object.keys(tally).map(function (k) { return tally[k]; })
+      .sort(function (a, b) { return b.plays - a.plays || b.last - a.last; })
+      .slice(0, 5)
+      .map(function (t) {
+        return { name: t.play.name, artists: t.play.artists, url: t.play.url, image: t.play.image, plays: t.plays };
+      });
+
+    var from = info || { plays: 0, minutes: 0, tracks: 0, artists: 0 };
+    return Object.assign({}, from, {
+      plays: from.plays + extras.length,
+      minutes: Math.round(from.minutes + ms / 60000),
+      tracks: from.tracks + extras.filter(firstHeard(song)).length,
+      artists: from.artists + extras.filter(firstHeard(artist)).length,
+      top: top
+    });
+  }
+
+  /* Enough of a list of plays to tell when it has changed. */
+  var signOf = function (plays) { return plays.length + ' ' + (plays.length ? plays[plays.length - 1].played_at : ''); };
+
   function calendar() {
     var box = $('[data-cal]');
-    var days = data.calendar || {};
-    var since = data.since;
-    if (!box || !since) return;
+    if (!box || !data.since) return;
+    /* Read from data at each draw, since the file is read again. */
+    var days = function () { return data.calendar || {}; };
     var today = dayOf(new Date());
-    var played = Object.keys(days).filter(function (d) { return days[d] && days[d].plays; }).sort();
-    var picked = days[today] ? today : played[played.length - 1] || today;
+    var played = Object.keys(days()).filter(function (d) { return days()[d] && days()[d].plays; }).sort();
+    var picked = days()[today] ? today : played[played.length - 1] || today;
     var month = picked.slice(0, 7);
+    var sign = null; // today's plays as the note last showed them
 
     function shift(ym, n) {
       var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + n;
@@ -201,8 +275,12 @@
     }
 
     function draw() {
-      $('[data-cal-month]').textContent = fmtDay(month + '-01', { month: 'long', year: 'numeric' });
-      $('[data-cal-prev]').disabled = month <= since.slice(0, 7);
+      today = dayOf(new Date());
+      /* the month's name, and its year apart, to be set quieter */
+      var head = $('[data-cal-month]');
+      head.textContent = fmtDay(month + '-01', { month: 'long' });
+      head.appendChild(el('span', 'cal__yr', ' ' + month.slice(0, 4)));
+      $('[data-cal-prev]').disabled = month <= data.since.slice(0, 7);
       $('[data-cal-next]').disabled = month >= today.slice(0, 7);
 
       var grid = $('[data-cal-grid]');
@@ -220,15 +298,15 @@
     }
 
     function cell(day) {
-      var info = days[day];
+      var info = days()[day];
       var label = fmtDay(day, { month: 'long', day: 'numeric' });
       var c = el('button', 'cal__cell');
       c.type = 'button';
       c.appendChild(el('span', 'cal__n', String(+day.slice(8))));
-      if (day < since || day > today) {
+      if (day < data.since || day > today) {
         c.disabled = true;
         c.classList.add('cal__cell--off');
-        c.setAttribute('aria-label', label + (day < since ? ', before tracking began' : ''));
+        c.setAttribute('aria-label', label + (day < data.since ? ', before tracking began' : ''));
         return c;
       }
       var cover = info && (info.topAlbum || topsOf(info)[0]);
@@ -252,7 +330,12 @@
     function dayNote() {
       var note = $('[data-cal-day]');
       note.textContent = '';
-      var info = days[picked];
+      var info = days()[picked];
+      if (picked === today) {
+        var plays = todaysPlays();
+        info = liveDay(info, plays);
+        sign = signOf(plays);
+      }
       note.appendChild(el('h3', 'cal__date', (picked === today ? 'Today, ' : '') +
         fmtDay(picked, { weekday: 'long', month: 'long', day: 'numeric' })));
       if (!info || !info.plays) {
@@ -272,8 +355,9 @@
     }
 
     /* The day's whole log, from the file the Action writes for each day,
-       fetched only when it is opened. Once opened it stays open from day
-       to day, until it is closed. */
+       fetched only when it is opened, and once. Today's file runs to the
+       Action's last run, and the plays since are added from the page's
+       own. Once opened it stays open from day to day, until it is closed. */
     var logOpen = false;
     function dayLog(note, day) {
       var toggle = el('button', 'daylog__toggle');
@@ -289,22 +373,29 @@
         if (open && !loaded) load();
       }
       function load() {
+        if (dayFiles[day]) return fill(dayFiles[day]);
         body.textContent = '';
-        body.appendChild(el('p', 'cal__line', 'Loading\u2026'));
+        body.appendChild(el('p', 'cal__line', 'Loading…'));
         fetch(base + 'days/' + day + '.json', { cache: 'no-cache' })
-          .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-          .then(function (plays) {
-            loaded = true;
-            body.textContent = '';
-            body.appendChild(el('p', 'daylog__span', '12 AM to 11:59 PM \u00b7 ' + plural(plays.length, 'play', 'plays')));
-            var list = el('ol', 'plays plays--log');
-            plays.forEach(function (item) { list.appendChild(logRow(item)); });
-            body.appendChild(list);
-          })
+          /* Today has no file until the Action has logged a play from it. */
+          .then(function (r) { return r.ok ? r.json() : r.status === 404 && day === today ? [] : Promise.reject(r.status); })
+          .then(function (plays) { fill(dayFiles[day] = plays); })
           .catch(function () {
             body.textContent = '';
-            body.appendChild(el('p', 'cal__line', 'That day\u2019s log couldn\u2019t be loaded. Close and open it again to retry.'));
+            body.appendChild(el('p', 'cal__line', 'That day’s log couldn’t be loaded. Close and open it again to retry.'));
           });
+      }
+      function fill(plays) {
+        loaded = true;
+        if (day === today) {
+          var last = plays.length ? Date.parse(plays[plays.length - 1].played_at) : 0;
+          plays = plays.concat(todaysPlays().filter(function (p) { return Date.parse(p.played_at) > last; }));
+        }
+        body.textContent = '';
+        body.appendChild(el('p', 'daylog__span', '12 AM to 11:59 PM · ' + plural(plays.length, 'play', 'plays')));
+        var list = el('ol', 'plays plays--log');
+        plays.forEach(function (item) { list.appendChild(logRow(item)); });
+        body.appendChild(list);
       }
       toggle.addEventListener('click', function () { set(toggle.getAttribute('aria-expanded') !== 'true'); });
       note.appendChild(toggle);
@@ -316,6 +407,16 @@
     $('[data-cal-next]').addEventListener('click', function () { month = shift(month, 1); draw(); });
     box.hidden = false;
     draw();
+
+    cal = {
+      draw: draw,
+      /* At each live answer, today's note again, if today is the day
+         picked and its plays have changed. The note is read out as it
+         changes, so it isn't redrawn for nothing. */
+      live: function () {
+        if (picked === today && signOf(todaysPlays()) !== sign) dayNote();
+      }
+    };
   }
 
   /* ---------- Today's listening log ----------
@@ -409,11 +510,12 @@
      a few minutes late. So the page keeps its own note of what it has
      seen: the song playing now heads the log, and a song it watched play
      for thirty seconds or more joins the log the moment the next one
-     starts. When Spotify's own record of that play arrives it takes the
-     page's place, rather than appearing twice. */
+     starts, or the moment it starts again, on repeat. When Spotify's own
+     record of that play arrives it takes the page's place, rather than
+     appearing twice. */
   var answered = false; // whether the Worker has replied yet
   var heard = [];       // plays the page saw finish, newest first
-  var watching = null;  // { track, longest } for the song playing now
+  var watching = null;  // { track, longest, progress, at, playing } for the song playing now
 
   function merged(recent) {
     var seen = {};
@@ -422,26 +524,54 @@
       seen[p.played_at] = true;
       return true;
     });
-    heard = heard.filter(function (h) {
-      return !logged.some(function (p) {
-        return p.url === h.url && Math.abs(Date.parse(p.played_at) - Date.parse(h.played_at)) < 10 * 60000;
+    /* Each of Spotify's plays stands in for one the page heard at most:
+       the same song, within ten minutes, the closest pairs first. So on
+       repeat, Spotify's record of one play doesn't take the place of the
+       next, which it hasn't listed yet. */
+    var pairs = [];
+    heard.forEach(function (h, i) {
+      logged.forEach(function (p, j) {
+        var gap = Math.abs(Date.parse(p.played_at) - Date.parse(h.played_at));
+        if (p.url === h.url && gap < 10 * 60000) pairs.push([gap, i, j]);
       });
     });
-    return heard.concat(logged)
+    pairs.sort(function (a, b) { return a[0] - b[0]; });
+    var replaced = {}, used = {};
+    pairs.forEach(function (pair) {
+      if (replaced[pair[1]] || used[pair[2]]) return;
+      replaced[pair[1]] = used[pair[2]] = true;
+    });
+    return heard.filter(function (h, i) { return !replaced[i]; }).concat(logged)
       .sort(function (a, b) { return Date.parse(b.played_at) - Date.parse(a.played_at); });
   }
 
   function follow(now) {
     var track = now.track;
-    if (watching && (!track || track.url !== watching.track.url)) {
-      if (watching.longest >= 30000) {
-        heard.unshift(Object.assign({}, watching.track, { played_at: new Date().toISOString() }));
+    /* When the Worker asked Spotify, which is when the progress is from. */
+    var at = Date.parse(now.at) || Date.now();
+    var progress = now.progress_ms || 0;
+    if (watching) {
+      var other = !track || track.url !== watching.track.url;
+      /* The same song from the top again, with time enough since it was
+         last seen for it to have reached its end, is on repeat: another
+         play. A jump back part way through isn't one. */
+      var again = !other && progress < watching.progress &&
+        watching.progress + (watching.playing ? at - watching.at : 0) >= track.duration_ms - 5000;
+      if (other || again) {
+        if (watching.longest >= 30000) {
+          /* It ended as the song playing now began. */
+          var ended = track ? at - progress : Date.now();
+          heard.unshift(Object.assign({}, watching.track, { played_at: new Date(ended).toISOString() }));
+        }
+        watching = null;
       }
-      watching = null;
     }
     if (track) {
       if (!watching) watching = { track: track, longest: 0 };
-      watching.longest = Math.max(watching.longest, now.progress_ms || 0);
+      watching.longest = Math.max(watching.longest, progress);
+      watching.progress = progress;
+      watching.at = at;
+      watching.playing = Boolean(now.playing);
     }
   }
 
@@ -493,6 +623,7 @@
           var plays = merged(now.recent);
           log(plays, current);
           showNow(now, plays[0]);
+          if (cal) cal.live();
         })
         .catch(function () {});
     };
@@ -504,6 +635,29 @@
   }
 
   /* ---------- Start ---------- */
+
+  /* The Action writes music.json every fifteen minutes. A page left open
+     reads it again every five while it is in view, so the figures, the
+     calendar and the log catch up without a reload. A file no newer than
+     the one shown changes nothing. */
+  var REREAD = 5 * 60000;
+  var readAt = 0;
+
+  function reread() {
+    if (document.hidden || Date.now() - readAt < REREAD) return;
+    readAt = Date.now();
+    fetch(src, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (file) {
+        if (!file || !file.recent || !file.recent.length) return;
+        if (file.recent[0].played_at === data.recent[0].played_at && file.today === data.today) return;
+        data = file;
+        log(merged(file.recent), current);
+        showRange(range);
+        if (cal) cal.draw();
+      })
+      .catch(function () {});
+  }
 
   function render(file) {
     if (!file || !file.recent || !file.recent.length) return;
@@ -519,12 +673,17 @@
     Array.prototype.forEach.call(page.querySelectorAll('[data-range]'), function (b) {
       b.addEventListener('click', function () { showRange(b.getAttribute('data-range')); });
     });
+    /* Before the calendar, whose today is drawn from the same plays. */
+    logged = data.recent;
     showRange('week');
     calendar();
 
-    logged = data.recent;
     log(logged);
     live();
+
+    readAt = Date.now();
+    setInterval(reread, 60000);
+    document.addEventListener('visibilitychange', reread);
   }
 
   fetch(src, { cache: 'no-cache' })

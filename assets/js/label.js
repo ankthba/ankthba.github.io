@@ -480,7 +480,7 @@
      last. */
   var home = masthead.classList.contains('masthead--home');
   var HELLO_HOME = '<span class="head__soft">Hey, I’m</span> ' +
-    '<span class="head__name">Aniketh Bandlamudi,</span> ' +
+    '<span class="head__name"><span class="head__me">Aniketh Bandlamudi</span><span class="head__comma">,</span></span> ' +
     '<em class="head__soft">studying CS and Applied Math at the University of Virginia.</em>';
 
   // the baseline of the first line inside el, in page pixels

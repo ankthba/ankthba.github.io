@@ -759,6 +759,42 @@ a.play:focus-visible .play__name,
 }
 .head__soft { color: var(--faint); }
 .head__name { white-space: nowrap; }
+/* the name alone, a box of its own so the opening can move it */
+.head__me { display: inline-block; }
+
+/* ---------- The opening ----------
+   On arriving at the site the home page starts with the name alone in
+   the middle of the paper; opening.js then takes it up to its place in
+   the hello and brings the rest in round it. The head's script sets
+   .opening before first paint, and everything waits behind it; if
+   opening.js never runs, the page comes in by itself after a moment. */
+html.opening .masthead,
+html.opening .page,
+html.opening .colophon {
+  opacity: 0;
+  animation: opening-wait 0.6s 3s forwards;
+}
+@keyframes opening-wait { to { opacity: 1; } }
+html.opening .masthead,
+html.opening .page,
+html.opening .colophon,
+html.opening-play .page,
+html.opening-play .colophon { transition: none !important; }
+/* nothing under the pointer is live until it is all there */
+html.opening body,
+html.opening-play body { pointer-events: none; }
+/* while it is typed: each letter in a box of its own width, the jumble
+   faint and centred in it, a settled letter in ink where it will stay */
+.opening__ch {
+  display: inline-block;
+  visibility: hidden;
+  text-align: center;
+  white-space: pre;
+  color: var(--faint);
+}
+.opening__ch.is-on,
+.opening__ch.is-set { visibility: visible; }
+.opening__ch.is-set { text-align: left; color: inherit; }
 
 .masthead__elsewhere {
   display: flex;

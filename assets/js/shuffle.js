@@ -12,8 +12,14 @@
     .then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
     .then(function (html) {
       var doc = new DOMParser().parseFromString(html, 'text/html');
+      // never one the photographs page keeps below (its grid's data-below)
+      var grid = doc.querySelector('.photos__grid');
+      var below = ((grid && grid.getAttribute('data-below')) || '').split(/\s+/).filter(Boolean);
       var photos = Array.prototype.slice.call(doc.querySelectorAll('.photos__grid img[src]'))
-        .filter(function (img) { return /^\/assets\/photos\//.test(img.getAttribute('src')); });
+        .filter(function (img) {
+          var src = img.getAttribute('src');
+          return /^\/assets\/photos\//.test(src) && below.indexOf(src.split('/').pop().split(/[-.]/)[0]) < 0;
+        });
 
       /* Shuffled, then a mix: two planes and two landscapes or phone
          tidbits, in a random order (whatever there is, if one runs short). */

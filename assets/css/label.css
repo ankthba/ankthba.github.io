@@ -308,37 +308,63 @@ a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href
   font-size: var(--t-lead);
   font-style: italic;
 }
-/* The arrow after a link that leaves the site (and the one after the
-   download): a small drawing in the link's own colour, one for each
-   theme, set as an image so every browser draws it the same */
+/* The arrows: one drawn family in a fine line (0.06em, between the
+   Garamond's hairlines and its stems), a long shaft and an open head
+   whose barbs sweep back in a shallow bow, round at every end. Each is an
+   image in its own colour, one set for each theme, so every browser
+   draws them the same: the one after a link that leaves the site, the
+   download, and the calendar's earlier and later. Under the pointer
+   each moves a hair the way it points. */
 :root {
-  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%2341609b' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%232f4c84' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%231a1712' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%2341609b' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%232f4c84' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.7 66'%3E%3Cpath d='M15.9 3L15.9 63M28.7 47.7Q24.4 57.1 15.9 63Q7.3 57.1 3 47.7' fill='none' stroke='%231a1712' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M75 15.9L3 15.9M18.3 28.7Q8.9 24.4 3 15.9Q8.9 7.3 18.3 3' fill='none' stroke='%231a1712' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M3 15.9L75 15.9M59.7 3Q69.1 7.3 75 15.9Q69.1 24.4 59.7 28.7' fill='none' stroke='%231a1712' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23b3c8ee' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23d3e0f5' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23ece6d6' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%23b3c8ee' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%23d3e0f5' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.7 66'%3E%3Cpath d='M15.9 3L15.9 63M28.7 47.7Q24.4 57.1 15.9 63Q7.3 57.1 3 47.7' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M75 15.9L3 15.9M18.3 28.7Q8.9 24.4 3 15.9Q8.9 7.3 18.3 3' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M3 15.9L75 15.9M59.7 3Q69.1 7.3 75 15.9Q69.1 24.4 59.7 28.7' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
 }
 :root[data-theme="dark"] {
-  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23b3c8ee' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23d3e0f5' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23ece6d6' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%23b3c8ee' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 47.7 47.7'%3E%3Cpath d='M3 44.7L44 3.7M24.1 5.4Q33.8 1.7 44 3.7Q45.9 13.9 42.3 23.6' fill='none' stroke='%23d3e0f5' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.7 66'%3E%3Cpath d='M15.9 3L15.9 63M28.7 47.7Q24.4 57.1 15.9 63Q7.3 57.1 3 47.7' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M75 15.9L3 15.9M18.3 28.7Q8.9 24.4 3 15.9Q8.9 7.3 18.3 3' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M3 15.9L75 15.9M59.7 3Q69.1 7.3 75 15.9Q69.1 24.4 59.7 28.7' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"])::after,
 .photos__links a[target="_blank"]::after,
 .look-label .resume__download::after {
-  content: "\00a0";
-  padding-right: 0.66em;
-  font-style: normal;
-  background: var(--arrow-out) no-repeat right 0.04em center / 0.56em 0.56em;
+  /* a word joiner keeps the arrow on the line of the last word, without
+     the underline running on under the gap; the image sits in the
+     padding, placed against the line's baseline (EB Garamond's box runs
+     1.007em above it), with room to move */
+  content: "\2060";
+  margin-left: 0.22em;
+  padding-right: 0.54em;
+  background: var(--arrow-out) no-repeat 0 0.37em / 0.477em 0.477em;
+  transition: background-position 0.22s var(--crisp);
 }
 a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]):is(:hover, :focus-visible)::after,
-.photos__links a[target="_blank"]:is(:hover, :focus-visible)::after { background-image: var(--arrow-out-on); }
-.look-label .resume__download::after { background-image: var(--arrow-down); }
+.photos__links a[target="_blank"]:is(:hover, :focus-visible)::after {
+  background-image: var(--arrow-out-on);
+  background-position: 0.06em 0.31em;
+}
+/* the download points at the baseline, its tail just under the capitals */
+.look-label .resume__download::after {
+  margin-left: 0.34em;
+  padding-right: 0.32em;
+  background-image: var(--arrow-down);
+  background-position: 0 0.357em;
+  background-size: 0.317em 0.66em;
+}
+.look-label .resume__download:is(:hover, :focus-visible)::after { background-position: 0 0.417em; }
 
 /* ---------- Section names ----------
    Headings in italic, in full ink, a step under an entry's name */
@@ -679,18 +705,7 @@ a.play:focus-visible .play__name,
   .scent__info { grid-template-columns: 5.5rem minmax(0, 1fr); }
 }
 
-/* ---------- Reveal ----------
-   A block that starts below the first screen fades and rises into place
-   as it comes into view (label.js marks and watches them). */
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-              transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.reveal.on { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
   .index__list a,
   .index__label { transition: none; }
 }
@@ -726,6 +741,18 @@ a.play:focus-visible .play__name,
 }
 .head__hello em { font-style: italic; }
 
+/* On the home page the hello is one sentence at one display size, a
+   little over half the names', set like the index: the name in ink,
+   the rest faint (label.js stands its capitals level with the index's) */
+.masthead--home .head__hello {
+  margin-top: 0;
+  font-size: calc(var(--names, 5rem) * 0.56);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.head__soft { color: var(--faint); }
+.head__name { white-space: nowrap; }
+
 .masthead__elsewhere {
   display: flex;
   justify-content: flex-end;
@@ -737,7 +764,8 @@ a.play:focus-visible .play__name,
   grid-row: 1;
   align-self: end;
   justify-content: flex-start;
-  margin: 0 0 calc(var(--names, 5rem) * 0.12 - var(--icon) * 0.5) calc(var(--icon) * -0.5);
+  /* the first mark's ink on the hello's left edge, like the H's */
+  margin: 0 0 calc(var(--names, 5rem) * 0.12 - var(--icon) * 0.5) calc(var(--icon) * -0.58);
 }
 .masthead__elsewhere a {
   display: grid;
@@ -749,7 +777,21 @@ a.play:focus-visible .play__name,
   transition: opacity 0.18s var(--crisp);
 }
 .masthead__elsewhere { --icon: clamp(1.5rem, 0.95rem + 0.95vw, 2.125rem); }
-.masthead__elsewhere svg { display: block; width: var(--icon); height: var(--icon); fill: currentColor; }
+/* one hand-drawn set on a 24 grid, in a single line: 1.5 of 24 at an
+   icon the size of the hello is the stem of its EB Garamond (0.065em
+   italic, 0.07em roman); the two dots are filled */
+.masthead__elsewhere svg {
+  display: block;
+  width: var(--icon);
+  height: var(--icon);
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.masthead__elsewhere svg .dot { fill: currentColor; }
 .masthead__elsewhere a:hover,
 .masthead__elsewhere a:focus-visible { opacity: 0.55; }
 .masthead__elsewhere a:focus-visible { outline: 1px solid currentColor; outline-offset: -2px; }
@@ -888,11 +930,12 @@ html.jump-open { overflow: hidden; }
 @media (max-width: 47.99rem) {
   .look-label .masthead { padding-top: 2rem; }
   .head__hello { grid-column: 1 / -1; grid-row: 1; margin: 0; font-size: 1.5rem; line-height: 1.25; }
+  .masthead--home .head__hello { font-size: clamp(1.625rem, 7.4vw, 2rem); line-height: 1.12; }
   .look-label .masthead > .masthead__elsewhere {
     grid-column: 1 / -1;
     grid-row: 2;
     align-self: start;
-    margin: 0.75rem 0 0 -0.6rem;
+    margin: 0.75rem 0 0 calc(var(--icon) * -0.58);
   }
   .index { grid-column: 1 / -1; grid-row: 3; display: flex; flex-direction: column; margin-top: 2.25rem; }
   .jump__panel { align-content: start; }
@@ -904,36 +947,27 @@ html.jump-open { overflow: hidden; }
   .jump { font-size: 1.125rem; }
 }
 
-/* ---------- How far down the page ----------
-   A fine rule in the right-hand margin, set in from the top and bottom
-   of the screen like a ruler: the track in the faint tone, what has
-   been read in ink (label.js fills it). */
-.progress {
-  position: fixed;
-  top: clamp(1.25rem, 4vh, 2.5rem);
-  bottom: clamp(1.25rem, 4vh, 2.5rem);
-  right: calc(var(--edge) / 2 - 1px);
-  z-index: 40;
-  width: 2px;
-  background: var(--track);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--crisp);
-}
-.progress.is-on { opacity: 1; }
-.progress i {
-  position: absolute;
-  inset: 0;
-  background: var(--color-fg);
-  transform: scaleY(0);
-  transform-origin: 50% 0;
-}
-@media (max-width: 30rem) {
-  .progress { display: none; }
-}
-
 /* ---------- Large screens ----------
    Past 100rem everything grows with the window; it is all in rem. */
 @media (min-width: 100rem) {
   html { font-size: clamp(100%, 0.5rem + 0.5vw, 137.5%); }
 }
+
+/* ---------- The paper ----------
+   surface.js lays a canvas behind everything, painted the colour of the
+   paper, that gives under the cursor. The root keeps the flat colour
+   underneath, so nothing flashes before it runs; once it does, the body
+   lets it show through. */
+html { background-color: var(--color-bg); }
+.surface {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
+  pointer-events: none;
+}
+html.surface-on body { background: transparent; }

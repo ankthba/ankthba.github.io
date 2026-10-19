@@ -474,14 +474,60 @@
     return refit;
   }
 
+  /* On the home page the hello is one sentence at one display size,
+     set like the index: the name in ink, the rest faint. Its capitals
+     stand level with the index's first line and the profiles on its
+     last. */
+  var home = masthead.classList.contains('masthead--home');
+  var HELLO_HOME = '<span class="head__soft">Hey, I’m</span> ' +
+    '<span class="head__name">Aniketh Bandlamudi,</span> ' +
+    '<em class="head__soft">studying CS and Applied Math at the University of Virginia.</em>';
+
+  // the baseline of the first line inside el, in page pixels
+  function baseline(el) {
+    var mark = document.createElement('span');
+    mark.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+    el.insertBefore(mark, el.firstChild);
+    var y = mark.getBoundingClientRect().bottom;
+    el.removeChild(mark);
+    return y;
+  }
+
+  function alignHead(hello, list, logos) {
+    var icon = logos && logos.querySelector('svg');
+    hello.style.marginTop = '';
+    if (logos) logos.style.marginBottom = '';
+    if (!wide.matches) return;
+    var lines = Array.prototype.map.call(list.querySelectorAll('.index__line'), baseline);
+    if (!lines.length) return;
+    var c = document.createElement('canvas').getContext('2d');
+    c.font = '100px "EB Garamond"';
+    var cap = c.measureText('H').actualBoundingBoxAscent / 100;
+    var names = parseFloat(getComputedStyle(list).fontSize);
+    var size = parseFloat(getComputedStyle(hello).fontSize);
+    hello.style.marginTop = (lines[0] - cap * names) - (baseline(hello) - cap * size) + 'px';
+    if (icon) {
+      // the marks' ink stands 21.5 of 24 down their box
+      var r = icon.getBoundingClientRect();
+      var off = r.top + r.height * 21.5 / 24 - lines[lines.length - 1];
+      logos.style.marginBottom = parseFloat(getComputedStyle(logos).marginBottom) + off + 'px';
+    }
+  }
+
   if (navItems.length) {
     var hello = document.createElement('p');
     hello.className = 'head__hello';
-    hello.innerHTML = HELLO;
+    hello.innerHTML = home ? HELLO_HOME : HELLO;
     masthead.insertBefore(hello, masthead.firstChild);
     var head = sheet();
     masthead.appendChild(head.box);
     index(head.list, head.shelf, here, built);
+    if (home) {
+      var realign = function () { alignHead(hello, head.list, masthead.querySelector('.masthead__elsewhere')); };
+      realign();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(realign);
+      window.addEventListener('resize', realign);
+    }
   }
 
   /* ---------- The Index button ----------
@@ -531,52 +577,5 @@
     } else {
       html.classList.add('show-jump');
     }
-  }
-
-  /* ---------- How far down the page ----------
-     A fine rule along the right-hand margin, its track in the faint
-     tone and the part already read in ink, filling as the page
-     scrolls. Not shown on a page that fits the screen. */
-  var rule = document.createElement('div');
-  rule.className = 'progress';
-  rule.setAttribute('aria-hidden', 'true');
-  var fill = document.createElement('i');
-  rule.appendChild(fill);
-  document.body.appendChild(rule);
-  var ticking = false;
-  function measure() {
-    ticking = false;
-    var room = document.documentElement.scrollHeight - window.innerHeight;
-    rule.classList.toggle('is-on', room > window.innerHeight * 0.3);
-    fill.style.transform = 'scaleY(' + (room > 0 ? Math.min(1, Math.max(0, window.scrollY / room)) : 0) + ')';
-  }
-  function soon() { if (!ticking) { ticking = true; requestAnimationFrame(measure); } }
-  window.addEventListener('scroll', soon, { passive: true });
-  window.addEventListener('resize', soon);
-  if (window.ResizeObserver) new ResizeObserver(soon).observe(document.body);
-  measure();
-
-  /* Blocks below the first screen fade up into place as they come into
-     view, as on the Pragmatic pages; neighbours that arrive together
-     follow one another by a beat. */
-  if ('IntersectionObserver' in window &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var blocks = document.querySelectorAll(
-      '.about__text > p, .index, .home__row > *, .project-item, .music__sec, .photo-item, .plays--scents > li, ' +
-      '.contact > p, .contact__elsewhere');
-    var seen = new IntersectionObserver(function (entries) {
-      var n = 0;
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.style.transitionDelay = (n++ % 4) * 70 + 'ms';
-        e.target.classList.add('on');
-        seen.unobserve(e.target);
-      });
-    }, { rootMargin: '0px 0px -6% 0px' });
-    Array.prototype.forEach.call(blocks, function (b) {
-      if (b.getBoundingClientRect().top < window.innerHeight) return;
-      b.classList.add('reveal');
-      seen.observe(b);
-    });
   }
 })();

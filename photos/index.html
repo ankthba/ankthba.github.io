@@ -63,7 +63,7 @@
   <main class="page">
         <h1 class="page-title">Photography</h1>
         <p class="music__lede photos__lede">A mix of professional aviation and landscape photography (shot on Fujifilm X-T5 and Nikon D5100), and tidbits #ShotoniPhone.</p>
-        <div class="photos__grid">
+        <div class="photos__grid" data-below="planeImage125">
           <div class="photo-item" data-kind="landscape"><img src="/assets/photos/landscape13-thumb.webp" data-full="/assets/photos/landscape13.webp" alt="Waterfall plunging into a canyon" width="514" height="640" srcset="/assets/photos/landscape13-thumb.webp 514w, /assets/photos/landscape13.webp 1284w" sizes="(min-width: 48rem) 32vw, 48vw" loading="lazy"></div>
           <div class="photo-item" data-kind="plane"><img src="/assets/photos/planeImage3-thumb.webp" data-full="/assets/photos/planeImage3.webp" alt="Red PLAY jet taxiing beneath the control tower" width="640" height="638" srcset="/assets/photos/planeImage3-thumb.webp 640w, /assets/photos/planeImage3.webp 1600w" sizes="(min-width: 48rem) 32vw, 48vw" loading="lazy"></div>
           <div class="photo-item" data-kind="landscape"><img src="/assets/photos/landscape15-thumb.webp" data-full="/assets/photos/landscape15.webp" alt="Magnolia blossoms" width="640" height="509" srcset="/assets/photos/landscape15-thumb.webp 640w, /assets/photos/landscape15.webp 1600w" sizes="(min-width: 48rem) 32vw, 48vw" loading="lazy"></div>
@@ -388,6 +388,37 @@
       tops.forEach(function (t) {
         order.slice(t, t + 3).forEach(function (item) { item.querySelector('img').removeAttribute('loading'); });
       });
+
+      /* A photograph named in the grid's data-below (and so never on the
+         home page either) always sits in the lower half: if the deal left
+         it higher, it goes in at random somewhere from three fifths to
+         five sixths of the way down, measured where the columns actually
+         fall, and again whenever they change. */
+      var below = (grid.getAttribute('data-below') || '').split(/\s+/).filter(Boolean);
+      var isBelow = function (item) {
+        var img = item.querySelector('img');
+        return !!img && below.indexOf(img.getAttribute('src').split('/').pop().split(/[-.]/)[0]) > -1;
+      };
+      var keepBelow = function () {
+        Array.prototype.filter.call(grid.children, isBelow).forEach(function (item) {
+          for (var tries = 0; tries < 6; tries++) {
+            var g = grid.getBoundingClientRect();
+            var down = function (el) { return (el.getBoundingClientRect().top - g.top) / g.height; };
+            if (down(item) >= 0.58) return;
+            var spots = Array.prototype.filter.call(grid.children, function (el) {
+              var d = down(el);
+              return !isBelow(el) && d >= 0.6 && d <= 0.85;
+            });
+            if (!spots.length) return;
+            grid.insertBefore(item, spots[Math.floor(Math.random() * spots.length)]);
+          }
+        });
+      };
+      if (below.length) {
+        keepBelow();
+        window.matchMedia('(max-width: 47.99rem)').addEventListener('change', keepBelow);
+        window.addEventListener('load', keepBelow);
+      }
 
       var lightbox = document.getElementById('lightbox');
       var image = lightbox.querySelector('.lightbox__img');

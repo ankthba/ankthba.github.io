@@ -308,20 +308,37 @@ a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href
   font-size: var(--t-lead);
   font-style: italic;
 }
+/* The arrow after a link that leaves the site (and the one after the
+   download): a small drawing in the link's own colour, one for each
+   theme, set as an image so every browser draws it the same */
+:root {
+  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%2341609b' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%232f4c84' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%231a1712' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23b3c8ee' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23d3e0f5' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23ece6d6' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+}
+:root[data-theme="dark"] {
+  --arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23b3c8ee' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-out-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23d3e0f5' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23ece6d6' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
 a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"])::after,
 .photos__links a[target="_blank"]::after,
 .look-label .resume__download::after {
   content: "\00a0";
   padding-right: 0.66em;
   font-style: normal;
-  background: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E") right 0.04em center / 0.56em 0.56em no-repeat;
-          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 8 8 2M3.2 2H8v4.8' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E") right 0.04em center / 0.56em 0.56em no-repeat;
+  background: var(--arrow-out) no-repeat right 0.04em center / 0.56em 0.56em;
 }
-.look-label .resume__download::after {
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E");
-          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M5 1.5v7M2 5.5l3 3 3-3' fill='none' stroke='%23000' stroke-width='1.1'/%3E%3C/svg%3E");
-}
+a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]):is(:hover, :focus-visible)::after,
+.photos__links a[target="_blank"]:is(:hover, :focus-visible)::after { background-image: var(--arrow-out-on); }
+.look-label .resume__download::after { background-image: var(--arrow-down); }
 
 /* ---------- Section names ----------
    Headings in italic, in full ink, a step under an entry's name */
@@ -471,6 +488,10 @@ a.play:focus-visible .play__name,
 .photos-mini__more { display: inline-block; margin-top: 1.5rem; }
 .home__row .shuffle { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
 .shuffle a { padding: clamp(0.85rem, 1.6vw, 1.6rem); background: var(--color-mat); }
+/* The print is square and the mat grows round it; the image is not
+   stretched to its frame's height, which Safari measures with the mat. */
+.look-label .shuffle a { aspect-ratio: auto; height: auto; }
+.look-label .shuffle img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
 .listening__art { outline: 1px solid var(--art-edge, transparent); outline-offset: -1px; }
 
 /* ---------- Photographs ----------

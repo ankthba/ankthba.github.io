@@ -496,7 +496,9 @@
     clearInterval(tick);
     bar.hidden = time.hidden = !track;
     if (!track) return;
-    var start = Date.now() - live.progress_ms;
+    /* The progress is as of when the Worker asked Spotify, which can be
+       a while before this answer reached the page. */
+    var start = (Date.parse(live.at) || Date.now()) - live.progress_ms;
     var draw = function () {
       var at = playing ? Math.min(Date.now() - start, track.duration_ms) : live.progress_ms;
       $('[data-now-fill]').style.transform = 'scaleX(' + (at / track.duration_ms) + ')';

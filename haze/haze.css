@@ -1,16 +1,24 @@
-/* Haze landing page. The app's clothes, not the app: EB Garamond, white type
-   on the sky the viewer's clock calls for, hairline rules, nothing raised
-   and nothing dropped. */
+/* Haze landing page. The app's clothes, not the app: EB Garamond for every
+   word, Instrument Serif for the one big word, white type on the sky the
+   viewer's clock calls for, hairline rules, nothing raised and nothing
+   dropped. Screens sit on the sky as they sit in the hand: rounded, with a
+   soft shadow and no device chrome. */
 
 :root {
   --ink: rgba(255, 255, 255, 0.96);
-  --ink-2: rgba(255, 255, 255, 0.75);
-  --ink-3: rgba(255, 255, 255, 0.5);
+  --ink-2: rgba(255, 255, 255, 0.76);
+  --ink-3: rgba(255, 255, 255, 0.52);
   --hairline: rgba(255, 255, 255, 0.18);
   --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --display: 'Instrument Serif', 'EB Garamond', Georgia, serif;
+  --measure: 1120px;
+  --gutter: clamp(1.1rem, 4vw, 2.25rem);
+  --shadow: 0 1.4rem 3.2rem rgba(10, 14, 30, 0.32), 0 0.3rem 0.9rem rgba(10, 14, 30, 0.18);
 }
 
 * { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -22,10 +30,10 @@ body {
   line-height: 1.6;
   background-color: #6b7e96;
   background-attachment: fixed;
+  overflow-x: hidden;
 }
 
-/* The four skies. The page opens on the one the viewer's clock calls for;
-   the header toggle can set any of them. */
+/* The four skies. The page opens on the one the viewer's clock calls for. */
 body.sky-morning {
   background-color: #b192a0;
   background-image: linear-gradient(180deg, #c4a38b 0%, #b192a0 48%, #7e8ba1 100%);
@@ -47,7 +55,13 @@ body.sky-night {
 
 a { color: inherit; }
 
-img { max-width: 100%; height: auto; }
+img { max-width: 100%; height: auto; display: block; }
+
+figure { margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 
 /* ---------- Header ---------- */
 
@@ -56,9 +70,9 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  max-width: 1010px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 1.4rem clamp(1.1rem, 4vw, 2rem);
+  padding: 1.4rem var(--gutter);
 }
 
 .brand {
@@ -78,118 +92,283 @@ img { max-width: 100%; height: auto; }
   font-size: 0.95rem;
 }
 
-.top nav a {
-  text-decoration: none;
+.top nav a { text-decoration: none; color: var(--ink-2); }
+.top nav a:hover { color: var(--ink); }
+
+/* ---------- Type ---------- */
+
+/* The app's own wordmark: a lowercase word, its degree sign set tight. */
+.wordmark {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(6.2rem, 19vw, 11.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+}
+
+.wordmark span { margin-left: -0.15em; }
+
+.wordmark--small,
+.closing .wordmark--small { font-size: clamp(3.4rem, 9vw, 4.8rem); line-height: 1; margin-bottom: 1.2rem; }
+
+.section-head {
+  max-width: 700px;
+  margin: 0 auto clamp(2rem, 5vw, 3.4rem);
+  text-align: center;
+}
+
+.section-head__kicker,
+.hero__kicker {
+  margin: 0 0 0.5rem;
+  font-style: italic;
+  font-size: 1.08rem;
   color: var(--ink-2);
 }
 
-.top nav a:hover { color: var(--ink); }
+.section-head h2 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6.4vw, 4rem);
+  line-height: 1.04;
+}
 
 /* ---------- Hero ---------- */
 
 .hero {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: clamp(4rem, 11vh, 7rem) 1.25rem clamp(2.5rem, 7vh, 4.5rem);
+  padding: clamp(3rem, 9vh, 6rem) 1.25rem clamp(2.5rem, 6vh, 4rem);
   text-align: center;
 }
 
-.hero h1 {
-  margin: 0;
-  font-size: clamp(3.2rem, 8vw, 4.6rem);
-  font-weight: 400;
-  line-height: 1.05;
-}
-
 .hero__sub {
-  margin: 0.5rem 0 0;
+  margin: 0.4rem 0 0;
   font-style: italic;
-  font-size: 1.35rem;
+  font-size: clamp(1.3rem, 2.6vw, 1.55rem);
   color: var(--ink-2);
 }
 
 .hero__brief {
-  margin: 1.8rem auto 0;
-  font-style: italic;
-  font-size: 1.22rem;
-  line-height: 1.55;
+  margin: 1.6rem auto 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
 }
 
-.hero__cta { margin-top: 2.4rem; }
+.hero__cta { margin-top: 2.2rem; }
 
 .btn {
   display: inline-block;
-  padding: 0.72rem 1.6rem;
+  padding: 0.74rem 1.7rem;
   border-radius: 999px;
-  border: 1px solid var(--hairline);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   text-decoration: none;
   font-size: 1.08rem;
   transition: background 0.15s ease;
 }
 
-.btn:hover { background: rgba(255, 255, 255, 0.14); }
+.btn:hover { background: rgba(255, 255, 255, 0.17); }
 
 .hero__fine {
   margin: 1rem 0 0;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--ink-3);
 }
 
-/* ---------- The phone ---------- */
+/* ---------- Screens ---------- */
 
-.skies {
-  max-width: 1010px;
-  margin: 0 auto;
-  padding: clamp(1rem, 3vw, 2rem) clamp(1.1rem, 4vw, 2rem) clamp(2rem, 5vw, 3.5rem);
+/* A phone's screen, rounded the way the glass is. */
+.day figure img,
+.strip figure img {
+  border-radius: 13% / 6%;
+  box-shadow: var(--shadow);
 }
 
-.skies__row {
+figcaption {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--ink-2);
+}
+
+/* ---------- Through the day ---------- */
+
+.day {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(0.5rem, 2vw, 1.5rem) var(--gutter) clamp(3rem, 7vw, 5.5rem);
+}
+
+.day__row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.9rem, 2.6vw, 2.2rem);
+}
+
+/* The day rises and sets across the row. */
+.day__row figure:nth-child(2),
+.day__row figure:nth-child(3) { transform: translateY(-1.6rem); }
+
+.day figcaption span { font-style: italic; color: var(--ink); margin-right: 0.3em; }
+
+.day__caption {
+  margin: 1.4rem 0 0;
+  text-align: center;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink-2);
+}
+
+/* ---------- New in 3.0 ---------- */
+
+.new {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter);
+  border-top: 1px solid var(--hairline);
+}
+
+.spread {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(1.6rem, 4.5vw, 4rem);
+  align-items: center;
+  margin: 0 0 clamp(3.5rem, 8vw, 6rem);
+}
+
+.spread:last-child { margin-bottom: 0; }
+
+.spread--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); }
+.spread--flip .device { order: 2; }
+
+/* The Mac gets the whole measure; its words sit beneath, in a column. */
+.spread--wide { grid-template-columns: 1fr; }
+.spread--wide .spread__text {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+  gap: clamp(1rem, 4vw, 3.5rem);
+  align-items: baseline;
   max-width: 900px;
   margin: 0 auto;
 }
 
-.skies__row img { display: block; width: 100%; }
+.spread__text h3 {
+  margin: 0 0 0.6rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  line-height: 1.08;
+}
 
-.skies__caption {
-  margin: 1.6rem 0 0;
-  text-align: center;
-  font-style: italic;
-  font-size: 1.02rem;
+.spread__text p {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.62;
   color: var(--ink-2);
 }
+
+.device img { box-shadow: var(--shadow); }
+.device--mac img { border-radius: 1.1% / 1.8%; }
+.device--ipad img { border-radius: 2.6% / 3.5%; }
+.device--duo img { border-radius: 3.2% / 4.6%; }
+
+.watch-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.8rem, 2.4vw, 1.8rem);
+  max-width: 560px;
+  justify-self: center;
+  width: 100%;
+}
+
+.watch-row img {
+  border-radius: 24% / 20%;
+  box-shadow: var(--shadow);
+  background: #000;
+}
+
+.watch-row img:nth-child(2) { transform: translateY(-1.1rem); }
+
+/* ---------- Accuracy ---------- */
+
+.accuracy {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter);
+  border-top: 1px solid var(--hairline);
+}
+
+.accuracy__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(2.5rem, 6vw, 5rem);
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.note {
+  padding: 1.3rem 0 1.5rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.note h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.note p {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+/* ---------- More of the app ---------- */
+
+.strip {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) var(--gutter) clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.strip__row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 3.5vw, 3rem);
+}
+
+.strip figcaption { font-style: italic; }
 
 /* ---------- Features ---------- */
 
 .features {
-  max-width: 1010px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 4rem) clamp(1.1rem, 4vw, 2rem);
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter);
+  border-top: 1px solid var(--hairline);
 }
 
-.features__lede {
-  margin: 0 0 1.8rem;
-  text-align: center;
-  font-style: italic;
-  font-size: 1.1rem;
-  color: var(--ink-2);
-}
+.features .section-head { margin-bottom: 1.6rem; }
 
 .features__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: clamp(2.5rem, 6vw, 5rem);
+  max-width: 940px;
+  margin: 0 auto;
 }
 
 .feature {
-  padding: 1.2rem 0;
+  padding: 1.15rem 0;
   border-top: 1px solid var(--hairline);
 }
 
-.feature h2 {
+.feature h3 {
   margin: 0 0 0.2rem;
   font-size: 1.18rem;
   font-weight: 500;
@@ -208,27 +387,24 @@ img { max-width: 100%; height: auto; }
 .closing {
   max-width: 620px;
   margin: 0 auto;
-  padding: clamp(1.5rem, 4vw, 3rem) 1.25rem clamp(3rem, 7vw, 5rem);
+  padding: clamp(3rem, 7vw, 5rem) 1.25rem clamp(3.5rem, 8vw, 6rem);
   text-align: center;
 }
 
 .closing p {
-  margin: 0 0 1rem;
-  font-size: 1.15rem;
+  margin: 0;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 
-.closing .fine {
-  font-size: 0.98rem;
-  color: var(--ink-2);
-}
+.closing .hero__cta { margin-top: 1.8rem; }
 
 /* ---------- Footer ---------- */
 
 .foot {
-  max-width: 1010px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 2.5rem clamp(1.1rem, 4vw, 2rem) 3rem;
+  padding: 2.5rem var(--gutter) 3rem;
   border-top: 1px solid var(--hairline);
   color: var(--ink-2);
   font-size: 0.95rem;
@@ -242,28 +418,36 @@ img { max-width: 100%; height: auto; }
 }
 
 .foot__links a { text-decoration: none; color: var(--ink-2); }
-
 .foot__links a:hover { color: var(--ink); }
 
 .foot p { margin: 0.3rem 0; }
-
 .foot a { color: var(--ink-2); }
-
 .foot .fine { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.8rem; }
-
 .foot .fine a { color: var(--ink-3); }
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 720px) {
-  .features__grid { grid-template-columns: 1fr; }
-  .top nav { gap: 1rem; font-size: 0.9rem; }
+@media (max-width: 860px) {
+  .spread,
+  .spread--flip { grid-template-columns: 1fr; }
+  .spread--flip .device { order: 0; }
+  .spread--wide .spread__text { grid-template-columns: 1fr; gap: 0; }
+  .spread__text { max-width: 620px; margin: 0 auto; text-align: center; }
 }
 
-@media (max-width: 560px) {
-  .skies__row {
-    grid-template-columns: 1fr;
-    max-width: min(300px, 78vw);
-    gap: 2rem;
-  }
+@media (max-width: 720px) {
+  .features__grid,
+  .accuracy__grid { grid-template-columns: 1fr; }
+  .top nav { gap: 1rem; font-size: 0.9rem; }
+  .day__row { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 2rem; }
+  .day__row figure:nth-child(2),
+  .day__row figure:nth-child(3) { transform: none; }
+  .strip__row { gap: 0.8rem; }
+  .strip figcaption { font-size: 0.85rem; }
+}
+
+@media (max-width: 480px) {
+  .top nav a[href="#new"] { display: none; }
+  .strip__row { grid-template-columns: 1fr; max-width: min(300px, 78vw); margin: 0 auto; gap: 2rem; }
+  .strip figcaption { font-size: 1rem; }
 }

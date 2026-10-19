@@ -16,6 +16,18 @@
           document.documentElement.setAttribute('data-theme', t);
         }
       } catch (e) {}
+      /* The opening (opening.js): once a visit, when the site is entered
+         here rather than from another of its pages, and motion is allowed.
+         ?intro plays it again. */
+      try {
+        var from = document.referrer.indexOf(location.origin + '/') === 0;
+        var again = /[?&]intro\b/.test(location.search);
+        if (again || (!sessionStorage.getItem('opening') && !from &&
+            !matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+          sessionStorage.setItem('opening', '1');
+          document.documentElement.classList.add('opening');
+        }
+      } catch (e) {}
     })();
   </script>
   <title>Aniketh Bandlamudi</title>
@@ -178,6 +190,7 @@
   </footer>
   <script src="/assets/js/theme.js" defer></script>
   <script src="/assets/js/label.js" defer></script>
+  <script src="/assets/js/opening.js" defer></script>
   <script src="/assets/js/surface.js" defer></script>
   <script src="/assets/js/listening.js" defer></script>
   <script src="/assets/js/shuffle.js" defer></script>

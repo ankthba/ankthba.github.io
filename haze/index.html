@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Haze: Beautiful, Accurate Weather</title>
-  <meta name="description" content="A calm, editorial weather app for iPhone and Apple Watch. Big serif numerals, skies that shift with the day, radar, rain alerts, widgets, and accurate forecasts. No ads, no accounts.">
+  <meta name="description" content="A calm, editorial weather app for iPhone, iPad, Mac and Apple Watch. Big serif numerals, skies that shift with the day, radar, widgets, and forecasts checked against real weather stations. No ads, no accounts.">
   <link rel="canonical" href="https://aniketh.net/haze/">
   <meta name="author" content="Aniketh Bandlamudi">
   <meta name="theme-color" content="#8494a9">
@@ -12,19 +12,21 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Haze: Beautiful, Accurate Weather">
-  <meta property="og:description" content="A calm, editorial weather app for iPhone and Apple Watch. Big serif numerals, skies that shift with the day, radar, rain alerts, widgets, and accurate forecasts. No ads, no accounts.">
+  <meta property="og:description" content="A calm, editorial weather app for iPhone, iPad, Mac and Apple Watch. Skies that shift with the day, and forecasts you can rely on. No ads, no accounts.">
   <meta property="og:url" content="https://aniketh.net/haze/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/haze-icon.png">
+  <meta property="og:image" content="https://aniketh.net/assets/img/haze/v3/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="800">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Haze: Beautiful, Accurate Weather">
-  <meta name="twitter:description" content="A calm, editorial weather app for iPhone and Apple Watch. Skies that shift with the day, radar, widgets, and forecasts you can rely on. No ads, no accounts.">
-  <meta name="twitter:image" content="https://aniketh.net/assets/img/haze-icon.png">
+  <meta name="twitter:description" content="A calm, editorial weather app for iPhone, iPad, Mac and Apple Watch. Skies that shift with the day, and forecasts you can rely on. No ads, no accounts.">
+  <meta name="twitter:image" content="https://aniketh.net/assets/img/haze/v3/og.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/haze/haze.css">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" href="/assets/img/haze-icon.png">
@@ -35,7 +37,8 @@
     "@type": "SoftwareApplication",
     "name": "Haze",
     "applicationCategory": "Weather",
-    "operatingSystem": "iOS 18.0 or later",
+    "operatingSystem": "iOS 18, iPadOS 18, macOS 15, watchOS 11",
+    "softwareVersion": "3.0",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "url": "https://aniketh.net/haze/",
     "image": "https://aniketh.net/assets/img/haze-icon.png",
@@ -44,18 +47,6 @@
   </script>
 </head>
 <body class="sky-day">
-
-  <header class="top">
-    <a class="brand" href="/haze/">
-      <img src="/assets/img/haze-icon.png" alt="" width="28" height="28">
-      <span>Haze</span>
-    </a>
-    <nav>
-      <a href="/haze/support/">Support</a>
-      <a href="/haze/privacy/">Privacy</a>
-      <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App&nbsp;Store</a>
-    </nav>
-  </header>
 
   <script>
     // The page opens on the sky the viewer's clock calls for, like the app.
@@ -71,131 +62,249 @@
     })();
   </script>
 
-  <section class="hero">
-    <h1>Haze</h1>
-    <p class="hero__sub">Beautiful, accurate weather</p>
-    <p class="hero__brief">A weather app set like a magazine, not a dashboard. Big serif numerals, soft skies that shift with the time of day, and forecasts you can rely on. No ads, no accounts.</p>
-    <div class="hero__cta">
-      <a class="btn" href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">Download on the App&nbsp;Store</a>
-      <p class="hero__fine">Free · iPhone, iOS 18 · Apple Watch</p>
-    </div>
-  </section>
+  <header class="top">
+    <a class="brand" href="/haze/">
+      <img src="/assets/img/haze-icon.png" alt="" width="28" height="28">
+      <span>Haze</span>
+    </a>
+    <nav>
+      <a href="#new">What's new</a>
+      <a href="/haze/support/">Support</a>
+      <a href="/haze/privacy/">Privacy</a>
+    </nav>
+  </header>
 
-  <section class="skies">
-    <div class="skies__row">
-      <img src="/assets/img/haze/current-conditions.webp" alt="Haze showing an overcast day in San Francisco on an iPhone 17 Pro Max" width="640" height="1306">
-      <img src="/assets/img/haze/radar.webp" alt="The full screen precipitation radar in Haze, with a timeline you can play or scrub" width="640" height="1306" loading="lazy">
-      <img src="/assets/img/haze/trend-and-10day.webp" alt="The 72-hour temperature trend and the 10-day forecast in Haze" width="640" height="1306" loading="lazy">
-    </div>
-    <p class="skies__caption">The sky in the app follows the time of day.</p>
-  </section>
+  <main>
 
-  <section class="features">
-    <p class="features__lede">Everything inside, briefly.</p>
-    <div class="features__grid">
-      <div class="feature">
-        <h2>The sky</h2>
-        <p>Every screen sits on a gradient drawn from the conditions and the sun's position, deepened so white type always reads.</p>
+    <section class="hero">
+      <p class="hero__kicker">Version 3.0, now on every screen you own</p>
+      <h1 class="wordmark">haze<span>°</span></h1>
+      <p class="hero__sub">Beautiful, accurate weather.</p>
+      <p class="hero__brief">A weather app set like a magazine, not a dashboard. Big serif numerals, soft skies that shift with the time of day, and forecasts checked against real weather stations. No ads, no accounts.</p>
+      <div class="hero__cta">
+        <a class="btn" href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">Download on the App&nbsp;Store</a>
+        <p class="hero__fine">Free on iPhone, iPad, Mac and Apple&nbsp;Watch</p>
       </div>
-      <div class="feature">
-        <h2>The daily brief</h2>
-        <p>The day ahead in two or three composed sentences, written by careful templating, not an AI.</p>
-      </div>
-      <div class="feature">
-        <h2>The forecast</h2>
-        <p>Hourly with rain chances, a 72-hour trend you can scrub with a finger, and ten days out, each day opening hour by hour.</p>
-      </div>
-      <div class="feature">
-        <h2>The radar</h2>
-        <p>Observed NEXRAD frames and HRRR hours ahead in the US, RainViewer elsewhere, on a timeline you can play or scrub.</p>
-      </div>
-      <div class="feature">
-        <h2>The nowcast</h2>
-        <p>"Rain starting around 3:15," in plain words from 15-minute data, right under the temperature.</p>
-      </div>
-      <div class="feature">
-        <h2>Live Activity</h2>
-        <p>An imminent shower on the Lock Screen and Dynamic Island, its intensity drawn as a curve on a real time axis.</p>
-      </div>
-      <div class="feature">
-        <h2>Rain alerts</h2>
-        <p>With notifications on, a background check warns you before rain starts, even while the app is closed.</p>
-      </div>
-      <div class="feature">
-        <h2>Advisories</h2>
-        <p>National Weather Service watches and warnings in a quiet pill, never a flashing banner.</p>
-      </div>
-      <div class="feature">
-        <h2>The station check</h2>
-        <p>In the US, the nearest weather station corrects the modeled now, so a storm overhead never reads as partly cloudy.</p>
-      </div>
-      <div class="feature">
-        <h2>The sun</h2>
-        <p>A sunrise and sunset arc you can drag across the day, and golden hour times with an optional heads-up.</p>
-      </div>
-      <div class="feature">
-        <h2>Sunsets, rated</h2>
-        <p>A score for how good the next sunrise or sunset will look, judged from the cloud deck the forecast is promising.</p>
-      </div>
-      <div class="feature">
-        <h2>The moon</h2>
-        <p>Phase and illumination, computed on the device. The moon doesn't need an API.</p>
-      </div>
-      <div class="feature">
-        <h2>The details</h2>
-        <p>Wind compass, UV, humidity, pressure, cloud cover, dew point and precipitation, each opening into a scrubbable chart.</p>
-      </div>
-      <div class="feature">
-        <h2>Air quality</h2>
-        <p>The US Air Quality Index, with PM2.5, PM10, ozone and nitrogen dioxide behind it.</p>
-      </div>
-      <div class="feature">
-        <h2>Widgets</h2>
-        <p>Home Screen small, medium and large, Lock Screen inline, circular and rectangular, each pinnable to any saved city.</p>
-      </div>
-      <div class="feature">
-        <h2>Apple Watch</h2>
-        <p>An app for the wrist and complications in four families, fed by the phone or fetching on their own.</p>
-      </div>
-      <div class="feature">
-        <h2>Siri and Shortcuts</h2>
-        <p>Ask for the weather and Siri answers from the last forecast, instantly, even offline. Opening the radar is a shortcut too.</p>
-      </div>
-      <div class="feature">
-        <h2>The morning digest</h2>
-        <p>The daily brief as a notification, at a time you choose.</p>
-      </div>
-      <div class="feature">
-        <h2>The share card</h2>
-        <p>Today's forecast composed as a 4:5 card, the sky and the serif temperature, rendered as a PNG when you share it.</p>
-      </div>
-      <div class="feature">
-        <h2>App icons</h2>
-        <p>Four icons, one per sky: day, dusk, night and dawn.</p>
-      </div>
-      <div class="feature">
-        <h2>Search</h2>
-        <p>Any city in the world, with full state names in the US, saved in a list that stays in your order.</p>
-      </div>
-      <div class="feature">
-        <h2>iCloud sync</h2>
-        <p>Saved places and settings follow you to a new phone. No account of mine, just yours.</p>
-      </div>
-      <div class="feature">
-        <h2>Units and settings</h2>
-        <p>Fahrenheit or Celsius, mph or km/h, 12 or 24 hour time, text size, haptics, even which cards appear on the main screen.</p>
-      </div>
-      <div class="feature">
-        <h2>Accessibility</h2>
-        <p>Reduce Motion, Increase Contrast and Reduce Transparency actually change the rendering.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="closing">
-    <p>No ads, no accounts, no tracking, no analytics.</p>
-    <p class="fine">Forecasts blend the ECMWF, GFS and ICON models through Open-Meteo.</p>
-  </section>
+    <section class="day" aria-label="The sky through the day">
+      <div class="day__row">
+        <figure>
+          <img src="/assets/img/haze/v3/phone-dawn.webp" alt="Haze at dawn in Honolulu, 77 degrees under a pink sky" width="640" height="1391">
+          <figcaption><span>Dawn</span> Honolulu</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/img/haze/v3/phone-new-york.webp" alt="Haze by day in New York, 60 degrees and clear" width="640" height="1391">
+          <figcaption><span>Day</span> New York</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/img/haze/v3/phone-dusk.webp" alt="Haze at dusk in Lisbon, 66 degrees with the sun going down" width="640" height="1391" loading="lazy">
+          <figcaption><span>Dusk</span> Lisbon</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/img/haze/v3/phone-night.webp" alt="Haze at night in Sydney, 57 degrees under a clear sky" width="640" height="1391" loading="lazy">
+          <figcaption><span>Night</span> Sydney</figcaption>
+        </figure>
+      </div>
+      <p class="day__caption">The sky in the app follows the hour, wherever the city is.</p>
+    </section>
+
+    <section class="new" id="new">
+      <header class="section-head">
+        <p class="section-head__kicker">New in 3.0</p>
+        <h2>Every screen you own</h2>
+      </header>
+
+      <article class="spread spread--wide">
+        <figure class="device device--mac">
+          <img src="/assets/img/haze/v3/mac.webp" alt="Haze for Mac: saved places in a column beside the forecast for New York, with the hourly forecast, the 72-hour trend and the 10-day outlook" width="1800" height="1125" loading="lazy">
+        </figure>
+        <div class="spread__text">
+          <h3>Haze for Mac</h3>
+          <p>One window, on one sky. Your places in a column, the forecast laid out as a spread, and the radar or Settings in a panel beside it. The temperature sits in the menu bar, and there's a key for everything.</p>
+        </div>
+      </article>
+
+      <article class="spread">
+        <figure class="device device--ipad">
+          <img src="/assets/img/haze/v3/ipad.webp" alt="Haze for iPad: Paris in light rain, with the radar open in a panel beside the forecast" width="1600" height="1200" loading="lazy">
+        </figure>
+        <div class="spread__text">
+          <h3>Haze for iPad</h3>
+          <p>At full width the iPad gets the Mac's window: the forecast on the near page, the radar or Settings on the far one, and the Mac's keyboard commands. In Slide Over it folds back into the iPhone page, and whatever was open stays open.</p>
+        </div>
+      </article>
+
+      <article class="spread spread--flip">
+        <figure class="device device--duo">
+          <img src="/assets/img/haze/v3/duo.webp" alt="Haze on iPhone Duo opened like a book: Sydney at night on the left page, a good sunset forecast on the right, and the controls in the column beside the status bar" width="1600" height="1126" loading="lazy">
+        </figure>
+        <div class="spread__text">
+          <h3>Made for iPhone Duo</h3>
+          <p>Opened like a book, the forecast holds one page and the sun or the radar the other, meeting at the hinge. On both screens every control stands in the column beside the status bar, with tonight's sunset stood on end at its foot, so the page never runs under a button.</p>
+        </div>
+      </article>
+
+      <article class="spread spread--watch">
+        <div class="watch-row">
+          <img src="/assets/img/haze/v3/watch-01-main.webp" alt="Haze on Apple Watch: New York, 60 degrees and clear" width="416" height="496" loading="lazy">
+          <img src="/assets/img/haze/v3/watch-03-dusk.webp" alt="Haze on Apple Watch at dusk" width="416" height="496" loading="lazy">
+          <img src="/assets/img/haze/v3/watch-02-night.webp" alt="Haze on Apple Watch at night in Sydney" width="416" height="496" loading="lazy">
+        </div>
+        <div class="spread__text">
+          <h3>Haze for Apple Watch</h3>
+          <p>The watch app and its complications now arrive with the iPhone app. The phone hands the wrist the same reading it shows, and when the phone has been quiet a while, the watch fetches its own.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="accuracy">
+      <header class="section-head">
+        <p class="section-head__kicker">Accurate, and consistent about it</p>
+        <h2>Numbers that agree</h2>
+      </header>
+      <div class="accuracy__grid">
+        <div class="note">
+          <h3>One reading, everywhere</h3>
+          <p>The main screen, the hourly forecast, your saved places, the widgets, the watch and Siri all show the same current temperature, and the widgets keep up without the app being opened.</p>
+        </div>
+        <div class="note">
+          <h3>Checked against a real instrument</h3>
+          <p>In the US the nearest weather station corrects the modeled now, so a storm overhead never reads as partly cloudy, and the page says which station it was.</p>
+        </div>
+        <div class="note">
+          <h3>Calibrated where it counts</h3>
+          <p>US highs, lows and rain amounts come from the National Blend of Models, the same guidance behind the official forecast, rather than one model running hot.</p>
+        </div>
+        <div class="note">
+          <h3>Clock changes, handled</h3>
+          <p>Sunrise, sunset and every hour after a daylight saving change land on the right minute, and alerts fire in the city's own time, wherever you're reading from.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="strip" aria-label="More of the app">
+      <div class="strip__row">
+        <figure>
+          <img src="/assets/img/haze/v3/phone-radar.webp" alt="The precipitation radar in Haze, showers over Florida on a timeline you can play or scrub" width="640" height="1391" loading="lazy">
+          <figcaption>The radar, back twelve hours and ahead twelve</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/img/haze/v3/phone-trend.webp" alt="The 72-hour temperature trend and the 10-day forecast in Haze" width="640" height="1391" loading="lazy">
+          <figcaption>Seventy-two hours you can scrub, and ten days out</figcaption>
+        </figure>
+        <figure>
+          <img src="/assets/img/haze/v3/phone-sunset.webp" alt="A sunset rated 74, great, in Chicago" width="640" height="1391" loading="lazy">
+          <figcaption>Tonight's sunset, rated before it happens</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="features">
+      <header class="section-head">
+        <p class="section-head__kicker">Everything inside, briefly</p>
+      </header>
+      <div class="features__grid">
+        <div class="feature">
+          <h3>The sky</h3>
+          <p>Every screen sits on a gradient drawn from the conditions and the sun's position, deepened so white type always reads.</p>
+        </div>
+        <div class="feature">
+          <h3>The daily brief</h3>
+          <p>The day ahead in two or three composed sentences, written by careful templating, not an AI.</p>
+        </div>
+        <div class="feature">
+          <h3>The forecast</h3>
+          <p>Hourly with rain chances, a 72-hour trend you can scrub with a finger, and ten days out, each day opening hour by hour.</p>
+        </div>
+        <div class="feature">
+          <h3>The radar</h3>
+          <p>Observed NEXRAD frames and HRRR hours ahead in the US, RainViewer elsewhere, on a timeline you can play or scrub.</p>
+        </div>
+        <div class="feature">
+          <h3>The nowcast</h3>
+          <p>"Rain starting around 3:15," in plain words from 15-minute data, right under the temperature.</p>
+        </div>
+        <div class="feature">
+          <h3>Live Activity</h3>
+          <p>An imminent shower on the Lock Screen and in the Dynamic Island, with the time it arrives and how hard it falls.</p>
+        </div>
+        <div class="feature">
+          <h3>Rain alerts</h3>
+          <p>With notifications on, a background check warns you before rain starts, even while the app is closed.</p>
+        </div>
+        <div class="feature">
+          <h3>Advisories</h3>
+          <p>National Weather Service watches and warnings in a quiet pill, never a flashing banner.</p>
+        </div>
+        <div class="feature">
+          <h3>The sun</h3>
+          <p>A sunrise and sunset arc you can drag across the day, golden hour times, and an optional heads-up.</p>
+        </div>
+        <div class="feature">
+          <h3>Sunsets, rated</h3>
+          <p>A score for how good the next sunrise or sunset will look, judged from the cloud deck the forecast is promising.</p>
+        </div>
+        <div class="feature">
+          <h3>The moon</h3>
+          <p>Phase and illumination, computed on the device. The moon doesn't need an API.</p>
+        </div>
+        <div class="feature">
+          <h3>The share card</h3>
+          <p>Today's forecast composed as a 4:5 card, the sky and the serif temperature, ready to send.</p>
+        </div>
+        <div class="feature">
+          <h3>The details</h3>
+          <p>Wind compass, UV, humidity, pressure, cloud cover, dew point and precipitation, each opening into a scrubbable chart.</p>
+        </div>
+        <div class="feature">
+          <h3>Air quality</h3>
+          <p>The US Air Quality Index, with PM2.5, PM10, ozone and nitrogen dioxide behind it.</p>
+        </div>
+        <div class="feature">
+          <h3>Widgets</h3>
+          <p>Home Screen small, medium and large, and the Lock Screen, each pinnable to any saved city, and current on their own.</p>
+        </div>
+        <div class="feature">
+          <h3>Siri and Shortcuts</h3>
+          <p>Ask for the weather and Siri answers from the last forecast, saying how recent it is. Opening the radar is a shortcut too.</p>
+        </div>
+        <div class="feature">
+          <h3>The morning digest</h3>
+          <p>The daily brief as a notification, at a time you choose.</p>
+        </div>
+        <div class="feature">
+          <h3>Two voices</h3>
+          <p>Every sentence the app composes is written twice: plainly, or with a lighter step. Whimsy mode picks the second.</p>
+        </div>
+        <div class="feature">
+          <h3>App icons</h3>
+          <p>Four icons, one per sky: day, dusk, night and dawn.</p>
+        </div>
+        <div class="feature">
+          <h3>Units and settings</h3>
+          <p>Fahrenheit or Celsius, mph or km/h, 12 or 24 hour time, text size, and which cards appear on the main screen.</p>
+        </div>
+        <div class="feature">
+          <h3>Accessibility</h3>
+          <p>VoiceOver reads every number in context, and Reduce Motion, Increase Contrast and Reduce Transparency actually change the rendering.</p>
+        </div>
+        <div class="feature">
+          <h3>Search</h3>
+          <p>Any city or airport in the world, saved in a list that stays in your order.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <p class="wordmark wordmark--small">haze<span>°</span></p>
+      <p>No ads, no accounts, no tracking, no analytics.</p>
+      <div class="hero__cta">
+        <a class="btn" href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">Download on the App&nbsp;Store</a>
+      </div>
+    </section>
+
+  </main>
 
   <footer class="foot">
     <div class="foot__links">
@@ -205,7 +314,7 @@
       <a href="/">aniketh.net</a>
     </div>
     <p>Designed and built by <a href="/">Aniketh Bandlamudi</a>.</p>
-    <p class="fine">Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>. Radar imagery from the Iowa Environmental Mesonet and RainViewer. Alerts and station observations from the National Weather Service. &copy; 2026 Aniketh Bandlamudi.</p>
+    <p class="fine">Weather data by <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>, calibrated in the US against the National Blend of Models. Radar imagery from the Iowa Environmental Mesonet and RainViewer. Alerts and station observations from the National Weather Service. &copy; 2026 Aniketh Bandlamudi.</p>
   </footer>
 
 </body>

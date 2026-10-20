@@ -18,3 +18,9 @@ class_name = "NowPlaying"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["NowPlaying"]
+
+# Keeps the Worker's logs for a few days (Workers & Pages > aniketh-now >
+# Logs), so a 429, logged with the calls of the last 24 hours, can be
+# traced afterwards; without this they were gone once they'd happened.
+[observability]
+enabled = true

@@ -578,4 +578,32 @@
       html.classList.add('show-jump');
     }
   }
+
+  /* ---------- Projects, across ----------
+     The grid's rows are a pixel tall and each entry spans its own height,
+     so the grid places each one, in order, at the top of whichever column
+     is shortest: it reads along the rows and packs like the columns did. */
+  var across = document.querySelector('.projects__list--across');
+  if (across) {
+    var pack = function () {
+      var items = across.children, spans = [], i;
+      across.classList.remove('is-packed');
+      for (i = 0; i < items.length; i++) items[i].style.gridRowEnd = '';
+      if (getComputedStyle(across).display !== 'grid') return;
+      for (i = 0; i < items.length; i++) {
+        spans.push(Math.ceil(items[i].getBoundingClientRect().height +
+          parseFloat(getComputedStyle(items[i]).marginBottom)));
+      }
+      for (i = 0; i < items.length; i++) items[i].style.gridRowEnd = 'span ' + spans[i];
+      across.classList.add('is-packed');
+    };
+    var packing = 0;
+    var repack = function () {
+      cancelAnimationFrame(packing);
+      packing = requestAnimationFrame(pack);
+    };
+    pack();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(pack);
+    window.addEventListener('resize', repack);
+  }
 })();

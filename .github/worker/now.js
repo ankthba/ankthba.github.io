@@ -10,11 +10,15 @@
 //   - what's playing is asked for at most every 30 seconds, and the
 //     recent plays at most every 15 minutes, and only while someone is
 //     looking (no visitors, no calls);
-//   - DAILY_BUDGET calls in a UTC day, counted in storage so a restart
-//     doesn't reset it, and paced rather than spent: as the day's calls
-//     run low, what's playing is asked for less often, so the page slows
-//     down instead of ever going off the air for the budget. The sweep
-//     (below) keeps SWEEP_RESERVE of them for itself;
+//   - BUDGET calls in any 24 hours, counted by the hour in storage so a
+//     restart doesn't reset it, and paced rather than spent: the fewer
+//     are left, the less often what's playing is asked for, so the page
+//     slows down instead of ever going off the air for the budget, and a
+//     page left open all day settles near two thirds of it. The sweep
+//     (below) keeps SWEEP_RESERVE of them for itself. (It was 2500 a UTC
+//     day until 2026-10-20: the pacing spent what the day had left as
+//     midnight came, a new day's began at once, and Spotify, which keeps
+//     no such day, banned the app for three hours, then for fourteen.)
 //   - after a 429, nothing at all until Spotify's Retry-After has passed,
 //     also kept in storage, with an alarm for the moment it has: that
 //     sweeps (below) straight away, since the plays made meanwhile are
@@ -39,7 +43,7 @@
 // (with LOG_KEY) along with Spotify's own fifty. However late or often
 // GitHub fails, nothing is lost as long as a run comes within KEEP_DAYS.
 // The sweep also stands in for the recent-plays call, so it costs
-// Spotify one call every fifteen minutes, inside the daily budget.
+// Spotify one call every fifteen minutes, inside the budget.
 //
 // Deployed by .github/workflows/worker.yml on every change here, or from
 // this folder with `npx wrangler deploy`. Secrets:
@@ -54,13 +58,13 @@ const ORIGINS = ['https://aniketh.net', 'https://www.aniketh.net', 'http://local
 
 const NOW_EVERY = 30;        // seconds between "what's playing" calls
 const RECENT_EVERY = 900;    // seconds between "recent plays" calls (the sweep refreshes them too)
-const DAILY_BUDGET = 2500;   // Spotify Web API calls a UTC day, at most
+const BUDGET = 1500;         // Spotify Web API calls in any 24 hours, at most
 const SWEEP_RESERVE = 150;   // of those, kept for the fifteen-minute sweep
 const BACKOFF = 300;         // seconds to wait after a 429 with no Retry-After
 const STALE = 120;           // seconds after which "playing" isn't believed
 const TURN = 4;              // seconds after a song should have ended before asking what's next
 const TURN_GAP = 10;         // seconds at least between two of those asks
-const TURN_SPARE = 100;      // calls the day must still have left for them, past the sweep's
+const TURN_SPARE = 100;      // calls the 24 hours must still have left for them, past the sweep's
 const EDGE = 5;              // seconds each Worker copy reuses an answer
 
 const KEEP_DAYS = 30;        // days every play is kept for the Action
@@ -96,6 +100,8 @@ const song = (t) => ({
 });
 
 const today = () => new Date().toISOString().slice(0, 10);
+const hour = (t = Date.now()) => new Date(t).toISOString().slice(0, 13);
+const HOUR = 3600e3;
 
 /* ---------------------------------------------------------------------
    The gate: one instance, everywhere.
@@ -112,24 +118,26 @@ export class NowPlaying {
     this.recentAt = 0;
     this.quietUntil = 0;
     this.pausedFor = null;   // 'rate-limit' or 'budget' while quiet for one
-    this.budget = { day: today(), used: 0 };
+    this.calls = {};         // Spotify calls by UTC hour, the last 24 of them
     this.token = null;       // { value, expires }
     this.pending = null;
   }
 
   async load() {
     if (this.loaded) return;
-    const saved = await this.state.storage.get(['data', 'quietUntil', 'pausedFor', 'budget', 'token']);
+    const saved = await this.state.storage.get(['data', 'quietUntil', 'pausedFor', 'calls', 'budget', 'token']);
     if (saved.get('data')) ({ data: this.data, at: this.dataAt } = saved.get('data'));
     // Kept so a restarted Object doesn't ask for a new one: every ask
     // counts against the same rate limit as the rest.
     this.token = saved.get('token') || null;
     this.quietUntil = saved.get('quietUntil') || 0;
     this.pausedFor = saved.get('pausedFor') || null;
-    this.budget = saved.get('budget') || this.budget;
-    if (this.budget.day !== today()) this.budget = { day: today(), used: 0 };
+    // Counted by UTC day before: the day so far goes in this hour, which
+    // can only overcount.
+    const old = saved.get('budget');
+    this.calls = saved.get('calls') || (old && old.day === today() ? { [hour()]: old.used } : {});
     // A budget pause from an older, smaller budget doesn't hold.
-    if (this.pausedFor === 'budget' && this.budget.used < DAILY_BUDGET) {
+    if (this.pausedFor === 'budget' && this.used() < BUDGET) {
       this.quietUntil = 0;
       this.pausedFor = null;
       await this.state.storage.put({ quietUntil: 0, pausedFor: null });
@@ -146,7 +154,7 @@ export class NowPlaying {
     if ((await this.state.storage.getAlarm()) !== at) await this.state.storage.setAlarm(at);
   }
 
-  // The moment a 429's wait, or the day's budget, is over: the last fifty
+  // The moment a 429's wait, or the budget's, is over: the last fifty
   // plays, and the Action after them, without waiting for the next cron.
   async alarm() {
     await this.load();
@@ -154,25 +162,38 @@ export class NowPlaying {
     if ('swept' in swept) await dispatch(this.env);
   }
 
-  // Seconds between "what's playing" calls: NOW_EVERY, or longer if that
-  // pace would spend the rest of the day's budget before UTC midnight.
-  // Each check can cost two calls (what's playing and recent plays).
-  interval() {
-    if (this.budget.day !== today()) return NOW_EVERY;
-    const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
-    const left = DAILY_BUDGET - SWEEP_RESERVE - this.budget.used;
-    if (left <= 2) return (midnight - Date.now()) / 1000;
-    return Math.max(NOW_EVERY, Math.ceil(((midnight - Date.now()) / 1000) * 1.2 / (left / 2)));
+  // Calls made in the last 24 hours: this hour and the 23 before it.
+  used() {
+    const since = hour(Date.now() - 23 * HOUR);
+    let n = 0;
+    for (const [h, c] of Object.entries(this.calls)) if (h >= since) n += c;
+    return n;
   }
 
-  // One more call to Spotify, if the day's budget allows it.
+  // Seconds until the next hour, when the oldest of the 24 drops out.
+  nextHour() {
+    return Math.ceil((HOUR - (Date.now() % HOUR)) / 1000);
+  }
+
+  // Seconds between "what's playing" calls: NOW_EVERY while the last 24
+  // hours have plenty to spare, longer as they run low. A page open all
+  // day settles where the calls it makes match half of those left, about
+  // one a minute and a half; it never reaches the end of them.
+  interval() {
+    const left = BUDGET - SWEEP_RESERVE - this.used();
+    if (left <= 2) return this.nextHour();
+    return Math.max(NOW_EVERY, Math.ceil(43200 / left));
+  }
+
+  // One more call to Spotify, if the last 24 hours allow it.
   async spend() {
-    if (this.budget.day !== today()) this.budget = { day: today(), used: 0 };
-    if (this.budget.used >= DAILY_BUDGET) {
-      throw new SpotifyError('daily budget spent', 'budget', 0);
+    if (this.used() >= BUDGET) {
+      throw new SpotifyError('24-hour budget spent', 'budget', 0);
     }
-    this.budget.used += 1;
-    await this.state.storage.put('budget', this.budget);
+    const since = hour(Date.now() - 23 * HOUR);
+    for (const h of Object.keys(this.calls)) if (h < since) delete this.calls[h];
+    this.calls[hour()] = (this.calls[hour()] || 0) + 1;
+    await this.state.storage.put('calls', this.calls);
   }
 
   async accessToken() {
@@ -250,7 +271,7 @@ export class NowPlaying {
     return paused ? { ...data, ...paused, checked: new Date(this.dataAt).toISOString() } : data;
   }
 
-  // Only a real stop (a 429, or the day's budget) counts as paused; the
+  // Only a real stop (a 429, or the spent budget) counts as paused; the
   // few seconds' wait after any other hiccup doesn't.
   pause() {
     if (Date.now() >= this.quietUntil) return null;
@@ -276,15 +297,15 @@ export class NowPlaying {
       wait = err.retryAfter || BACKOFF;
       this.pausedFor = 'rate-limit';
     } else if (err.status === 'budget') {
-      const midnight = new Date(); midnight.setUTCHours(24, 0, 0, 0);
-      wait = Math.ceil((midnight - Date.now()) / 1000);
+      // Until the oldest hour drops out; the alarm asks again then.
+      wait = this.nextHour() + 5;
       this.pausedFor = 'budget';
     }
     this.quietUntil = Date.now() + wait * 1000;
     await this.state.storage.put({ quietUntil: this.quietUntil, pausedFor: this.pausedFor });
     if (this.pausedFor) {
       console.error('quiet for ' + wait + 's (' + this.pausedFor + ') after '
-        + this.budget.used + ' calls today: ' + err.message);
+        + this.used() + ' calls in 24 hours: ' + err.message);
     }
     await this.wake();
   }
@@ -355,16 +376,15 @@ export class NowPlaying {
     return Date.now() - this.dataAt > d.track.duration_ms - d.progress_ms + TURN * 1000;
   }
 
-  // Spotify is otherwise asked less often as the day's calls run low,
+  // Spotify is otherwise asked less often as the 24 hours' calls run low,
   // and the page would go on showing a song that ended minutes ago; so
   // once one should have ended, what's next is asked for. It costs a
   // call a song at most, never two within TURN_GAP, and only while the
-  // day has TURN_SPARE calls to spare, so the budget is never spent on
+  // 24 hours have TURN_SPARE calls to spare, so the budget is never spent on
   // it and a 429 still silences everything (quietUntil).
   turned() {
     if (!this.over() || Date.now() - this.dataAt < TURN_GAP * 1000) return false;
-    const used = this.budget.day === today() ? this.budget.used : 0;
-    return DAILY_BUDGET - SWEEP_RESERVE - used > TURN_SPARE;
+    return BUDGET - SWEEP_RESERVE - this.used() > TURN_SPARE;
   }
 
   async now() {

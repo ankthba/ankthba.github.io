@@ -415,6 +415,22 @@ a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"]
 @media (max-width: 79.99rem) { .look-label .projects__list { columns: 2; } }
 @media (max-width: 47.99rem) { .look-label .projects__list { columns: 1; } }
 
+/* Projects reads across, along a row and then the next, in the order
+   they're listed, instead of down one column before the next. Plain rows
+   on their own; label.js then lifts each entry up under the one above it
+   so a short one leaves no hole. One column on a phone, as before. */
+@media (min-width: 48rem) {
+  .look-label .projects__list--across {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+  .look-label .projects__list--across.is-packed { grid-auto-rows: 1px; row-gap: 0; }
+}
+@media (min-width: 48rem) and (max-width: 79.99rem) {
+  .look-label .projects__list--across { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 .project-item,
 .project-item:first-child,
 .project-item:last-child { padding: 0; margin: 0; }

@@ -143,9 +143,17 @@ async function playlist(id) {
   return null;
 }
 
-async function range(from, to) {
+// A range as the page shows it: the last seven days, or the month so
+// far. With stats, it also carries everything a calendar week or month
+// does (stretch(), below), with what was new to it counted against all
+// that was heard before it began. Given the stretch before it (the
+// seven days before, or last month to the same day), it says how that
+// one went too, and which of the top songs have risen most since, and
+// whether each was in the top songs then; not when tracking hadn't
+// begun by then, so nothing is compared with a part.
+async function range(from, to, stats = false, before = null) {
   const list = plays.filter((p) => p.day >= from && p.day <= to);
-  return {
+  const out = {
     from,
     to,
     plays: list.length,
@@ -153,6 +161,28 @@ async function range(from, to) {
     tracks: top(list, (p) => p.id).map(track),
     artists: await artists(list),
   };
+  if (stats && list.length) out.stats = await stretch(list, seenBefore(from), 5);
+  if (before && before[0] >= since) {
+    const was = plays.filter((p) => p.day >= before[0] && p.day <= before[1]);
+    out.before = {
+      from: before[0],
+      to: before[1],
+      plays: was.length,
+      minutes: minutes(was),
+      tracks: new Set(was.map((p) => p.id).filter(Boolean)).size,
+      artists: new Set(was.map((p) => p.artists[0]?.id).filter(Boolean)).size,
+    };
+    const then = new Map();
+    for (const p of was) if (p.id) then.set(p.id, (then.get(p.id) || 0) + 1);
+    const wasTop = new Set(top(was, (p) => p.id).map((t) => t.play.id));
+    out.rising = top(list, (p) => p.id)
+      .map((t) => ({ t, then: then.get(t.play.id) || 0 }))
+      .filter((x) => x.t.plays - x.then >= 3)
+      .sort((a, b) => (b.t.plays - b.then) - (a.t.plays - a.then) || b.t.plays - a.t.plays)
+      .slice(0, 5)
+      .map((x) => ({ ...track(x.t), before: x.then, wasTop: wasTop.has(x.t.play.id) }));
+  }
+  return out;
 }
 
 const today = localDay(new Date());
@@ -232,13 +262,39 @@ async function sound(list) {
         decades[d] = (decades[d] || 0) + 1;
       }
       const oldest = dated.reduce((a, b) => (songOf(b).released < songOf(a).released ? b : a));
+      const newest = dated.reduce((a, b) => (songOf(b).released > songOf(a).released ? b : a));
+      // How old a song was, in years, on the day it was played.
+      const age = (p) => Math.max(0, (Date.parse(p.day) - Date.parse(songOf(p).released)) / (365.25 * 864e5));
       out.released = {
         known: dated.length,
         average: Math.round(dated.reduce((n, p) => n + year(p), 0) / dated.length),
+        age: Math.round((dated.reduce((n, p) => n + age(p), 0) / dated.length) * 10) / 10,
         decades,
         fresh: dated.filter((p) => songOf(p).released >= shiftDay(p.day, -30)).length,
         oldest: { ...track({ play: oldest, plays: 1 }), year: year(oldest) },
+        newest: { ...track({ play: newest, plays: 1 }), released: songOf(newest).released },
       };
+    }
+  }
+
+  // Where the artists are from, and whether a person or a group, from
+  // MusicBrainz: each play counts once, for its first artist.
+  const placed = list.filter((p) => artistOf(p)?.country);
+  if (placed.length) {
+    const n = new Map();
+    for (const p of placed) n.set(artistOf(p).country, (n.get(artistOf(p).country) || 0) + 1);
+    out.countries = {
+      known: placed.length,
+      count: n.size,
+      top: [...n].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([code, count]) => ({ code, plays: count })),
+    };
+  }
+  const typed = list.filter((p) => artistOf(p)?.kind);
+  if (typed.length) {
+    out.kinds = { known: typed.length, person: 0, group: 0, other: 0 };
+    for (const p of typed) {
+      const k = artistOf(p).kind;
+      out.kinds[k === 'Person' ? 'person' : /^(Group|Orchestra|Choir)$/.test(k) ? 'group' : 'other'] += 1;
     }
   }
 
@@ -255,6 +311,13 @@ async function sound(list) {
 }
 const weekFrom = shiftDay(today, -6);
 const monthFrom = today.slice(0, 8) + '01';
+// Last month, from its first to the same day as today (or its last).
+function lastMonthTo(day) {
+  const [y, m, d] = day.split('-').map(Number);
+  const first = new Date(Date.UTC(y, m - 2, 1)).toISOString().slice(0, 10);
+  const length = new Date(Date.UTC(y, m - 1, 0)).getUTCDate();
+  return [first, first.slice(0, 8) + String(Math.min(d, length)).padStart(2, '0')];
+}
 
 // The calendar and the months: for every day with plays, and every
 // month, how many and for how long, how many different songs, artists
@@ -301,6 +364,16 @@ async function period(list, seen, { songs, artists: artistCount }) {
     n = i && list[i].id && list[i].id === list[i - 1].id ? n + 1 : 1;
     if (n > run.n) run = { n, play: list[i] };
   }
+
+  // The same artist played most times running (by their first artist).
+  let binge = { n: 0 };
+  for (let i = 0, n = 0; i < list.length; i++) {
+    const id = list[i].artists[0]?.id;
+    n = i && id && id === list[i - 1].artists[0]?.id ? n + 1 : 1;
+    if (n > binge.n) binge = { n, play: list[i] };
+  }
+  const counts = new Map();
+  for (const p of list) if (p.id) counts.set(p.id, (counts.get(p.id) || 0) + 1);
 
   // What each play was started from.
   const from = { playlist: 0, album: 0, artist: 0, liked: 0, other: 0 };
@@ -353,6 +426,13 @@ async function period(list, seen, { songs, artists: artistCount }) {
       plays: list1.plays,
     } : null,
     onRepeat: run.n > 1 ? { ...track({ play: run.play, plays: run.n }), times: run.n } : null,
+    once: [...counts.values()].filter((n) => n === 1).length,
+    binge: binge.n > 2 ? {
+      name: binge.play.artists[0].name,
+      url: artistUrl(binge.play.artists[0].id),
+      image: (await photo(binge.play.artists[0].id)) || binge.play.image,
+      times: binge.n,
+    } : null,
     longest: long ? { ...track({ play: long, plays: 1 }), duration_ms: long.duration_ms } : null,
     ...(await sound(list)),
   };
@@ -362,6 +442,16 @@ async function period(list, seen, { songs, artists: artistCount }) {
   return out;
 }
 const fresh = () => ({ tracks: new Set(), artists: new Set(), albums: new Set() });
+function seenBefore(day) {
+  const seen = fresh();
+  for (const p of plays) {
+    if (p.day >= day) break;
+    if (p.id) seen.tracks.add(p.id);
+    if (p.artists[0]?.id) seen.artists.add(p.artists[0].id);
+    if (p.album?.id) seen.albums.add(p.album.id);
+  }
+  return seen;
+}
 
 const calendar = {};
 const byDay = new Map();
@@ -387,15 +477,49 @@ async function stretch(list, seen, artistCount) {
     streak = Math.max(streak, n);
   }
   const weekdays = Array(7).fill(0);
-  for (const p of list) weekdays[new Date(p.day + 'T12:00:00Z').getUTCDay()] += 1;
+  const grid = Array.from({ length: 7 }, () => Array(24).fill(0));
+  for (const p of list) {
+    const wd = new Date(p.day + 'T12:00:00Z').getUTCDay();
+    weekdays[wd] += 1;
+    grid[wd][Number(hourFormat.format(new Date(p.played_at))) % 24] += 1;
+  }
   return {
     ...(await period(list, seen, { songs: 5, artists: artistCount })),
     days: days.length,
     busiest: { day: busiest, minutes: calendar[busiest].minutes },
     streak,
     weekdays,
+    grid,
+    clock: clock(list),
   };
 }
+// When the music usually starts and stops: the middle of the days'
+// first and last plays, in minutes after midnight, a day running from
+// 5 am to 5 am so a night that goes past midnight is one (the last can
+// run past 1440). A play starts when it was stamped less what was heard.
+const minuteFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
+function clock(list) {
+  const at = (t) => {
+    const [h, m] = minuteFormat.format(new Date(t)).split(':').map(Number);
+    return (h * 60 + m) % 1440;
+  };
+  const days = new Map();
+  for (const p of list) {
+    const end = Date.parse(p.played_at);
+    for (const t of [end - p.heard_ms, end]) {
+      const m = at(t);
+      const day = localDay(t - (m < 300 ? 864e5 : 0));
+      const v = m < 300 ? m + 1440 : m;
+      const d = days.get(day) || days.set(day, { first: v, last: v }).get(day);
+      d.first = Math.min(d.first, v);
+      d.last = Math.max(d.last, v);
+    }
+  }
+  const mid = (xs) => { xs.sort((a, b) => a - b); return xs.length ? xs[Math.floor((xs.length - 1) / 2)] : null; };
+  const all = [...days.values()];
+  return { start: mid(all.map((d) => d.first)), end: mid(all.map((d) => d.last)) };
+}
+
 const group = (keyOf) => {
   const out = new Map();
   for (const p of plays) {
@@ -434,8 +558,9 @@ const music = {
     played_at: p.played_at,
   })),
   ranges: {
-    week: await range(since > weekFrom ? since : weekFrom, today),
-    month: await range(since > monthFrom ? since : monthFrom, today),
+    week: await range(since > weekFrom ? since : weekFrom, today, true,
+      [shiftDay(weekFrom, -7), shiftDay(weekFrom, -1)]),
+    month: await range(since > monthFrom ? since : monthFrom, today, true, lastMonthTo(today)),
     all: await range(since, today),
   },
   calendar,

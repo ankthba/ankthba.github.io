@@ -3,7 +3,9 @@
 //
 //   Genres come from MusicBrainz, found by the artist's Spotify link, so
 //   an artist is never mistaken for another with the same name. They are
-//   the genres MusicBrainz's editors have voted for, up to three.
+//   the genres MusicBrainz's editors have voted for, up to three. The
+//   same answer says where the artist is from (a country code) and
+//   whether they are a person or a group.
 //
 //   Each song's popularity, release date and explicit flag, and its
 //   artist's fan count, come from Deezer, by searching for the song and
@@ -60,9 +62,13 @@ async function dz(path) {
   return body;
 }
 
-async function genresOf(spotifyId) {
-  const link = await mb('url?resource=' + encodeURIComponent('https://open.spotify.com/artist/' + spotifyId) + '&inc=artist-rels');
-  const mbid = link?.relations?.find((r) => r['target-type'] === 'artist')?.artist?.id;
+// Found once, an artist's MusicBrainz id is asked for directly after.
+async function genresOf(spotifyId, known) {
+  let mbid = known;
+  if (!mbid) {
+    const link = await mb('url?resource=' + encodeURIComponent('https://open.spotify.com/artist/' + spotifyId) + '&inc=artist-rels');
+    mbid = link?.relations?.find((r) => r['target-type'] === 'artist')?.artist?.id;
+  }
   if (!mbid) return null;
   const artist = await mb('artist/' + mbid + '?inc=genres');
   const genres = (artist?.genres || [])
@@ -70,7 +76,9 @@ async function genresOf(spotifyId) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
     .slice(0, 3)
     .map((g) => g.name);
-  return { mbid, genres };
+  // A country code, from the artist or the country their area is in.
+  const country = artist?.country || artist?.area?.['iso-3166-1-codes']?.[0] || null;
+  return { mbid, genres, country, kind: artist?.type || null };
 }
 
 async function songOf(play) {
@@ -114,7 +122,9 @@ export async function details(path, plays) {
   // Genres and Deezer run side by side, each at its own pace, so the
   // slower MusicBrainz doesn't hold Deezer back; either stops for this
   // run if its source fails.
-  const genresDue = (e) => !e?.genresChecked || daysSince(e.genresChecked) >= (e.mbid ? FRESH : RETRY);
+  // (Artists looked up before countries were kept are due once more.)
+  const genresDue = (e) => !e?.genresChecked || daysSince(e.genresChecked) >= (e.mbid ? FRESH : RETRY) ||
+    (e.mbid && !('country' in e));
   const artistIds = most((p) => p.artists[0]?.id).filter((id) => genresDue(cache.artists[id]));
   const trackIds = most((p) => p.id).filter((id) => due(cache.tracks[id]));
   const looked = { artists: 0, tracks: 0 };
@@ -123,11 +133,13 @@ export async function details(path, plays) {
     for (const id of artistIds) {
       if (Date.now() >= deadline) return;
       try {
-        const g = await genresOf(id);
         const entry = (cache.artists[id] ||= {});
+        const g = await genresOf(id, entry.mbid);
         entry.genresChecked = today;
         entry.mbid = g?.mbid || null;
         entry.genres = g?.genres || [];
+        entry.country = g?.country || null;
+        entry.kind = g?.kind || null;
         looked.artists += 1;
       } catch (err) { console.warn('Genres:', err.message); return; }
     }

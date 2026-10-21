@@ -535,7 +535,7 @@
    under them, then genres, release years and how well known, three
    abreast. Columns and bars are the ink, the busiest in full and the
    rest quieter; no axes or rules, only the times under the columns. */
-.look-label .music .habits {
+.look-label .music .habits:not([hidden]) {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--gutter);
@@ -724,7 +724,7 @@
   .look-label .music > .music__body,
   .look-label .music__body > .music__top,
   .look-label .music .music__sec:has(.figures),
-  .look-label .music .habits { display: block; }
+  .look-label .music .habits:not([hidden]) { display: block; }
   .music .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .look-label .music__body > * + *,
   .look-label .music__top > * + * { margin-top: var(--step); }

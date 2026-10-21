@@ -399,7 +399,8 @@
   object-fit: cover;
   background: var(--track);
 }
-.look-label .music .plays--artists .play__art { border-radius: 50%; }
+.look-label .music .plays--artists .play__art,
+.look-label .music .play--artist .play__art { border-radius: 50%; }
 .look-label .music .play__text { min-width: 0; }
 .look-label .music .play__name {
   display: block;
@@ -470,7 +471,15 @@
   gap: 1.5rem clamp(3rem, 7vw, 7rem);
   margin: 2.25rem 0 0;
 }
-.music .figures__item { display: flex; flex-direction: column-reverse; }
+.music .figures__item { display: flex; flex-direction: column; }
+.music .figures__item > .figures__v { order: -1; }
+/* how it compares with the stretch before */
+.music .figures__d {
+  margin: 0.15rem 0 0;
+  font-size: var(--t-note);
+  font-style: italic;
+  color: var(--quiet);
+}
 .music .figures__v {
   margin: 0;
   font-size: clamp(3rem, 1.4rem + 4.2vw, 6.25rem);
@@ -512,7 +521,171 @@
   columns: 2;
   column-gap: var(--gutter);
 }
-.music [data-standouts] > li { break-inside: avoid; }
+.music .music__sec:has(.figures) > .music__label:nth-of-type(4) { grid-column: 1 / -1; grid-row: 7; }
+.music .music__sec:has(.figures) > [data-rising] {
+  grid-column: 1 / -1;
+  grid-row: 8;
+  columns: 2;
+  column-gap: var(--gutter);
+}
+.music :is([data-standouts], [data-rising]) > li { break-inside: avoid; }
+
+/* ---------- Listening habits ----------
+   The hours and the days side by side, the figures across the page
+   under them, then genres, release years and how well known, three
+   abreast. Columns and bars are the ink, the busiest in full and the
+   rest quieter; no axes or rules, only the times under the columns. */
+.look-label .music .habits {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+}
+.music .habits > * { grid-column: 1 / -1; min-width: 0; }
+.music .habits > .music__heading { grid-column: 1 / 7; grid-row: 1; margin: 0; }
+/* the rest fall into place in order: two charts a row, the figures
+   across, then the shares three abreast */
+.music .habits > :is(.habit--hours, .habit--heat) { grid-column: 1 / 8; }
+.music .habits > :is(.habit--days, .habit--perday) { grid-column: 9 / 13; }
+.music .habits > :is(.habit--genres, .habit--countries) { grid-column: 1 / 5; }
+.music .habits > :is(.habit--eras, .habit--kinds) { grid-column: 5 / 9; }
+.music .habits > :is(.habit--reach, .habit--from) { grid-column: 9 / 13; }
+
+.look-label .music .habit__note {
+  margin: 0.9rem 0 0;
+  font-size: var(--t-note);
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--quiet);
+}
+
+/* the columns: each a slot the full height (the pointer's target), its
+   column drawn from the foot, square there and rounded at the top */
+.music .cols__plot,
+.music .cols__axis {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  column-gap: 2px;
+}
+.music .cols__plot { height: clamp(7rem, 12vw, 10.5rem); align-items: stretch; }
+.music .cols__col { position: relative; }
+.music .cols__col::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: min(100%, 24px);
+  height: max(2px, calc(var(--v) * 100%));
+  border-radius: 3px 3px 0 0;
+  background: var(--faint);
+  transform: translateX(-50%);
+  transition: background-color 0.18s var(--crisp);
+}
+.music .cols__col--lit::after { background: var(--color-fg); }
+.music .cols__col:hover::after { background: var(--quiet); }
+.music .cols__col--lit:hover::after { background: var(--color-fg); }
+.music .cols__axis { margin-top: 0.55rem; }
+.music .cols__tick {
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--quiet);
+}
+.music .cols--days .cols__tick { text-align: center; }
+
+/* hour by day: a row a day, a cell an hour, darker for more plays */
+.music .heat__grid,
+.music .heat__axis {
+  display: grid;
+  grid-template-columns: 4.25rem repeat(24, minmax(0, 1fr));
+  gap: 2px;
+  align-items: center;
+}
+.music .heat__day {
+  font-size: 0.9375rem;
+  font-style: italic;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--quiet);
+}
+.music .heat__cell { position: relative; aspect-ratio: 1; }
+.music .heat__cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: var(--color-fg);
+  opacity: var(--v);
+}
+.music .heat__cell--none::after { background: var(--track); opacity: 1; }
+.music .heat__cell:hover::after { outline: 1px solid var(--color-fg); outline-offset: 1px; }
+.music .heat__axis { margin-top: 0.55rem; }
+
+/* the figures, smaller than the four above, six abreast */
+.music .facts {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(2rem, 3.5vw, 3rem) var(--gutter);
+  margin: 0;
+}
+.music .fact { display: flex; flex-direction: column; }
+.music .fact__v {
+  order: -1;
+  margin: 0;
+  font-size: var(--t-head);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums proportional-nums;
+}
+.music .fact__t {
+  margin-top: 0.45rem;
+  font-size: var(--t-note);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--color-fg);
+}
+.music .fact__more {
+  margin: 0.15rem 0 0;
+  font-size: var(--t-note);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--quiet);
+}
+
+/* a share: its name and how much, and under them a bar out of the whole */
+.music .shares { list-style: none; margin: 0; padding: 0; }
+.music .share {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1rem;
+  align-items: baseline;
+  padding: 0.35rem 0 0.55rem;
+}
+.music .share__name { font-size: var(--t-text); line-height: 1.25; overflow-wrap: anywhere; }
+.music .share__v {
+  font-size: var(--t-note);
+  color: var(--quiet);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.music .share__bar {
+  grid-column: 1 / -1;
+  position: relative;
+  height: 4px;
+  margin-top: 0.45rem;
+  border-radius: 2px;
+  background: var(--track);
+  overflow: hidden;
+}
+.music .share__bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--v) * 100%);
+  min-width: 2px;
+  border-radius: 2px;
+  background: var(--color-fg);
+}
 
 /* ---------- Today's listening log ---------- */
 .look-label .music .log .plays--log {
@@ -541,6 +714,7 @@
 /* ---------- Narrower screens ---------- */
 @media (max-width: 79.99rem) {
   .look-label .music .log .plays--log { columns: 2; }
+  .music .facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 63.99rem) {
   .look-label .music__top > .now { grid-column: 1 / 7; }
@@ -549,14 +723,19 @@
 @media (max-width: 47.99rem) {
   .look-label .music > .music__body,
   .look-label .music__body > .music__top,
-  .look-label .music .music__sec:has(.figures) { display: block; }
+  .look-label .music .music__sec:has(.figures),
+  .look-label .music .habits { display: block; }
+  .music .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .look-label .music__body > * + *,
   .look-label .music__top > * + * { margin-top: var(--step); }
   .music .switch { margin-top: 1rem; justify-content: flex-start; }
   .music .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .look-label .music .log .plays--log { columns: 1; }
   .look-label .music__top > .now { position: static; }
-  .music .music__sec:has(.figures) > [data-standouts] { columns: 1; }
+  .music .music__sec:has(.figures) > :is([data-standouts], [data-rising]) { columns: 1; }
+  .music .heat__grid,
+  .music .heat__axis { grid-template-columns: 3.25rem repeat(24, minmax(0, 1fr)); gap: 1px; }
+  .music .heat__day { font-size: 0.8125rem; }
   .music .figures { gap: 1.5rem 3rem; }
   .look-label .music .plays--log .play { grid-template-columns: 4rem var(--row-art) minmax(0, 1fr); }
   .music .cal__month { font-size: clamp(2.75rem, 1rem + 8vw, 4rem); }

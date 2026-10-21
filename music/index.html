@@ -121,6 +121,77 @@
             <ol class="plays plays--artists" data-top-artists></ol>
             <h3 class="music__label" data-standouts-label>Standouts</h3>
             <ul class="plays plays--standouts" data-standouts></ul>
+            <h3 class="music__label" data-rising-label>Rising</h3>
+            <ul class="plays plays--standouts" data-rising></ul>
+          </section>
+
+          <!-- The same week or month: when, on which days, how it went,
+               and what sort of music it was. -->
+          <section class="music__sec habits" aria-labelledby="habits-heading" data-habits hidden>
+            <h2 class="music__heading" id="habits-heading">Listening habits</h2>
+            <p class="switch" role="group" aria-label="Over this week or this month">
+              <button type="button" class="switch__option" data-range="week" aria-pressed="true">This week</button>
+              <button type="button" class="switch__option" data-range="month" aria-pressed="false">This month</button>
+            </p>
+            <div class="habit habit--hours">
+              <h3 class="music__label">Time of day</h3>
+              <div class="cols cols--hours" data-hours></div>
+              <p class="habit__note" data-hours-note aria-live="polite"></p>
+            </div>
+            <div class="habit habit--days">
+              <h3 class="music__label">Day of the week</h3>
+              <div class="cols cols--days" data-days></div>
+              <p class="habit__note" data-days-note aria-live="polite"></p>
+            </div>
+            <div class="habit habit--heat">
+              <h3 class="music__label">Hour by day</h3>
+              <div class="heat" data-heat></div>
+              <p class="habit__note" data-heat-note aria-live="polite"></p>
+            </div>
+            <div class="habit habit--perday">
+              <h3 class="music__label">Day by day</h3>
+              <div class="cols cols--perday" data-perday></div>
+              <p class="habit__note" data-perday-note aria-live="polite"></p>
+            </div>
+            <div class="habit habit--facts">
+              <h3 class="music__label">Rhythm</h3>
+              <dl class="facts" data-facts="rhythm"></dl>
+            </div>
+            <div class="habit habit--facts">
+              <h3 class="music__label">Habits</h3>
+              <dl class="facts" data-facts="habits"></dl>
+            </div>
+            <div class="habit habit--facts">
+              <h3 class="music__label">The music</h3>
+              <dl class="facts" data-facts="music"></dl>
+            </div>
+            <div class="habit habit--genres">
+              <h3 class="music__label">Genres</h3>
+              <ol class="shares" data-genres></ol>
+            </div>
+            <div class="habit habit--eras">
+              <h3 class="music__label">Released</h3>
+              <ol class="shares" data-decades></ol>
+              <p class="habit__note" data-decades-note></p>
+            </div>
+            <div class="habit habit--reach">
+              <h3 class="music__label">How well known</h3>
+              <ol class="shares" data-reach></ol>
+              <p class="habit__note">By each artist&rsquo;s fans on Deezer: a million or more is mainstream, under ten thousand niche.</p>
+            </div>
+            <div class="habit habit--countries">
+              <h3 class="music__label">Where they&rsquo;re from</h3>
+              <ol class="shares" data-countries></ol>
+              <p class="habit__note" data-countries-note></p>
+            </div>
+            <div class="habit habit--kinds">
+              <h3 class="music__label">Solo or not</h3>
+              <ol class="shares" data-kinds></ol>
+            </div>
+            <div class="habit habit--from">
+              <h3 class="music__label">Played from</h3>
+              <ol class="shares" data-from></ol>
+            </div>
           </section>
 
           <section class="music__sec" aria-labelledby="log-heading">

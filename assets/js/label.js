@@ -33,7 +33,7 @@
   var RINGS = {
     '':          ['studying computer science & applied mathematics', 'university of virginia', 'aniketh.net'],
     work:        ['pragmatic & ocradar, founder', 'alarm.com, engineering intern', 'robotics, software lead'],
-    education:   ['university of virginia, class of 2030', 'y combinator startup school', 'oakton high school'],
+    education:   ['university of virginia, class of 2029', 'y combinator startup school', 'oakton high school'],
     projects:    ['meridian, haze, hypnagogia, aperta, sentry, graphite, ocradar, splatify, ejector & edgefabric'],
     research:    ['a convolutional neural network that detects oral cancer', 'published on arxiv, october 2025'],
     music:       ['live from spotify', 'now playing', 'listening calendar', 'most listened to', 'today\u2019s listening log'],

@@ -147,6 +147,7 @@
     slot = Math.floor(Math.min(cellX, cellY) * dpr);
     canvas.width = bw; canvas.height = bh;
     build(c, n);
+    tint();
     cast();
     print();
   }
@@ -431,9 +432,15 @@
   });
 
   var sizing = 0;
-  window.addEventListener('resize', function () {
+  var resize = function () {
     if (!sizing) sizing = requestAnimationFrame(function () { sizing = 0; measure(); });
-  }, passive);
+  };
+  window.addEventListener('resize', resize, passive);
+  /* And whenever the canvas's own box changes, as when the stylesheet
+     that sizes it only arrives after this has run: measured before
+     then, it would be the browser's 300 by 150, stretched over the
+     window, on paper that reads as transparent. */
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(canvas);
 
   /* The theme can change by the colophon's buttons (data-theme on the
      root) or by the system; either way the ink and paper are read

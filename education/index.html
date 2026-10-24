@@ -101,8 +101,9 @@
       </span>
     </p>
   </footer>
-  <script src="/assets/js/theme.js" defer></script>
-  <script src="/assets/js/label.js" defer></script>
-  <script src="/assets/js/surface.js" defer></script>
+  <!-- Not deferred: WebKit runs deferred scripts before the stylesheets are in, and these measure the page as styled. -->
+  <script src="/assets/js/theme.js"></script>
+  <script src="/assets/js/label.js"></script>
+  <script src="/assets/js/surface.js"></script>
 </body>
 </html>

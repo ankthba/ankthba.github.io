@@ -291,11 +291,11 @@ body {
 }
 
 /* out of the site: blue, on a pastel blue line */
-.page p a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
-.page li a:not(.play):not(.reach__row):is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
-a.project-item__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
-a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
-.photos__links a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]),
+.page p a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]),
+.page li a:not(.play):not(.reach__row):is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]),
+a.project-item__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]),
+a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]),
+.photos__links a:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]),
 .contact__address,
 .reach__row .reach__name {
   --line: var(--link-line);
@@ -345,7 +345,7 @@ a.writing__link:is([href^="http"], [href^="mailto"], [href^="/pragmatic"], [href
   --arrow-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M75 15.9L3 15.9M18.3 28.7Q8.9 24.4 3 15.9Q8.9 7.3 18.3 3' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --arrow-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 78 31.7'%3E%3Cpath d='M3 15.9L75 15.9M59.7 3Q69.1 7.3 75 15.9Q69.1 24.4 59.7 28.7' fill='none' stroke='%23ece6d6' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
-a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"])::after,
+a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"])::after,
 .photos__links a[target="_blank"]::after,
 .look-label .resume__download::after {
   /* a word joiner keeps the arrow on the line of the last word, without
@@ -358,7 +358,7 @@ a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"]
   background: var(--arrow-out) no-repeat 0 0.37em / 0.477em 0.477em;
   transition: background-position 0.22s var(--crisp);
 }
-a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/aperta"], [href^="/bside"]):is(:hover, :focus-visible)::after,
+a.project-item__link:is([target="_blank"], [href^="/pragmatic"], [href^="/haze"], [href^="/iris"], [href^="/aperta"], [href^="/bside"]):is(:hover, :focus-visible)::after,
 .photos__links a[target="_blank"]:is(:hover, :focus-visible)::after {
   background-image: var(--arrow-out-on);
   background-position: 0.06em 0.31em;

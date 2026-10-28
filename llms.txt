@@ -22,7 +22,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - [About](https://aniketh.net/): short bio, latest writing, what he is listening to, recent photos
 - [Work](https://aniketh.net/work/): Pragmatic, Alarm.com, OCRadar, Oakton Robotics
 - [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
-- [Projects](https://aniketh.net/projects/): Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
+- [Projects](https://aniketh.net/projects/): Iris, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
 - [Research](https://aniketh.net/research/): CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
 - [Press](https://aniketh.net/press/): news coverage and recognition
 - [Resume](https://aniketh.net/resume/): resume, also as a [PDF](https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf)
@@ -33,6 +33,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 ## Things he made
 
 - [Pragmatic](https://aniketh.net/pragmatic/): the system of record for AI agents, from Pragmatic Research, Inc.
+- [Iris](https://aniketh.net/iris/): a browser for the Mac, built on WebKit, with Spaces in a sidebar, Chrome extensions and passwords in the Mac's keychain; coming soon, free, for macOS 26 or later
 - [Haze](https://aniketh.net/haze/): weather app for iPhone, iPad, Mac and Apple Watch; free on the [App Store](https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735)
 - [OCRadar](https://ocradar.com/): AI-powered mobile platform for early oral cancer detection
 - [Hypnagogia](https://aniketh.net/hypnagogia/): whole-brain Drosophila simulation testing whether a learned memory reactivates during sleep

@@ -1,4 +1,23 @@
 User-agent: *
 Allow: /
 
+# AI search and assistant crawlers are welcome too. A summary of the site
+# for them is at /llms.txt, and a longer one at /llms-full.txt.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: meta-externalagent
+User-agent: CCBot
+Allow: /
+
 Sitemap: https://aniketh.net/sitemap.xml

@@ -1,0 +1,82 @@
+# Aniketh Bandlamudi
+
+> Aniketh Bandlamudi is a Computer Science and Applied Mathematics student at the University of Virginia (B.S. expected May 2030) and the founder of Pragmatic Research, Inc. and OCRadar. Pragmatic is the system of record for AI agents. OCRadar is a nonprofit building an AI app that helps catch oral cancer early. He also built Haze, a 5-star rated weather app for iPhone, iPad, Mac and Apple Watch.
+
+Source: https://aniketh.net. Everything here is taken from the pages of that site and from his resume (https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf). Contact: me@aniketh.net.
+
+## About
+
+Right now Aniketh is building Pragmatic, the system of record for AI agents. He is also building OCRadar, which uses AI to help catch oral cancer early, and he built Haze, a 5-star rated weather app for iPhone. His work has reached millions of people worldwide and been covered by WTOP, The Korea Times, United Airlines and Washington Dulles International Airport, among others.
+
+Before that he was an engineering intern at Alarm.com, led software at Oakton Robotics for four years, attended Y Combinator Startup School, and spoke at the Tech Roast Show. Outside work he photographs aircraft at Washington Dulles and landscapes around the world, hikes, and listens to a lot of music.
+
+## Work
+
+### Pragmatic (Pragmatic Research, Inc.)
+Founder and engineer, January 2026 to present. Remote. https://aniketh.net/pragmatic/
+
+Pragmatic is the system of record for AI agents: every model call and tool call an agent makes through it is written to a tamper-evident journal, so a run can be replayed exactly without calling the model, and a crashed run resumes where it stopped without repeating finished work. Underneath is a zero-dependency durable execution runtime written in Rust, with an append-only step journal at 230 ns per append and flat latency through one million entries, passing a 1000/1000 replay-determinism test suite. Agent execution and replay are formalized with a probabilistic process calculus. Pragmatic was incorporated as Pragmatic Research, Inc., a Delaware C-corp, in August 2026.
+
+### OCRadar
+Founder and President, May 2022 to present. Vienna, Virginia. https://ocradar.com/
+
+A nonprofit building an AI-powered, computer-vision mobile platform for early oral cancer detection. Aniketh founded it and first built the app in eighth grade, and leads a team of four. The team published research on a CNN that detects oral squamous cell carcinoma with 98% accuracy, paired with custom hardware for consistent image capture (arXiv:2510.16235).
+
+### Alarm.com
+Engineering Intern, May 2026. Tysons, Virginia.
+
+Supported hardware QA for home security systems by configuring and integrating devices (locks, sensors, lighting) into automated testing workflows. Soldered buck converters and embedded boards, assembled RJ45 Ethernet cables, provisioned Raspberry Pi units for test automation, and built an internal software tool for lab device management.
+
+### Oakton Robotics
+FRC Software Lead (December 2023 to October 2025) and FTC R&D Captain and Software Lead (September 2022 to May 2026). Vienna, Virginia.
+
+Led software for a 25-member team, owning systems engineering and control software for competition robots. Oversaw robot design and programming over four seasons, earning finalist, innovation and creativity awards, and ran STEM workshops and community outreach.
+
+## Education
+
+- University of Virginia, School of Engineering and Applied Science, Charlottesville, Virginia. B.S. Computer Science & Applied Mathematics, expected May 2030. Coursework: Multivariable Calculus (APMA 2120), Data Structures and Algorithms 1 (CS 2100). Activities: UVA Solar Car Team (embedded software), IEEE UVA Student Chapter.
+- Y Combinator Startup School, San Francisco, California.
+- Oakton High School, Vienna, Virginia. Advanced Studies Diploma. GPA 4.5/4.0. 18 AP courses. Activities: FRC Software Lead, FTC Team Captain and Software Lead, CodeBase Co-President, National Honor Society, CyberPatriot.
+
+## Research
+
+- "Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection." Vishal Manikanden, Aniketh Bandlamudi, Daniel Haehn. arXiv:2510.16235, October 2025. https://arxiv.org/abs/2510.16235. A CNN trained for high-accuracy oral cancer detection, with custom hardware for image capture and an open-access application.
+
+## Projects
+
+- Haze (https://aniketh.net/haze/): a weather app for iPhone, iPad, Mac and Apple Watch, built solo in Swift. Big serif numerals, skies that shift with the day, radar, widgets, Live Activities, Siri, background rain alerts, and forecasts that blend the ECMWF, GFS and ICON models and are corrected against National Weather Service station data. 5-star rated. Free on the App Store, with no ads, accounts or tracking: https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735
+- Meridian (https://github.com/ankthba/meridian): a fast, native market terminal for the Mac on a 53,000-line Rust core bridged to SwiftUI with UniFFI. Imports a broker's CSV without linking an account, tracks SEC filings for what you own, streams 2,000 live symbols at 60 fps, and includes an AI analyst built on Claude.
+- Hypnagogia (https://aniketh.net/hypnagogia/): a whole-brain Drosophila simulation (144,209 neurons and 21,868,062 connections from the male CNS connectome, in Brian2) built to test whether a learned memory reactivates on its own during sleep, scored against shuffled-connectome and unlearned-weights controls, with negative results reported in full.
+- Aperta (https://aperta.health): co-created at VTHacks 14. A clinician pastes a discharge note and Aperta turns it into what the patient understands at home: a drawing of the body part, one plain sentence, every medicine and how to take it, and walkthroughs, in the patient's language and read aloud. Nothing clinical is generated.
+- Sentry (https://github.com/malekTheCoder/Sentry): co-developed privacy-first system monitor for macOS with iPhone and Apple Watch companions, an MCP server and a CLI.
+- Graphite (https://aniketh.net/graphite/): a 3D graphing calculator that runs entirely in the browser, with its parser, symbolic differentiation and marching cubes written from scratch.
+- Splatify (https://github.com/ankthba/Splatify): a one-command, fully local video-to-3D Gaussian splat pipeline for Apple Silicon Macs.
+- Ejector (https://github.com/ankthba/ejector): a zero-dependency macOS menu bar app for ejecting drives.
+- EdgeFabric (https://github.com/ankthba/EdgeFabric): distributed inference across edge devices.
+- IllumiSign (https://devpost.com/software/illumisign): winner of the Social Justice Track at Hack The Nest 2025. A browser-based eye-tracking tool that lets people with ALS select letters and speak them aloud.
+- Oakton Codebase (https://oaktoncodebase.com/): co-president of Oakton High School's coding club.
+
+## Press and recognition
+
+- WTOP News, April 4, 2025: "Fairfax Co. students create app to find signs of oral cancer", on OCRadar. https://wtop.com/fairfax-county/2025/04/fairfax-co-students-crafting-app-to-find-signs-of-oral-cancer/
+- Virginia News Network, April 7, 2025: syndicated radio story, "Four Virginia Students Create App to Find Oral Cancer".
+- The Korea Times (Washington edition), April 9, 2025, in Korean: coverage of the OCRadar team. http://dc.koreatimes.com/article/20250409/1559471
+- Vision Times, April 10 to 17, 2025, in Chinese: online and in the printed Washington DC paper, issue 998, page B6. https://www.secretchina.com/news/gb/2025/04/10/1080410.html
+- Fairfax County Public Schools, February 2025: "Sixteen Years Old and Solving World Problems", on its front page. https://www.fcps.edu/news/sixteen-years-old-and-solving-world-problems-oakton-high-school-juniors-tackle-oral-cancer
+- Oakton High School, 2025: school feature on the OCRadar team.
+- Hack The Nest, September 2025: Social Justice Track winner with IllumiSign.
+- Tech Roast Show, January 2025: part of the Washington DC show.
+- Photography, as @aniketh.png: featured by United Airlines (September 2024), Star Alliance (September 2024) and Washington Dulles International Airport (several times, 2022 to 2024), and recognized by Air France, ANA, Antonov, British Airways, Emirates, KLM, Lufthansa, Porter, Qatar Airways, Western Global, Reagan National and the Metropolitan Washington Airports Authority. Korean Air sent him an album signed by BLACKPINK after his photographs of its Busan World Expo livery jet.
+
+## Skills
+
+Languages: Java, C++, Python, Rust, Swift, TypeScript, HTML/CSS/JavaScript. Also PyTorch, computer vision, iOS and watchOS development, embedded systems, WPILib, KiCad, Figma, Fusion 360.
+
+## Elsewhere
+
+- LinkedIn: https://www.linkedin.com/in/anikethb/
+- GitHub: https://github.com/ankthba
+- X: https://x.com/ankthba
+- Instagram: https://www.instagram.com/ankthba/ (photography: https://www.instagram.com/aniketh.png/)
+- Substack: https://ankthba.substack.com/
+- Spotify: https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t

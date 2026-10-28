@@ -1,0 +1,48 @@
+# Aniketh Bandlamudi
+
+> Aniketh Bandlamudi is a Computer Science and Applied Mathematics student at the University of Virginia (B.S. expected May 2030) and the founder of Pragmatic Research, Inc. and OCRadar. Pragmatic is the system of record for AI agents. OCRadar is a nonprofit building an AI app that helps catch oral cancer early. He also built Haze, a 5-star rated weather app for iPhone, iPad, Mac and Apple Watch.
+
+This is his personal site, aniketh.net. The facts below are taken from its pages. For a longer version with work history, projects and press in full, read https://aniketh.net/llms-full.txt.
+
+## Key facts
+
+- Name: Aniketh Bandlamudi
+- Education: University of Virginia, School of Engineering and Applied Science, B.S. Computer Science & Applied Mathematics, expected May 2030. Oakton High School (Vienna, Virginia), Advanced Studies Diploma. Y Combinator Startup School.
+- Founder of Pragmatic (incorporated as Pragmatic Research, Inc., a Delaware C-corp, in August 2026), January 2026 to present
+- Founder and President of OCRadar, May 2022 to present
+- Engineering Intern at Alarm.com, May 2026
+- Software Lead (FRC) and R&D Captain / Software Lead (FTC) at Oakton Robotics, 2022 to 2026
+- Co-author of "Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection", arXiv:2510.16235, October 2025
+- Winner, Social Justice Track, Hack The Nest 2025, with IllumiSign
+- Covered by WTOP News, The Korea Times, Vision Times, Virginia News Network and Fairfax County Public Schools; photography featured by United Airlines, Star Alliance and Washington Dulles International Airport
+- Contact: me@aniketh.net
+
+## Pages
+
+- [About](https://aniketh.net/): short bio, latest writing, what he is listening to, recent photos
+- [Work](https://aniketh.net/work/): Pragmatic, Alarm.com, OCRadar, Oakton Robotics
+- [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
+- [Projects](https://aniketh.net/projects/): Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
+- [Research](https://aniketh.net/research/): CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
+- [Press](https://aniketh.net/press/): news coverage and recognition
+- [Resume](https://aniketh.net/resume/): resume, also as a [PDF](https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf)
+- [Contact](https://aniketh.net/contact/): email and profiles elsewhere
+- [Photography](https://aniketh.net/photos/): aviation and landscape photography
+- [Music](https://aniketh.net/music/): what he is listening to, live from Spotify
+
+## Things he made
+
+- [Pragmatic](https://aniketh.net/pragmatic/): the system of record for AI agents, from Pragmatic Research, Inc.
+- [Haze](https://aniketh.net/haze/): weather app for iPhone, iPad, Mac and Apple Watch; free on the [App Store](https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735)
+- [OCRadar](https://ocradar.com/): AI-powered mobile platform for early oral cancer detection
+- [Hypnagogia](https://aniketh.net/hypnagogia/): whole-brain Drosophila simulation testing whether a learned memory reactivates during sleep
+- [Graphite](https://aniketh.net/graphite/): 3D graphing calculator that runs in the browser
+- [Aperta](https://aperta.health): turns a clinical discharge note into something the patient understands at home; built at VTHacks 14
+
+## Elsewhere
+
+- [LinkedIn](https://www.linkedin.com/in/anikethb/)
+- [GitHub](https://github.com/ankthba)
+- [X](https://x.com/ankthba)
+- [Instagram](https://www.instagram.com/ankthba/), and [@aniketh.png](https://www.instagram.com/aniketh.png/) for photography
+- [Substack](https://ankthba.substack.com/)

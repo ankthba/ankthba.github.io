@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aniketh.net/</loc></url>
-  <url><loc>https://aniketh.net/work/</loc></url>
-  <url><loc>https://aniketh.net/education/</loc></url>
-  <url><loc>https://aniketh.net/projects/</loc></url>
-  <url><loc>https://aniketh.net/research/</loc></url>
+  <url><loc>https://aniketh.net/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/work/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/education/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/projects/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/research/</loc><lastmod>2026-10-27</lastmod></url>
   <url><loc>https://aniketh.net/music/</loc></url>
   <url><loc>https://aniketh.net/photos/</loc></url>
-  <url><loc>https://aniketh.net/press/</loc></url>
-  <url><loc>https://aniketh.net/contact/</loc></url>
-  <url><loc>https://aniketh.net/resume/</loc></url>
-  <url><loc>https://aniketh.net/pragmatic/</loc></url>
+  <url><loc>https://aniketh.net/press/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/contact/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/resume/</loc><lastmod>2026-10-27</lastmod></url>
+  <url><loc>https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf</loc></url>
   <url><loc>https://aniketh.net/haze/</loc></url>
-  <url><loc>https://aniketh.net/pragmatic/stet/</loc></url>
-  <url><loc>https://aniketh.net/pragmatic/iris/</loc></url>
+  <url><loc>https://aniketh.net/haze/privacy/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/runtime/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/docs/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/docs/quickstart/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/practice/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/questions/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/newsroom/</loc></url>
+  <url><loc>https://aniketh.net/pragmatic/newsroom/incorporation/</loc></url>
+  <url><loc>https://aniketh.net/hypnagogia/</loc></url>
+  <url><loc>https://aniketh.net/graphite/</loc></url>
 </urlset>

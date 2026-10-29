@@ -22,7 +22,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - [About](https://aniketh.net/): short bio, latest writing, what he is listening to, recent photos
 - [Work](https://aniketh.net/work/): Pragmatic, Alarm.com, OCRadar, Oakton Robotics
 - [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
-- [Projects](https://aniketh.net/projects/): Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
+- [Projects](https://aniketh.net/projects/): Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
 - [Research](https://aniketh.net/research/): CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
 - [Press](https://aniketh.net/press/): news coverage and recognition
 - [Resume](https://aniketh.net/resume/): resume, also as a [PDF](https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf)
@@ -37,6 +37,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - [OCRadar](https://ocradar.com/): AI-powered mobile platform for early oral cancer detection
 - [Hypnagogia](https://aniketh.net/hypnagogia/): whole-brain Drosophila simulation testing whether a learned memory reactivates during sleep
 - [Graphite](https://aniketh.net/graphite/): 3D graphing calculator that runs in the browser
+- Genzo: film camera for iPhone that develops single-frame Bayer RAW through its own scene-linear color pipeline into five original film looks; coming soon, for iOS 26 or later
 - [Aperta](https://aperta.health): turns a clinical discharge note into something the patient understands at home; built at VTHacks 14
 
 ## Elsewhere

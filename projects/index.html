@@ -19,16 +19,16 @@
     })();
   </script>
   <title>Projects | Aniketh Bandlamudi</title>
-  <meta name="description" content="Projects by Aniketh Bandlamudi, including Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta name="description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <link rel="canonical" href="https://aniketh.net/projects/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Projects | Aniketh Bandlamudi">
-  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <meta property="og:url" content="https://aniketh.net/projects/">
   <meta property="og:image" content="https://aniketh.net/assets/img/aniketh.jpeg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Projects | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <meta name="twitter:image" content="https://aniketh.net/assets/img/aniketh.jpeg">  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/label.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
@@ -57,6 +57,18 @@
               "@type": "ListItem",
               "position": 1,
               "item": {
+                "@type": "CreativeWork",
+                "name": "Rust Runtime for AI Agents",
+                "description": "A durable execution runtime in Rust for AI agents that journals every model call and tool call, so a crashed run resumes where it stopped and any run can be replayed exactly.",
+                "creator": {
+                  "@id": "https://aniketh.net/#person"
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "item": {
                 "@type": "SoftwareApplication",
                 "name": "Genzo",
                 "description": "A film camera for iPhone that develops single-frame Bayer RAW through a scene-linear color pipeline into five original film looks. Coming soon.",
@@ -69,7 +81,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 2,
+              "position": 3,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Meridian",
@@ -82,7 +94,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 3,
+              "position": 4,
               "item": {
                 "@type": "SoftwareApplication",
                 "@id": "https://aniketh.net/haze/#app",
@@ -97,7 +109,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 4,
+              "position": 5,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Hypnagogia",
@@ -110,7 +122,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 5,
+              "position": 6,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Aperta",
@@ -123,7 +135,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 6,
+              "position": 7,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Sentry",
@@ -136,7 +148,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 7,
+              "position": 8,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Graphite",
@@ -149,7 +161,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 8,
+              "position": 9,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Splatify",
@@ -162,7 +174,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 9,
+              "position": 10,
               "item": {
                 "@type": "CreativeWork",
                 "name": "IllumiSign",
@@ -228,16 +240,14 @@
   <main class="page">
         <h1 class="page-title">Projects</h1>
         <div class="projects__list projects__list--across">
-          <!-- Pragmatic hidden for now; covered under Work experience.
           <article class="project-item">
             <div class="project-item__header">
-              <h3 class="project-item__title">Pragmatic</h3>
+              <h3 class="project-item__title">Rust Runtime for AI Agents</h3>
               <span class="project-item__role">Creator</span>
             </div>
-            <p class="project-item__description">A durable execution runtime in Rust for nondeterministic AI agents. It journals every step of a run so agents survive any crash, resume exactly where they stopped, and replay faithfully for debugging and audit.</p>
-            <a href="/pragmatic/" class="project-item__link">Visit site</a>
+            <p class="project-item__description">A durable execution runtime in Rust for nondeterministic AI agents. It journals every model call and tool call to a tamper-evident log, so a crashed run resumes exactly where it stopped without repeating finished work, and any run can be replayed faithfully for debugging and audit.</p>
+            <p class="project-item__description">Zero-dependency core with Python bindings and a CLI, plus independent anchoring of the log and evidence bundles an auditor can verify offline.</p>
           </article>
-          -->
 
           <article class="project-item">
             <div class="project-item__header">

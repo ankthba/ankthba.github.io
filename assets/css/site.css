@@ -7,19 +7,10 @@
 
 /* ---------------------------------------------------------
    1. Fonts
-   Geist Serif, from the geist package on jsDelivr (it isn't on
-   Google Fonts), preloaded in each page's head. It comes in one
-   weight and no italic, so nothing here is set bolder, and what the
-   page sets in italic stands upright, told apart by its colour;
-   font-synthesis on the body keeps a browser from faking either.
+   EB Garamond, upright and italic at 400 and 500, linked from
+   Google Fonts in each page's head (the link starts the download
+   sooner than an @import here would).
    --------------------------------------------------------- */
-
-@font-face {
-  font-family: "Geist Serif";
-  src: url("https://cdn.jsdelivr.net/npm/geist@1.9.0/dist/fonts/geist-serif/GeistSerifVF.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
 
 /* ---------------------------------------------------------
    2. CSS Variables & Theme
@@ -52,9 +43,9 @@
      controls: they set the page's appearance, they don't go anywhere. */
   --color-underline-quiet: rgba(38, 38, 36, 0.32);
 
-  --font-serif: "Geist Serif", Georgia, "Times New Roman", serif;
-  --font-display: "Geist Serif", Georgia, "Times New Roman", serif;
-  --font-sans: "Geist Serif", Georgia, "Times New Roman", serif;
+  --font-serif: "EB Garamond", Garamond, Georgia, serif;
+  --font-display: "EB Garamond", Garamond, Georgia, serif;
+  --font-sans: "EB Garamond", Garamond, Georgia, serif;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;
@@ -196,12 +187,12 @@ p {
   font-weight: 400;
   /* Fallback for browsers without container query units. */
   font-size: clamp(2.5rem, 6vw, 3.5rem);
-  /* "Aniketh Bandlamudi" advances 9.404em in Geist Serif, so the column
+  /* "Aniketh Bandlamudi" advances 8.068em in EB Garamond, so the column
      width divided by that sets the name to exactly one measure — the same
      left and right edge as the nav and the body copy, at every viewport.
      The constant is tied to this string in this face: change either and
      re-measure, or the name stops meeting the column. */
-  font-size: calc(100cqi / 9.404);
+  font-size: calc(100cqi / 8.068);
   white-space: nowrap;
   line-height: 1.1;
   color: var(--color-fg);
@@ -221,14 +212,13 @@ a.masthead__name:hover {
 .masthead__nav {
   max-width: 100%;
   margin: 2rem auto 0;
-  /* The body copy on this site is justified, so the nav is too: every row
-     meets both edges of the same measure the name and the text meet.
-     balance still picks the break points, which keeps the rows to an even
-     number of links each — without it the 15th link strands alone on a
-     line, and justifying a lone link would stretch it across the column. */
+  /* Each row centred under the name with the same space between every
+     link. Justified, the short rows of a split nav opened wide and
+     uneven gaps, a different width in each row; centred, every gap is
+     the same. balance picks the break points, so the rows come out
+     about the same length. */
   text-wrap: balance;
-  text-align: justify;
-  text-align-last: justify;
+  text-align: center;
 }
 
 /* Keep handles and other unbreakable tokens on one line */
@@ -238,19 +228,18 @@ a.masthead__name:hover {
 
 .masthead__nav-link {
   display: inline-block;
-  /* No side margins: justification supplies the horizontal gaps, and
-     margins here would inset the first and last link of every row, leaving
-     the nav a few px narrower than the column it is supposed to match. */
-  margin: 0 0 0.65rem;
+  /* half the gap either side of every link, so the gaps are all one
+     width wherever a row breaks */
+  margin: 0 0.6rem 0.5rem;
   text-align: center;
   font-size: 0.95rem;
   color: var(--color-fg);
   transition: color var(--transition-fast);
 }
 
-/* Invisible ghosts reserve both the upright and italic widths, so the
-   current page's link sits at the same width as the rest of the row
-   whichever way it is set */
+/* Invisible ghosts reserve both the upright and italic widths
+   (EB Garamond italic runs narrower) so the italic current-page
+   link sits at the same width as the rest of the row */
 .masthead__nav-link::before,
 .masthead__nav-link::after {
   content: attr(data-text);
@@ -866,10 +855,6 @@ a.masthead__name:hover {
     padding-right: 1.75rem;
   }
 
-  .masthead__nav-link {
-    margin: 0 0 0.45rem;
-  }
-
   .page {
     padding-left: 1.75rem;
     padding-right: 1.75rem;
@@ -905,13 +890,8 @@ a.masthead__name:hover {
     hyphens: none;
   }
 
-  .masthead__nav {
-    text-align: center;
-    text-align-last: center;
-  }
-
   .masthead__nav-link {
-    margin: 0 0.55rem 0.5rem;
+    margin: 0 0.5rem 0.45rem;
   }
 }
 
@@ -1089,8 +1069,8 @@ a.play:hover .play__name {
    written: the new music page (music.css, which takes its sizes and
    colours from the names below), the pile of photographs, the
    fuller contact page, search and the opening. Each uses only what the rest of the
-   page already does: the column, Geist Serif, ink, the muted brown,
-   the Prussian blue for links, the muted colour for what is quiet.
+   page already does: the column, EB Garamond, ink, the muted brown,
+   the Prussian blue for links, italic for what is quiet.
    --------------------------------------------------------- */
 
 /* The names music.css and site.js were written against, pointed at
@@ -1159,11 +1139,10 @@ a.play:hover .play__name {
   top: 0.75rem;
 }
 
-/* Where else to find me: a second row under the pages, justified to
-   the same two edges, a little apart and in the quieter colour so the
-   pages lead */
+/* Where else to find me: a row of its own under the pages, a little
+   apart and in the quieter colour so the pages lead */
 .masthead__nav--else {
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
 }
 
 .masthead__nav--else .masthead__nav-link {

@@ -146,6 +146,11 @@ img {
   display: block;
 }
 
+/* Lists on this site are rows, never bullets */
+ul, ol {
+  list-style: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;

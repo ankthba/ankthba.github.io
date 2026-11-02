@@ -249,6 +249,21 @@
     var tip = el('span', 'tm__tip');
     tip.setAttribute('aria-hidden', 'true');
 
+    /* On a touch screen nothing is pointed at, so the first tap on a
+       tile shows its label as pointing would, and a second tap on the
+       same tile opens it; a tap anywhere else puts the label away. */
+    box._armed = null;
+    box._hide = null;
+    if (!box._tapAway) {
+      box._tapAway = true;
+      document.addEventListener('pointerdown', function (event) {
+        if (box._armed && !box.contains(event.target)) {
+          box._armed = null;
+          if (box._hide) box._hide();
+        }
+      });
+    }
+
     placed.forEach(function (p, i) {
       var item = p[0], k = p[1];
       var tile = link(item, 'tm__tile k' + k);
@@ -280,6 +295,17 @@
       tile.addEventListener('focus', show);
       tile.addEventListener('mouseleave', hide);
       tile.addEventListener('blur', hide);
+      var touched = false;
+      tile.addEventListener('pointerdown', function (event) { touched = event.pointerType !== 'mouse'; });
+      tile.addEventListener('click', function (event) {
+        if (touched && box._armed !== tile) {
+          event.preventDefault();
+          box._armed = tile;
+          box._hide = hide;
+          show();
+        }
+        touched = false;
+      });
       box.appendChild(tile);
     });
     box.appendChild(tip);

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
        the theme control is only shown where it can actually work. */
@@ -222,108 +222,81 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  <div class="frame">
-  <header class="side">
-    <nav class="side__nav" aria-label="Pages">
-      <a href="/" aria-current="page">About</a>
-      <a href="/work/">Work</a>
-      <a href="/education/">Education</a>
-      <a href="/projects/">Projects</a>
-      <a href="/research/">Research</a>
-      <a href="/photos/">Photos</a>
-      <a href="/music/">Music</a>
-      <a href="/press/">Press</a>
-      <a href="/contact/">Contact</a>
-      <a href="/resume/">Resume</a>
+  <header class="masthead masthead--home">
+    <h1 class="masthead__name">Aniketh Bandlamudi</h1>
+    <nav class="masthead__nav" aria-label="Pages">
+      <a href="/" class="masthead__nav-link active" data-text="About" aria-current="page">About</a>
+      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
+      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
+      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
+      <button type="button" class="masthead__nav-link kbar-open" data-text="Search" aria-keyshortcuts="Meta+K Control+K">Search</button>
     </nav>
-    <nav class="side__else" aria-label="Elsewhere">
-      <a href="mailto:me@aniketh.net">Email</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+    <nav class="masthead__nav masthead__nav--else" aria-label="Elsewhere">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
     </nav>
-    <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>&#8984;K</kbd></button>
   </header>
 
 
   <main class="page" id="main">
-    <h1 class="hello__name">Aniketh Bandlamudi</h1>
-    <p class="hello__line">CS and Applied Math at the University of Virginia.</p>
-    <section class="hello" aria-label="About">
+    <div class="about__text">
+      <p>Hey, I&rsquo;m Aniketh, studying CS and Applied Math at the University of Virginia.</p>
       <p>Right now I&rsquo;m building <a href="/pragmatic/">Pragmatic</a>, the system of record for AI agents, and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a>, which uses AI to help catch oral cancer early. I also built <a href="/haze/">Haze</a>, a 5-star rated weather app for iPhone. My work has reached millions of people worldwide and been covered by <a href="/press/">WTOP, Korea Times, United Airlines, and Washington Dulles International Airport among others</a>.</p>
       <p>In a previous life, I was an engineering intern at Alarm.com, led software at Oakton Robotics for four years, attended Y Combinator Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>. Outside work, I photograph aircraft at Dulles and landscapes around the world. I also hike and listen to a lot of <a href="/music/">music</a>.</p>
-    </section>
+    </div>
 
-    <section class="section" aria-labelledby="building-label">
-      <h2 class="label" id="building-label">Building</h2>
-      <div class="rows">
-        <a class="row" href="/pragmatic/"><span class="row__name">Pragmatic</span><span class="row__what">The system of record for AI agents</span><span class="row__meta">2026</span></a>
-        <a class="row" href="https://ocradar.com/" target="_blank" rel="noopener"><span class="row__name">OCRadar</span><span class="row__what">AI that helps catch oral cancer early</span><span class="row__meta">2022</span></a>
-        <a class="row" href="/haze/"><span class="row__name">Haze</span><span class="row__what">Weather for iPhone, iPad, Mac and Watch</span><span class="row__meta">iOS</span></a>
-      </div>
-    </section>
+    <div class="home__row">
+      <div class="home__col">
+        <section class="writing" aria-labelledby="writing-label">
+          <h2 class="writing__heading" id="writing-label">Latest writing</h2>
+          <div class="writing__list">
+            <a href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener" class="writing__link" data-text="What You Owe">What You Owe</a>
+          </div>
+        </section>
 
-    <section class="section" aria-labelledby="projects-label">
-      <h2 class="label" id="projects-label">Projects</h2>
-      <div class="rows">
-        <a class="row" href="https://github.com/pragmaticco/pragmatic" target="_blank" rel="noopener"><span class="row__name">Rust runtime</span><span class="row__what">Durable execution and exact replay for AI agents</span><span class="row__meta">Rust</span></a>
-        <a class="row" href="https://github.com/ankthba/meridian" target="_blank" rel="noopener"><span class="row__name">Meridian</span><span class="row__what">A native market terminal for the Mac, with an AI analyst</span><span class="row__meta">macOS</span></a>
-        <a class="row" href="/projects/#genzo"><span class="row__name">Genzo</span><span class="row__what">A film camera for iPhone with its own color science</span><span class="row__meta">Soon</span></a>
-        <a class="row" href="/hypnagogia/"><span class="row__name">Hypnagogia</span><span class="row__what">A whole-brain fruit fly simulation of memory in sleep</span><span class="row__meta">Research</span></a>
-        <a class="row" href="https://devpost.com/software/illumisign" target="_blank" rel="noopener"><span class="row__name">IllumiSign</span><span class="row__what">Eye-tracked speech for people with ALS</span><span class="row__meta">Award</span></a>
+        <!-- Filled in by /assets/js/listening.js; hidden until it has a song. -->
+        <section class="writing listening" data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden>
+          <h2 class="writing__heading" data-listening-heading>Most recently listened to</h2>
+          <a class="listening__song" data-listening-link target="_blank" rel="noopener">
+            <img class="listening__art" alt="" data-listening-art>
+            <span class="listening__text">
+              <span class="listening__name" data-listening-name></span>
+              <span class="listening__by" data-listening-by></span>
+            </span>
+          </a>
+          <a class="writing__link listening__more" href="/music/">More music</a>
+        </section>
       </div>
-      <a class="more" href="/projects/">All 16 projects</a>
-    </section>
 
-    <section class="section" aria-labelledby="writing-label">
-      <h2 class="label" id="writing-label">Writing</h2>
-      <div class="rows">
-        <a class="row" href="https://ankthba.substack.com/p/what-you-owe" target="_blank" rel="noopener"><span class="row__name">What You Owe</span><span class="row__what">On Substack</span><span class="row__meta"></span></a>
-      </div>
-    </section>
-
-    <!-- Six photographs from /photos/, picked at random by /assets/js/shuffle.js and piled up by /assets/js/site.js. -->
-    <section class="section" aria-labelledby="photos-label" data-shuffle data-count="6" data-sizes="22rem" hidden>
-      <h2 class="label" id="photos-label">Photos</h2>
-      <div class="stack" data-stack data-shuffle-grid></div>
-      <div class="stack-foot">
-        <p>Aviation and landscapes. Drag one away.</p>
-        <p class="stack-foot__do"><button type="button" data-stack-next hidden>Next</button><a href="/photos/">All 252</a></p>
-      </div>
-    </section>
-
-    <!-- Filled in by /assets/js/listening.js; hidden until it has a song. Opens the music page. -->
-    <section class="section listening" aria-labelledby="listening-label" data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden>
-      <h2 class="label" id="listening-label" data-listening-heading>Most recently listened to</h2>
-      <div class="rows">
-        <a class="row row--art" href="/music/" data-listening-link>
-          <img class="row__art" alt="" data-listening-art>
-          <span class="row__stack"><span data-listening-name></span><span data-listening-by></span></span>
-          <span class="row__meta"></span>
-        </a>
-      </div>
-    </section>
+      <!-- Six photographs from /photos/, picked at random by /assets/js/shuffle.js and piled up by /assets/js/site.js, which turns them over on their own. -->
+      <section class="writing photos-mini" data-shuffle data-count="6" data-sizes="15rem" hidden>
+        <h2 class="writing__heading">Photos</h2>
+        <div class="stack" data-stack data-shuffle-grid></div>
+        <a class="writing__link photos-mini__more" href="/photos/">More photos</a>
+      </section>
+    </div>
   </main>
 
-  <footer class="site-foot">
-    <nav class="site-foot__else" aria-label="Elsewhere">
-      <a href="mailto:me@aniketh.net">Email</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </nav>
-    <span>&copy; 2026 Aniketh Bandlamudi</span>
-    <span class="theme-toggle" role="group" aria-label="Color theme">
-      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
-    </span>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
+      <span class="theme-toggle" role="group" aria-label="Color theme">
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
+      </span>
+    </p>
   </footer>
-  </div>
   <script src="/assets/js/theme.js"></script>
   <script src="/assets/js/intro.js"></script>
   <script src="/assets/js/site.js"></script>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
        the theme control is only shown where it can actually work. */
@@ -169,29 +169,29 @@
 <body>
 
   <a class="skip" href="#main">Skip to content</a>
-  <div class="frame">
-  <header class="side">
-    <nav class="side__nav" aria-label="Pages">
-      <a href="/">About</a>
-      <a href="/work/">Work</a>
-      <a href="/education/">Education</a>
-      <a href="/projects/">Projects</a>
-      <a href="/research/">Research</a>
-      <a href="/photos/">Photos</a>
-      <a href="/music/">Music</a>
-      <a href="/press/" aria-current="page">Press</a>
-      <a href="/contact/">Contact</a>
-      <a href="/resume/">Resume</a>
+  <header class="masthead">
+    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+    <nav class="masthead__nav" aria-label="Pages">
+      <a href="/" class="masthead__nav-link" data-text="About">About</a>
+      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
+      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
+      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
+      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
+      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
+      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
+      <a href="/press/" class="masthead__nav-link active" data-text="Press" aria-current="page">Press</a>
+      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
+      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
+      <button type="button" class="masthead__nav-link kbar-open" data-text="Search" aria-keyshortcuts="Meta+K Control+K">Search</button>
     </nav>
-    <nav class="side__else" aria-label="Elsewhere">
-      <a href="mailto:me@aniketh.net">Email</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+    <nav class="masthead__nav masthead__nav--else" aria-label="Elsewhere">
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
+      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
     </nav>
-    <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>&#8984;K</kbd></button>
   </header>
 
   <main class="page" id="main">
@@ -334,23 +334,16 @@
         </div>
   </main>
 
-  <footer class="site-foot">
-    <nav class="site-foot__else" aria-label="Elsewhere">
-      <a href="mailto:me@aniketh.net">Email</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
-    </nav>
-    <span>&copy; 2026 Aniketh Bandlamudi</span>
-    <span class="theme-toggle" role="group" aria-label="Color theme">
-      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
-    </span>
+  <footer class="colophon">
+    <p class="colophon__meta">
+      <span>&copy; 2026 Aniketh Bandlamudi</span>
+      <span class="theme-toggle" role="group" aria-label="Color theme">
+        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
+        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
+      </span>
+    </p>
   </footer>
-  </div>
   <script src="/assets/js/theme.js"></script>
   <script src="/assets/js/site.js"></script>
 </body>

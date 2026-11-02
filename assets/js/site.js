@@ -83,8 +83,9 @@
       var MAT = 10; // the print's white border, both sides together
 
       function size() {
-        var w = Math.min(stack.clientWidth * 0.66, 340);
-        var h = stack.clientHeight - 48;
+        // the prints fill the pile's box, less a little for their tilt
+        var w = stack.clientWidth - 12;
+        var h = stack.clientHeight - 12;
         cards.forEach(function (card) {
           var img = card.querySelector('img');
           var iw = Number(img.getAttribute('width')) || 4;
@@ -180,6 +181,35 @@
         if (dragged) event.preventDefault();
         dragged = false;
       }, true);
+
+      /* On its own, the top print goes to the back every few seconds.
+         It waits while the pile is pointed at, held or has focus, while
+         it is out of view or the page is hidden, and for a full beat
+         after any print is thrown by hand; where motion is unwelcome,
+         it stays still. */
+      var EVERY = 3600;
+      var last = performance.now();
+      var resting = false;
+      var seen = true;
+      var moved = next;
+      next = function (direction) {
+        last = performance.now();
+        moved(direction);
+      };
+      stack.addEventListener('pointerenter', function () { resting = true; });
+      stack.addEventListener('pointerleave', function () { resting = false; last = performance.now(); });
+      stack.addEventListener('focusin', function () { resting = true; });
+      stack.addEventListener('focusout', function () { resting = false; last = performance.now(); });
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (entries) {
+          seen = entries[0].isIntersecting;
+          if (seen) last = performance.now();
+        }).observe(stack);
+      }
+      setInterval(function () {
+        if (still.matches || document.hidden || resting || drag || !seen) return;
+        if (performance.now() - last >= EVERY) next(1);
+      }, 250);
     });
   }
 

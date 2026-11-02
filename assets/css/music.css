@@ -22,7 +22,7 @@
 
 /* figures line up, in the serif's even-width numerals */
 .music {
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .block__head {
@@ -44,7 +44,7 @@
 }
 
 .music .label {
-  margin-bottom: var(--s6);
+  margin-bottom: var(--s4);
 }
 
 .sub {
@@ -138,9 +138,9 @@
 
 .now__name {
   margin-top: var(--s2);
-  font-size: var(--display);
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  font-size: var(--name);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
   overflow-wrap: anywhere;
 }
 
@@ -256,7 +256,7 @@
   grid-area: v;
   font-size: clamp(2rem, 3.6vw, 2.75rem);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.015em;
   white-space: nowrap;
 }
 
@@ -762,7 +762,7 @@ a.stand:hover {
 
 .fact__v {
   font-size: 1.5rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.008em;
   line-height: 1.15;
 }
 
@@ -893,7 +893,7 @@ a.stand:hover {
 
 .day__date {
   font-size: var(--name);
-  line-height: 1.1;
+  line-height: 1.05;
   letter-spacing: -0.015em;
 }
 

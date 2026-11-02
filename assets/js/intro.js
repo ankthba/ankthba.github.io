@@ -17,7 +17,7 @@
   var root = document.documentElement;
   if (!root.classList.contains('intro')) return;
 
-  var name = document.querySelector('.hello__name');
+  var name = document.querySelector('.masthead__name');
   var TEXT = name ? name.textContent : '';
   // the jumble: letters of the same case as the one they stand for, none
   // that drop below the line, so the name keeps its outline
@@ -145,10 +145,11 @@
       ], { duration: end, fill: 'backwards' });
       anims.push(move);
 
-      // the rest comes in as it arrives: the sidebar, then the page
-      // under the name, then the foot, each a beat after the one before
-      var page = Array.prototype.slice.call(document.querySelectorAll('.page > :not(.hello__name)'));
-      [[document.querySelector('.side')], page, [document.querySelector('.site-foot')]].forEach(function (group, i) {
+      // the rest comes in as it arrives: the pages under the name,
+      // then the page, then the colophon, each a beat after the one before
+      var page = Array.prototype.slice.call(document.querySelectorAll('.page > *'));
+      var navs = Array.prototype.slice.call(document.querySelectorAll('.masthead__nav'));
+      [navs, page, [document.querySelector('.colophon')]].forEach(function (group, i) {
         group.forEach(function (el, j) {
           if (!el) return;
           anims.push(el.animate([

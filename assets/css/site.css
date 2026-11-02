@@ -1,0 +1,1396 @@
+/* =========================================================
+   site.css - Portfolio
+
+   A sidebar that never moves, with every page in it, and one
+   column of text beside it. Geist Serif for everything you
+   read, Geist Mono for the small facts (years, keys). Three
+   sizes of type, one row pattern for every list, one spacing
+   scale. What needs room (the photographs, the music, the
+   resume) runs on past the column to the right, so the
+   sidebar stays put. The behaviour is in site.js.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. Tokens
+   --------------------------------------------------------- */
+
+/* Geist Serif comes in one weight, and isn't on Google Fonts yet */
+@font-face {
+  font-family: "Geist Serif";
+  src: url("https://cdn.jsdelivr.net/npm/geist@1.9.0/dist/fonts/geist-serif/GeistSerifVF.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --bg: #fcfcfb;
+  --fg: #1a1a18;
+  --fg-2: #4b4a46;
+  --gray: #7a7973;
+  --faint: #aeada7;
+  --line: #ecebe7;
+  --hover: #f3f2ee;
+  --print: #ffffff;
+  --shadow: 0 1px 2px rgba(20, 20, 18, 0.08), 0 12px 32px -12px rgba(20, 20, 18, 0.28);
+
+  --serif: "Geist Serif", "Times New Roman", Times, serif;
+  /* Numbers too are Geist Serif, in its even-width figures (--mono is
+     kept as a name for where the figures need to line up). */
+  --mono: var(--serif);
+
+  /* type */
+  --small: 0.875rem;
+  --text: 1rem;
+  --name: 2.75rem;
+  --heading: 1.5rem;
+  --display: clamp(3rem, 6vw, 4.5rem);
+
+  /* space: one scale, in steps of 0.25rem */
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 0.75rem;
+  --s4: 1rem;
+  --s6: 1.5rem;
+  --s8: 2rem;
+  --s12: 3rem;
+  --s16: 4rem;
+
+  /* the frame: the sidebar and the column beside it, centred together
+     as one block. Running text keeps to --measure inside the column;
+     lists, photographs and charts use all of it. */
+  --side: 13rem;
+  --gutter-x: 4.5rem;
+  --column: 44rem;
+  --measure: 38rem;
+  --frame: calc(var(--side) + var(--gutter-x) + var(--column));
+  --wide: 56rem;
+  --edge: 1.25rem;
+  --top: clamp(2.5rem, 7vh, 4.5rem);
+  --pad: 0.625rem; /* how far a row's highlight reaches past its text */
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --fast: 0.15s ease;
+
+  color-scheme: light;
+}
+
+/* The dark palette is written twice: once for the system asking for it
+   (when no choice is stored), once for the theme switch choosing it. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111110;
+    --fg: #ededeb;
+    --fg-2: #c4c3be;
+    --gray: #9b9a94;
+    --faint: #63625e;
+    --line: #232321;
+    --hover: #1b1b19;
+    --print: #e9e8e3;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px -12px rgba(0, 0, 0, 0.85);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #111110;
+  --fg: #ededeb;
+  --fg-2: #c4c3be;
+  --gray: #9b9a94;
+  --faint: #63625e;
+  --line: #232321;
+  --hover: #1b1b19;
+  --print: #e9e8e3;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px -12px rgba(0, 0, 0, 0.85);
+  color-scheme: dark;
+}
+
+/* The names music.css was written against, pointed at the tokens above. */
+:root {
+  --color-bg: var(--bg);
+  --color-bg-alt: var(--hover);
+  --color-fg: var(--fg);
+  --color-prose: var(--fg-2);
+  --color-muted: var(--gray);
+  --color-border: var(--line);
+  --color-border-hover: var(--faint);
+  --color-link: var(--fg);
+  --color-link-hover: var(--fg);
+  --color-link-underline: var(--faint);
+  --color-mat: #fbfaf7;
+  --quiet: var(--gray);
+  --track: var(--line);
+  --underline: var(--faint);
+  --underline-strong: var(--gray);
+  --art-edge: var(--line);
+  --font-serif: var(--serif);
+  --font-display: var(--serif);
+  --crisp: var(--ease);
+  --gutter: var(--s6);
+  --t-head: var(--name);
+  --t-lead: 1.25rem;
+  --t-text: var(--text);
+  --t-note: var(--small);
+  --step: var(--s12);
+  --transition-fast: var(--fast);
+  --transition-base: 0.3s var(--ease);
+}
+
+/* ---------------------------------------------------------
+   2. Base
+   --------------------------------------------------------- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* The body is the reference for what runs past the column (cqw, below),
+   which unlike vw leaves out the scrollbar. font-synthesis: none keeps a
+   browser from faking a bold or an italic Geist Serif doesn't have. */
+body {
+  container-type: inline-size;
+  overflow-x: clip;
+  min-height: 100svh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: var(--text);
+  line-height: 1.6;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+h1, h2, h3, h4 {
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--faint);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip {
+  position: absolute;
+  left: var(--edge);
+  top: -3rem;
+  z-index: 60;
+  padding: var(--s1) var(--s3);
+  border-radius: 6px;
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.skip:focus {
+  top: var(--s3);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+}
+
+/* Links in running text: a faint line under them that darkens when
+   pointed at */
+.page p a,
+.project-item__link,
+.writing__link,
+.photos__links a,
+.resume__download,
+.u {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color var(--fast), color var(--fast);
+}
+
+.page p a:hover,
+.project-item__link:hover,
+.writing__link:hover,
+.photos__links a:hover,
+.resume__download:hover,
+.u:hover {
+  text-decoration-color: var(--fg);
+}
+
+/* ---------------------------------------------------------
+   3. The frame: the sidebar and the column, centred as one block.
+   The sidebar is as tall as the window: the pages at the top, where
+   else to find me and Search at the bottom.
+   --------------------------------------------------------- */
+
+.frame {
+  display: grid;
+  grid-template-columns: var(--side) minmax(0, var(--column));
+  grid-template-rows: auto 1fr;
+  column-gap: var(--gutter-x);
+  max-width: calc(var(--frame) + var(--edge) * 2);
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: var(--top) var(--edge) 0;
+}
+
+.side {
+  grid-row: 1 / span 2;
+  align-self: start;
+  position: sticky;
+  top: var(--top);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s6);
+  height: calc(100svh - var(--top) * 2);
+  /* room for the highlights, which reach past the text on the left */
+  margin-left: calc(var(--pad) * -1);
+  padding-left: var(--pad);
+  overflow-y: auto;
+  scrollbar-width: none;
+  /* stays as it is from page to page, while the page beside it changes */
+  view-transition-name: side;
+}
+
+.side::-webkit-scrollbar {
+  display: none;
+}
+
+.side__nav,
+.side__else {
+  display: flex;
+  flex-direction: column;
+  margin-left: calc(var(--pad) * -1);
+}
+
+.side__else {
+  margin-top: auto;
+}
+
+.side__nav a,
+.side__else a {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 0.125rem var(--pad);
+  border-radius: 6px;
+  color: var(--gray);
+  transition: color var(--fast), background var(--fast);
+}
+
+.side__nav a:hover,
+.side__else a:hover {
+  color: var(--fg);
+  background: var(--hover);
+}
+
+.side__nav a[aria-current="page"] {
+  color: var(--fg);
+}
+
+/* the page you are on: a small dot after its name */
+.side__nav a[aria-current="page"]::after {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Search: ⌘K, from every page */
+.kbar-open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  align-self: flex-start;
+  margin-left: calc(var(--pad) * -1);
+  padding: 0.125rem var(--pad);
+  border-radius: 6px;
+  color: var(--gray);
+  transition: color var(--fast), background var(--fast);
+}
+
+.kbar-open:hover {
+  color: var(--fg);
+  background: var(--hover);
+}
+
+.kbar-open kbd {
+  padding: 0.05rem 0.3rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--gray);
+  background: var(--bg);
+}
+
+@media (hover: none) {
+  .kbar-open kbd { display: none; }
+}
+
+.page {
+  grid-column: 2;
+  min-width: 0;
+}
+
+.site-foot__else {
+  display: none;
+}
+
+.site-foot {
+  grid-column: 2;
+  align-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s2) var(--s6);
+  margin-top: var(--s16);
+  padding: var(--s4) 0 var(--s8);
+  border-top: 1px solid var(--line);
+  font-size: var(--small);
+  color: var(--faint);
+}
+
+/* Light, Dark, System: shown only once the head script has proved
+   scripting is on */
+.theme-toggle {
+  display: none;
+}
+
+:root.js .theme-toggle {
+  display: inline-flex;
+  gap: var(--s4);
+}
+
+.theme-toggle__option {
+  color: var(--faint);
+  transition: color var(--fast);
+}
+
+.theme-toggle__option:hover,
+.theme-toggle__option[aria-pressed="true"] {
+  color: var(--fg);
+}
+
+/* Narrow: the sidebar becomes a head across the top, its pages one row
+   you can swipe along */
+@media (max-width: 55.99rem) {
+  .frame {
+    display: block;
+    max-width: calc(var(--column) + var(--edge) * 2);
+    padding-top: var(--s8);
+  }
+
+  .side {
+    position: static;
+    gap: var(--s6);
+    height: auto;
+    margin-bottom: var(--s12);
+    overflow: visible;
+  }
+
+  .side__else {
+    display: none;
+  }
+
+  .side {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s2);
+  }
+
+  .side__nav {
+    flex: 1;
+    min-width: 0;
+    margin-right: 0;
+    padding-right: 0;
+  }
+
+  .kbar-open {
+    flex: none;
+    margin: 0 0 0 var(--s2);
+  }
+
+  .site-foot__else {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s1) var(--s4);
+    width: 100%;
+    color: var(--gray);
+  }
+
+  .side__nav {
+    flex-direction: row;
+    gap: var(--s1);
+    margin-inline: calc(var(--edge) * -1);
+    padding-inline: calc(var(--edge) - var(--pad));
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .side__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .side__nav a {
+    flex: none;
+  }
+
+  .side__nav a[aria-current="page"] {
+    background: var(--hover);
+  }
+
+  .side__nav a[aria-current="page"]::after {
+    display: none;
+  }
+
+  .runs-on,
+}
+
+/* ---------------------------------------------------------
+   4. Type on the page
+   --------------------------------------------------------- */
+
+.page-title {
+  margin-bottom: var(--s8);
+  margin-left: -0.02em;
+  font-size: var(--name);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.page .music__lede {
+  max-width: 32rem;
+  margin: calc(var(--s6) * -1) 0 var(--s8);
+  color: var(--gray);
+}
+
+/* Section headings: a size of their own, in ink */
+.label,
+.writing__heading,
+.music__heading {
+  margin-bottom: var(--s4);
+  font-size: var(--heading);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+.page > * + .section {
+  margin-top: var(--s12);
+}
+
+/* ---------------------------------------------------------
+   5. Home
+   --------------------------------------------------------- */
+
+/* The name, large, at the head of the home page (where intro.js sets it
+   after the opening) */
+.hello__name {
+  margin-left: -0.02em;
+  font-size: var(--display);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.hello__line {
+  margin: var(--s2) 0 var(--s8);
+  font-size: 1.25rem;
+  color: var(--gray);
+}
+
+.intro__ch {
+  display: inline-block;
+  text-align: center;
+  white-space: pre;
+}
+
+.intro__ch:not(.is-on):not(.is-set) {
+  opacity: 0;
+}
+
+/* Until intro.js has set the name in the middle, the page is held back;
+   once it has played, the page doesn't come in a second time. */
+html.intro .side,
+html.intro .site-foot,
+html.intro .page > * {
+  opacity: 0;
+}
+
+html.intro .page > *,
+html.intro-play .page > *,
+html.intro-done .page > * {
+  animation: none;
+}
+
+.hello p {
+  color: var(--fg-2);
+}
+
+.hello p:first-child {
+  color: var(--fg);
+}
+
+.hello p + p {
+  margin-top: var(--s4);
+}
+
+/* Rows: every list on the site. A name, a few words in gray, and a
+   small fact on the right in mono; the text on the column's edges and
+   the highlight reaching a little past them. The highlight is one
+   element that slides to the row under the pointer (site.js). */
+.rows {
+  position: relative;
+  margin-inline: calc(var(--pad) * -1);
+}
+
+.rows__hl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  border-radius: 6px;
+  background: var(--hover);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.2s var(--ease), height 0.2s var(--ease), opacity 0.15s ease;
+}
+
+.is-lit > .rows__hl {
+  opacity: 1;
+}
+
+.row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+  column-gap: var(--s4);
+  align-items: baseline;
+  padding: 0.3rem var(--pad);
+  border-radius: 6px;
+}
+
+.row__what {
+  color: var(--gray);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--fast);
+}
+
+.row:hover .row__what {
+  color: var(--fg-2);
+}
+
+.row__meta {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+  transition: color var(--fast);
+}
+
+.row:hover .row__meta {
+  color: var(--gray);
+}
+
+/* a row with a picture at its head: the song on now */
+.row--art {
+  grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.row__art {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 3px;
+  object-fit: cover;
+  background: var(--hover);
+}
+
+.row__art:not([src]) {
+  visibility: hidden;
+}
+
+.row__stack {
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.row__stack > span {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.row__stack > span + span {
+  color: var(--gray);
+}
+
+.more {
+  display: inline-block;
+  margin-top: var(--s2);
+  color: var(--gray);
+  transition: color var(--fast);
+}
+
+.more:hover {
+  color: var(--fg);
+}
+
+.listening[hidden] {
+  display: none;
+}
+
+@media (max-width: 34rem) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .row__what {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    white-space: normal;
+  }
+
+  .row--art {
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  }
+}
+
+/* The photographs: a pile of prints, each its own shape. The top one
+   can be thrown and goes to the back; a click opens the page. */
+.stack {
+  position: relative;
+  height: 18rem;
+  touch-action: pan-y;
+}
+
+.stack a {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  padding: 5px;
+  border-radius: 3px;
+  background: var(--print);
+  box-shadow: var(--shadow);
+  transform:
+    translate(-50%, -50%)
+    translate(var(--x, 0px), calc(var(--y, 0px) + var(--lift, 0px)))
+    rotate(var(--r, 0deg));
+  transition: transform 0.45s var(--ease), box-shadow 0.3s ease;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.stack a.is-top:hover {
+  --lift: -4px;
+}
+
+.stack a.is-dragging {
+  transition: box-shadow 0.3s ease;
+  cursor: grabbing;
+}
+
+.stack img {
+  width: 100%;
+  height: 100%;
+  border-radius: 1px;
+  object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.stack-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s4);
+  color: var(--gray);
+}
+
+.stack-foot__do {
+  display: flex;
+  gap: var(--s4);
+  white-space: nowrap;
+}
+
+.stack-foot__do button,
+.stack-foot__do a {
+  color: var(--gray);
+  transition: color var(--fast);
+}
+
+.stack-foot__do button:hover,
+.stack-foot__do a:hover {
+  color: var(--fg);
+}
+
+@media (max-width: 34rem) {
+  .stack { height: 15rem; }
+
+  .stack-foot {
+    flex-direction: column;
+    gap: var(--s1);
+  }
+}
+
+/* ---------------------------------------------------------
+   6. Entries (work, education, projects, research, press)
+   --------------------------------------------------------- */
+
+.projects__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s8);
+}
+
+.project-item__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0 var(--s4);
+  margin-bottom: var(--s1);
+}
+
+.project-item__role {
+  font-size: var(--small);
+  color: var(--gray);
+}
+
+.project-item__description {
+  color: var(--fg-2);
+}
+
+.project-item__description + .project-item__description {
+  margin-top: var(--s2);
+}
+
+.project-item__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1) var(--s4);
+  margin-top: var(--s2);
+}
+
+.project-item__link {
+  display: inline-block;
+  margin-top: var(--s2);
+  color: var(--gray);
+}
+
+.project-item__links .project-item__link {
+  margin-top: 0;
+}
+
+.project-item__link:hover {
+  color: var(--fg);
+}
+
+.project-item__link--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   7. Photographs
+   --------------------------------------------------------- */
+
+.photos__grid {
+  columns: 3;
+  column-gap: var(--s2);
+}
+
+.photo-item {
+  break-inside: avoid;
+  margin-bottom: var(--s2);
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--hover);
+  cursor: zoom-in;
+}
+
+.photo-item img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s var(--ease);
+}
+
+.photo-item:hover img {
+  transform: scale(1.02);
+}
+
+.photo-item img:focus {
+  outline: none;
+}
+
+.photo-item:has(img:focus-visible) {
+  outline: 2px solid var(--faint);
+  outline-offset: 2px;
+}
+
+.photos__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s6);
+  margin-top: var(--s8);
+  color: var(--gray);
+}
+
+@media (max-width: 47.99rem) {
+  .photos__grid {
+    columns: 2;
+    column-gap: 0.35rem;
+  }
+
+  .photo-item {
+    margin-bottom: 0.35rem;
+  }
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  animation: fade 0.25s ease;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox__img {
+  max-width: min(80rem, 100%);
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  object-fit: contain;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: var(--s6);
+  right: var(--edge);
+  color: var(--gray);
+  transition: color var(--fast);
+}
+
+.lightbox__close:hover {
+  color: var(--fg);
+}
+
+/* ---------------------------------------------------------
+   8. Contact and resume
+   --------------------------------------------------------- */
+
+.contact__text {
+  color: var(--fg-2);
+}
+
+.contact__mail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s1) var(--s3);
+  margin: var(--s4) 0 var(--s12);
+}
+
+.contact__address {
+  font-size: clamp(1.75rem, 7vw, var(--name));
+  letter-spacing: -0.01em;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--fast);
+}
+
+.contact__address:hover {
+  text-decoration-color: var(--fg);
+}
+
+.contact__copy {
+  font-size: var(--small);
+  color: var(--faint);
+  transition: color var(--fast);
+}
+
+.contact__copy:hover,
+.contact__copy.is-done {
+  color: var(--fg);
+}
+
+.reach {
+  position: relative;
+  margin-inline: calc(var(--pad) * -1);
+}
+
+.reach__row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  column-gap: var(--s4);
+  padding: 0.3rem var(--pad);
+}
+
+.reach__handle {
+  color: var(--gray);
+  transition: color var(--fast);
+}
+
+.reach__row:hover .reach__handle {
+  color: var(--fg-2);
+}
+
+.resume__frame {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: #fbfaf7;
+  box-shadow: var(--shadow);
+}
+
+.page > a:has(.resume__frame) {
+  display: block;
+}
+
+.resume__download {
+  display: inline-block;
+  margin-top: var(--s6);
+  color: var(--gray);
+}
+
+/* ---------------------------------------------------------
+   9. Rows of songs and scents (music and fragrance)
+   --------------------------------------------------------- */
+
+.plays {
+  border-bottom: 1px solid var(--line);
+}
+
+.play {
+  display: grid;
+  grid-template-columns: 1.75rem 2.5rem minmax(0, 1fr) auto;
+  column-gap: var(--s3);
+  align-items: center;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.plays--log .play {
+  grid-template-columns: 4.5rem 2.5rem minmax(0, 1fr);
+}
+
+.play__n,
+.play__count {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+.play--now .play__n {
+  color: var(--fg);
+}
+
+.play__count {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.play__art {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 3px;
+  object-fit: cover;
+  background: var(--hover);
+}
+
+.plays--artists .play__art {
+  border-radius: 50%;
+}
+
+.play__name {
+  display: block;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.play__by {
+  display: block;
+  font-size: var(--small);
+  line-height: 1.4;
+  color: var(--gray);
+}
+
+.scent .play {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 0.6rem 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.scent .play::-webkit-details-marker {
+  display: none;
+}
+
+.scent__toggle::before {
+  content: "+";
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+.scent details[open] .scent__toggle::before {
+  content: "\2212";
+}
+
+.scent__info {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--s1) var(--s4);
+  padding: 0.1rem 0 var(--s6);
+}
+
+.scent__info dt {
+  color: var(--gray);
+}
+
+.scent__info dd {
+  color: var(--fg-2);
+}
+
+/* The music page is styled in music.css. Geist Serif has no italic, so
+   what music.js marks to slant stands upright. */
+.music *:not(em) {
+  font-style: normal;
+}
+
+/* ---------------------------------------------------------
+   10. Search
+   --------------------------------------------------------- */
+
+.kbar {
+  position: fixed;
+  inset: 0;
+  width: min(36rem, calc(100% - 2rem));
+  max-height: min(32rem, 72vh);
+  margin: 12vh auto auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: 0 24px 64px -16px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.kbar[open] {
+  display: flex;
+  flex-direction: column;
+  animation: kbar-in 0.18s var(--ease);
+}
+
+.kbar::backdrop {
+  background: rgba(10, 10, 9, 0.16);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+@keyframes kbar-in {
+  from { opacity: 0; transform: scale(0.98) translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.kbar__field {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 0 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.kbar__icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: var(--faint);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.kbar__input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--s4) 0;
+  border: 0;
+  background: none;
+  color: var(--fg);
+  font: inherit;
+  outline: none;
+}
+
+.kbar__input::placeholder {
+  color: var(--faint);
+}
+
+.kbar__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem;
+  overscroll-behavior: contain;
+}
+
+.kbar__group {
+  padding: var(--s3) 0.7rem var(--s1);
+  font-size: var(--small);
+  color: var(--faint);
+}
+
+.kbar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  color: var(--fg-2);
+  cursor: pointer;
+}
+
+.kbar__item[aria-selected="true"] {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.kbar__thumb {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 3px;
+  object-fit: cover;
+  background: var(--hover);
+}
+
+.kbar__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.kbar__title,
+.kbar__snip {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kbar__snip {
+  font-size: var(--small);
+  color: var(--gray);
+}
+
+.kbar mark {
+  background: none;
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 0.2em;
+}
+
+.kbar__kind {
+  flex: none;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.kbar__empty {
+  padding: var(--s8) 0.7rem;
+  color: var(--faint);
+  text-align: center;
+}
+
+.kbar__foot {
+  display: flex;
+  gap: var(--s4);
+  padding: 0.55rem 1.1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.8125rem;
+  color: var(--faint);
+}
+
+.kbar__foot kbd {
+  margin-right: 0.15rem;
+  padding: 0 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+}
+
+.kbar__count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+}
+
+@media (hover: none) {
+  .kbar {
+    margin-top: var(--s4);
+    max-height: 70vh;
+  }
+
+  .kbar__foot {
+    display: none;
+  }
+}
+
+/* An entry arrived at from search or a link: marked for a moment */
+.is-target {
+  animation: target 2s ease;
+  border-radius: 6px;
+}
+
+@keyframes target {
+  0%, 30% { background: var(--hover); box-shadow: 0 0 0 0.6rem var(--hover); }
+  100% { background: transparent; box-shadow: 0 0 0 0.6rem transparent; }
+}
+
+/* ---------------------------------------------------------
+   11. Arrival
+   Each block of the page comes up in turn, out of a slight blur;
+   the sidebar stays as it was.
+   --------------------------------------------------------- */
+
+@keyframes arrive {
+  from { opacity: 0; transform: translateY(6px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+.page > * {
+  animation: arrive 0.55s var(--ease) both;
+}
+
+.page > :nth-child(2) { animation-delay: 0.04s; }
+.page > :nth-child(3) { animation-delay: 0.08s; }
+.page > :nth-child(4) { animation-delay: 0.12s; }
+.page > :nth-child(5) { animation-delay: 0.16s; }
+.page > :nth-child(6) { animation-delay: 0.2s; }
+.page > :nth-child(7) { animation-delay: 0.24s; }
+.page > :nth-child(n + 8) { animation-delay: 0.28s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.18s;
+}
+
+::view-transition-group(side) {
+  animation: none;
+}

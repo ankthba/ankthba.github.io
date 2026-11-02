@@ -2,10 +2,12 @@
    .github/workflows/listening.yml writes every fifteen minutes from the
    private log of plays, and kept live by the Worker at data-live.
 
-   Four parts, top to bottom: the song playing now; a calendar of every
-   day, each by its top album's cover, with the day picked summed up and
-   its whole log of every song a click away; the most listened to this
-   week or this month; and today's log. Links must go to Spotify and
+   Top to bottom: the song playing now, its cover large; the last 30 or
+   the last 7 days (the figures, the top songs, albums and artists as
+   market maps, the standouts, what's rising, when the listening happens
+   as a curve across the day and by day, and what the music is, in
+   stacked bars); the calendar, a month of covers with the day picked
+   beside it; and today, as a timeline. Links must go to Spotify and
    pictures must be https, whatever the file says. */
 
 'use strict';
@@ -23,6 +25,7 @@
   var base = src.replace(/[^/]*$/, '');
 
   var TZ = 'America/New_York';
+  var NS = 'http://www.w3.org/2000/svg';
   var spotify = function (url) { return /^https:\/\/open\.spotify\.com\//.test(url || '') ? url : null; };
   var https = function (url) { return /^https:\/\//.test(url || '') || (local && /^\//.test(url || '')) ? url : null; };
   var $ = function (sel) { return page.querySelector(sel); };
@@ -30,6 +33,11 @@
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text != null) e.textContent = text;
+    return e;
+  };
+  var svg = function (tag, attrs) {
+    var e = document.createElementNS(NS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
     return e;
   };
 
@@ -55,6 +63,11 @@
     if (!h) return plural(m, 'minute', 'minutes');
     return plural(h, 'hour', 'hours') + (m ? ' ' + plural(m, 'minute', 'minutes') : '');
   };
+  // the same, short: 2 h 15 min
+  var short = function (mins) {
+    var h = Math.floor(mins / 60), m = mins % 60;
+    return (h ? h + ' h' : '') + (h && m ? ' ' : '') + (m || !h ? m + ' min' : '');
+  };
   var mmss = function (ms) {
     var s = Math.max(0, Math.floor(ms / 1000));
     return Math.floor(s / 60) + ':' + pad(s % 60);
@@ -67,58 +80,75 @@
     if (hours < 24) return plural(hours, 'hour', 'hours') + ' ago';
     return plural(Math.round(hours / 24), 'day', 'days') + ' ago';
   }
+  var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  var hourName = function (h) {
+    return h === 0 ? 'midnight' : h === 12 ? 'noon' : (h % 12) + (h < 12 ? ' am' : ' pm');
+  };
+  var pct = function (n, of) {
+    var p = of ? (100 * n) / of : 0;
+    return p > 0 && p < 1 ? 'under 1%' : Math.round(p) + '%';
+  };
+
   /* A day's top songs: a list now, a single song in older files. */
   var topsOf = function (info) { return Array.isArray(info.top) ? info.top : info.top ? [info.top] : []; };
 
-  /* ---------- Rows ----------
-     One hairline row for a song or an artist: what leads it (a rank or
-     a time), the cover, the name and who by, and what closes it (a count,
-     or for a standout what it stands out for). */
-  function row(item, lead, tail) {
-    var li = el('li');
+  /* ---------- Pieces ----------
+     A cover, a link to Spotify (or nothing, if the file has none), and
+     a row: what leads it (a rank or a time), the cover, the name and who
+     by, and what closes it. */
+  function cover(item, cls) {
+    var img = el('img', cls);
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    if (https(item.image)) img.src = item.image;
+    return img;
+  }
+
+  function link(item, cls) {
     var href = spotify(item.url);
-    var r = el(href ? 'a' : 'div', 'play');
-    if (href) { r.href = href; r.target = '_blank'; r.rel = 'noopener'; }
-    if (lead != null) r.appendChild(lead);
-    var art = el('img', 'play__art');
-    art.alt = '';
-    art.loading = 'lazy';
-    if (https(item.image)) art.src = item.image;
-    r.appendChild(art);
-    var text = el('span', 'play__text');
-    text.appendChild(el('span', 'play__name', item.name));
-    if (item.artists) text.appendChild(el('span', 'play__by', item.artists));
+    var a = el(href ? 'a' : 'div', cls);
+    if (href) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; }
+    return a;
+  }
+
+  function track(item, lead, tail) {
+    var li = el('li');
+    var r = link(item, 'track' + (lead ? '' : ' track--bare'));
+    if (lead) r.appendChild(lead);
+    r.appendChild(cover(item, 'track__art'));
+    var text = el('span', 'track__text');
+    text.appendChild(el('span', 'track__name', item.name));
+    if (item.artists) text.appendChild(el('span', 'track__by', item.artists));
     r.appendChild(text);
     if (tail) r.appendChild(tail);
     li.appendChild(r);
     return li;
   }
-  var rank = function (i) { return el('span', 'play__n', pad(i + 1)); };
+  var rank = function (i) { return el('span', 'track__n', pad(i + 1)); };
+  var count = function (item) { return el('span', 'track__count', plural(item.plays, 'play', 'plays')); };
 
-  /* A play in a log, led by its time (or Now, for the song playing). */
-  function logRow(item) {
-    var time = el('time', 'play__n', item.now ? 'Now'
+  /* A stop on a timeline: its time (or Now), a dot on the line, the song. */
+  function stop(item) {
+    var li = el('li', 'stop' + (item.now ? ' stop--now' : ''));
+    var time = el('time', 'stop__time', item.now ? 'Now'
       : new Date(item.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TZ }));
     time.dateTime = item.played_at;
-    var li = row(item, time);
-    if (item.now) li.firstChild.classList.add('play--now');
+    li.appendChild(time);
+    li.appendChild(el('span', 'stop__dot'));
+    var song = link(item, 'stop__song');
+    song.appendChild(cover(item, 'stop__art'));
+    var text = el('span', 'stop__text');
+    text.appendChild(el('span', 'stop__name', item.name));
+    if (item.artists) text.appendChild(el('span', 'stop__by', item.artists));
+    song.appendChild(text);
+    li.appendChild(song);
     return li;
   }
-  var count = function (item) { return el('span', 'play__count', plural(item.plays, 'play', 'plays')); };
 
-  function ranked(list, items, max) {
-    list.textContent = '';
-    (items || []).slice(0, max).forEach(function (item, i) {
-      list.appendChild(row(item, rank(i), count(item)));
-    });
-  }
-
-  /* ---------- Most listened to ----------
-     This week or this month: four figures, the top ten songs, the top
-     five artists, and the standouts. (No all time: tracking only began
-     on September 29, 2026.) */
+  /* ---------- The last 7 days, or the last 30 ---------- */
   var data = null;
-  var range = 'week'; // the range shown, kept when the file is read again
+  var range = 'month'; // the range shown, the past 30 days to begin with, kept when the file is read again
 
   function rangeOf(which) {
     var r = data.ranges && data.ranges[which];
@@ -141,100 +171,347 @@
     };
   }
 
+  /* Four figures, each with how it went against the same stretch
+     before it, as a signed share. */
   function figures(r) {
     var box = $('[data-figures]');
     box.textContent = '';
     var hours = Math.round(r.minutes / 60);
-    /* Each against the same stretch before it, when there was one. */
     var b = r.before;
-    var then = range === 'week' ? 'the week before' : 'this time last month';
-    var versus = function (now, was) {
-      if (!b || now == null || !was) return null;
-      var d = Math.round((100 * (now - was)) / was);
-      return d > 0 ? d + '% more than ' + then : d < 0 ? -d + '% fewer than ' + then : 'The same as ' + then;
-    };
+    var then = range === 'week' ? 'the 7 days before' : 'the 30 days before';
     [
-      [num(r.plays), r.plays === 1 ? 'play' : 'plays', versus(r.plays, b && b.plays)],
-      r.minutes < 60 ? [num(r.minutes), r.minutes === 1 ? 'minute' : 'minutes', versus(r.minutes, b && b.minutes)]
-        : [num(hours), hours === 1 ? 'hour' : 'hours', versus(r.minutes, b && b.minutes)],
-      r.tracks != null ? [num(r.tracks), r.tracks === 1 ? 'song' : 'songs', versus(r.tracks, b && b.tracks)] : null,
-      r.artists != null ? [num(r.artists), r.artists === 1 ? 'artist' : 'artists', versus(r.artists, b && b.artists)] : null
+      [num(r.plays), r.plays === 1 ? 'play' : 'plays', r.plays, b && b.plays],
+      r.minutes < 60 ? [num(r.minutes), r.minutes === 1 ? 'minute' : 'minutes', r.minutes, b && b.minutes]
+        : [num(hours), hours === 1 ? 'hour' : 'hours', r.minutes, b && b.minutes],
+      r.tracks != null ? [num(r.tracks), r.tracks === 1 ? 'song' : 'songs', r.tracks, b && b.tracks] : null,
+      r.artists != null ? [num(r.artists), r.artists === 1 ? 'artist' : 'artists', r.artists, b && b.artists] : null
     ].filter(Boolean).forEach(function (f) {
-      var item = el('div', 'figures__item');
-      item.appendChild(el('dt', 'figures__t', f[1]));
-      item.appendChild(el('dd', 'figures__v', f[0]));
-      if (f[2]) item.appendChild(el('dd', 'figures__d', f[2].charAt(0).toUpperCase() + f[2].slice(1) + '.'));
+      var item = el('div', 'figure');
+      item.appendChild(el('dd', 'figure__v', f[0]));
+      item.appendChild(el('dt', 'figure__t', f[1]));
+      if (b && f[3]) {
+        var d = Math.round((100 * (f[2] - f[3])) / f[3]);
+        var mark = el('dd', 'figure__d ' + (d > 0 ? 'is-up' : d < 0 ? 'is-down' : 'is-same'),
+          d > 0 ? '+' + d + '%' : d < 0 ? '−' + (-d) + '%' : 'same');
+        mark.title = d > 0 ? d + '% more than ' + then : d < 0 ? -d + '% fewer than ' + then : 'The same as ' + then;
+        item.appendChild(mark);
+      }
       box.appendChild(item);
+    });
+    $('[data-figures-note]').textContent = b ? 'Against ' + then + '.' : '';
+    $('[data-range-dates]').textContent = fmtDay(r.from, { month: 'short', day: 'numeric' }) +
+      ' – ' + fmtDay(r.to, { month: 'short', day: 'numeric' });
+  }
+
+  /* ---------- Market maps ----------
+     The top songs, and the top artists, as square covers packed edge to
+     edge like a map of a stock market. The sizes go by rank, in tiers
+     that each fill whole rows of the sixteen-cell grid: the first eight
+     cells square, the next four, four cells square, the next sixteen,
+     two, and the rest one; each tier is as much of the map as the one
+     before it, and a tier that can't fill its rows is cut back to the
+     rows it can, so there is never a hole. Nothing is written on the
+     covers: pointing at one names it in a label beside it, and in full
+     under the map. One with no picture at all is set in type instead:
+     its name, or on the smallest squares its initials. */
+  var TIERS = [[8, 1], [4, 4], [2, 16], [1, 64]];
+
+  function tiers(items) {
+    var out = [], at = 0;
+    TIERS.forEach(function (t) {
+      if (at >= items.length) return;
+      var size = t[0], take = Math.min(t[1], items.length - at);
+      var band = 16 / size; // covers of this size to a band of rows
+      if (take < t[1]) take = Math.floor(take / band) * band;
+      for (var i = 0; i < take; i++) out.push([items[at + i], size]);
+      at += t[1];
+      if (take < t[1]) at = items.length; // a cut tier is the last
+    });
+    return out;
+  }
+
+  var initials = function (name) {
+    var words = name.replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).filter(Boolean);
+    return (words.length > 1 ? words[0][0] + words[1][0] : (words[0] || name).slice(0, 2)).toUpperCase();
+  };
+
+  function market(box, note, items, what, of) {
+    var block = box.closest('.block');
+    var placed = tiers((items || []).filter(function (x) { return x.plays > 0; }));
+    block.hidden = !placed.length;
+    if (!placed.length) return;
+    items = placed.map(function (p) { return p[0]; });
+    var total = items.reduce(function (a, x) { return a + x.plays; }, 0);
+    var sum = (of && of > items.length ? 'The top ' + items.length + ' of ' + num(of) + ' ' + what
+      : of ? 'All ' + items.length + ' ' + what : 'The top ' + items.length + ' ' + what) +
+      ', ' + plural(total, 'play', 'plays') + ' between them.';
+    box.textContent = '';
+    var tip = el('span', 'tm__tip');
+    tip.setAttribute('aria-hidden', 'true');
+
+    placed.forEach(function (p, i) {
+      var item = p[0], k = p[1];
+      var tile = link(item, 'tm__tile k' + k);
+      if (https(item.image)) {
+        tile.appendChild(cover(item, 'tm__art'));
+      } else {
+        tile.classList.add('is-type');
+        tile.appendChild(el('span', 'tm__type', k === 1 ? initials(item.name) : item.name));
+      }
+      var said = pad(i + 1) + '. ' + item.name + (item.artists ? ', ' + item.artists : '') + ': ' +
+        plural(item.plays, 'play', 'plays') + ', ' + pct(item.plays, total) + ' of these.';
+      tile.setAttribute('aria-label', said);
+      var show = function () {
+        note.textContent = said;
+        tip.textContent = '';
+        tip.appendChild(el('span', 'tm__tip-name', item.name));
+        tip.appendChild(el('span', 'tm__tip-by', (item.artists ? item.artists + ' · ' : '') + plural(item.plays, 'play', 'plays')));
+        tip.classList.add('is-on');
+        var x = Math.min(tile.offsetLeft, box.clientWidth - tip.offsetWidth);
+        var y = tile.offsetTop - tip.offsetHeight - 6;
+        if (y < 0) y = tile.offsetTop + tile.offsetHeight + 6;
+        tip.style.transform = 'translate(' + Math.max(0, x) + 'px, ' + y + 'px)';
+      };
+      var hide = function () {
+        note.textContent = sum;
+        tip.classList.remove('is-on');
+      };
+      tile.addEventListener('mouseenter', show);
+      tile.addEventListener('focus', show);
+      tile.addEventListener('mouseleave', hide);
+      tile.addEventListener('blur', hide);
+      box.appendChild(tile);
+    });
+    box.appendChild(tip);
+    note.textContent = sum;
+  }
+
+  function topTracks(items, of) {
+    market($('[data-top-tracks]'), $('[data-top-tracks-note]'), items, 'songs', of);
+  }
+
+  function topAlbums(items, of) {
+    market($('[data-top-albums]'), $('[data-top-albums-note]'), items, 'albums', of);
+  }
+
+  function topArtists(items, of) {
+    market($('[data-top-artists]'), $('[data-top-artists-note]'), items, 'artists', of);
+  }
+
+  /* The file lists only the top ten songs and artists of a range, so for
+     the maps every play of it is read from each day's log (the files the
+     calendar opens; today's is the file's so far and the page's own
+     since) and counted again, every song and artist heard, as many as
+     the map's tiers have room for. An artist past the file's top ten has no picture of their
+     own, so their most played cover stands in. */
+  var everyPlay = {};
+
+  function playsOf(r) {
+    var key = r.from + '/' + r.to;
+    var today = dayOf(new Date());
+    if (everyPlay[key] && r.to !== today) return everyPlay[key];
+    var days = [];
+    for (var d = r.from; d <= r.to; d = shiftDay(d, 1)) days.push(d);
+    everyPlay[key] = Promise.all(days.map(function (day) {
+      if (dayFiles[day]) return Promise.resolve(dayFiles[day]);
+      return fetch(base + 'days/' + day + '.json', { cache: 'no-cache' })
+        .then(function (res) { return res.ok ? res.json() : []; })
+        .then(function (list) { return (dayFiles[day] = list); })
+        .catch(function () { return []; });
+    })).then(function (lists) {
+      var all = [].concat.apply([], lists);
+      if (r.to === today) {
+        var file = dayFiles[today] || [];
+        var last = file.length ? Date.parse(file[file.length - 1].played_at) : 0;
+        all = all.concat(todaysPlays().filter(function (p) { return Date.parse(p.played_at) > last; }));
+      }
+      return all;
+    });
+    return everyPlay[key];
+  }
+
+  /* Every artist the file pictures anywhere (the top artists of each
+     range, day, week and month, the most and least followed), by name,
+     known as artists by their Spotify address; and artists.json, the
+     Action's own cache of photos by artist, for plays that carry the
+     artist's id. */
+  var photosById = null;
+
+  function photos() {
+    if (photosById) return photosById;
+    photosById = fetch(base + 'artists.json', { cache: 'no-cache' })
+      .then(function (res) { return res.ok ? res.json() : {}; })
+      .catch(function () { return {}; });
+    return photosById;
+  }
+
+  /* Album names and artist photos, taken from the full play log by hand
+     (assets/data/music-names.json), for the plays whose day logs don't
+     carry them yet; the Action's own data takes over as it fills in. */
+  var namesFile = null;
+
+  function names() {
+    if (namesFile) return namesFile;
+    namesFile = fetch('/assets/data/music-names.json')
+      .then(function (res) { return res.ok ? res.json() : {}; })
+      .catch(function () { return {}; });
+    return namesFile;
+  }
+
+  function pictured() {
+    var found = {};
+    (function walk(o) {
+      if (!o || typeof o !== 'object') return;
+      if (Array.isArray(o)) { o.forEach(walk); return; }
+      if (o.name && https(o.image) && /^https:\/\/open\.spotify\.com\/artist\//.test(o.url || '') && !found[o.name]) {
+        found[o.name] = { image: o.image, url: o.url };
+      }
+      Object.keys(o).forEach(function (k) { if (k !== 'recent') walk(o[k]); });
+    })(data);
+    return found;
+  }
+
+  /* Every album the file names anywhere (each day's, week's, month's
+     and range's top album), by its cover, which is the album's own. */
+  function albumNames() {
+    var found = {};
+    (function walk(o, key) {
+      if (!o || typeof o !== 'object') return;
+      if (Array.isArray(o)) { o.forEach(function (x) { walk(x, key); }); return; }
+      if (key === 'topAlbum' && o.name && o.image && !found[o.image]) found[o.image] = o;
+      Object.keys(o).forEach(function (k) { if (k !== 'recent') walk(o[k], k); });
+    })(data, '');
+    return found;
+  }
+
+  function tally(plays, r, byId, extra) {
+    var songs = {}, artists = {}, albums = {}, pictures = pictured(), named = albumNames();
+    var more = extra || {};
+    Object.keys(more.artists || {}).forEach(function (n) {
+      if (!pictures[n] && https(more.artists[n].image)) pictures[n] = more.artists[n];
+    });
+    (r.topArtists || []).forEach(function (a) { pictures[a.name] = a; });
+    plays.forEach(function (p) {
+      var at = Date.parse(p.played_at) || 0;
+      var k = p.url || p.name + '\u0000' + p.artists;
+      var song = songs[k] || (songs[k] = { name: p.name, artists: p.artists, url: p.url, image: p.image, plays: 0, last: 0 });
+      song.plays++;
+      song.last = Math.max(song.last, at);
+      /* an album is its cover; its name from the play (once the logs
+         carry it) or from the file */
+      var key = p.image || p.album;
+      if (key) {
+        var known = named[p.image];
+        var by = (p.artists || '').split(', ')[0];
+        var album = albums[key] || (albums[key] = {
+          name: p.album || (known && known.name) || (more.albums && more.albums[p.image]) || null,
+          artists: known && known.artists ? known.artists : by,
+          url: known && spotify(known.url) ? known.url : null,
+          image: p.image, plays: 0, last: 0, by: by, heard: {}
+        });
+        album.plays++;
+        album.last = Math.max(album.last, at);
+        album.heard[p.name] = (album.heard[p.name] || 0) + 1;
+      }
+      var who = (p.artists || '').split(', ')[0];
+      if (!who) return;
+      var pic = pictures[who];
+      var photo = p.artist && byId && https(byId[p.artist]) ? byId[p.artist] : null;
+      var artist = artists[who] || (artists[who] = {
+        name: who, plays: 0, last: 0,
+        url: pic ? pic.url : p.artist ? 'https://open.spotify.com/artist/' + p.artist : null,
+        image: pic ? pic.image : photo, covers: {}
+      });
+      if (!artist.image && photo) artist.image = photo;
+      artist.plays++;
+      artist.last = Math.max(artist.last, at);
+      if (p.image) artist.covers[p.image] = (artist.covers[p.image] || 0) + 1;
+    });
+    var order = function (a, b) { return b.plays - a.plays || b.last - a.last; };
+    var list = function (o) { return Object.keys(o).map(function (k) { return o[k]; }).sort(order); };
+    var all = { songs: list(songs), albums: list(albums), artists: list(artists) };
+    /* an album the logs don't name yet (they will once the Action writes
+       album names into them): its artist, and the song played most from it */
+    all.albums.forEach(function (a) {
+      if (a.name) return;
+      var song = Object.keys(a.heard).sort(function (x, y) { return a.heard[y] - a.heard[x]; })[0];
+      a.name = a.by;
+      a.artists = song ? 'the album with ' + song : 'an album';
+    });
+    /* an artist whose photo the Action hasn't fetched yet: their most
+       played cover stands in */
+    all.artists.forEach(function (a) {
+      if (!a.image) a.image = Object.keys(a.covers).sort(function (x, y) { return a.covers[y] - a.covers[x]; })[0] || null;
+    });
+    return all;
+  }
+
+  function maps(r, which) {
+    Promise.all([playsOf(r), photos(), names()]).then(function (got) {
+      var plays = got[0];
+      if (range !== which || !plays.length) return;
+      var all = tally(plays, r, got[1], got[2]);
+      if (all.songs.length > (r.topTracks || []).length) topTracks(all.songs, all.songs.length);
+      topAlbums(all.albums, all.albums.length);
+      if (all.artists.length > (r.topArtists || []).length) topArtists(all.artists, all.artists.length);
     });
   }
 
-  /* The top songs played most more than the time before: from how
-     many plays, or new to the top listened if they weren't in it then. */
+  /* The top songs played more than the time before: from how many
+     plays, or new to the top listened if they weren't in it then. */
   function rising(items) {
     var list = $('[data-rising]');
     list.textContent = '';
     items.forEach(function (item) {
-      var tail = el('span', 'play__fact');
       var risen = 'wasTop' in item ? item.wasTop : item.before > 0;
-      tail.appendChild(el('span', 'play__what', risen ? 'from ' + num(item.before) : 'new to the top listened'));
-      tail.appendChild(el('span', 'play__count', plural(item.plays, 'play', 'plays')));
-      list.appendChild(row(item, null, tail));
+      var tail = el('span', 'track__count', (risen ? 'from ' + num(item.before) + ' to ' : 'new, ') + plural(item.plays, 'play', 'plays'));
+      list.appendChild(track(item, null, tail));
     });
-    $('[data-rising-label]').hidden = list.hidden = !items.length;
+    $('[data-rising-block]').hidden = !items.length;
   }
 
+  /* Standouts, in rows: what each stands out for, the song, album,
+     playlist or artist itself, and its figure. */
   function standouts(stats) {
     var list = $('[data-standouts]');
     list.textContent = '';
-    var fact = function (what, value) {
-      var f = el('span', 'play__fact');
-      f.appendChild(el('span', 'play__what', what));
-      f.appendChild(el('span', 'play__count', value));
-      return f;
-    };
     var oldest = stats && stats.released && stats.released.oldest;
     var playlist = stats && stats.topPlaylist;
     var fans = function (n) {
-      return (n >= 1e6 ? (Math.round(n / 1e5) / 10) + ' million' : num(n)) + (n === 1 ? ' fan' : ' fans');
+      return (n >= 1e6 ? (Math.round(n / 1e5) / 10) + 'M' : num(n)) + (n === 1 ? ' fan' : ' fans');
     };
     [
       stats && stats.topAlbum && [stats.topAlbum, 'Top album', plural(stats.topAlbum.plays, 'play', 'plays')],
       playlist && [playlist, 'Top playlist', plural(playlist.plays, 'play', 'plays')],
       stats && stats.onRepeat && [stats.onRepeat, 'On repeat', stats.onRepeat.times + ' in a row'],
+      stats && stats.binge && [stats.binge, 'Most in a row', stats.binge.times + ' songs', true],
       stats && stats.longest && [stats.longest, 'Longest song', mmss(stats.longest.duration_ms)],
-      stats && stats.deepCut && [stats.deepCut, 'Deepest cut', stats.deepCut.popularity + ' / 100'],
+      stats && stats.deepCut && [stats.deepCut, 'Deepest cut', stats.deepCut.popularity + '/100'],
       oldest && [oldest, 'Oldest song', String(oldest.year)],
       stats && stats.released && stats.released.newest && [stats.released.newest, 'Newest song',
-        'out ' + fmtDay(stats.released.newest.released, { month: 'long', day: 'numeric', year: 'numeric' })],
-      stats && stats.binge && [stats.binge, 'Most in a row', stats.binge.times + ' songs', true],
+        fmtDay(stats.released.newest.released, { month: 'short', day: 'numeric' })],
       stats && stats.biggest && [stats.biggest, 'Most followed artist', fans(stats.biggest.fans), true],
       stats && stats.nichest && [stats.nichest, 'Least known artist', fans(stats.nichest.fans), true]
-    ].filter(Boolean).forEach(function (s) {
-      var li = row(s[0], null, fact(s[1], s[2]));
-      if (s[3]) li.firstChild.classList.add('play--artist');
+    ].filter(Boolean).forEach(function (st) {
+      var li = el('li');
+      var r = link(st[0], 'stand' + (st[3] ? ' stand--artist' : ''));
+      r.appendChild(el('span', 'stand__label', st[1]));
+      r.appendChild(cover(st[0], 'stand__art'));
+      var text = el('span', 'stand__text');
+      text.appendChild(el('span', 'stand__name', st[0].name));
+      if (st[0].artists) text.appendChild(el('span', 'stand__by', st[0].artists));
+      r.appendChild(text);
+      r.appendChild(el('span', 'stand__value', st[2]));
+      li.appendChild(r);
       list.appendChild(li);
     });
-    $('[data-standouts-label]').hidden = list.hidden = !list.children.length;
+    $('[data-standouts-block]').hidden = !list.children.length;
   }
 
-  /* ---------- Listening habits ----------
-     The same week or month: its plays by the hour and by the day of the
-     week, a few figures for how the listening went, and what sort of
-     music it was (genres, when it came out, how well known its artists
-     are). Every share is of the plays whose details are known. */
-  var DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var hourName = function (h) {
-    return h === 0 ? 'midnight' : h === 12 ? 'noon' : (h % 12) + (h < 12 ? ' am' : ' pm');
-  };
-  var pct = function (n, of) {
-    var p = of ? (100 * n) / of : 0;
-    return p > 0 && p < 1 ? 'under 1%' : Math.round(p) + '%';
-  };
-
-  /* A column for each hour or day, as tall as its share of the busiest,
-     the busiest of them in ink and the rest quieter. The note under the
-     columns sums them up, and says what a column is while it is under
-     the pointer. */
+  /* ---------- When ----------
+     The hours, the days, and each day of the range as columns, the
+     busiest in ink; and hour by day as a grid. Pointing at any of them says
+     what it is in the note under it, which otherwise sums it up. */
   function columns(box, note, counts, o) {
     box.textContent = '';
     var max = Math.max.apply(null, counts) || 1;
@@ -244,8 +521,7 @@
     plot.setAttribute('aria-label', o.sum);
     axis.setAttribute('aria-hidden', 'true');
     counts.forEach(function (n, i) {
-      var col = el('span', 'cols__col');
-      if (o.lit(i)) col.classList.add('cols__col--lit');
+      var col = el('span', 'cols__col' + (o.lit(i) ? ' is-lit' : ''));
       col.style.setProperty('--v', String(n / max));
       col.addEventListener('mouseenter', function () {
         note.textContent = o.name(i) + ', ' + (o.say ? o.say(n) : plural(n, 'play', 'plays'));
@@ -259,29 +535,111 @@
     note.textContent = o.sum;
   }
 
-  /* Rows of a name, its share, and a bar for it out of the whole. */
-  function shares(list, rows) {
-    list.textContent = '';
+  function heat(box, note, rows) {
+    box.textContent = '';
+    var max = 0;
+    rows.forEach(function (r) { r.hours.forEach(function (n) { max = Math.max(max, n); }); });
+    var sum = 'Darker is more plays; the busiest hour had ' + plural(max, 'play', 'plays') + '.';
+    var grid = el('div', 'heat__grid');
+    grid.setAttribute('role', 'img');
+    grid.setAttribute('aria-label', 'Plays by hour on each day. ' + sum);
     rows.forEach(function (r) {
-      var li = el('li', 'share');
-      li.appendChild(el('span', 'share__name', r[0]));
-      li.appendChild(el('span', 'share__v', r[1]));
-      var bar = el('span', 'share__bar');
-      var fill = el('i');
-      fill.style.setProperty('--v', String(Math.min(1, r[2])));
-      bar.appendChild(fill);
-      li.appendChild(bar);
-      list.appendChild(li);
+      grid.appendChild(el('span', 'heat__day', r.label));
+      r.hours.forEach(function (n, h) {
+        var cell = el('span', 'heat__cell' + (n ? '' : ' is-none'));
+        cell.style.setProperty('--v', String(max ? 0.15 + 0.85 * (n / max) : 0));
+        cell.addEventListener('mouseenter', function () {
+          note.textContent = r.name + ', from ' + hourName(h) + ' to ' + hourName((h + 1) % 24) + ', ' + plural(n, 'play', 'plays');
+        });
+        cell.addEventListener('mouseleave', function () { note.textContent = sum; });
+        grid.appendChild(cell);
+      });
     });
-    list.closest('.habit').hidden = !rows.length;
+    var axis = el('div', 'heat__axis');
+    axis.setAttribute('aria-hidden', 'true');
+    axis.appendChild(el('span'));
+    for (var h = 0; h < 24; h++) axis.appendChild(el('span', 'cols__tick', h % 6 ? '' : h ? hourName(h) : '12 am'));
+    box.appendChild(grid);
+    box.appendChild(axis);
+    note.textContent = sum;
+    box.closest('.habit').hidden = !rows.length;
   }
 
-  function habits(r) {
+  /* ---------- What ----------
+     Each breakdown as one bar cut into its parts, darkest first, with a
+     legend; pointing at a part in either names it in both. Where the
+     parts can overlap (a song can have more than one genre) and so add
+     up to more than the whole, each gets a bar of its own instead. */
+  function composition(box, rows) {
+    box.textContent = '';
+    box.closest('.habit').hidden = !rows.length;
+    if (!rows.length) return;
+    var total = rows.reduce(function (a, r) { return a + r[2]; }, 0);
+    var stacked = total <= 1.001;
+    var legend = el('ol', 'comp__legend' + (stacked ? '' : ' comp__legend--bars'));
+    var bar = stacked ? el('div', 'comp__bar') : null;
+    var segs = [];
+    rows.forEach(function (r, i) {
+      var shade = String(Math.min(i, 6));
+      var li = el('li', 'comp__item');
+      li.style.setProperty('--i', shade);
+      li.appendChild(el('i', 'comp__sw'));
+      li.appendChild(el('span', 'comp__name', r[0]));
+      li.appendChild(el('span', 'comp__v', r[1]));
+      if (stacked) {
+        var seg = el('i', 'comp__seg');
+        seg.style.setProperty('--i', shade);
+        seg.style.setProperty('--w', String(Math.max(0, r[2])));
+        seg.title = r[0] + ', ' + r[1];
+        bar.appendChild(seg);
+        segs.push(seg);
+        var on = function () { box.classList.add('is-pointing'); seg.classList.add('is-on'); li.classList.add('is-on'); };
+        var off = function () { box.classList.remove('is-pointing'); seg.classList.remove('is-on'); li.classList.remove('is-on'); };
+        [seg, li].forEach(function (x) { x.addEventListener('mouseenter', on); x.addEventListener('mouseleave', off); });
+      } else {
+        var own = el('span', 'comp__own');
+        var fill = el('i');
+        fill.style.setProperty('--w', String(Math.min(1, r[2])));
+        own.appendChild(fill);
+        li.appendChild(own);
+      }
+      legend.appendChild(li);
+    });
+    if (stacked) {
+      if (total < 0.995) {
+        var rest = el('i', 'comp__seg comp__seg--rest');
+        rest.style.setProperty('--w', String(1 - total));
+        bar.appendChild(rest);
+      }
+      box.appendChild(bar);
+    }
+    box.appendChild(legend);
+  }
+
+  /* ---------- How ----------
+     The figures for how the listening went, each with a line under it. */
+  function factsOf(key) {
+    var box = $('[data-facts="' + key + '"]');
+    box.textContent = '';
+    return function (value, term, more) {
+      if (value == null) return;
+      var item = el('div', 'fact');
+      item.appendChild(el('dd', 'fact__v', value));
+      item.appendChild(el('dt', 'fact__t', term));
+      if (more) item.appendChild(el('dd', 'fact__more', more));
+      box.appendChild(item);
+    };
+  }
+
+  function habits(r, onlyWhen) {
     var s = r.stats;
     var box = $('[data-habits]');
     box.hidden = !s || !s.hours;
     if (box.hidden) return;
     var month = range === 'month';
+    /* what and how need the details of every song, which only the file
+       has; a range worked out on the page draws when alone */
+    $('[data-what-block]').hidden = $('[data-how-block]').hidden = Boolean(onlyWhen);
 
     /* the busiest three hours running, round midnight too */
     var best = 0, most = -1;
@@ -337,28 +695,18 @@
       sum: duration(Math.round(r.minutes / dayList.length)) + ' a day on average.'
     });
 
+    if (onlyWhen) return;
+
     var span = dayList.length;
-    var group = function (key) {
-      var box = $('[data-facts="' + key + '"]');
-      box.textContent = '';
-      return function (value, term, more) {
-        if (value == null) return;
-        var item = el('div', 'fact');
-        item.appendChild(el('dt', 'fact__t', term));
-        item.appendChild(el('dd', 'fact__v', value));
-        if (more) item.appendChild(el('dd', 'fact__more', more));
-        box.appendChild(item);
-      };
-    };
     var clockAt = function (m) {
       m = ((m % 1440) + 1440) % 1440;
-      var h = Math.floor(m / 60), mm = m % 60;
-      if (!mm && h % 12 === 0) return h ? 'noon' : 'midnight';
-      return (h % 12 || 12) + ':' + pad(mm) + (h < 12 ? ' am' : ' pm');
+      var hh = Math.floor(m / 60), mm = m % 60;
+      if (!mm && hh % 12 === 0) return hh ? 'noon' : 'midnight';
+      return (hh % 12 || 12) + ':' + pad(mm) + (hh < 12 ? ' am' : ' pm');
     };
     var late = s.hours.slice(0, 5).reduce(function (a, b) { return a + b; }, 0);
 
-    var rhythm = group('rhythm');
+    var rhythm = factsOf('rhythm');
     rhythm(num(s.sessions), s.sessions === 1 ? 'listening session' : 'listening sessions',
       s.sessions > 1 && s.longestSession ? 'The longest, ' + duration(s.longestSession.minutes) + '.' : '');
     rhythm(s.days + ' of ' + span, 'days with music',
@@ -367,14 +715,12 @@
       rhythm(clockAt(s.clock.start), 'the music usually starts', 'On a day with music.');
       rhythm(clockAt(s.clock.end), 'and usually stops', s.clock.end > 1440 ? 'Past midnight, that is.' : '');
     }
-    rhythm(duration(Math.round(r.minutes / Math.max(1, s.days))).replace(/ (hours?|minutes?)/g, function (w) {
-      return w === ' hour' || w === ' hours' ? ' h' : ' min';
-    }), 'a day of music', 'On the days with any.');
+    rhythm(short(Math.round(r.minutes / Math.max(1, s.days))), 'a day of music', 'On the days with any.');
     rhythm(pct(late, s.plays), 'after midnight', 'Plays from 12 to 5 am.');
 
-    var how = group('habits');
+    var how = factsOf('habits');
     how(num(s.newTracks), 'songs heard for the first time', 'And ' + plural(s.newArtists, 'artist', 'artists') + '.');
-    how(pct(s.plays - s.tracks, s.plays), 'replays', 'Plays of a song already heard ' + (month ? 'this month' : 'this week') + '.');
+    how(pct(s.plays - s.tracks, s.plays), 'replays', 'Plays of a song already heard in these ' + (month ? '30' : '7') + ' days.');
     if (s.once != null) how(num(s.once), s.once === 1 ? 'song played just once' : 'songs played just once', 'Of ' + plural(s.tracks, 'song', 'songs') + '.');
     how(pct(s.cutShort, s.plays), 'skipped part way', num(s.cutShort) + ' of ' + plural(s.plays, 'play', 'plays') + '.');
     if (s.topArtists && s.topArtists.length) {
@@ -383,7 +729,7 @@
     }
     how(num(s.albums), s.albums === 1 ? 'album' : 'albums', s.newAlbums ? num(s.newAlbums) + ' heard for the first time.' : '');
 
-    var music = group('music');
+    var music = factsOf('music');
     if (s.averageMs) music(mmss(s.averageMs), 'average song length');
     if (s.released && s.released.age != null) music(s.released.age + (s.released.age === 1 ? ' year' : ' years'), 'average age of a song', 'When it was played.');
     if (s.features != null) music(pct(s.features, s.plays), 'with a featured artist');
@@ -392,36 +738,36 @@
     if (s.popularity != null) music(String(s.popularity), 'popularity, out of 100', 'On average, by Deezer’s chart rank.');
 
     var g = s.genres;
-    shares($('[data-genres]'), g ? g.top.map(function (x) {
+    composition($('[data-genres]'), g ? g.top.map(function (x) {
       return [x.name, pct(x.plays, g.known), x.plays / g.known];
     }) : []);
 
     var rel = s.released;
-    shares($('[data-decades]'), rel ? Object.keys(rel.decades).sort().reverse().map(function (d) {
-      return ['The ' + d, pct(rel.decades[d], rel.known), rel.decades[d] / rel.known];
+    composition($('[data-decades]'), rel ? Object.keys(rel.decades).sort().reverse().map(function (dd) {
+      return ['The ' + dd, pct(rel.decades[dd], rel.known), rel.decades[dd] / rel.known];
     }) : []);
     $('[data-decades-note]').textContent = rel ? 'Out in ' + rel.average + ' on average' +
       (rel.fresh ? ', and ' + pct(rel.fresh, rel.known) + ' less than a month old when played.' : '.') : '';
 
     var reach = s.reach;
-    shares($('[data-reach]'), reach ? [
+    composition($('[data-reach]'), reach ? [
       ['Mainstream', reach.mainstream], ['In between', reach.middle], ['Niche', reach.niche]
     ].map(function (x) { return [x[0], pct(x[1], reach.known), x[1] / reach.known]; }) : []);
 
     var c = s.countries;
-    shares($('[data-countries]'), c ? c.top.map(function (x) {
+    composition($('[data-countries]'), c ? c.top.map(function (x) {
       return [region(x.code), pct(x.plays, c.known), x.plays / c.known];
     }) : []);
     $('[data-countries-note]').textContent = c && c.count > c.top.length
       ? plural(c.count, 'country', 'countries') + ' in all.' : '';
 
     var k = s.kinds;
-    shares($('[data-kinds]'), k ? [
+    composition($('[data-kinds]'), k ? [
       ['Solo artists', k.person], ['Bands and groups', k.group], ['Others', k.other]
     ].filter(function (x) { return x[1]; }).map(function (x) { return [x[0], pct(x[1], k.known), x[1] / k.known]; }) : []);
 
     var f = s.from;
-    shares($('[data-from]'), f ? [
+    composition($('[data-from]'), f ? [
       ['Playlists', f.playlist], ['Albums', f.album], ['Artists’ pages', f.artist], ['Liked songs', f.liked], ['Anywhere else', f.other]
     ].filter(function (x) { return x[1]; }).map(function (x) { return [x[0], pct(x[1], s.plays), x[1] / s.plays]; }) : []);
   }
@@ -432,36 +778,64 @@
     try { return (regions && regions.of(code)) || code; } catch (e) { return code; }
   };
 
-  /* A row for each day and a cell for each hour, as dark as its share of
-     the busiest hour; the note says what a cell is under the pointer. */
-  function heat(box, note, rows) {
-    box.textContent = '';
-    var max = 0;
-    rows.forEach(function (r) { r.hours.forEach(function (n) { max = Math.max(max, n); }); });
-    var sum = 'Darker is more plays; the darkest hour had ' + plural(max, 'play', 'plays') + '.';
-    var grid = el('div', 'heat__grid');
-    grid.setAttribute('role', 'img');
-    grid.setAttribute('aria-label', 'Plays by hour on each day. ' + sum);
-    rows.forEach(function (r) {
-      grid.appendChild(el('span', 'heat__day', r.label));
-      r.hours.forEach(function (n, h) {
-        var cell = el('span', 'heat__cell' + (n ? '' : ' heat__cell--none'));
-        cell.style.setProperty('--v', String(max ? 0.12 + 0.88 * (n / max) : 0));
-        cell.addEventListener('mouseenter', function () {
-          note.textContent = r.name + ', from ' + hourName(h) + ' to ' + hourName((h + 1) % 24) + ', ' + plural(n, 'play', 'plays');
-        });
-        cell.addEventListener('mouseleave', function () { note.textContent = sum; });
-        grid.appendChild(cell);
+  /* The last 30 days. The Action now writes them, but a file from before
+     it did holds the month so far, which on the 1st is a day. Then the
+     page works the 30 days out itself, from the calendar (plays, time)
+     and every play in the day logs (songs, artists, the maps, and when):
+     all of it but what and how, which wait for the file. */
+  var hourOf = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', hourCycle: 'h23', weekday: 'short' });
+  var WD = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+  function lastThirty() {
+    var today = dayOf(new Date());
+    var from = shiftDay(today, -29);
+    if (data.since && from < data.since) from = data.since;
+    var cal = data.calendar || {};
+    var r = { from: from, to: today, plays: 0, minutes: 0, tracks: null, artists: null,
+      topTracks: [], topArtists: [], before: null, rising: [], stats: null };
+    var busiest = { day: from, minutes: -1 };
+    for (var d = from; d <= today; d = shiftDay(d, 1)) {
+      if (!cal[d]) continue;
+      r.plays += cal[d].plays || 0;
+      r.minutes += cal[d].minutes || 0;
+      if ((cal[d].minutes || 0) > busiest.minutes) busiest = { day: d, minutes: cal[d].minutes || 0 };
+    }
+    r.busiest = busiest;
+    return r;
+  }
+
+  function showThirty() {
+    var r = lastThirty();
+    figures(r);
+    topAlbums([]);
+    standouts(null);
+    rising([]);
+    $('[data-habits]').hidden = true;
+    Promise.all([playsOf(r), photos(), names()]).then(function (got) {
+      var plays = got[0];
+      if (range !== 'month') return;
+      var all = tally(plays, r, got[1], got[2]);
+      r.tracks = all.songs.length;
+      r.artists = all.artists.length;
+      figures(r);
+      topTracks(all.songs, all.songs.length);
+      topAlbums(all.albums, all.albums.length);
+      topArtists(all.artists, all.artists.length);
+      var hours = [], weekdays = [0, 0, 0, 0, 0, 0, 0], grid = [];
+      for (var i = 0; i < 24; i++) hours.push(0);
+      for (var w = 0; w < 7; w++) grid.push(hours.slice());
+      plays.forEach(function (p) {
+        var parts = {};
+        hourOf.formatToParts(new Date(p.played_at)).forEach(function (x) { parts[x.type] = x.value; });
+        var h = +parts.hour % 24, wd = WD[parts.weekday];
+        if (isNaN(h) || wd == null) return;
+        hours[h]++;
+        weekdays[wd]++;
+        grid[wd][h]++;
       });
+      r.stats = { hours: hours, weekdays: weekdays, grid: grid, busiest: r.busiest, plays: plays.length };
+      habits(r, true);
     });
-    var axis = el('div', 'heat__axis');
-    axis.setAttribute('aria-hidden', 'true');
-    axis.appendChild(el('span'));
-    for (var h = 0; h < 24; h++) axis.appendChild(el('span', 'cols__tick', h % 6 ? '' : h ? hourName(h) : '12 am'));
-    box.appendChild(grid);
-    box.appendChild(axis);
-    note.textContent = sum;
-    box.closest('.habit').hidden = !rows.length;
   }
 
   function showRange(which) {
@@ -471,21 +845,27 @@
     Array.prototype.forEach.call(page.querySelectorAll('[data-range]'), function (b) {
       b.setAttribute('aria-pressed', String(b.getAttribute('data-range') === which));
     });
+    if (which === 'month' && r.from > shiftDay(dayOf(new Date()), -29) && r.from > (data.since || '')) {
+      showThirty();
+      return;
+    }
     figures(r);
-    ranked($('[data-top-tracks]'), r.topTracks, 10);
-    ranked($('[data-top-artists]'), r.topArtists, 5);
+    topTracks(r.topTracks);
+    topAlbums([]);
+    topArtists(r.topArtists);
+    maps(r, which);
     standouts(r.stats);
     rising(r.rising);
     habits(r);
   }
 
-  /* ---------- Listening calendar ----------
+  /* ---------- The calendar ----------
      A month at a time, any month since tracking began, each day by the
      cover of its top album (its top song's, in older files with none).
-     The day picked is summed up under the grid: its plays and time, its
-     top songs, and its whole listening log, every song from 12 AM to
-     11:59 PM, kept closed until it is asked for. Today's is kept live,
-     with the same plays as today's log at the foot of the page. */
+     Beside it, the day picked: its figures, how it went, its top songs,
+     and its whole log, every song from 12 AM to 11:59 PM, kept closed
+     until it is asked for. Today's is kept live, with the same plays as
+     today's timeline at the foot of the page. */
   var cal = null;    // the calendar's redraws, once it is up
   var dayFiles = {}; // each day's whole log, once fetched
 
@@ -536,7 +916,7 @@
       t.play = p;
       t.last = Date.parse(p.played_at);
     });
-    var top = Object.keys(tally).map(function (k) { return tally[k]; })
+    var top = Object.keys(tally).map(function (key) { return tally[key]; })
       .sort(function (a, b) { return b.plays - a.plays || b.last - a.last; })
       .slice(0, 5)
       .map(function (t) {
@@ -565,7 +945,7 @@
     var played = Object.keys(days()).filter(function (d) { return days()[d] && days()[d].plays; }).sort();
     var picked = days()[today] ? today : played[played.length - 1] || today;
     var month = picked.slice(0, 7);
-    var sign = null; // today's plays as the note last showed them
+    var sign = null; // today's plays as the panel last showed them
 
     function shift(ym, n) {
       var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1 + n;
@@ -574,7 +954,6 @@
 
     function draw() {
       today = dayOf(new Date());
-      /* the month's name, and its year apart, to be set quieter */
       var head = $('[data-cal-month]');
       head.textContent = fmtDay(month + '-01', { month: 'long' });
       head.appendChild(el('span', 'cal__yr', ' ' + month.slice(0, 4)));
@@ -592,7 +971,7 @@
       for (var i = 0; i < start.getUTCDay(); i++) grid.appendChild(el('span', 'cal__blank'));
       var length = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth() + 1, 0)).getUTCDate();
       for (var d = 1; d <= length; d++) grid.appendChild(cell(month + '-' + pad(d)));
-      dayNote();
+      panel();
     }
 
     function cell(day) {
@@ -603,43 +982,53 @@
       c.appendChild(el('span', 'cal__n', String(+day.slice(8))));
       if (day < data.since || day > today) {
         c.disabled = true;
-        c.classList.add('cal__cell--off');
+        c.classList.add('is-off');
         c.setAttribute('aria-label', label + (day < data.since ? ', before tracking began' : ''));
         return c;
       }
-      var cover = info && (info.topAlbum || topsOf(info)[0]);
-      if (cover && https(cover.image)) {
+      var top = info && (info.topAlbum || topsOf(info)[0]);
+      if (top && https(top.image)) {
         var img = el('img', 'cal__art');
         img.alt = '';
         img.loading = 'lazy';
-        img.src = cover.image;
+        img.src = top.image;
         c.insertBefore(img, c.firstChild);
-        c.classList.add('cal__cell--art');
+        c.classList.add('has-art');
       }
       c.setAttribute('aria-label', label + ': ' + (info
-        ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (cover ? ', top album ' + cover.name : '')
+        ? plural(info.plays, 'play', 'plays') + ', ' + duration(info.minutes) + (top ? ', top album ' + top.name : '')
         : 'nothing played'));
-      if (day === today) c.classList.add('cal__cell--today');
+      if (day === today) c.classList.add('is-today');
       c.setAttribute('aria-pressed', String(day === picked));
       c.addEventListener('click', function () { picked = day; draw(); });
       return c;
     }
 
-    function dayNote() {
-      var note = $('[data-cal-day]');
-      note.textContent = '';
+    function panel() {
+      var box = $('[data-cal-day]');
+      box.textContent = '';
       var info = days()[picked];
       if (picked === today) {
         var plays = todaysPlays();
         info = liveDay(info, plays);
         sign = signOf(plays);
       }
-      note.appendChild(el('h3', 'cal__date', (picked === today ? 'Today, ' : '') +
-        fmtDay(picked, { weekday: 'long', month: 'long', day: 'numeric' })));
+      box.appendChild(el('p', 'day__when', picked === today ? 'Today' : fmtDay(picked, { weekday: 'long' })));
+      box.appendChild(el('h3', 'day__date', fmtDay(picked, { month: 'long', day: 'numeric' })));
       if (!info || !info.plays) {
-        note.appendChild(el('p', 'cal__line', picked === today ? 'Nothing yet today.' : 'Nothing played.'));
+        box.appendChild(el('p', 'day__line', picked === today ? 'Nothing yet today.' : 'Nothing played.'));
         return;
       }
+      var stats = el('dl', 'day__stats');
+      [[num(info.plays), info.plays === 1 ? 'play' : 'plays'], [short(info.minutes), 'listening'],
+        [num(info.tracks), info.tracks === 1 ? 'song' : 'songs'], [num(info.artists), info.artists === 1 ? 'artist' : 'artists']]
+        .forEach(function (f) {
+          var s = el('div', 'day__stat');
+          s.appendChild(el('dd', 'day__v', f[0]));
+          s.appendChild(el('dt', 'day__t', f[1]));
+          stats.appendChild(s);
+        });
+      box.appendChild(stats);
       /* and, from the file, how the day went: its sessions, what was
          new, and what it mostly was */
       var more = [];
@@ -649,18 +1038,17 @@
       }
       if (info.newTracks) more.push(plural(info.newTracks, 'song', 'songs') + ' heard for the first time');
       if (info.genres && info.genres.top && info.genres.top.length) more.push('mostly ' + info.genres.top[0].name);
-      more = more.join('; ');
-      note.appendChild(el('p', 'cal__line', plural(info.plays, 'play', 'plays') + ' and ' +
-        duration(info.minutes) + ' of listening, across ' + plural(info.tracks, 'song', 'songs') +
-        ' and ' + plural(info.artists, 'artist', 'artists') + '.' +
-        (more ? ' ' + more.charAt(0).toUpperCase() + more.slice(1) + '.' : '')));
+      if (more.length) {
+        more = more.join('; ');
+        box.appendChild(el('p', 'day__line', more.charAt(0).toUpperCase() + more.slice(1) + '.'));
+      }
       var tops = topsOf(info);
       if (tops.length) {
-        var list = el('ol', 'plays');
-        tops.slice(0, 5).forEach(function (item, i) { list.appendChild(row(item, rank(i), count(item))); });
-        note.appendChild(list);
+        var list = el('ol', 'tracks');
+        tops.slice(0, 5).forEach(function (item, i) { list.appendChild(track(item, rank(i), count(item))); });
+        box.appendChild(list);
       }
-      dayLog(note, picked);
+      dayLog(box, picked);
     }
 
     /* The day's whole log, from the file the Action writes for each day,
@@ -668,12 +1056,12 @@
        Action's last run, and the plays since are added from the page's
        own. Once opened it stays open from day to day, until it is closed. */
     var logOpen = false;
-    function dayLog(note, day) {
-      var toggle = el('button', 'daylog__toggle');
+    function dayLog(box, day) {
+      var toggle = el('button', 'day__toggle');
       toggle.type = 'button';
-      toggle.appendChild(el('span', 'daylog__name', 'Every song played that day'));
-      toggle.appendChild(el('span', 'daylog__sign'));
-      var body = el('div', 'daylog__body');
+      toggle.appendChild(el('span', 'day__toggle-name', 'Every song played that day'));
+      toggle.appendChild(el('span', 'day__sign'));
+      var body = el('div', 'day__log');
       var loaded = false;
       function set(open) {
         logOpen = open;
@@ -684,14 +1072,14 @@
       function load() {
         if (dayFiles[day]) return fill(dayFiles[day]);
         body.textContent = '';
-        body.appendChild(el('p', 'cal__line', 'Loading…'));
+        body.appendChild(el('p', 'day__line', 'Loading…'));
         fetch(base + 'days/' + day + '.json', { cache: 'no-cache' })
           /* Today has no file until the Action has logged a play from it. */
           .then(function (r) { return r.ok ? r.json() : r.status === 404 && day === today ? [] : Promise.reject(r.status); })
           .then(function (plays) { fill(dayFiles[day] = plays); })
           .catch(function () {
             body.textContent = '';
-            body.appendChild(el('p', 'cal__line', 'That day’s log couldn’t be loaded. Close and open it again to retry.'));
+            body.appendChild(el('p', 'day__line', 'That day’s log couldn’t be loaded. Close and open it again to retry.'));
           });
       }
       function fill(plays) {
@@ -701,14 +1089,14 @@
           plays = plays.concat(todaysPlays().filter(function (p) { return Date.parse(p.played_at) > last; }));
         }
         body.textContent = '';
-        body.appendChild(el('p', 'daylog__span', '12 AM to 11:59 PM · ' + plural(plays.length, 'play', 'plays')));
-        var list = el('ol', 'plays plays--log');
-        plays.forEach(function (item) { list.appendChild(logRow(item)); });
+        body.appendChild(el('p', 'day__span', '12 AM to 11:59 PM · ' + plural(plays.length, 'play', 'plays')));
+        var list = el('ol', 'timeline timeline--day');
+        plays.forEach(function (item) { list.appendChild(stop(item)); });
         body.appendChild(list);
       }
       toggle.addEventListener('click', function () { set(toggle.getAttribute('aria-expanded') !== 'true'); });
-      note.appendChild(toggle);
-      note.appendChild(body);
+      box.appendChild(toggle);
+      box.appendChild(body);
       set(logOpen);
     }
 
@@ -719,18 +1107,17 @@
 
     cal = {
       draw: draw,
-      /* At each live answer, today's note again, if today is the day
-         picked and its plays have changed. The note is read out as it
-         changes, so it isn't redrawn for nothing. */
+      /* At each live answer, today's panel again, if today is the day
+         picked and its plays have changed. */
       live: function () {
-        if (picked === today && signOf(todaysPlays()) !== sign) dayNote();
+        if (picked === today && signOf(todaysPlays()) !== sign) panel();
       }
     };
   }
 
-  /* ---------- Today's listening log ----------
-     Every play since 12 am today in Charlottesville, newest first, with
-     its time; the song playing now heads it. The first ten, and the rest
+  /* ---------- Today ----------
+     Every play since 12 am today in Charlottesville, newest first, on a
+     timeline; the song playing now heads it. The first ten, and the rest
      a click away. Redrawn at every live answer, keeping that choice. */
   var logged = [];
   var openLog = false;
@@ -741,13 +1128,14 @@
     var today = dayOf(new Date());
     plays = plays.filter(function (item) { return dayOf(new Date(item.played_at)) === today; });
     if (playing) plays = [Object.assign({ now: true, played_at: new Date().toISOString() }, playing)].concat(plays);
+    $('[data-log-count]').textContent = plays.length ? plural(plays.length - (playing ? 1 : 0), 'play', 'plays') + ' so far' : '';
     if (!plays.length) {
       box.appendChild(el('p', 'log__empty', 'Nothing yet today.'));
       return;
     }
-    var list = el('ol', 'plays plays--log');
+    var list = el('ol', 'timeline');
     var shown = openLog ? plays : plays.slice(0, 10);
-    shown.forEach(function (item) { list.appendChild(logRow(item)); });
+    shown.forEach(function (item) { list.appendChild(stop(item)); });
     box.appendChild(list);
     if (plays.length > 10) {
       var more = el('button', 'log__more', openLog ? 'Show fewer' : 'Show all ' + num(plays.length));
@@ -765,8 +1153,8 @@
   /* ---------- Now playing ----------
      From the Worker at data-live (.github/worker/now.js), which asks
      Spotify at most every fifteen seconds. The page asks as often while
-     it is in view; between answers the progress bar runs on its own
-     clock, and a scrub or a skip shows at the next answer. */
+     it is in view; between answers the progress runs on its own clock,
+     and a scrub or a skip shows at the next answer. */
   var LIVE = page.getAttribute('data-live');
   var tick = null;
   var current = null; // the song playing now, for the log
@@ -777,6 +1165,7 @@
     var playing = Boolean(track && live.playing);
     var item = track || fallback;
     if (!item) return;
+    var now = $('[data-now]');
     $('[data-now-when]').textContent = playing ? 'Playing now' : track ? 'Paused' : 'Last played · ' + ago(item.played_at);
     $('[data-now-name]').textContent = item.name;
     $('[data-now-by]').textContent = item.artists;
@@ -798,20 +1187,20 @@
       img.removeAttribute('src');
       img.hidden = true;
     }
-    $('[data-now]').classList.toggle('now--live', playing);
+    now.classList.toggle('is-live', playing);
 
-    var bar = $('[data-now-bar]');
-    var time = $('[data-now-time]');
+    var progress = $('[data-now-progress]');
     clearInterval(tick);
-    bar.hidden = time.hidden = !track;
+    progress.hidden = !track;
     if (!track) return;
     /* The progress is as of when the Worker asked Spotify, which can be
        a while before this answer reached the page. */
     var start = (Date.parse(live.at) || Date.now()) - live.progress_ms;
+    $('[data-now-len]').textContent = mmss(track.duration_ms);
     var draw = function () {
       var at = playing ? Math.min(Date.now() - start, track.duration_ms) : live.progress_ms;
       $('[data-now-fill]').style.transform = 'scaleX(' + (at / track.duration_ms) + ')';
-      time.textContent = mmss(at) + ' / ' + mmss(track.duration_ms);
+      $('[data-now-at]').textContent = mmss(at);
     };
     draw();
     if (playing) tick = setInterval(draw, 500);
@@ -1004,7 +1393,7 @@
     });
     /* Before the calendar, whose today is drawn from the same plays. */
     logged = data.recent;
-    showRange('week');
+    showRange('month');
     calendar();
 
     log(logged);

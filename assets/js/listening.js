@@ -13,6 +13,9 @@
   var spotify = function (url) { return /^https:\/\/open\.spotify\.com\//.test(url || '') ? url : null; };
   var https = function (url) { return /^https:\/\//.test(url || '') ? url : null; };
   var shown = null; // where the song on show came from: 'live' or 'file'
+  // a link the page gave its own address (the home page's goes to /music/)
+  // keeps it; otherwise it goes to the song on Spotify
+  var own = $('[data-listening-link]').hasAttribute('href');
 
   function show(item, playing, from) {
     if (!item || (from === 'file' && shown === 'live')) return;
@@ -21,7 +24,9 @@
     $('[data-listening-name]').textContent = item.name;
     $('[data-listening-by]').textContent = item.artists || '';
     var link = $('[data-listening-link]');
-    if (spotify(item.url)) link.href = item.url; else link.removeAttribute('href');
+    if (!own) {
+      if (spotify(item.url)) link.href = item.url; else link.removeAttribute('href');
+    }
     var art = $('[data-listening-art]');
     if (https(item.image)) art.src = item.image; else art.removeAttribute('src');
     box.hidden = false;

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#111110" media="(prefers-color-scheme: dark)">
   <script>
     /* Before paint: apply a stored theme choice, and mark the root so
-       the colophon toggle is only shown where it can actually work. */
+       the theme control is only shown where it can actually work. */
     (function () {
       document.documentElement.classList.add('js');
       try {
@@ -29,8 +29,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Projects | Aniketh Bandlamudi">
   <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
-  <meta name="twitter:image" content="https://aniketh.net/assets/img/aniketh.jpeg">  <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/label.css">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/geist@1.9.0/dist/fonts/geist-serif/GeistSerifVF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
   <script type="application/ld+json">
   {
@@ -212,32 +212,33 @@
 </head>
 <body>
   
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link active" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link" data-text="Resume">Resume</a>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="frame">
+  <header class="side">
+    <nav class="side__nav" aria-label="Pages">
+      <a href="/">About</a>
+      <a href="/work/">Work</a>
+      <a href="/education/">Education</a>
+      <a href="/projects/" aria-current="page">Projects</a>
+      <a href="/research/">Research</a>
+      <a href="/photos/">Photos</a>
+      <a href="/music/">Music</a>
+      <a href="/press/">Press</a>
+      <a href="/contact/">Contact</a>
+      <a href="/resume/">Resume</a>
     </nav>
-    <!-- Logos drawn for the site as one set, a single line on a 24 grid, in the page ink -->
-    <nav class="masthead__elsewhere" aria-label="Elsewhere">
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M7.5 10.5v6M11 16.5v-6M11 13.25a2.75 2.75 0 0 1 5.5 0v3.25"/><circle class="dot" cx="7.5" cy="7.5" r=".4"/></svg></a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-2.5c0-1.1-.4-2.1-1-2.75 3.6-.55 5.75-2.35 5.75-6 0-1.15-.45-2.25-1.15-3.1.25-1.05.25-2.35-.1-3.4-1.1 0-2.3.6-3.2 1.35-2.2-.55-4.4-.55-6.6 0-.9-.75-2.1-1.35-3.2-1.35-.35 1.05-.35 2.35-.1 3.4-.7.85-1.15 1.95-1.15 3.1 0 3.65 2.15 5.45 5.75 6-.6.65-1 1.65-1 2.75V21M9 18.6c-2.4.9-2.9-1.5-4.75-1.85"/></svg></a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 3.25h4.75L20 20.75h-4.75zM20 3.25l-6.6 7.22M4 20.75l6.6-7.22"/></svg></a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="dot" cx="16.75" cy="7.25" r=".4"/></svg></a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" aria-label="Substack" title="Substack"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 3.25h15M4.5 7h15M4.5 10.75h15v10L12 16.25l-7.5 4.5z"/></svg></a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9.25"/><path d="M6.5 9.35c3.5-1.25 8-1 11 .75M7.25 12.6c3-1 6.5-.75 9.25.75M8 15.7c2.5-.7 5.25-.5 7.5.65"/></svg></a>
+    <nav class="side__else" aria-label="Elsewhere">
+      <a href="mailto:me@aniketh.net">Email</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
     </nav>
+    <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>&#8984;K</kbd></button>
   </header>
 
-  <main class="page">
+  <main class="page" id="main">
         <h1 class="page-title">Projects</h1>
         <div class="projects__list projects__list--across">
           <article class="project-item">
@@ -247,6 +248,7 @@
             </div>
             <p class="project-item__description">A durable execution runtime in Rust for nondeterministic AI agents. It journals every model call and tool call to a tamper-evident log, so a crashed run resumes exactly where it stopped without repeating finished work, and any run can be replayed faithfully for debugging and audit.</p>
             <p class="project-item__description">Zero-dependency core with Python bindings and a CLI, plus independent anchoring of the log and evidence bundles an auditor can verify offline.</p>
+            <a href="https://github.com/pragmaticco/pragmatic" target="_blank" rel="noopener" class="project-item__link">View repo</a>
           </article>
 
           <article class="project-item">
@@ -404,19 +406,24 @@
         </div>
   </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span class="colophon__rights">&copy; 2026 Aniketh Bandlamudi</span>
-      <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
-      </span>
-    </p>
+  <footer class="site-foot">
+    <nav class="site-foot__else" aria-label="Elsewhere">
+      <a href="mailto:me@aniketh.net">Email</a>
+      <a href="https://github.com/ankthba" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/ankthba" target="_blank" rel="noopener">X</a>
+      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">Substack</a>
+    </nav>
+    <span>&copy; 2026 Aniketh Bandlamudi</span>
+    <span class="theme-toggle" role="group" aria-label="Color theme">
+      <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
+      <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+    </span>
   </footer>
-  <!-- Not deferred: WebKit runs deferred scripts before the stylesheets are in, and these measure the page as styled. -->
+  </div>
   <script src="/assets/js/theme.js"></script>
-  <script src="/assets/js/label.js"></script>
-  <script src="/assets/js/surface.js"></script>
+  <script src="/assets/js/site.js"></script>
 </body>
 </html>

@@ -143,11 +143,12 @@ async function playlist(id) {
   return null;
 }
 
-// A range as the page shows it: the last seven days, or the month so
-// far. With stats, it also carries everything a calendar week or month
+// A range as the page shows it: the last seven days, or the last
+// thirty, both running up to today, so neither is ever a stub at the
+// start of a week or a month. With stats, it also carries everything a calendar week or month
 // does (stretch(), below), with what was new to it counted against all
 // that was heard before it began. Given the stretch before it (the
-// seven days before, or last month to the same day), it says how that
+// seven days before, or the thirty before), it says how that
 // one went too, and which of the top songs have risen most since, and
 // whether each was in the top songs then; not when tracking hadn't
 // begun by then, so nothing is compared with a part.
@@ -310,14 +311,7 @@ async function sound(list) {
   return out;
 }
 const weekFrom = shiftDay(today, -6);
-const monthFrom = today.slice(0, 8) + '01';
-// Last month, from its first to the same day as today (or its last).
-function lastMonthTo(day) {
-  const [y, m, d] = day.split('-').map(Number);
-  const first = new Date(Date.UTC(y, m - 2, 1)).toISOString().slice(0, 10);
-  const length = new Date(Date.UTC(y, m - 1, 0)).getUTCDate();
-  return [first, first.slice(0, 8) + String(Math.min(d, length)).padStart(2, '0')];
-}
+const monthFrom = shiftDay(today, -29);
 
 // The calendar and the months: for every day with plays, and every
 // month, how many and for how long, how many different songs, artists
@@ -560,7 +554,8 @@ const music = {
   ranges: {
     week: await range(since > weekFrom ? since : weekFrom, today, true,
       [shiftDay(weekFrom, -7), shiftDay(weekFrom, -1)]),
-    month: await range(since > monthFrom ? since : monthFrom, today, true, lastMonthTo(today)),
+    month: await range(since > monthFrom ? since : monthFrom, today, true,
+      [shiftDay(monthFrom, -30), shiftDay(monthFrom, -1)]),
     all: await range(since, today),
   },
   calendar,
@@ -568,6 +563,12 @@ const music = {
   months,
 };
 
+// A photo for every artist heard in the last thirty days, not only the
+// top ten of each range, so the page's map of artists can show each of
+// them as themselves. Cached, so a run only asks after the new ones.
+for (const id of new Set(plays.filter((p) => p.day >= monthFrom).map((p) => p.artists[0]?.id).filter(Boolean))) {
+  await photo(id);
+}
 await writeFile(photosPath, JSON.stringify(photos, null, 1) + '\n');
 await writeFile(playlistsPath, JSON.stringify(playlists, null, 1) + '\n');
 await writeFile(join(outDir, 'music.json'), JSON.stringify(music) + '\n');
@@ -579,6 +580,10 @@ for (const [day, list] of byDay) {
   const log = list.map((p) => ({
     name: p.name,
     artists: p.artists.map((a) => a.name).join(', '),
+    // the first artist's id, so the page can find their photo in artists.json
+    artist: p.artists[0]?.id || null,
+    // and the album, for the page's top albums
+    album: p.album?.name || null,
     url: trackUrl(p.id),
     image: p.image,
     played_at: p.played_at,

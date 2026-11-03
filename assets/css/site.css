@@ -47,7 +47,7 @@
   --font-sans: "Geist Serif", "Iowan Old Style", Georgia, serif;
 
   --size: 1rem;
-  --sheet: 42.5rem;
+  --sheet: 36rem;
   --col: 10.5rem;
   --row-pad: 0.75rem;
   --gap: 5rem;
@@ -514,12 +514,12 @@ a.masthead__name:hover {
   padding-top: calc(var(--gap) * 0.8);
 }
 
-/* prose: about seventy characters to the line, and more air
+/* prose: the column's width, about seventy-five characters to the
+   line, so the text fills the column it's centred in; and more air
    between lines than the lists have */
 .about__text,
 .contact__text,
 .music__lede {
-  max-width: 34rem;
   line-height: 1.65;
 }
 

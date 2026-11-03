@@ -505,6 +505,27 @@ a.masthead__name:hover {
   pointer-events: none;
 }
 
+/* An entry's facts (Education), set across the whole entry: each
+   label under the entry's name, in the quieter grey, and what it says
+   under the line beside the name. Lists one to a line, so each course
+   or role reads on its own. */
+.facts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: var(--col) minmax(0, 1fr);
+  gap: 0.55rem 1.5rem;
+  margin-top: 0.8rem;
+}
+
+.facts dt {
+  color: var(--color-quiet);
+}
+
+.facts dd {
+  min-width: 0;
+  color: var(--color-muted);
+}
+
 /* ---------------------------------------------------------
    7. Home
    --------------------------------------------------------- */
@@ -1158,6 +1179,11 @@ a.play:hover .play__name {
     grid-row: auto;
   }
 
+  .facts {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    column-gap: 1rem;
+  }
+
   .scent__info dt {
     margin-top: 0.35rem;
   }
@@ -1202,6 +1228,11 @@ a.play:hover .play__name {
   .project-item__header {
     display: block;
     margin-bottom: 0.2rem;
+  }
+
+  /* the facts start under the picture's place, at the column's width */
+  .facts {
+    clear: both;
   }
 
   .project-item__link {

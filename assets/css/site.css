@@ -693,6 +693,14 @@ a.masthead__name:hover {
   color: var(--color-quiet);
 }
 
+.colophon__meta a {
+  transition: color var(--transition-fast);
+}
+
+.colophon__meta a:hover {
+  color: var(--color-fg);
+}
+
 /* The ways to reach me: small, in the nav's grey, set in the column
    like a line of text. On the home page under the line about me; on
    the others, in the footer. Each glyph's own edge lines up with the

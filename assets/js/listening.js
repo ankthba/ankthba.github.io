@@ -20,7 +20,7 @@
   function show(item, playing, from) {
     if (!item || (from === 'file' && shown === 'live')) return;
     shown = from;
-    $('[data-listening-heading]').textContent = playing ? 'Listening to now' : 'Most recently listened to';
+    $('[data-listening-heading]').textContent = playing ? 'Listening now' : 'Last listened to';
     $('[data-listening-name]').textContent = item.name;
     $('[data-listening-by]').textContent = item.artists || '';
     var link = $('[data-listening-link]');

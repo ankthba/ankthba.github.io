@@ -6,9 +6,9 @@
    you see one painting through the type. The letters keep changing
    until, one by one, they settle into the name, and as each settles
    the painting in it gives way to ink. Then the name goes to its place
-   at the head of the page while the painting and the rest come in
-   round it. It moves the name itself, not a copy, so it always lands
-   exactly where the page has set it.
+   at the head of the page while the rest comes in round it. It moves
+   the name itself, not a copy, so it always lands exactly where the
+   page has set it.
 
    The script in the page's head decides before the first paint whether
    to play it (once a visit, when the site is entered here rather than
@@ -23,7 +23,12 @@
   if (!root.classList.contains('intro')) return;
 
   var name = document.querySelector('.masthead__name');
-  var art = document.querySelector('.split__img');
+  // the page's painting, which the page itself only shows in pieces
+  var art = null;
+  if (root.getAttribute('data-painting')) {
+    art = new Image();
+    art.src = root.getAttribute('data-painting');
+  }
   var TEXT = name ? name.textContent : '';
   // the jumble: letters of the same case as the one they stand for, none
   // that drop below the line, so the name keeps its outline
@@ -38,8 +43,7 @@
   var SET = 1050, SET_EACH = 55;      // and each settles into its own
   var INK = 900;                      // the painting in it gives way to ink
   var MOVE = 2600, MOVE_FOR = 1150;   // then the name goes to its place
-  var REVEAL = 2800;                  // the painting dissolves in as it goes
-  var REST = 3300;                    // and the rest comes in round it
+  var REST = 3150;                    // and the rest comes in round it
 
   var HURRY = ['keydown', 'pointerdown', 'wheel', 'touchstart'];
   var anims = [];
@@ -168,9 +172,19 @@
         el.style.backgroundSize = pw + 'px ' + ph + 'px';
       }
       word.appendChild(el);
-      var near = (ch === ch.toLowerCase() ? lower : upper).slice()
-        .sort(function (x, y) { return Math.abs(x[1] - w) - Math.abs(y[1] - w); })
-        .slice(0, 8).map(function (g) { return g[0]; }).join('');
+      // stand-ins only as wide as the letter itself, to within 5% where
+      // there are a few that close, or 8 or 11% where there aren't, so
+      // the jumble never crowds a neighbour or leaves a gap; a letter
+      // with nothing like it (an m) stays itself
+      var own = c.measureText(ch).width;
+      var pool = ch === ch.toLowerCase() ? lower : upper;
+      var near = '';
+      [0.05, 0.08, 0.11].some(function (tol) {
+        near = pool.filter(function (g) { return Math.abs(g[1] - own) <= own * tol; })
+          .map(function (g) { return g[0]; }).join('');
+        return near.length >= 3;
+      });
+      if (near.indexOf(ch) < 0) near += ch;
       slots.push({ el: el, ch: ch, near: near, on: TYPE + i * TYPE_EACH, set: SET + i * SET_EACH, next: 0, done: false });
     });
 
@@ -224,7 +238,7 @@
       range.selectNodeContents(name);
       var ink = range.getBoundingClientRect();
       var cx = ink.left + ink.width / 2, cy = ink.top + ink.height / 2;
-      var k = Math.min(2.4, (window.innerWidth * 0.84) / ink.width, (window.innerHeight * 0.62) / ink.height);
+      var k = Math.min((window.innerWidth * 0.84) / ink.width, (window.innerHeight * 0.5) / ink.height);
       var dx = window.innerWidth / 2 - cx;
       var dy = window.innerHeight / 2 - cy;
       var away = 'translate(' + dx + 'px, ' + dy + 'px) scale(' + k + ')';
@@ -239,16 +253,8 @@
       ], { duration: end, fill: 'backwards' });
       anims.push(move);
 
-      // as the name sets off, the painting dissolves in, sharp from the
-      // first frame, settling from a touch large to its own size; then
-      // the rest of the page rises in round it
-      if (art) {
-        anims.push(art.parentNode.animate([{ opacity: 0 }, { opacity: 1 }],
-          { duration: 1800, delay: REVEAL, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'backwards' }));
-        anims.push(art.animate([{ transform: 'scale(1.04)' }, { transform: 'scale(1)' }],
-          { duration: 3000, delay: REVEAL, easing: OUT, fill: 'backwards' }));
-      }
-      var page = Array.prototype.slice.call(document.querySelectorAll('.page > *'));
+      // as the name comes to rest, the rest of the page rises in round it
+      var page = Array.prototype.slice.call(document.querySelectorAll('.masthead__role, .masthead .social, .page > *'));
       page.concat([document.querySelector('.colophon')]).forEach(function (el, j) {
         if (!el) return;
         anims.push(el.animate([

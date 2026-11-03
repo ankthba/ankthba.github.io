@@ -1060,3 +1060,69 @@ a.stop__song:hover {
 @media (prefers-reduced-motion: reduce) {
   .now__eq i { animation: none; transform: scaleY(0.6); }
 }
+
+/* ---------- Quiet, like the rest of the site ----------
+   One size of type here too: the song playing, and the figures, set
+   in the line like everything else, with no rules between them. */
+.now {
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.now__name,
+.now__by {
+  margin-top: 0;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: 0;
+}
+
+.now__progress {
+  margin-top: 0.6rem;
+}
+
+.figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 2rem;
+}
+
+.figure,
+.figure + .figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  padding: 0;
+  border-left: 0;
+}
+
+.figure__v {
+  order: 1;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: 0;
+}
+
+.figure__t {
+  order: 2;
+  margin-top: 0;
+}
+
+.figure__d {
+  order: 3;
+}
+
+@media (max-width: 34rem) {
+  .now {
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+.range__bar {
+  border-bottom: 0;
+  background: var(--color-bg);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}

@@ -1,23 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="--highlight: #a8473a">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1a1917" media="(prefers-color-scheme: dark)">
-  <script>
-    /* Before paint: apply a stored theme choice, and mark the root so
-       the theme control is only shown where it can actually work. */
-    (function () {
-      document.documentElement.classList.add('js');
-      try {
-        var t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') {
-          document.documentElement.setAttribute('data-theme', t);
-        }
-      } catch (e) {}
-    })();
-  </script>
+  <meta name="theme-color" content="#faf9f5">
+  <script>document.documentElement.classList.add('js');</script>
   <title>Resume | Aniketh Bandlamudi</title>
   <meta name="description" content="Resume of Aniketh Bandlamudi: Computer Science and Applied Mathematics at the University of Virginia, founder of Pragmatic Research and OCRadar, and engineering intern at Alarm.com.">
   <link rel="canonical" href="https://aniketh.net/resume/">
@@ -31,7 +18,7 @@
   <meta name="twitter:description" content="Resume of Aniketh Bandlamudi: Computer Science and Applied Mathematics at the University of Virginia, founder of Pragmatic Research and OCRadar, and engineering intern at Alarm.com.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
   <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
   <script type="application/ld+json">
@@ -87,50 +74,50 @@
 <body>
   
   <a class="skip" href="#main">Skip to content</a>
-  <header class="masthead">
-    <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-    <nav class="masthead__nav" aria-label="Pages">
-      <a href="/" class="masthead__nav-link" data-text="About">About</a>
-      <a href="/work/" class="masthead__nav-link" data-text="Work">Work</a>
-      <a href="/education/" class="masthead__nav-link" data-text="Education">Education</a>
-      <a href="/projects/" class="masthead__nav-link" data-text="Projects">Projects</a>
-      <a href="/research/" class="masthead__nav-link" data-text="Research">Research</a>
-      <a href="/music/" class="masthead__nav-link" data-text="Music">Music</a>
-      <a href="/photos/" class="masthead__nav-link" data-text="Photography">Photography</a>
-      <a href="/press/" class="masthead__nav-link" data-text="Press">Press</a>
-      <a href="/contact/" class="masthead__nav-link" data-text="Contact">Contact</a>
-      <a href="/resume/" class="masthead__nav-link active" data-text="Resume" aria-current="page">Resume</a>
-      <button type="button" class="masthead__nav-link kbar-open" data-text="Search" aria-keyshortcuts="Meta+K Control+K">Search</button>
-    </nav>
-    <nav class="masthead__nav masthead__nav--else" aria-label="Elsewhere">
-      <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="LinkedIn">LinkedIn</a>
-      <a href="https://github.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="GitHub">GitHub</a>
-      <a href="https://x.com/ankthba" target="_blank" rel="noopener" class="masthead__nav-link" data-text="X">X</a>
-      <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Instagram">Instagram</a>
-      <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Substack">Substack</a>
-      <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" class="masthead__nav-link" data-text="Spotify">Spotify</a>
-    </nav>
-  </header>
+  <div class="split">
+    <figure class="split__art" style="--focus: 30% 60%">
+      <img class="split__img" draggable="false" src="/assets/img/monet/poppy-field-giverny-1890-91-1400.webp" srcset="/assets/img/monet/poppy-field-giverny-1890-91-1400.webp 2156w, /assets/img/monet/poppy-field-giverny-1890-91-2800.webp 4311w" sizes="(min-width: 56.25em) 160vh, 130vw" width="4311" height="2800" alt="Claude Monet, Poppy Field (Giverny), 1890–91" fetchpriority="high">
+    </figure>
+    <div class="split__page">
+      <header class="masthead">
+        <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
+        <nav class="masthead__nav" aria-label="Pages">
+        <a href="/work/" class="masthead__nav-link">Work</a>
+        <a href="/education/" class="masthead__nav-link">Education</a>
+        <a href="/projects/" class="masthead__nav-link">Projects</a>
+        <a href="/research/" class="masthead__nav-link">Research</a>
+        <a href="/photos/" class="masthead__nav-link">Photos</a>
+        <a href="/music/" class="masthead__nav-link">Music</a>
+        <a href="/press/" class="masthead__nav-link">Press</a>
+        <a href="/resume/" class="masthead__nav-link active" aria-current="page">Resume</a>
+        <a href="/contact/" class="masthead__nav-link">Contact</a>
+        <button type="button" class="masthead__nav-link kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>⌘K</kbd></button>
+        </nav>
+      </header>
 
-  <main class="page" id="main">
+    <main class="page" id="main">
         <h1 class="page-title">Resume</h1>
         <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
           <img class="resume__frame" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
         </a>
         <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" download="Aniketh-Bandlamudi-Resume.pdf" class="project-item__link resume__download">Download PDF</a>
-  </main>
+    </main>
 
-  <footer class="colophon">
-    <p class="colophon__meta">
-      <span>&copy; 2026 Aniketh Bandlamudi</span>
-      <span class="theme-toggle" role="group" aria-label="Color theme">
-        <button type="button" class="theme-toggle__option" data-theme-choice="light" data-text="Light" aria-pressed="false">Light</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="dark" data-text="Dark" aria-pressed="false">Dark</button>
-        <button type="button" class="theme-toggle__option" data-theme-choice="system" data-text="System" aria-pressed="true">System</button>
-      </span>
-    </p>
-  </footer>
-  <script src="/assets/js/theme.js"></script>
+    <footer class="colophon">
+        <div class="colophon__inner">
+          <p class="colophon__meta">&copy; 2026 Aniketh Bandlamudi</p>
+          <nav class="colophon__else" aria-label="Elsewhere">
+            <a href="https://www.linkedin.com/in/anikethb/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg></a>
+            <a href="https://github.com/ankthba" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/></svg></a>
+            <a href="https://x.com/ankthba" target="_blank" rel="noopener" aria-label="X" title="X"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg></a>
+            <a href="https://www.instagram.com/ankthba/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/></svg></a>
+            <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" aria-label="Substack" title="Substack"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"/></svg></a>
+            <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288"/></svg></a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+  </div>
   <script src="/assets/js/site.js"></script>
 </body>
 </html>

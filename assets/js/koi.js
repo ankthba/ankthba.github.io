@@ -348,7 +348,7 @@
   function spawn(p) {
     var max = p.wide ? clamp(Math.floor(p.w * p.h / 420000), 1, 4) : clamp(Math.floor(p.w / 170), 1, 2);
     var n = 1 + Math.floor(Math.random() * max);
-    var base = p.wide ? clamp(Math.min(p.w * 0.22, p.h * 0.4), 200, 330) : clamp(p.h * 0.85, 140, 220);
+    var base = p.wide ? clamp(Math.min(p.w * 0.22, p.h * 0.4), 200, 330) : clamp(Math.min(p.h * 0.8, p.w * 0.5), 110, 200);
     var out = [];
     for (var i = 0; i < n; i++) {
       var k = koi(base * range(0.85, 1.12));
@@ -403,7 +403,7 @@
   // would a koi laid straight back from (k.x, k.y) fit in the pond,
   // clear of the others?
   function fits(k, p, others) {
-    var m = k.W * 2 + 6, cx = Math.cos(k.a), cy = Math.sin(k.a);
+    var m = k.W * 1.2 + 4, cx = Math.cos(k.a), cy = Math.sin(k.a);
     for (var s = 0; s < k.N; s += 2) {
       var x = k.x - cx * k.seg * s, y = k.y - cy * k.seg * s;
       if (x < m || y < m || x > p.w - m || y > p.h - m) return false;

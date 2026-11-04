@@ -1,43 +1,45 @@
 /* =========================================================
    koi.js (home page)
 
-   Koi in the margins either side of the column, seen from above as
-   in a pond, drawn in plain ASCII on a monospaced grid: each koi's
-   body in heavy characters along its back (@ # 8 %), lighter toward
-   its sides (X S, then x s * +), and : . at its edge, so the shape
-   and its roundness come from the characters alone; its markings in
-   persimmon, vermilion and sumi ink, its fins and tail in : and .,
-   a bold o for each eye. Each place on a koi keeps its character as
-   the koi moves.
+   Koi on the paper, seen from above as in a pond, set as square tiles
+   on a fine grid: warm white bodies ringed by a darker edge so each
+   fish stands clear of the paper, and markings in pastel versions of
+   the colours of whatever is playing now or was played last (taken
+   from the album cover in the listening row, easing to the next
+   song's as it changes; soft persimmon and coral when there is no
+   cover to read),
+   the odd one in sumi ink, paler fins and tail, two o's for eyes, and
+   a faint character on every tile for texture, fixed to its place on
+   the fish. They are large, and the whole window is their pond: they
+   keep mostly to the open paper either side of the column, now and
+   then drifting part way under it, where they are drawn lighter and
+   the words stay on top.
 
    They swim as bodies in water do: the tail's beat pushes a koi along,
    the water drags on it (lightly from ahead, hard from the side, so it
    carves its turns and coasts a long way when it stops beating), and
-   it turns by bending, which takes time to build and to settle, each
-   joint bending no further than a body can. It cruises, glides, now
-   and then gives a few hard beats; it sees the others and keeps clear
-   of them, drifts along with them or follows one for a while, and if
-   two touch they push apart. A head never goes into another's body.
+   it turns by bending, each joint no further than a body can. It
+   cruises, glides, now and then gives a few hard beats; it keeps clear
+   of the others, drifts with them or follows one a while, and two that
+   touch slide apart. Most visits have a few young too, small fry that
+   keep close behind a grown koi and startle more easily. Every so
+   often something else comes by: a turtle paddling slowly across, the
+   koi giving it room, or a dragonfly that darts, hovers, and dips to
+   touch the water.
 
-   The water is a damped wave equation on its own fine grid. A tail
-   sweeping aside pushes water one way and pulls it the other, a
-   moving head heaps it up ahead, and the ripples run out from there.
-   It shows only along the line where each ripple catches the light,
-   as faint strokes on the same grid.
+   The water is a damped wave equation on its own fine grid: a tail
+   sweeping aside pushes it one way and pulls it the other, a moving
+   head heaps it up ahead, and the ripples run out from there, showing
+   only along the line where each catches the light, as faint strokes.
 
-   The cursor is in the water too: drawn through it, it leaves a wake;
-   flicked past a koi, the koi darts off; held still nearby, they come
-   to look; a click (or tap) is a raindrop: a ring runs out across
-   the water, and any koi near where it lands darts away. Most ponds
-   have a few young too, small fry that keep close behind a grown koi
-   and startle more easily. And every so often something else comes
-   by: a turtle paddling slowly across, the koi giving it room, or a
-   dragonfly that darts, hovers, and dips to touch the water.
+   The cursor is in the water too, wherever it isn't over the words:
+   drawn through it, it leaves a wake; flicked past a koi, the koi darts
+   off; held still nearby, they come to look; a click is a raindrop, a
+   ring running out and any koi near it darting away.
 
-   Where the margins are too narrow (phones, narrow windows) the koi
-   swim in a shallow pond at the foot of the page, above the copyright.
-   For anyone who has asked for less motion, they are set once and
-   left, and the water is still.
+   Where the window is narrow (phones), the koi swim in a pond at the
+   foot of the page, above the copyright. For anyone who has asked for
+   less motion, they are set once and left, and the water is still.
    ========================================================= */
 
 (function () {
@@ -54,20 +56,20 @@
      Distances in CSS pixels, times in seconds. */
 
   var FACE = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
-  var SIZE = 9.5;             // the characters
-  var CH = 10;                // a row of them; a column is a character's width
-  var GAP = 44;               // open water kept between the column and the koi
-  var EDGE = 14;              // and at the window's edge
-  var ROOM = 150;             // margin a side needs to hold a pond
+  var GRID = 10;              // the tiles' pitch
+  var TILE = 9;               // a tile, the rest a hairline of paper between
+  var GLYPH = 7;              // the characters on them
+  var WIDE = 900;             // a window this wide is all pond; narrower, a pond at the foot
+  var EDGE = 0;               // kept clear at the window's edge
   var STEP = 1 / 60;          // the fixed step
   var MAX_STEPS = 4;          // steps one frame may catch up
 
   // how a koi swims
   var THRUST = 34;            // px/s², at a full beat of the tail
-  var DRAG = 0.22;            // the water's drag from ahead, 1/s
-  var DRAG2 = 0.01;           // and its part that grows with speed, 1/px
+  var DRAG = 0.2;             // the water's drag from ahead, 1/s
+  var DRAG2 = 0.008;          // and its part that grows with speed, 1/px
   var SLIP = 5;               // its drag from the side, 1/s
-  var TURN = 2.4;             // rad/s², at a full bend of the body
+  var TURN = 2.2;             // rad/s², at a full bend of the body
   var SPIN = 2.4;             // drag on turning, 1/s
   var BEND = 0.065;           // the most each joint of the body bends, rad
   var SOFT = 40;              // px/s² of push for each px two koi overlap
@@ -75,7 +77,7 @@
   var FASTEST = 90;           // no koi goes faster than this, px/s
 
   // the water
-  var CELL = 5;               // its grid
+  var CELL = 6;               // its grid
   var WAVE = 72;              // how fast a ripple runs
   var DAMP = 1.3;             // drag on the water, 1/s
   var VISC = 22;              // more on its fine ripples, px²/s
@@ -92,51 +94,51 @@
   var CURSOR_SPEED = 1200;    // the speed that counts as full
   var DROP = 2.4;             // a raindrop landing
   var STARTLE = 700;          // a flick this fast startles a koi
+  var NEAR = 110;             // within this of one
+  var LINGER = 0.8;           // held this still this long, they come to look
+  var LOOK = 380;             // from as far as this
+
+  // the words: where they are, koi are drawn this much lighter
+  var UNDER = 0.42;
 
   // now and then a visitor: a turtle, or a dragonfly
   var VISIT_FIRST = [20, 40];   // s before the first
   var VISIT_EVERY = [45, 110];  // and between the rest
-  var NEAR = 90;              // within this of one
-  var LINGER = 0.8;           // held this still this long, they come to look
-  var LOOK = 320;             // from as far as this
 
   var VARIETIES = ['kohaku', 'kohaku', 'kohaku', 'sanke', 'showa', 'tancho', 'ogon', 'shiro'];
-  var RAYS = ['~', '\\', '|', '/'];
 
-  // the characters' colours, for the ivory paper and for the dark:
-  // warm grey for the body, persimmon and vermilion markings, sumi in
-  // the site's own ink; each in four steps, from its back to its edge
+  // the tiles' colours, for the paper and for the dark: bodies in four
+  // steps from the back to a darker edge that rings each fish (the
+  // markings' colours come from what's playing; see below)
   var PALETTES = {
     light: {
-      body: ['#8c867a', '#9d978b', '#afa99c', '#c2bcaf'],
-      mark: ['#e0702f', '#d8692c', '#c9632f', '#b85c31'],
-      red: ['#cf452c', '#c4412b', '#b43c2a', '#a23828'],
-      sumi: ['#2a2725', '#302d2a', '#37342f', '#3e3b36'],
-      fin: ['#b9b3a6', '#c8c3b7', '#d6d2c8'],
-      eye: '#1c1a18', water: '#bdb8ab',
-      shell: ['#6c704c', '#4f5238', '#9a9b78'], skin: '#86865e',
-      fly: '#2f7f8a', wing: '#a9c3c6'
+      body: ['#fdfbf6', '#f3efe5', '#e3ddd0', '#bab2a2'],
+      sumi: ['#8a847d', '#8f8982', '#968f88', '#9d968e'],
+      fin: ['#e1dccf', '#e8e4d9', '#eeebe3'],
+      eye: '#1f1d1b', iris: '#f7f5ef', water: '#c9c4b6',
+      shell: ['#7d8156', '#5d6040', '#a7a883'], skin: '#9a9a70',
+      fly: '#2f7f8a', wing: '#a9c3c6',
+      ink: 0.16
     },
     dark: {
-      body: ['#e2ddd0', '#cdc7b9', '#b3ad9f', '#958f82'],
-      mark: ['#ec8140', '#e0763a', '#cc6a35', '#b35e31'],
-      red: ['#e05a3c', '#d05136', '#bb4831', '#a3402c'],
-      sumi: ['#7a756c', '#6e6961', '#635e57', '#57534d'],
-      fin: ['#6a665e', '#5a5650', '#4b4843'],
-      eye: '#f1efe7', water: '#5c5952',
-      shell: ['#a3a676', '#d3d5a6', '#7c7e5b'], skin: '#adad84',
-      fly: '#63b6c2', wing: '#4d6b6f'
+      body: ['#d8d2c5', '#c4beb0', '#a49e91', '#77726a'],
+      sumi: ['#5d5954', '#56524d', '#4f4b47', '#484541'],
+      fin: ['#3e3c38', '#34322f', '#2b2a27'],
+      eye: '#0a0908', iris: '#ece9e1', water: '#56534c',
+      shell: ['#9ea171', '#c8caa0', '#75775a'], skin: '#a9a980',
+      fly: '#63b6c2', wing: '#4d6b6f',
+      ink: 0.3
     }
   };
 
   /* ---------- Where they swim ---------- */
 
-  var side = document.createElement('canvas');
-  side.className = 'koi koi--side';
-  side.setAttribute('aria-hidden', 'true');
-  side.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none';
-  side.hidden = true;
-  document.body.appendChild(side);
+  var whole = document.createElement('canvas');
+  whole.className = 'koi koi--side';
+  whole.setAttribute('aria-hidden', 'true');
+  whole.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none';
+  whole.hidden = true;
+  document.body.appendChild(whole);
 
   var pond = document.createElement('div');
   pond.className = 'koi koi--pond';
@@ -152,7 +154,6 @@
   var ponds = [];
   var visible = true;
   var clock = 0;
-  var CW = 5.7;               // a character's width, measured
 
   function fit(c, w, h) {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -162,8 +163,6 @@
     c.style.height = h + 'px';
     var x = c.getContext('2d');
     x.setTransform(dpr, 0, 0, dpr, 0, 0);
-    x.font = '700 ' + SIZE + 'px ' + FACE;
-    CW = x.measureText('M').width || 5.7;
     atlas = null;
     return x;
   }
@@ -172,47 +171,46 @@
     var vw = root.clientWidth, vh = window.innerHeight;
     var r = page.getBoundingClientRect();
     if (!r.width) return;
-    var room = Math.min(r.left, vw - r.right) - GAP - EDGE;
-    var next = room >= ROOM ? 'side' : 'pond';
-    var rects;
-    if (next === 'side') {
-      side.hidden = false;
+    var next = vw >= WIDE ? 'page' : 'pond';
+    var p;
+    if (next === 'page') {
+      whole.hidden = false;
       pond.hidden = true;
-      canvas = side;
-      ctx = fit(side, vw, vh);
-      rects = [
-        { x: EDGE, y: 0, w: r.left - GAP - EDGE, h: vh, axis: 'v' },
-        { x: r.right + GAP, y: 0, w: vw - EDGE - r.right - GAP, h: vh, axis: 'v' }
-      ];
+      canvas = whole;
+      ctx = fit(whole, vw, vh);
+      p = { x: 0, y: 0, w: vw, h: vh, wide: true };
+      // the column of words, which they keep mostly clear of
+      p.col = { x0: r.left - 16, x1: r.right + 16 };
     } else {
-      side.hidden = true;
+      whole.hidden = true;
       pond.hidden = false;
       canvas = pondCanvas;
       var w = pond.clientWidth, h = pond.clientHeight;
       if (!w || !h) return;
       ctx = fit(pondCanvas, w, h);
-      rects = [{ x: 0, y: 0, w: w, h: h, axis: 'h' }];
+      p = { x: 0, y: 0, w: w, h: h, wide: false, col: null };
     }
-    var fresh = next !== mode || rects.length !== ponds.length;
+    var fresh = next !== mode || !ponds.length;
     mode = next;
-    rects.forEach(function (p, i) {
-      p.cols = Math.floor(p.w / CW);
-      p.rows = Math.floor(p.h / CH);
-      // the characters' grid sits centred in the pond
-      p.gx = p.x + (p.w - p.cols * CW) / 2;
-      p.gy = p.y + (p.h - p.rows * CH) / 2;
-      var n = p.cols * p.rows;
-      p.tone = new Uint8Array(n);
-      p.mark = new Uint8Array(n);
-      p.alpha = new Float32Array(n);
-      water(p);
-      var old = fresh ? null : ponds[i];
-      p.koi = old ? old.koi : spawn(p);
-      p.visitors = old ? old.visitors : [];
-      p.koi.forEach(function (k) { keep(k, p); });
-    });
-    ponds = rects;
+    p.cols = Math.floor(p.w / GRID);
+    p.rows = Math.floor(p.h / GRID);
+    p.gx = p.x + (p.w - p.cols * GRID) / 2;
+    p.gy = p.y + (p.h - p.rows * GRID) / 2;
+    var n = p.cols * p.rows;
+    p.tone = new Uint8Array(n);
+    p.mark = new Uint8Array(n);
+    p.alpha = new Float32Array(n);
+    water(p);
+    var old = fresh ? null : ponds[0];
+    p.koi = old ? old.koi : spawn(p);
+    p.visitors = old ? old.visitors : [];
+    p.koi.forEach(function (k) { keep(k, p); });
+    ponds = [p];
     if (still.matches) start();
+  }
+
+  function underWords(p, x) {
+    return p.col && x > p.col.x0 && x < p.col.x1;
   }
 
   /* ---------- The water ---------- */
@@ -278,7 +276,7 @@
   /* ---------- A koi ---------- */
 
   function koi(L) {
-    var N = 30;
+    var N = 32;
     var k = {
       L: L, W: L * 0.17, N: N, seg: L / (N - 1),
       x: 0, y: 0, a: 0, vx: 0, vy: 0, w: 0, cx: 0, cy: 0,
@@ -287,10 +285,10 @@
       phase: Math.random() * 6.3,
       n1: Math.random() * 100, n2: Math.random() * 100,
       curious: range(0.4, 1),
-      depth: range(0.82, 1),
+      depth: range(0.88, 1),
       seed: Math.floor(Math.random() * 1e6),
       fright: 0, awayX: 0, awayY: 0,
-      follow: null,
+      follow: null, parent: null,
       tipX: 0, tipY: 0, tipOn: false,
       sx: new Float32Array(N), sy: new Float32Array(N),   // the line it has swum
       px: new Float32Array(N), py: new Float32Array(N),   // the body on it, swimming
@@ -317,7 +315,7 @@
     function patch(u0, u1, v0, v1, ru0, ru1, rv0, rv1, tone) {
       list.push({ u: range(u0, u1), v: range(v0, v1), ru: range(ru0, ru1), rv: range(rv0, rv1), tone: tone, seed: Math.random() * 50 });
     }
-    var red = function () { return Math.random() < 0.4 ? 3 : 2; };   // 2 orange, 3 red, 4 slate
+    var red = function () { return Math.random() < 0.4 ? 3 : 2; };   // 2 orange, 3 red, 4 sumi
     if (kind === 'ogon') all = 2;
     if (kind === 'tancho') patch(0.06, 0.08, -0.05, 0.05, 0.045, 0.055, 0.4, 0.5, 3);
     if (kind === 'kohaku' || kind === 'sanke' || kind === 'showa') {
@@ -348,19 +346,20 @@
   /* ---------- Placing them ---------- */
 
   function spawn(p) {
-    var area = p.w * p.h;
-    var max = clamp(Math.floor(area / 150000), 1, 3);
+    var max = p.wide ? clamp(Math.floor(p.w * p.h / 420000), 1, 4) : clamp(Math.floor(p.w / 170), 1, 2);
     var n = 1 + Math.floor(Math.random() * max);
-    var base = p.axis === 'v' ? clamp(p.w * 0.72, 100, 190) : clamp(p.h * 0.8, 90, 135);
+    var base = p.wide ? clamp(Math.min(p.w * 0.22, p.h * 0.4), 200, 330) : clamp(p.h * 0.85, 140, 220);
     var out = [];
     for (var i = 0; i < n; i++) {
-      var k = koi(base * range(0.75, 1.12));
+      var k = koi(base * range(0.85, 1.12));
       // somewhere its whole body fits, clear of the others, facing
-      // any way at all; if there is no such place, it isn't added
+      // any way at all, out on the open paper if it can be; if there is
+      // no room at all, it isn't added
       var placed = false;
-      for (var tries = 0; tries < 200 && !placed; tries++) {
+      for (var tries = 0; tries < 300 && !placed; tries++) {
         k.x = range(0, p.w); k.y = range(0, p.h);
         k.a = Math.random() * Math.PI * 2;
+        if (tries < 200 && p.col && (underWords(p, k.x) || underWords(p, k.x - Math.cos(k.a) * k.L))) continue;
         placed = fits(k, p, out);
       }
       if (!placed) continue;
@@ -374,13 +373,13 @@
     var young = grown.length && Math.random() < 0.7 ? 1 + Math.floor(Math.random() * 3) : 0;
     for (var y = 0; y < young; y++) {
       var m = grown[Math.floor(Math.random() * grown.length)];
-      var kid = koi(m.L * range(0.32, 0.42));
+      var kid = koi(m.L * range(0.3, 0.4));
       kid.parent = m;
       kid.curious = 1;
       var ok = false;
       for (var t2 = 0; t2 < 200 && !ok; t2++) {
-        kid.x = m.sx[m.N - 1] + range(-90, 90);
-        kid.y = m.sy[m.N - 1] + range(-90, 90);
+        kid.x = m.sx[m.N - 1] + range(-120, 120);
+        kid.y = m.sy[m.N - 1] + range(-120, 120);
         kid.a = m.a + range(-0.6, 0.6);
         ok = fits(kid, p, out);
       }
@@ -444,8 +443,8 @@
       // sometimes it falls in behind another for a while
       k.follow = null;
       if (!k.parent && p.koi.length > 1 && Math.random() < 0.3) {
-        var others = p.koi.filter(function (o) { return o !== k; });
-        k.follow = others[Math.floor(Math.random() * others.length)];
+        var others = p.koi.filter(function (o) { return o !== k && !o.parent; });
+        if (others.length) k.follow = others[Math.floor(Math.random() * others.length)];
       }
     }
     var want = k.mood === 'glide' ? 0.03 : k.mood === 'burst' ? 1 : k.pace;
@@ -457,9 +456,17 @@
     // the pond's edges, felt a little ahead
     var look = k.L * 0.5 + spd * 1.2;
     var hx = k.x + fx * look, hy = k.y + fy * look;
-    var pad = k.W * 2 + 6, R = Math.min(110, Math.min(p.w, p.h) * 0.45);
+    var pad = k.W * 2 + 6, R = Math.min(140, Math.min(p.w, p.h) * 0.45);
     dx += (wall(hx - pad, R) - wall(p.w - pad - hx, R)) * 3.2;
     dy += (wall(hy - pad, R) - wall(p.h - pad - hy, R)) * 3.2;
+
+    // the words: they would rather be out on the open paper, and turn
+    // gently back out from under the column
+    if (p.col) {
+      var mid = (p.col.x0 + p.col.x1) / 2, half = (p.col.x1 - p.col.x0) / 2;
+      var into = 1 - Math.abs(hx - mid) / half;
+      if (into > 0) dx += (hx < mid ? -1 : 1) * (0.5 + 1.1 * into);
+    }
 
     // the others: keep clear of their bodies, drift with them
     var block = 0, near = 0, mx = 0, my = 0, ax = 0, ay = 0;
@@ -468,7 +475,7 @@
     p.koi.forEach(function (o) {
       if (o === k) return;
       for (var i = 0; i < o.N; i += 2) {
-        var r = girth(i / (o.N - 1)) * o.W + k.W + 14, reach = r * 2.8;
+        var r = girth(i / (o.N - 1)) * o.W + k.W + 14, reach = r * 2.6;
         var ex = k.x - o.px[i], ey = k.y - o.py[i], d = Math.hypot(ex, ey) || 1;
         if (d < reach) { var f = 1 - d / reach; dx += ex / d * f * f * 3; dy += ey / d * f * f * 3; }
         ex = qx - o.px[i]; ey = qy - o.py[i]; d = Math.hypot(ex, ey) || 1;
@@ -479,7 +486,7 @@
         }
       }
       var gd = Math.hypot(o.x - k.x, o.y - k.y);
-      if (gd < 320) { near++; mx += o.x; my += o.y; ax += Math.cos(o.a); ay += Math.sin(o.a); }
+      if (gd < 420) { near++; mx += o.x; my += o.y; ax += Math.cos(o.a); ay += Math.sin(o.a); }
     });
     if (near) {
       var cxo = mx / near - k.x, cyo = my / near - k.y, cd = Math.hypot(cxo, cyo) || 1;
@@ -505,17 +512,15 @@
       k.fright -= dt;
       dx += k.awayX * 4; dy += k.awayY * 4;
       want = 1.5;
-    } else {
-      if (ptr.in && ptr.rest > LINGER) {
-        // the cursor held still nearby: come and look
-        var px2 = clamp(ptr.x, pad, p.w - pad), py2 = clamp(ptr.y, pad, p.h - pad);
-        var pd = Math.hypot(px2 - k.x, py2 - k.y) || 1;
-        if (pd < LOOK) {
-          var pull = k.curious * (pd > k.L * 0.45 ? 1.4 : 0.6);
-          dx += (px2 - k.x) / pd * pull; dy += (py2 - k.y) / pd * pull;
-          if (pd < k.L * 0.5) want = 0.05;
-          else want = Math.max(want, 0.4);
-        }
+    } else if (ptr.in && ptr.rest > LINGER) {
+      // the cursor held still nearby: come and look
+      var px2 = clamp(ptr.x, pad, p.w - pad), py2 = clamp(ptr.y, pad, p.h - pad);
+      var pd = Math.hypot(px2 - k.x, py2 - k.y) || 1;
+      if (pd < LOOK) {
+        var pull = k.curious * (pd > k.L * 0.45 ? 1.4 : 0.6);
+        dx += (px2 - k.x) / pd * pull; dy += (py2 - k.y) / pd * pull;
+        if (pd < k.L * 0.5) want = 0.05;
+        else want = Math.max(want, 0.4);
       }
     }
 
@@ -638,7 +643,7 @@
     k.x += k.vx * dt;
     k.y += k.vy * dt;
     keep(k, p);
-    k.phase += 2 * Math.PI * (0.45 + 1.05 * Math.min(1.5, k.beat)) * dt;
+    k.phase += 2 * Math.PI * (0.4 + 0.95 * Math.min(1.5, k.beat)) * dt;
   }
 
   // the body follows the line the head has swum, each joint bending
@@ -693,7 +698,7 @@
       var a = Math.max(0, i - 1), b = Math.min(N - 1, i + 1);
       var tx = sx[b] - sx[a], ty = sy[b] - sy[a], tl = Math.sqrt(tx * tx + ty * ty) || 1;
       var u = i / (N - 1);
-      var amp = k.W * (0.05 + 0.85 * u * u) * sway * Math.sin(k.phase - u * 5.3);
+      var amp = k.W * (0.05 + 0.75 * u * u) * sway * Math.sin(k.phase - u * 5.3);
       px[i] = sx[i] - ty / tl * amp;
       py[i] = sy[i] + tx / tl * amp;
     }
@@ -738,10 +743,12 @@
     pointer.rest = pointer.on && pointer.speed < 40 ? pointer.rest + dt : 0;
     return ponds.map(function (p) {
       var x = pointer.x - o.x - p.x, y = pointer.y - o.y - p.y;
+      // over the words the cursor is reading, not stirring
+      var open = pointer.on && !underWords(p, x);
       return {
         x: x, y: y, dx: dx, dy: dy, rest: pointer.rest, speed: pointer.speed,
-        inside: pointer.on && x >= 0 && y >= 0 && x <= p.w && y <= p.h,
-        in: pointer.on && x >= -140 && y >= -140 && x <= p.w + 140 && y <= p.h + 140
+        inside: open && x >= 0 && y >= 0 && x <= p.w && y <= p.h,
+        in: open && x >= -140 && y >= -140 && x <= p.w + 140 && y <= p.h + 140
       };
     });
   }
@@ -754,7 +761,7 @@
       push(p, ptr.x - ux * 7, ptr.y - uy * 7, 10, s);
       push(p, ptr.x + ux * 7, ptr.y + uy * 7, 10, -s * 0.7);
     }
-    // a flick past a koi sends it off
+    // a flick past a koi sends it off, the young more easily
     if (ptr.in && ptr.speed > STARTLE * 0.6) {
       p.koi.forEach(function (k) {
         var shy = k.parent ? 1.6 : 1;
@@ -772,15 +779,16 @@
     k.fright = range(0.8, 1.2);
   }
 
+  // a click is a raindrop: a ring runs out, and the koi near where it
+  // lands dart away, the young from further
   function drop(cx, cy) {
     var o = origin();
     ponds.forEach(function (p) {
       var x = cx - o.x - p.x, y = cy - o.y - p.y;
-      if (x < 0 || y < 0 || x > p.w || y > p.h) return;
+      if (x < 0 || y < 0 || x > p.w || y > p.h || underWords(p, x)) return;
       push(p, x, y, 7, DROP);
-      // the koi near where it lands dart away, the young from further
       p.koi.forEach(function (k) {
-        if (Math.hypot(x - k.x, y - k.y) < (k.parent ? 110 : 70)) scare(k, x, y);
+        if (Math.hypot(x - k.x, y - k.y) < (k.parent ? 130 : 90)) scare(k, x, y);
       });
     });
   }
@@ -789,24 +797,26 @@
 
   var nextVisit = range(VISIT_FIRST[0], VISIT_FIRST[1]);
 
-  // something comes by one of the ponds, in from one edge
+  // something comes by the pond, in from one edge
   function visit() {
-    if (!ponds.length) return;
-    var p = ponds[Math.floor(Math.random() * ponds.length)];
-    if (p.visitors.length) return;
+    var p = ponds[0];
+    if (!p || p.visitors.length) return;
     var v = { kind: Math.random() < 0.6 ? 'turtle' : 'fly', phase: 0, n1: Math.random() * 100, life: 0, gone: false };
-    var m = 50;
-    if (p.axis === 'v') {
+    var m = 70;
+    if (p.wide) {
+      // down or up one side of the column, on the open paper
       var top = Math.random() < 0.5;
-      v.x = range(p.w * 0.25, p.w * 0.75); v.y = top ? -m : p.h + m;
-      v.a = (top ? 1 : -1) * Math.PI / 2 + range(-0.25, 0.25);
-    } else {
       var left = Math.random() < 0.5;
-      v.x = left ? -m : p.w + m; v.y = range(p.h * 0.3, p.h * 0.7);
-      v.a = (left ? 0 : Math.PI) + range(-0.15, 0.15);
+      v.x = left ? range(p.w * 0.06, (p.col ? p.col.x0 : p.w / 2) - 60) : range((p.col ? p.col.x1 : p.w / 2) + 60, p.w * 0.94);
+      v.y = top ? -m : p.h + m;
+      v.a = (top ? 1 : -1) * Math.PI / 2 + range(-0.2, 0.2);
+    } else {
+      var fromLeft = Math.random() < 0.5;
+      v.x = fromLeft ? -m : p.w + m; v.y = range(p.h * 0.3, p.h * 0.7);
+      v.a = (fromLeft ? 0 : Math.PI) + range(-0.15, 0.15);
     }
     if (v.kind === 'turtle') {
-      v.L = range(56, 78);
+      v.L = p.wide ? range(95, 125) : range(60, 80);
       v.v = range(16, 22);
     } else {
       v.v = range(90, 130);
@@ -834,10 +844,8 @@
     var stroke = Math.cos(t.phase) * 0.012 * dt * 60;
     var A = t.L / 2, B = t.L * 0.4;
     [1, -1].forEach(function (sd) {
-      var bx = t.x + fx * A * 0.42 + nx * sd * B * 1.2, by = t.y + fy * A * 0.42 + ny * sd * B * 1.2;
-      push(p, bx, by, 5, stroke);
+      push(p, t.x + fx * A * 0.42 + nx * sd * B * 1.2, t.y + fy * A * 0.42 + ny * sd * B * 1.2, 6, stroke);
     });
-    push(p, t.x + fx * (A + 8), t.y + fy * (A + 8), 8, -0.004 * t.v * dt * 60 * 0.02);
     if (t.life > 4 && outside(t, p, t.L)) t.gone = true;
   }
 
@@ -853,7 +861,7 @@
       if (f.timer <= 0) {
         f.mode = 'hover';
         f.timer = range(0.8, 2.2);
-        if (Math.random() < 0.35 && !outside(f, p, 0)) push(p, f.x, f.y, 4, 1.4);
+        if (Math.random() < 0.35 && !outside(f, p, 0) && !underWords(p, f.x)) push(p, f.x, f.y, 4, 1.4);
       }
     } else {
       f.x += Math.sin(clock * 7 + f.n1) * 4 * dt;
@@ -864,11 +872,11 @@
         f.v = range(90, 140);
         if (f.life > f.stay) {
           // off, toward the nearest edge
-          var ex = f.x < p.w / 2 ? -1 : 1, ey = f.y < p.h / 2 ? -1 : 1;
-          f.a = Math.min(f.x, p.w - f.x) < Math.min(f.y, p.h - f.y) ? (ex < 0 ? Math.PI : 0) : (ey < 0 ? -Math.PI / 2 : Math.PI / 2);
+          f.a = Math.min(f.x, p.w - f.x) < Math.min(f.y, p.h - f.y) ? (f.x < p.w / 2 ? Math.PI : 0) : (f.y < p.h / 2 ? -Math.PI / 2 : Math.PI / 2);
           f.timer = 3;
         } else {
-          var tx = range(p.w * 0.15, p.w * 0.85), ty = range(p.h * 0.15, p.h * 0.85);
+          var tx = range(p.w * 0.1, p.w * 0.9), ty = range(p.h * 0.15, p.h * 0.85);
+          if (p.col && tx > p.col.x0 && tx < p.col.x1) tx = tx < (p.col.x0 + p.col.x1) / 2 ? p.col.x0 - 60 : p.col.x1 + 60;
           f.a = Math.atan2(ty - f.y, tx - f.x);
         }
       }
@@ -876,116 +884,23 @@
     if (f.life > f.stay && outside(f, p, 40)) f.gone = true;
   }
 
-  // the character for a line running (dx, dy)
-  function seam(dx, dy) {
-    var a = Math.atan2(dy, dx);
-    if (a < 0) a += Math.PI;
-    return SEAMS[Math.round(a / (Math.PI / 4)) % 4];
-  }
-
-  function within(fx, fy, bx, by, ax, ay, len, wide) {
-    var ex = fx - bx, ey = fy - by;
-    var along = ex * ax + ey * ay;
-    if (along <= 0 || along >= len) return false;
-    // broad at the root, where it meets the body, narrowing to a tip
-    return Math.abs(-ex * ay + ey * ax) < wide * Math.pow(Math.sin(Math.PI * (0.25 + 0.75 * along / len)), 0.6);
-  }
-
-  // a turtle from above: its shell, rimmed, with the seams between its
-  // plates; its head; four flippers
-  function setTurtle(p, t) {
-    var A = t.L / 2, B = t.L * 0.4, R = t.L * 0.9;
-    var fx = Math.cos(t.a), fy = Math.sin(t.a);
-    var across = seam(-fy, fx), along = seam(fx, fy);
-    var dx0 = p.gx - p.x, dy0 = p.gy - p.y;
-    var c0 = Math.max(0, Math.floor((t.x - R - dx0) / CW)), c1 = Math.min(p.cols - 1, Math.ceil((t.x + R - dx0) / CW));
-    var r0 = Math.max(0, Math.floor((t.y - R - dy0) / CH)), r1 = Math.min(p.rows - 1, Math.ceil((t.y + R - dy0) / CH));
-    var sw = Math.sin(t.phase);
-    for (var r = r0; r <= r1; r++) {
-      for (var c = c0; c <= c1; c++) {
-        var cell = r * p.cols + c;
-        if (p.tone[cell] && p.tone[cell] < WATER) continue;
-        var qx = dx0 + (c + 0.5) * CW - t.x, qy = dy0 + (r + 0.5) * CH - t.y;
-        var lx = qx * fx + qy * fy, ly = -qx * fy + qy * fx;
-        var tone = 0, glyph = 0;
-        var e = (lx / A) * (lx / A) + (ly / B) * (ly / B);
-        if (e < 1) {
-          if (e > 0.74) { tone = RIM2; glyph = COLON; }
-          else {
-            var sx = Math.min(Math.abs(lx - A * 0.3), Math.abs(lx + A * 0.3)) < CH * 0.45;
-            var sy = Math.abs(Math.abs(ly) - B * 0.36) < CW * 0.55;
-            if (sx && sy) { tone = SEAM; glyph = G('+'); }
-            else if (sx) { tone = SEAM; glyph = across; }
-            else if (sy) { tone = SEAM; glyph = along; }
-            else { tone = SHELL; glyph = G('#'); }
-          }
-        } else {
-          var hx = lx - (A + t.L * 0.1);
-          if (hx * hx / (t.L * t.L * 0.0121) + ly * ly / (t.L * t.L * 0.0064) < 1) { tone = SKIN; glyph = G('@'); }
-          else {
-            // flippers: the front pair sweeping, the back pair steering
-            var sd = ly > 0 ? 1 : -1;
-            var fa = sd * (1.05 + 0.45 * sw), ba = sd * (2.35 + 0.25 * sw);
-            if (within(lx, ly, A * 0.42, sd * B * 0.75, Math.cos(fa), Math.sin(fa), t.L * 0.45, t.L * 0.11) ||
-                within(lx, ly, -A * 0.62, sd * B * 0.65, Math.cos(ba), Math.sin(ba), t.L * 0.27, t.L * 0.08)) {
-              tone = SKIN; glyph = G('=');
-            } else if (lx < -A && lx > -A - 7 && Math.abs(ly) < 2.5) { tone = SKIN; glyph = DOT; }
-          }
-        }
-        if (!tone) continue;
-        p.tone[cell] = tone;
-        p.mark[cell] = glyph;
-        p.alpha[cell] = 1;
-      }
-    }
-  }
-
-  // a dragonfly from above, drawn square to the grid in whichever of
-  // its eight directions it is nearest heading: a head, a thorax, a
-  // long thin body, and two pairs of wings shimmering between swept
-  // back and spread
-  var COMPASS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
-  function setFly(p, f) {
-    var q = Math.round(f.a / (Math.PI / 4));
-    var d = COMPASS[((q % 8) + 8) % 8], n = COMPASS[(((q + 2) % 8) + 8) % 8];
-    var dx0 = p.gx - p.x, dy0 = p.gy - p.y;
-    var c0 = Math.floor((f.x - dx0) / CW), r0 = Math.floor((f.y - dy0) / CH);
-    function put(c, r, tone, glyph) {
-      if (c < 0 || r < 0 || c >= p.cols || r >= p.rows) return;
-      var cell = r * p.cols + c;
-      p.tone[cell] = tone; p.mark[cell] = glyph; p.alpha[cell] = 1;
-    }
-    var spread = Math.sin(f.phase) > 0;
-    [[1, 1], [1, -1], [2, 1], [2, -1]].forEach(function (w) {
-      var back = w[0], sd = w[1];
-      // a front wing sweeps forward, a back one back, or both stand out
-      var wx = n[0] * sd + (spread ? 0 : (back === 1 ? d[0] : -d[0]));
-      var wy = n[1] * sd + (spread ? 0 : (back === 1 ? d[1] : -d[1]));
-      var ch = seam(wx * CW, wy * CH);
-      for (var i = 1; i <= 2; i++) put(c0 - d[0] * back + wx * i, r0 - d[1] * back + wy * i, WING, ch);
-    });
-    var body = seam(d[0] * CW, d[1] * CH);
-    for (var i = 2; i <= 6; i++) put(c0 - d[0] * i, r0 - d[1] * i, FLY, i === 2 ? G('+') : body);
-    put(c0 - d[0], r0 - d[1], FLY, G('+'));
-    put(c0, r0, FLY, EYE_G);
-  }
-
-  /* ---------- Setting them in characters ---------- */
+  /* ---------- Setting them in tiles ---------- */
 
   // tones (each a colour): 0 nothing; 1-16 body (pale, orange, red,
   // sumi, each in four steps from its back to its edge); 17-19 fin;
-  // 20 eye; 21 water
-  var FIN = 17, EYE = 20, WATER = 21;
+  // 20 eye; 21 water; 22-25 turtle (shell, seam, rim, skin); 26-27
+  // dragonfly (body, wings). Water and the dragonfly are characters
+  // alone; everything else is a tile with a character on it.
+  var FIN = 17, EYE = 20, WATER = 21, SHELL = 22, SEAM = 23, RIM2 = 24, SKIN = 25, FLY = 26, WING = 27;
+  function tiled(t) { return t && t !== WATER && t !== FLY && t !== WING; }
 
-  // the characters, and those a body is set in at each step out from
-  // its back: heaviest along the spine, lightest at the edge
   var GLYPHS = ' .:*+xsXS%8#@o~\\|/-=';
   function G(ch) { return GLYPHS.indexOf(ch); }
-  var STEPS = ['@#8%', 'XS%8', 'xs*+', ':.'].map(function (set) { return set.split('').map(G); });
+  // the characters on a body's tiles at each step out from its back
+  var STEPS = ['XS%8', 'XS%8', 'xs%8', '.:'].map(function (set) { return set.split('').map(G); });
   var DOT = G('.'), COLON = G(':'), EYE_G = G('o');
   var STROKES = [G('~'), G('\\'), G('|'), G('/')];
   var SEAMS = [G('-'), G('\\'), G('|'), G('/')];
-  var SHELL = 22, SEAM = 23, RIM2 = 24, SKIN = 25, FLY = 26, WING = 27;
 
   // the fans of fin and tail, worked out once a frame per koi
   var fans = [];
@@ -993,7 +908,7 @@
   function fanOf(k) {
     fans.length = 0;
     var open = 1 - Math.min(1, k.beat);   // fins spread in a glide
-    [[0.25, 1.6, 0.6, 0.45], [0.56, 0.9, 0.5, 0.32]].forEach(function (f, j) {
+    [[0.25, 1.5, 0.6, 0.45], [0.56, 0.85, 0.5, 0.32]].forEach(function (f, j) {
       at(k, f[0]);
       var hw = girth(f[0]) * k.W;
       [1, -1].forEach(function (sd) {
@@ -1032,7 +947,7 @@
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   }
 
-  // set a koi into the pond's grid of characters
+  // set a koi into the pond's tiles
   function set(p, k) {
     var N = k.N, W = k.W, px = k.px, py = k.py;
     var minx = Infinity, miny = Infinity, maxx = -Infinity, maxy = -Infinity;
@@ -1042,20 +957,22 @@
     }
     var reach = Math.max(W * 2, k.L * 0.27);
     var dx0 = p.gx - p.x, dy0 = p.gy - p.y;    // the grid within the pond
-    var c0 = Math.max(0, Math.floor((minx - reach - dx0) / CW)), c1 = Math.min(p.cols - 1, Math.ceil((maxx + reach - dx0) / CW));
-    var r0 = Math.max(0, Math.floor((miny - reach - dy0) / CH)), r1 = Math.min(p.rows - 1, Math.ceil((maxy + reach - dy0) / CH));
+    var c0 = Math.max(0, Math.floor((minx - reach - dx0) / GRID)), c1 = Math.min(p.cols - 1, Math.ceil((maxx + reach - dx0) / GRID));
+    var r0 = Math.max(0, Math.floor((miny - reach - dy0) / GRID)), r1 = Math.min(p.rows - 1, Math.ceil((maxy + reach - dy0) / GRID));
     fanOf(k);
 
     // the eyes
     at(k, 0.1);
     var eo = girth(0.1) * W * 0.55;
-    var e1x = AX - ATY * eo, e1y = AY + ATX * eo, e2x = AX + ATY * eo, e2y = AY - ATX * eo;
+    // each eye is the one tile it falls in
+    var e1c = Math.floor((AX - ATY * eo - dx0) / GRID), e1r = Math.floor((AY + ATX * eo - dy0) / GRID);
+    var e2c = Math.floor((AX + ATY * eo - dx0) / GRID), e2r = Math.floor((AY - ATX * eo - dy0) / GRID);
 
     for (var r = r0; r <= r1; r++) {
       for (var c = c0; c <= c1; c++) {
         var cell = r * p.cols + c;
-        if (p.tone[cell] && p.tone[cell] < WATER) continue;   // never over another koi
-        var qx = dx0 + (c + 0.5) * CW, qy = dy0 + (r + 0.5) * CH;
+        if (p.tone[cell] && p.tone[cell] !== WATER) continue;   // never over another
+        var qx = dx0 + (c + 0.5) * GRID, qy = dy0 + (r + 0.5) * GRID;
         // the nearest place on the spine
         var best = Infinity, bk = 0, bu = 0, side = 1;
         for (var i = 0; i < N - 1; i++) {
@@ -1072,21 +989,20 @@
         var tone = 0, glyph = 0, alpha = k.depth;
         if (hw > 0 && d < hw && t < 0.88) {
           var v = side * d / hw, av = Math.abs(v);
-          var step = av < 0.4 ? 0 : av < 0.68 ? 1 : av < 0.88 ? 2 : 3;
-          if (t < 0.04) step = Math.max(step, 2);
+          // the back, then the flanks, then the edge that rings the fish
+          var step = av < 0.42 ? 0 : av < 0.7 ? 1 : av < 0.86 ? 2 : 3;
+          if (t < 0.03) step = 3;
           tone = (tint(k.marks, t, v) - 1) * 4 + 1 + step;
-          // the character, fixed to this place on the body
           var pick = STEPS[step];
-          glyph = pick[Math.floor(hash(Math.round(t * k.L / CH), Math.round(v * hw / CW), k.seed) * pick.length)];
-          var a1x = (qx - e1x) / CW, a1y = (qy - e1y) / CH, a2x = (qx - e2x) / CW, a2y = (qy - e2y) / CH;
-          if (a1x * a1x + a1y * a1y < 0.5 || a2x * a2x + a2y * a2y < 0.5) { tone = EYE; glyph = EYE_G; }
+          glyph = pick[Math.floor(hash(Math.round(t * k.L / GRID), Math.round(v * hw / GRID), k.seed) * pick.length)];
+          if ((c === e1c && r === e1r) || (c === e2c && r === e2r)) { tone = EYE; glyph = EYE_G; }
         } else {
           for (var j = 0; j < fans.length; j++) {
             var fr = inFan(fans[j], qx, qy);
             if (fr >= 0) {
               tone = FIN + Math.min(2, Math.floor(fr * 3));
-              glyph = fr < 0.45 ? COLON : DOT;
-              if (j === fans.length - 1) alpha *= 1 - 0.4 * fr;
+              glyph = hash(c, r, k.seed) < 0.5 ? DOT : 0;
+              if (j === fans.length - 1) alpha *= 1 - 0.35 * fr;
               break;
             }
           }
@@ -1099,17 +1015,111 @@
     }
   }
 
+  // the character for a line running (dx, dy)
+  function seam(dx, dy) {
+    var a = Math.atan2(dy, dx);
+    if (a < 0) a += Math.PI;
+    return SEAMS[Math.round(a / (Math.PI / 4)) % 4];
+  }
+
+  function within(fx, fy, bx, by, ax, ay, len, wide) {
+    var ex = fx - bx, ey = fy - by;
+    var along = ex * ax + ey * ay;
+    if (along <= 0 || along >= len) return false;
+    // broad at the root, where it meets the body, narrowing to a tip
+    return Math.abs(-ex * ay + ey * ax) < wide * Math.pow(Math.sin(Math.PI * (0.25 + 0.75 * along / len)), 0.6);
+  }
+
+  // a turtle from above: its shell, rimmed, with the seams between its
+  // plates; its head; four flippers
+  function setTurtle(p, t) {
+    var A = t.L / 2, B = t.L * 0.4, R = t.L * 0.9;
+    var fx = Math.cos(t.a), fy = Math.sin(t.a);
+    var across = seam(-fy, fx), along = seam(fx, fy);
+    var dx0 = p.gx - p.x, dy0 = p.gy - p.y;
+    var c0 = Math.max(0, Math.floor((t.x - R - dx0) / GRID)), c1 = Math.min(p.cols - 1, Math.ceil((t.x + R - dx0) / GRID));
+    var r0 = Math.max(0, Math.floor((t.y - R - dy0) / GRID)), r1 = Math.min(p.rows - 1, Math.ceil((t.y + R - dy0) / GRID));
+    var sw = Math.sin(t.phase);
+    for (var r = r0; r <= r1; r++) {
+      for (var c = c0; c <= c1; c++) {
+        var cell = r * p.cols + c;
+        if (p.tone[cell] && p.tone[cell] !== WATER) continue;
+        var qx = dx0 + (c + 0.5) * GRID - t.x, qy = dy0 + (r + 0.5) * GRID - t.y;
+        var lx = qx * fx + qy * fy, ly = -qx * fy + qy * fx;
+        var tone = 0, glyph = 0;
+        var e = (lx / A) * (lx / A) + (ly / B) * (ly / B);
+        if (e < 1) {
+          if (e > 0.74) { tone = RIM2; glyph = COLON; }
+          else {
+            var onX = Math.min(Math.abs(lx - A * 0.3), Math.abs(lx + A * 0.3)) < GRID * 0.5;
+            var onY = Math.abs(Math.abs(ly) - B * 0.36) < GRID * 0.5;
+            if (onX && onY) { tone = SEAM; glyph = G('+'); }
+            else if (onX) { tone = SEAM; glyph = across; }
+            else if (onY) { tone = SEAM; glyph = along; }
+            else { tone = SHELL; glyph = G('#'); }
+          }
+        } else {
+          var hx = lx - (A + t.L * 0.1);
+          if (hx * hx / (t.L * t.L * 0.0121) + ly * ly / (t.L * t.L * 0.0064) < 1) { tone = SKIN; glyph = G('@'); }
+          else {
+            // flippers: the front pair sweeping, the back pair steering
+            var sd = ly > 0 ? 1 : -1;
+            var fa = sd * (1.05 + 0.45 * sw), ba = sd * (2.35 + 0.25 * sw);
+            if (within(lx, ly, A * 0.42, sd * B * 0.75, Math.cos(fa), Math.sin(fa), t.L * 0.45, t.L * 0.11) ||
+                within(lx, ly, -A * 0.62, sd * B * 0.65, Math.cos(ba), Math.sin(ba), t.L * 0.27, t.L * 0.08)) {
+              tone = SKIN; glyph = G('=');
+            } else if (lx < -A && lx > -A - 9 && Math.abs(ly) < 3) { tone = SKIN; glyph = DOT; }
+          }
+        }
+        if (!tone) continue;
+        p.tone[cell] = tone;
+        p.mark[cell] = glyph;
+        p.alpha[cell] = 1;
+      }
+    }
+  }
+
+  // a dragonfly from above, drawn square to the grid in whichever of
+  // its eight directions it is nearest heading: a head, a thorax, a
+  // long thin body, and two pairs of wings shimmering between swept
+  // back and spread
+  var COMPASS = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]];
+  function setFly(p, f) {
+    var q = Math.round(f.a / (Math.PI / 4));
+    var d = COMPASS[((q % 8) + 8) % 8], n = COMPASS[(((q + 2) % 8) + 8) % 8];
+    var dx0 = p.gx - p.x, dy0 = p.gy - p.y;
+    var c0 = Math.floor((f.x - dx0) / GRID), r0 = Math.floor((f.y - dy0) / GRID);
+    function put(c, r, tone, glyph) {
+      if (c < 0 || r < 0 || c >= p.cols || r >= p.rows) return;
+      var cell = r * p.cols + c;
+      p.tone[cell] = tone; p.mark[cell] = glyph; p.alpha[cell] = 1;
+    }
+    var spread = Math.sin(f.phase) > 0;
+    [[1, 1], [1, -1], [2, 1], [2, -1]].forEach(function (w) {
+      var back = w[0], sd = w[1];
+      var wx = n[0] * sd + (spread ? 0 : (back === 1 ? d[0] : -d[0]));
+      var wy = n[1] * sd + (spread ? 0 : (back === 1 ? d[1] : -d[1]));
+      var ch = seam(wx, wy);
+      for (var i = 1; i <= 2; i++) put(c0 - d[0] * back + wx * i, r0 - d[1] * back + wy * i, WING, ch);
+    });
+    var body = seam(d[0], d[1]);
+    for (var i = 2; i <= 6; i++) put(c0 - d[0] * i, r0 - d[1] * i, FLY, i === 2 ? G('+') : body);
+    put(c0 - d[0], r0 - d[1], FLY, G('+'));
+    put(c0, r0, FLY, EYE_G);
+  }
+
   // the water's strokes, along the line where each ripple catches the
-  // light, under everything else
+  // light, under everything else, and never under the words
   function ripples(p) {
     var z = p.z, gw = p.ww, gh = p.wh;
     var dx0 = p.gx - p.x, dy0 = p.gy - p.y;
     for (var r = 0; r < p.rows; r++) {
-      var y = dy0 + (r + 0.5) * CH;
+      var y = dy0 + (r + 0.5) * GRID;
       var j = Math.round(y / CELL + 0.5);
       if (j < 2 || j > gh - 3) continue;
       for (var c = 0; c < p.cols; c++) {
-        var x = dx0 + (c + 0.5) * CW;
+        var x = dx0 + (c + 0.5) * GRID;
+        if (underWords(p, x)) continue;
         var i = Math.round(x / CELL + 0.5);
         if (i < 2 || i > gw - 3) continue;
         var a = j * gw + i;
@@ -1127,11 +1137,139 @@
     }
   }
 
-  /* ---------- Drawing ----------
-     Every character, in every colour, is drawn once into an atlas;
-     the ponds are stamped from it. */
+  /* ---------- What's playing ----------
+     The koi wear what's being listened to: the album cover in the
+     listening row (listening.js keeps it current) is read small, its
+     two most telling colours become the koi's markings, set light or
+     dark enough to read on the paper, and the pond eases from one
+     song's colours to the next. A cover with no colour to speak of,
+     or none at all, leaves them in persimmon and vermilion. */
 
-  var atlas = null, sw = 0, sh = 0, theme = '', themeAt = 0;
+  var cover = document.querySelector('[data-listening-art]');
+  var CHANGE = 2.4;           // s to ease from one song's colours to the next
+  var DEFAULT = { a: hsl('#e86f26'), b: hsl('#d43f26') };
+  var wornFrom = DEFAULT, wornTo = DEFAULT, wornT = 1, wornStep = -1, coverSrc = '';
+
+  function hsl(hex) {
+    var n = parseInt(hex.slice(1), 16);
+    return toHsl((n >> 16) & 255, (n >> 8) & 255, n & 255);
+  }
+
+  function toHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0;
+    if (mx !== mn) {
+      var d = mx - mn;
+      s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+      h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      h /= 6;
+    }
+    return [h, s, l];
+  }
+
+  function hex(c) {
+    var h = c[0], s = c[1], l = c[2];
+    function f(n) {
+      var k = (n + h * 12) % 12, a = s * Math.min(l, 1 - l);
+      return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))));
+    }
+    return '#' + [f(0), f(8), f(4)].map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join('');
+  }
+
+  // the two colours a cover is most of, among those with colour to them:
+  // the strongest, and the strongest of a clearly different hue
+  function telling(d) {
+    var bins = [];
+    for (var i = 0; i < 24; i++) bins.push({ w: 0, x: 0, y: 0, s: 0, l: 0 });
+    for (var p = 0; p < d.length; p += 4) {
+      if (d[p + 3] < 200) continue;
+      var c = toHsl(d[p], d[p + 1], d[p + 2]);
+      var chroma = c[1] * (1 - Math.abs(2 * c[2] - 1));
+      if (c[2] < 0.1 || c[2] > 0.94 || chroma < 0.12) continue;
+      var w = chroma * chroma, b = bins[Math.floor(c[0] * 24) % 24];
+      b.w += w; b.x += Math.cos(c[0] * 2 * Math.PI) * w; b.y += Math.sin(c[0] * 2 * Math.PI) * w;
+      b.s += c[1] * w; b.l += c[2] * w;
+    }
+    var order = bins.map(function (b, i) { return { b: b, i: i }; }).sort(function (m, n) { return n.b.w - m.b.w; });
+    var first = order[0];
+    if (!first || first.b.w < 1.5) return null;
+    var second = null;
+    for (var j = 1; j < order.length; j++) {
+      var gap = Math.abs(order[j].i - first.i);
+      if (Math.min(gap, 24 - gap) >= 2 && order[j].b.w > first.b.w * 0.12) { second = order[j]; break; }
+    }
+    function mean(b) {
+      var h = Math.atan2(b.y, b.x) / (2 * Math.PI);
+      return [h < 0 ? h + 1 : h, b.s / b.w, b.l / b.w];
+    }
+    var a = mean(first.b);
+    var bb = second ? mean(second.b) : [(a[0] + 0.97) % 1, a[1], a[2] - 0.1];
+    return { a: a, b: bb };
+  }
+
+  function readCover(src) {
+    var img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = function () {
+      var picked = null;
+      try {
+        var c = document.createElement('canvas');
+        c.width = c.height = 32;
+        var x = c.getContext('2d');
+        x.drawImage(img, 0, 0, 32, 32);
+        picked = telling(x.getImageData(0, 0, 32, 32).data);
+      } catch (e) {}
+      if (src === coverSrc) wear(picked || DEFAULT);
+    };
+    img.onerror = function () { if (src === coverSrc) wear(DEFAULT); };
+    img.src = src;
+  }
+
+  function wear(next) {
+    wornFrom = worn();
+    wornTo = next;
+    wornT = still.matches ? 1 : 0;
+    wornStep = -1;
+    if (still.matches) { atlas = null; draw(); }
+  }
+
+  // the colours worn this moment, part way from one song's to the next
+  function worn() {
+    var t = ease(wornT);
+    function mix(a, b) {
+      var dh = ((b[0] - a[0] + 1.5) % 1) - 0.5;
+      return [(a[0] + dh * t + 1) % 1, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+    }
+    return { a: mix(wornFrom.a, wornTo.a), b: mix(wornFrom.b, wornTo.b) };
+  }
+
+  // a marking colour in its four steps from the back to the edge, made
+  // pastel: the cover's hue, softened and lifted, a little deeper toward
+  // the edge so each patch keeps its shape
+  function steps(c) {
+    var light = theme !== 'dark';
+    var s = clamp(c[1] * 0.8, 0.34, light ? 0.66 : 0.58);
+    var l = light ? 0.74 + (c[2] - 0.5) * 0.12 : 0.68 + (c[2] - 0.5) * 0.1;
+    var drops = light ? [-0.03, 0, 0.05, 0.12] : [0, 0.04, 0.1, 0.17];
+    return drops.map(function (dl) { return hex([c[0], s, clamp(l - dl, 0.3, 0.9)]); });
+  }
+
+  function listen() {
+    var src = cover && cover.getAttribute('src');
+    if (!src) { if (coverSrc) { coverSrc = ''; wear(DEFAULT); } return; }
+    if (src === coverSrc) return;
+    coverSrc = src;
+    readCover(src);
+  }
+  if (cover && window.MutationObserver) {
+    new MutationObserver(listen).observe(cover, { attributes: true, attributeFilter: ['src'] });
+  }
+
+  /* ---------- Drawing ----------
+     Every tile, in every colour, with every character it can carry, is
+     drawn once into an atlas; the pond is stamped from it. */
+
+  var atlas = null, slot = 0, theme = '', themeAt = 0;
 
   function themeNow() {
     var bg = getComputedStyle(root).getPropertyValue('--color-bg').trim();
@@ -1141,30 +1279,67 @@
     return l < 110 ? 'dark' : 'light';
   }
 
+  // a character's colour on a tile: a shade darker on a light tile, a
+  // shade lighter on a dark one
+  function inkOf(hex, k) {
+    var n = parseInt(hex.slice(1), 16);
+    var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    var dark = (r * 299 + g * 587 + b * 114) / 1000 < 90;
+    var f = function (c) { return Math.round(dark ? c + (255 - c) * k * 1.3 : c * (1 - k)); };
+    return 'rgb(' + f(r) + ',' + f(g) + ',' + f(b) + ')';
+  }
+
   function build() {
     var P = PALETTES[theme];
-    var colours = [null].concat(P.body, P.mark, P.red, P.sumi, P.fin, [P.eye, P.water], P.shell, [P.skin, P.fly, P.wing]);
-    sw = Math.ceil(CW * dpr);
-    sh = Math.ceil(CH * dpr);
+    var w = worn();
+    var colours = [null].concat(P.body, steps(w.a), steps(w.b), P.sumi, P.fin, [P.eye, P.water], P.shell, [P.skin, P.fly, P.wing]);
+    slot = Math.ceil(GRID * dpr);
+    var tile = TILE * dpr, inset = (slot - tile) / 2, rad = 1.3 * dpr;
     atlas = document.createElement('canvas');
-    atlas.width = sw * GLYPHS.length;
-    atlas.height = sh * colours.length;
+    atlas.width = slot * GLYPHS.length;
+    atlas.height = slot * colours.length;
     var a = atlas.getContext('2d');
     a.textAlign = 'center';
-    a.textBaseline = 'alphabetic';
+    a.textBaseline = 'middle';
     for (var t = 1; t < colours.length; t++) {
-      a.fillStyle = colours[t];
-      a.font = (t < FIN || t === EYE || t === SHELL || t === SEAM || t === SKIN || t === FLY ? '700 ' : '400 ') + (SIZE * dpr) + 'px ' + FACE;
-      for (var g = 1; g < GLYPHS.length; g++) {
-        a.fillText(GLYPHS[g], g * sw + sw / 2, t * sh + sh * 0.78);
+      for (var g = 0; g < GLYPHS.length; g++) {
+        var x = g * slot, y = t * slot;
+        if (tiled(t)) {
+          a.fillStyle = colours[t];
+          roundRect(a, x + inset, y + inset, tile, tile, rad);
+          if (t === EYE) {
+            a.font = '700 ' + (GLYPH * dpr) + 'px ' + FACE;
+            a.fillStyle = P.iris;
+            a.fillText('o', x + slot / 2, y + slot / 2 + 0.4 * dpr);
+          } else if (g) {
+            a.font = '700 ' + (GLYPH * dpr) + 'px ' + FACE;
+            a.fillStyle = inkOf(colours[t], P.ink);
+            a.fillText(GLYPHS[g], x + slot / 2, y + slot / 2 + 0.4 * dpr);
+          }
+        } else if (g) {
+          a.font = (t === FLY ? '700 ' : '400 ') + ((GLYPH + 2) * dpr) + 'px ' + FACE;
+          a.fillStyle = colours[t];
+          a.fillText(GLYPHS[g], x + slot / 2, y + slot / 2 + 0.4 * dpr);
+        }
       }
     }
+  }
+
+  function roundRect(a, x, y, w, h, r) {
+    a.beginPath();
+    a.moveTo(x + r, y);
+    a.arcTo(x + w, y, x + w, y + h, r);
+    a.arcTo(x + w, y + h, x, y + h, r);
+    a.arcTo(x, y + h, x, y, r);
+    a.arcTo(x, y, x + w, y, r);
+    a.closePath();
+    a.fill();
   }
 
   function stamp(t, g, x, y, alpha) {
     if (alpha <= 0.01) return;
     ctx.globalAlpha = alpha;
-    ctx.drawImage(atlas, g * sw, t * sh, sw, sh, x, y, CW, CH);
+    ctx.drawImage(atlas, g * slot, t * slot, slot, slot, x, y, GRID, GRID);
   }
 
   function draw(now) {
@@ -1175,6 +1350,12 @@
       var next = themeNow();
       if (next !== theme) { theme = next; atlas = null; }
     }
+    if (wornT < 1) {
+      wornT = Math.min(1, wornT + (now - (draw.last || now)) / 1000 / CHANGE);
+      var stepNow = Math.round(wornT * 24);
+      if (stepNow !== wornStep) { wornStep = stepNow; atlas = null; }
+    }
+    draw.last = now;
     if (!atlas) build();
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.globalAlpha = 1;
@@ -1185,10 +1366,13 @@
       p.koi.forEach(function (k) { set(p, k); });
       p.visitors.forEach(function (v) { if (v.kind === 'turtle') setTurtle(p, v); });
       p.visitors.forEach(function (v) { if (v.kind === 'fly') setFly(p, v); });
-      for (var r = 0; r < p.rows; r++) {
-        for (var c = 0; c < p.cols; c++) {
+      for (var c = 0; c < p.cols; c++) {
+        var x = p.gx + c * GRID;
+        // under the words, lighter
+        var dim = underWords(p, x - p.x + GRID / 2) ? UNDER : 1;
+        for (var r = 0; r < p.rows; r++) {
           var i = r * p.cols + c, t = p.tone[i];
-          if (t) stamp(t, p.mark[i], p.gx + c * CW, p.gy + r * CH, p.alpha[i]);
+          if (t) stamp(t, p.mark[i], x, p.gy + r * GRID, p.alpha[i] * dim);
         }
       }
     });
@@ -1256,6 +1440,8 @@
     pointer.x = e.clientX; pointer.y = e.clientY;
     if (!pointer.on) pointer.fresh = true;
     pointer.on = true;
+    // a click on something to click is just that, not a raindrop
+    if (e.target && e.target.closest && e.target.closest('a, button, input, textarea, select, label, [role="button"]')) return;
     if (!still.matches) drop(e.clientX, e.clientY);
   }, { passive: true });
   document.addEventListener('mouseout', function (e) {
@@ -1286,6 +1472,7 @@
 
   layout();
   start();
+  listen();
 
   /* ---------- Small things ---------- */
 

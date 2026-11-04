@@ -1414,10 +1414,11 @@ html.intro .colophon {
 
 /* ---------------------------------------------------------
    16. Koi (koi.js, home page only)
-   Set in type, in the margins either side of the column; where the
-   margins are too narrow, in a shallow pond at the foot of the page,
-   above the copyright. Never in the way of a pointer, and held back
-   with the rest of the page until the opening has played.
+   On a wide window the whole window is their pond, drawn behind
+   everything (the paper is painted first, then the koi, then the
+   words); on a narrow one, a pond at the foot of the page, above the
+   copyright. Never in the way of a pointer, and held back with the
+   rest of the page until the opening has played.
    --------------------------------------------------------- */
 
 .koi {
@@ -1426,11 +1427,11 @@ html.intro .colophon {
 }
 
 .koi--side {
-  z-index: 0;
+  z-index: -1;
 }
 
 .koi--pond {
-  height: 10rem;
+  height: 15rem;
   margin-bottom: 1.25rem;
 }
 

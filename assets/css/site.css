@@ -1411,3 +1411,30 @@ html.intro .colophon {
     animation: none !important;
   }
 }
+
+/* ---------------------------------------------------------
+   16. Koi (koi.js, home page only)
+   Set in type, in the margins either side of the column; where the
+   margins are too narrow, in a shallow pond at the foot of the page,
+   above the copyright. Never in the way of a pointer, and held back
+   with the rest of the page until the opening has played.
+   --------------------------------------------------------- */
+
+.koi {
+  pointer-events: none;
+  transition: opacity 1.4s ease;
+}
+
+.koi--side {
+  z-index: 0;
+}
+
+.koi--pond {
+  height: 10rem;
+  margin-bottom: 1.25rem;
+}
+
+html.intro .koi,
+html.intro-play .koi {
+  opacity: 0;
+}

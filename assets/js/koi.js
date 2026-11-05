@@ -7,25 +7,26 @@
    the colours of whatever is playing now or was played last (taken
    from the album cover in the listening row, easing to the next
    song's as it changes; soft persimmon and coral when there is no
-   cover to read),
-   the odd one in sumi ink, paler fins and tail, two o's for eyes, and
-   a faint character on every tile for texture, fixed to its place on
-   the fish. They are large, and the whole window is their pond: they
-   keep mostly to the open paper either side of the column, now and
-   then drifting part way under it, where they are drawn lighter and
-   the words stay on top.
+   cover to read), set out as breeders prize them (a cap on the head, a few steps of
+   colour down the back, the tail end clean), paler fins and tail, two
+   o's for eyes, and a faint character on every tile for texture, fixed
+   to its place on the fish. They are large, and the whole window is
+   their pond, the column of words a bank in the middle of it: each koi
+   keeps to the open paper on its own side and never swims under the
+   words. Every visit fills the pond afresh: enough koi for the window,
+   big and smaller, spread evenly over both sides, never twice alike.
 
    They swim as bodies in water do: the tail's beat pushes a koi along,
    the water drags on it (lightly from ahead, hard from the side, so it
    carves its turns and coasts a long way when it stops beating), and
    it turns by bending, each joint no further than a body can. It
    cruises, glides, now and then gives a few hard beats; it keeps clear
-   of the others, drifts with them or follows one a while, and two that
-   touch slide apart. Most visits have a few young too, small fry that
-   keep close behind a grown koi and startle more easily. Every so
-   often something else comes by: a turtle paddling slowly across, the
-   koi giving it room, or a dragonfly that darts, hovers, and dips to
-   touch the water.
+   of the others, gives the grown ones room, drifts with them or
+   follows one a while, and two that touch slide apart. Most visits
+   have a young one or two, keeping close behind a grown koi and
+   startling more easily. Every so often something else comes by: a
+   turtle paddling slowly down one side, the koi giving it room, or a
+   dragonfly that darts, hovers, and dips to touch the water.
 
    The water is a damped wave equation on its own fine grid: a tail
    sweeping aside pushes it one way and pulls it the other, a moving
@@ -37,9 +38,10 @@
    off; held still nearby, they come to look; a click is a raindrop, a
    ring running out and any koi near it darting away.
 
-   Where the window is narrow (phones), the koi swim in a pond at the
-   foot of the page, above the copyright. For anyone who has asked for
-   less motion, they are set once and left, and the water is still.
+   Where the window is narrow (phones, or too little paper beside the
+   words for a koi), the koi swim in a pond at the foot of the page,
+   above the copyright. For anyone who has asked for less motion, they
+   are set once and left, and the water is still.
    ========================================================= */
 
 (function () {
@@ -60,6 +62,7 @@
   var TILE = 9;               // a tile, the rest a hairline of paper between
   var GLYPH = 7;              // the characters on them
   var WIDE = 900;             // a window this wide is all pond; narrower, a pond at the foot
+  var ROOM = 230;             // and the paper beside the words at least this wide
   var EDGE = 0;               // kept clear at the window's edge
   var STEP = 1 / 60;          // the fixed step
   var MAX_STEPS = 4;          // steps one frame may catch up
@@ -75,6 +78,8 @@
   var SOFT = 40;              // px/s² of push for each px two koi overlap
   var SHOVE = 40;             // and never more than this, px/s²
   var FASTEST = 90;           // no koi goes faster than this, px/s
+  var GIVE = 1.2;             // the most the words' bank slides a koi in one step, px
+  var PART = 5;               // and two koi meeting, each, px (a swung tail is quick)
 
   // the water
   var CELL = 6;               // its grid
@@ -105,7 +110,8 @@
   var VISIT_FIRST = [20, 40];   // s before the first
   var VISIT_EVERY = [45, 110];  // and between the rest
 
-  var VARIETIES = ['kohaku', 'kohaku', 'kohaku', 'sanke', 'showa', 'tancho', 'ogon', 'shiro'];
+  // dealt out like cards, so every pond has a mix
+  var VARIETIES = ['kohaku', 'kohaku', 'kohaku', 'sanke', 'sanke', 'tancho'];
 
   // the tiles' colours, for the paper and for the dark: bodies in four
   // steps from the back to a darker edge that rings each fish (the
@@ -171,7 +177,10 @@
     var vw = root.clientWidth, vh = window.innerHeight;
     var r = page.getBoundingClientRect();
     if (!r.width) return;
-    var next = vw >= WIDE ? 'page' : 'pond';
+    // the paper either side of the words has to be wide enough for a
+    // koi to swim in without going under them; if not, a pond at the foot
+    var margin = Math.min(r.left, vw - r.right) - 16;
+    var next = vw >= WIDE && margin >= ROOM ? 'page' : 'pond';
     var p;
     if (next === 'page') {
       whole.hidden = false;
@@ -275,7 +284,7 @@
 
   /* ---------- A koi ---------- */
 
-  function koi(L) {
+  function koi(L, name, young) {
     var N = 32;
     var k = {
       L: L, W: L * 0.17, N: N, seg: L / (N - 1),
@@ -288,14 +297,14 @@
       depth: range(0.88, 1),
       seed: Math.floor(Math.random() * 1e6),
       fright: 0, awayX: 0, awayY: 0,
-      follow: null, parent: null,
+      follow: null, parent: null, home: 0,
       tipX: 0, tipY: 0, tipOn: false,
       sx: new Float32Array(N), sy: new Float32Array(N),   // the line it has swum
       px: new Float32Array(N), py: new Float32Array(N),   // the body on it, swimming
       tx: new Float32Array(N), ty: new Float32Array(N)    // which way the body runs
     };
-    k.name = VARIETIES[Math.floor(Math.random() * VARIETIES.length)];
-    k.marks = markings(k.name);
+    k.name = name || VARIETIES[Math.floor(Math.random() * VARIETIES.length)];
+    k.marks = markings(k.name, young);
     return k;
   }
 
@@ -309,77 +318,102 @@
     return 0.2;
   }
 
-  // a koi's markings, as patches in its own terms: u along it, v across
-  function markings(kind) {
-    var list = [], all = 0, i, n;
-    function patch(u0, u1, v0, v1, ru0, ru1, rv0, rv1, tone) {
-      list.push({ u: range(u0, u1), v: range(v0, v1), ru: range(ru0, ru1), rv: range(rv0, rv1), tone: tone, seed: Math.random() * 50 });
+  // a koi's markings, as patches in its own terms: u along it (0 the
+  // nose, 1 the tail), v across (-1 one edge, 1 the other). Set out as
+  // the breeders prize them: a cap on the head, then a few steps of
+  // colour down the back with white between, wrapping down a flank, the
+  // tail end left clean. Each fish wears one of the cover's two colours;
+  // a sanke has small spots of the other besides.
+  function markings(kind, young) {
+    var list = [], main = Math.random() < 0.65 ? 2 : 3, other = 5 - main;
+    function patch(u, v, ru, rv, tone) {
+      list.push({ u: u, v: v, ru: ru, rv: rv, tone: tone, seed: Math.random() * 50 });
     }
-    var red = function () { return Math.random() < 0.4 ? 3 : 2; };   // 2 orange, 3 red, 4 sumi
-    if (kind === 'ogon') all = 2;
-    if (kind === 'tancho') patch(0.06, 0.08, -0.05, 0.05, 0.045, 0.055, 0.4, 0.5, 3);
-    if (kind === 'kohaku' || kind === 'sanke' || kind === 'showa') {
-      n = 2 + Math.floor(Math.random() * 3);
-      for (i = 0; i < n; i++) patch(0.08, 0.72, -0.45, 0.45, 0.06, 0.14, 0.5, 1.1, red());
+    if (kind === 'tancho') {
+      patch(range(0.085, 0.1), range(-0.04, 0.04), range(0.045, 0.06), range(0.42, 0.52), main);
+    } else {
+      if (Math.random() < 0.8) patch(range(0.08, 0.105), range(-0.06, 0.06), range(0.05, 0.07), range(0.45, 0.6), main);
+      var n = young ? 1 + (Math.random() < 0.4 ? 1 : 0) : 1 + Math.floor(Math.random() * 3);
+      var from = range(0.19, 0.23), to = range(0.64, 0.75), gap = range(0.035, 0.06);
+      var span = to - from - gap * (n - 1), parts = [], sum = 0, i;
+      for (i = 0; i < n; i++) { parts.push(range(0.7, 1.3)); sum += parts[i]; }
+      var u = from, side = Math.random() < 0.5 ? -1 : 1;
+      for (i = 0; i < n; i++) {
+        var len = span * parts[i] / sum;
+        patch(u + len / 2, side * range(0, 0.22), len / 2 * range(1, 1.08), range(0.72, 0.95), main);
+        side = -side;
+        u += len + gap;
+      }
+      if (kind === 'sanke' && !young) {
+        var spots = 2 + Math.floor(Math.random() * 3);
+        for (i = 0; i < spots; i++) patch(range(0.26, 0.66), range(-0.5, 0.5), range(0.032, 0.045), range(0.3, 0.42), other);
+      }
     }
-    if (kind === 'sanke') {
-      n = 2 + Math.floor(Math.random() * 3);
-      for (i = 0; i < n; i++) patch(0.2, 0.75, -0.8, 0.8, 0.03, 0.05, 0.2, 0.35, 4);
-    }
-    if (kind === 'showa') {
-      n = 2 + Math.floor(Math.random() * 2);
-      for (i = 0; i < n; i++) patch(0.1, 0.75, -0.7, 0.7, 0.05, 0.09, 0.3, 0.6, 4);
-    }
-    return { all: all, list: list };
+    return { list: list };
   }
 
+  // the colour at (u, v): the last patch that covers it, its edge a
+  // little uneven, as a koi's are
   function tint(m, u, v) {
-    var tone = m.all || 1;
+    var tone = 1;
     for (var i = 0; i < m.list.length; i++) {
       var p = m.list[i];
-      var du = (u - p.u) / p.ru, dv = (v - p.v) / p.rv;
-      if (du * du + dv * dv < 1 + 0.22 * Math.sin(u * 41 + v * 7 + p.seed)) tone = p.tone;
+      var du = Math.abs(u - p.u) / p.ru, dv = Math.abs(v - p.v) / p.rv;
+      var e = du * du * Math.sqrt(du) + dv * dv * Math.sqrt(dv);
+      if (e < 1 + 0.16 * Math.sin(u * 37 + p.seed) + 0.1 * Math.sin(v * 6 + p.seed * 1.7)) tone = p.tone;
     }
     return tone;
   }
 
   /* ---------- Placing them ---------- */
 
+  // how many, and how big: enough to fill the window every visit, a
+  // little more or less each time, half of them on each side of the words
   function spawn(p) {
-    var max = p.wide ? clamp(Math.floor(p.w * p.h / 420000), 1, 4) : clamp(Math.floor(p.w / 170), 1, 2);
-    var n = 1 + Math.floor(Math.random() * max);
-    var base = p.wide ? clamp(Math.min(p.w * 0.22, p.h * 0.4), 200, 330) : clamp(Math.min(p.h * 0.8, p.w * 0.5), 110, 200);
-    var out = [];
-    for (var i = 0; i < n; i++) {
-      var k = koi(base * range(0.85, 1.12));
-      // somewhere its whole body fits, clear of the others, facing
-      // any way at all, out on the open paper if it can be; if there is
-      // no room at all, it isn't added
-      var placed = false;
-      for (var tries = 0; tries < 300 && !placed; tries++) {
-        k.x = range(0, p.w); k.y = range(0, p.h);
-        k.a = Math.random() * Math.PI * 2;
-        if (tries < 200 && p.col && (underWords(p, k.x) || underWords(p, k.x - Math.cos(k.a) * k.L))) continue;
-        placed = fits(k, p, out);
-      }
-      if (!placed) continue;
-      var sp = range(0, 10);
-      k.vx = Math.cos(k.a) * sp; k.vy = Math.sin(k.a) * sp;
-      settle(k);
-      out.push(k);
+    var base, n, open = 0;
+    if (p.wide) {
+      // counted by the open paper either side of the words
+      open = (p.w - (p.col ? p.col.x1 - p.col.x0 : 0)) * p.h;
+      base = clamp(Math.min(p.w * 0.19, p.h * 0.36, open / p.h * 0.47), 170, 300);
+      n = clamp(Math.round(open / (base * base * 2.6) + range(-0.5, 0.5)), 3, 7);
+    } else {
+      base = clamp(Math.min(p.h * 0.66, p.w * 0.42), 110, 170);
+      n = clamp(Math.round(p.w * p.h / (base * base * 1.9) + range(-0.3, 0.7)), 2, 3);
     }
-    // and, often, a few young, each keeping close behind a grown one
+    // their sizes spread from smaller to big, a little different each
+    // visit (less so in the small pond, where a small koi is too few
+    // tiles across to read as a fish); the biggest placed first, and
+    // dealt to the two sides in turn so each side has big and small
+    var sizes = [], lo = p.wide ? 0.74 : 0.88, spread = p.wide ? 0.44 : 0.24;
+    for (var z = 0; z < n; z++) sizes.push(base * (lo + spread * (z + range(0.2, 0.8)) / n));
+    sizes.sort(function (a, b) { return b - a; });
+    var out = [], deck = [], first = Math.random() < 0.5 ? -1 : 1;
+    for (var i = 0; i < n; i++) {
+      if (!deck.length) deck = shuffle(VARIETIES.slice());
+      var name = deck.pop();
+      var home = p.col ? (i % 2 ? -first : first) : 0;
+      var L = sizes[i], k = null;
+      // if it can't be fitted in on its side, a little smaller, rather
+      // than under the words or left out
+      for (var s = 0; s < (p.wide ? 4 : 2) && !k; s++) k = place(p, out, koi(L * Math.pow(0.92, s), name), home);
+      if (k) out.push(k);
+    }
+    // and, often, a young one or two, each keeping close behind a grown
+    // one, as many as there is room for: on the phone's narrow pond there
+    // is no room for them to read as fish, so there they stay away
     var grown = out.slice();
-    var young = grown.length && Math.random() < 0.7 ? 1 + Math.floor(Math.random() * 3) : 0;
+    var room = open > 650000 ? 2 : open > 420000 ? 1 : 0;
+    var young = Math.random() < 0.7 ? Math.min(room, 1 + (Math.random() < 0.4 ? 1 : 0)) : 0;
     for (var y = 0; y < young; y++) {
       var m = grown[Math.floor(Math.random() * grown.length)];
-      var kid = koi(m.L * range(0.3, 0.4));
+      var kid = koi(Math.max(140, m.L * range(0.48, 0.54)), Math.random() < 0.7 ? 'kohaku' : 'tancho', true);
       kid.parent = m;
+      kid.home = m.home;
       kid.curious = 1;
       var ok = false;
       for (var t2 = 0; t2 < 200 && !ok; t2++) {
-        kid.x = m.sx[m.N - 1] + range(-120, 120);
-        kid.y = m.sy[m.N - 1] + range(-120, 120);
+        kid.x = m.sx[m.N - 1] + range(-140, 140);
+        kid.y = m.sy[m.N - 1] + range(-140, 140);
         kid.a = m.a + range(-0.6, 0.6);
         ok = fits(kid, p, out);
       }
@@ -389,6 +423,47 @@
       out.push(kid);
     }
     return out;
+  }
+
+  // somewhere a koi's whole body fits, clear of the others, facing any
+  // way at all, on its own side of the words; of a score of such
+  // places, the one furthest from the others, so the pond fills evenly
+  function place(p, out, k, home) {
+    var best = null, score = -1, found = 0;
+    k.home = home;
+    for (var tries = 0; tries < 600 && found < 20; tries++) {
+      k.x = range(0, p.w); k.y = range(0, p.h);
+      k.a = Math.random() * Math.PI * 2;
+      var cx = Math.cos(k.a), cy = Math.sin(k.a);
+      if (p.col) {
+        // clear of the words, the body's width and a little more
+        var tail = k.x - cx * k.L, bank = k.W * 1.3;
+        if (home < 0 ? Math.max(k.x, tail) > p.col.x0 - bank : Math.min(k.x, tail) < p.col.x1 + bank) continue;
+      }
+      if (!fits(k, p, out)) continue;
+      found++;
+      var mx = k.x - cx * k.L * 0.45, my = k.y - cy * k.L * 0.45, near = Infinity;
+      for (var j = 0; j < out.length; j++) {
+        var o = out[j], h = Math.floor(o.N * 0.45);
+        near = Math.min(near, Math.hypot(mx - o.sx[h], my - o.sy[h]) - (k.L + o.L) * 0.2);
+      }
+      near = (near === Infinity ? 1e4 : near) * range(0.8, 1);
+      if (near > score) { score = near; best = [k.x, k.y, k.a]; }
+    }
+    if (!best) return null;
+    k.x = best[0]; k.y = best[1]; k.a = best[2];
+    var sp = range(0, 10);
+    k.vx = Math.cos(k.a) * sp; k.vy = Math.sin(k.a) * sp;
+    settle(k);
+    return k;
+  }
+
+  function shuffle(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)), t = list[i];
+      list[i] = list[j]; list[j] = t;
+    }
+    return list;
   }
 
   // lay a koi's body straight back from its head
@@ -423,6 +498,10 @@
     if (k.y < m) { k.y = m; if (k.vy < 0) k.vy = 0; }
     if (k.x > p.w - m) { k.x = p.w - m; if (k.vx > 0) k.vx = 0; }
     if (k.y > p.h - m) { k.y = p.h - m; if (k.vy > 0) k.vy = 0; }
+    // and never under the words: the body follows the head, so a head
+    // kept out keeps the koi out
+    if (p.col && k.home < 0 && k.x > p.col.x0 - m) { k.x = p.col.x0 - m; if (k.vx > 0) k.vx = 0; }
+    if (p.col && k.home > 0 && k.x < p.col.x1 + m) { k.x = p.col.x1 + m; if (k.vx < 0) k.vx = 0; }
   }
 
   /* ---------- How they decide ---------- */
@@ -443,10 +522,11 @@
       // sometimes it falls in behind another for a while
       k.follow = null;
       if (!k.parent && p.koi.length > 1 && Math.random() < 0.3) {
-        var others = p.koi.filter(function (o) { return o !== k && !o.parent; });
+        var others = p.koi.filter(function (o) { return o !== k && !o.parent && o.home === k.home; });
         if (others.length) k.follow = others[Math.floor(Math.random() * others.length)];
       }
     }
+    if (k.parent) k.home = k.parent.home;
     var want = k.mood === 'glide' ? 0.03 : k.mood === 'burst' ? 1 : k.pace;
 
     // where it would go: a slow wandering of its own
@@ -460,12 +540,17 @@
     dx += (wall(hx - pad, R) - wall(p.w - pad - hx, R)) * 3.2;
     dy += (wall(hy - pad, R) - wall(p.h - pad - hy, R)) * 3.2;
 
-    // the words: they would rather be out on the open paper, and turn
-    // gently back out from under the column
+    // the words are a bank of the pond: each koi keeps to its own side
+    // of them, feeling the bank ahead as it does the window's edges, and
+    // if it ever finds itself under them, it turns straight back out
     if (p.col) {
       var mid = (p.col.x0 + p.col.x1) / 2, half = (p.col.x1 - p.col.x0) / 2;
       var into = 1 - Math.abs(hx - mid) / half;
-      if (into > 0) dx += (hx < mid ? -1 : 1) * (0.5 + 1.1 * into);
+      var way = k.home || (hx < mid ? -1 : 1);
+      if (into > 0) dx += way * (1.2 + 2 * into);
+      var shore = k.W * 2.5 + 6;
+      if (way < 0) dx -= wall(p.col.x0 - shore - hx, R) * 3.2;
+      else dx += wall(hx - p.col.x1 - shore, R) * 3.2;
     }
 
     // the others: keep clear of their bodies, drift with them
@@ -487,10 +572,22 @@
       }
       var gd = Math.hypot(o.x - k.x, o.y - k.y);
       if (gd < 420) { near++; mx += o.x; my += o.y; ax += Math.cos(o.a); ay += Math.sin(o.a); }
+      // and the grown ones give each other room, so they spread through
+      // the pond rather than bunch in one corner of it; beside the words,
+      // mostly up and down the paper, not out under them
+      if (!k.parent && !o.parent) {
+        var h = Math.floor(k.N / 2), ox = k.px[h] - o.px[h], oy = k.py[h] - o.py[h];
+        var od = Math.hypot(ox, oy) || 1, room = (k.L + o.L) * 0.8;
+        if (od < room) {
+          var rf = 1 - od / room;
+          dx += ox / od * rf * rf * (p.col ? 0.4 : 1.2);
+          dy += oy / od * rf * rf * 1.2;
+        }
+      }
     });
     if (near) {
       var cxo = mx / near - k.x, cyo = my / near - k.y, cd = Math.hypot(cxo, cyo) || 1;
-      if (cd > k.L) { dx += cxo / cd * 0.25; dy += cyo / cd * 0.25; }
+      if (cd > k.L * 1.6) { dx += cxo / cd * 0.12; dy += cyo / cd * 0.12; }
       var al = Math.hypot(ax, ay) || 1;
       dx += ax / al * 0.3; dy += ay / al * 0.3;
     }
@@ -498,7 +595,7 @@
       // the young keep close behind their own
       var m = k.parent, bx = m.px[m.N - 1], by = m.py[m.N - 1];
       var md = Math.hypot(bx - k.x, by - k.y) || 1;
-      if (md > m.L * 0.25) {
+      if (md > m.L * 0.4) {
         dx += (bx - k.x) / md * 1.4; dy += (by - k.y) / md * 1.4;
         want = Math.max(want, md > m.L ? 0.9 : 0.5);
       }
@@ -510,11 +607,16 @@
 
     if (k.fright > 0) {
       k.fright -= dt;
-      dx += k.awayX * 4; dy += k.awayY * 4;
+      // away, but never off under the words
+      var awx = k.awayX;
+      if (p.col && k.home && awx * k.home < 0) awx *= -0.4;
+      dx += awx * 4; dy += k.awayY * 4;
       want = 1.5;
     } else if (ptr.in && ptr.rest > LINGER) {
-      // the cursor held still nearby: come and look
+      // the cursor held still nearby: come and look, from its own side
       var px2 = clamp(ptr.x, pad, p.w - pad), py2 = clamp(ptr.y, pad, p.h - pad);
+      if (p.col && k.home < 0) px2 = Math.min(px2, p.col.x0 - k.W * 2);
+      if (p.col && k.home > 0) px2 = Math.max(px2, p.col.x1 + k.W * 2);
       var pd = Math.hypot(px2 - k.x, py2 - k.y) || 1;
       if (pd < LOOK) {
         var pull = k.curious * (pd > k.L * 0.45 ? 1.4 : 0.6);
@@ -584,7 +686,7 @@
           if (over > worst) { worst = over; nx = ex / d; ny = ey / d; }
         }
         if (worst > 0) {
-          shift(k, nx * worst, ny * worst);
+          shift(k, nx * Math.min(worst, PART * 2), ny * Math.min(worst, PART * 2));
           var vn = k.vx * nx + k.vy * ny;
           if (vn < 0) { k.vx -= vn * nx; k.vy -= vn * ny; }
           keep(k, p);
@@ -606,14 +708,35 @@
             }
           }
           if (worst <= 0) continue;
-          shift(a, nx * worst / 2, ny * worst / 2);
-          shift(b, -nx * worst / 2, -ny * worst / 2);
+          // slid apart a little each step, never in one jump
+          var half = Math.min(worst / 2, PART);
+          shift(a, nx * half, ny * half);
+          shift(b, -nx * half, -ny * half);
           var rv = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
           if (rv < 0) { a.vx -= rv * nx / 2; a.vy -= rv * ny / 2; b.vx += rv * nx / 2; b.vy += rv * ny / 2; }
           keep(a, p); keep(b, p);
         }
       }
     }
+  }
+
+  // the words are a bank for the whole body, not only the head: a koi
+  // turning near it swings its body wide, and where the body would
+  // reach under the words, the bank holds it off, as a wall would,
+  // sliding the koi out from it
+  function bank(k, p) {
+    if (!p.col || !k.home) return;
+    var worst = 0;
+    for (var s = 0; s < k.N; s++) {
+      var e = girth(s / (k.N - 1)) * k.W * 0.9;
+      var over = k.home < 0 ? k.px[s] + e - p.col.x0 : p.col.x1 - k.px[s] + e;
+      if (over > worst) worst = over;
+    }
+    if (worst <= 0) return;
+    // a slide, not a jump: a little each step, and its push carried on
+    k.cx += k.home * Math.min(SHOVE, worst * SOFT);
+    shift(k, k.home * Math.min(worst, GIVE), 0);
+    if (k.vx * k.home < 0) k.vx *= 0.6;
   }
 
   function shift(k, dx, dy) {
@@ -807,7 +930,7 @@
       // down or up one side of the column, on the open paper
       var top = Math.random() < 0.5;
       var left = Math.random() < 0.5;
-      v.x = left ? range(p.w * 0.06, (p.col ? p.col.x0 : p.w / 2) - 60) : range((p.col ? p.col.x1 : p.w / 2) + 60, p.w * 0.94);
+      v.x = left ? range(p.w * 0.05, (p.col ? p.col.x0 : p.w / 2) - 110) : range((p.col ? p.col.x1 : p.w / 2) + 110, p.w * 0.95);
       v.y = top ? -m : p.h + m;
       v.a = (top ? 1 : -1) * Math.PI / 2 + range(-0.2, 0.2);
     } else {
@@ -837,6 +960,11 @@
     t.life += dt;
     t.phase += 2 * Math.PI * 0.55 * dt;
     t.a += 0.12 * Math.sin(clock * 0.3 + t.n1) * dt;
+    // it too keeps out from under the words
+    if (p.col) {
+      var gap = t.x < (p.col.x0 + p.col.x1) / 2 ? p.col.x0 - t.L * 0.7 - t.x : t.x - p.col.x1 - t.L * 0.7;
+      if (gap < 0) t.a += (t.x < (p.col.x0 + p.col.x1) / 2 ? 1 : -1) * Math.sign(Math.sin(t.a)) * 0.5 * dt;
+    }
     var surge = 0.7 + 0.5 * Math.max(0, Math.sin(t.phase));
     var fx = Math.cos(t.a), fy = Math.sin(t.a), nx = -fy, ny = fx;
     t.x += fx * t.v * surge * dt;
@@ -875,8 +1003,9 @@
           f.a = Math.min(f.x, p.w - f.x) < Math.min(f.y, p.h - f.y) ? (f.x < p.w / 2 ? Math.PI : 0) : (f.y < p.h / 2 ? -Math.PI / 2 : Math.PI / 2);
           f.timer = 3;
         } else {
+          // somewhere else on its own side of the words
           var tx = range(p.w * 0.1, p.w * 0.9), ty = range(p.h * 0.15, p.h * 0.85);
-          if (p.col && tx > p.col.x0 && tx < p.col.x1) tx = tx < (p.col.x0 + p.col.x1) / 2 ? p.col.x0 - 60 : p.col.x1 + 60;
+          if (p.col) tx = f.x < (p.col.x0 + p.col.x1) / 2 ? range(p.w * 0.04, p.col.x0 - 50) : range(p.col.x1 + 50, p.w * 0.96);
           f.a = Math.atan2(ty - f.y, tx - f.x);
         }
       }
@@ -1394,7 +1523,7 @@
         p.visitors = p.visitors.filter(function (v) { return !v.gone; });
       }
       apart(p);
-      p.koi.forEach(function (k) { follow(k); if (!still.matches) wake(k, p, dt); });
+      p.koi.forEach(function (k) { follow(k); bank(k, p); if (!still.matches) wake(k, p, dt); });
       if (!still.matches) flow(p);
     });
     if (!still.matches && clock > nextVisit) {

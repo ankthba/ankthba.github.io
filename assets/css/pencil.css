@@ -1,0 +1,397 @@
+/* =========================================================
+   pencil.css
+
+   The pencil look, laid over site.css (pages carry class="pencil"):
+   soft coloured pencil and watercolour on paper, EB Garamond, light
+   only. On the home page the first screen is the drawing, with the
+   name in its sky and butterflies over it (pencil.js).
+   ========================================================= */
+
+/* ---------- Paper and ink ----------
+   Light only: the drawings are pencil on white paper, so the page is
+   that paper whatever the system asks for. :root:root outranks
+   site.css's dark rules; the Light / Dark / System switch is gone. */
+
+:root:root.pencil {
+  color-scheme: light;
+  --color-bg: #f4f3ee;          /* clean, light paper */
+  --color-bg-alt: #ebeae4;
+  --color-fg: #24221d;          /* warm near-black, softer than print black */
+  --color-muted: #4a463f;
+  --color-quiet: #75716a;
+  --color-faint: #a19d95;
+  --color-border: #d9dbd5;
+  --color-border-hover: #c6c8c1;
+  --color-wash: rgba(36, 34, 29, 0.045);
+  --color-underline: rgba(36, 34, 29, 0.3);
+  --color-mat: #f6f6f2;
+  --color-scrim: rgba(244, 243, 238, 0.84);
+  --pencil-shadow: rgba(96, 126, 176, 0.2);   /* a faint pale-blue pencil shadow */
+
+  --font-display: "EB Garamond", "Iowan Old Style", Garamond, Georgia, serif;
+  --font-sans: "EB Garamond", "Iowan Old Style", Garamond, Georgia, serif;
+  --size: 1.125rem;
+  /* the headline grows with the window, from phones to big screens */
+  --head: clamp(2rem, 0.9rem + 3vw, 4rem);
+}
+
+html.pencil .theme-toggle {
+  display: none !important;
+}
+
+/* the page is clean paper; the texture lives in the drawings */
+html.pencil body {
+  font-weight: 400;
+  line-height: 1.45;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+/* keeps "at the University of Virginia" together where there's room */
+@media (min-width: 48rem) {
+  html.pencil .masthead__role .pencil-keep {
+    white-space: nowrap;
+  }
+}
+
+/* ---------- Home: hung from the page's left margin ----------
+   As in the post the look comes from: the name sits at the top left of
+   the picture, a margin in from the window's edge, and everything below
+   hangs from that same margin: the bio, then the pages. The first
+   screen stops a little short of the window's foot, so the start of
+   the bio shows under the flowers: there's more below. */
+
+html.pencil {
+  --edge: clamp(1.25rem, 6.5vw, 7.5rem);
+}
+
+html.pencil .sheet--home {
+  justify-content: flex-start;
+  padding-top: clamp(2.5rem, 8svh, 5.5rem);
+  padding-left: var(--edge);
+  padding-right: var(--edge);
+}
+
+html.pencil .sheet--home .sheet__page {
+  max-width: none;
+}
+
+/* the name is the one big line; what I do sits under it, smaller */
+html.pencil .masthead--home .masthead__name {
+  font-family: var(--font-display);
+  font-size: var(--head);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+}
+
+html.pencil .masthead--home .masthead__role {
+  margin-top: 0.55rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);
+  line-height: 1.3;
+  color: var(--color-fg);
+  text-wrap: balance;
+}
+
+/* the ways to reach me, in the same ink as the name, a size up */
+html.pencil .masthead--home .social {
+  margin-top: 1.5rem;
+  gap: 0.35rem;
+}
+
+html.pencil .masthead--home .social a {
+  width: 2.1rem;
+  height: 2.1rem;
+  color: var(--color-fg);
+  opacity: 0.82;
+  transition: opacity var(--transition-fast), background-color var(--transition-fast);
+}
+
+html.pencil .masthead--home .social a:hover {
+  opacity: 1;
+  background: rgba(244, 243, 238, 0.55);
+}
+
+html.pencil .masthead--home .social svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+html.pencil .page--home {
+  padding-top: 1.75rem;
+}
+
+html.pencil .page--home .about__text {
+  max-width: 34rem;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  gap: 0.75rem;
+  color: var(--color-muted);
+}
+
+html.pencil .page--home .index {
+  max-width: 36rem;
+}
+
+html.pencil .page--home .index:first-of-type {
+  margin-top: 3rem;
+}
+
+/* below the picture: one column, centred on the page, the text in it
+   set from its left edge; the bio, the pages and the copyright all
+   share its width */
+html.pencil .page--home,
+html.pencil .sheet--home .colophon {
+  align-self: center;
+  width: 100%;
+  max-width: 36rem;
+}
+
+html.pencil .page--home .about__text {
+  max-width: none;
+}
+
+/* ---------- The opening (pencil.js) ----------
+   Held back before it plays: the name hidden (pencil.js sets it large in
+   the middle, then brings it up into its place), and the picture and the
+   rest of the page a window's height down, to slide up with it. */
+
+html.pencil-intro .masthead--home .masthead__name {
+  opacity: 0;
+}
+
+html.pencil-intro .masthead--home .masthead__role,
+html.pencil-intro .masthead--home .social,
+html.pencil-intro .page--home,
+html.pencil-intro .sheet--home .colophon,
+html.pencil-intro .pencil-scene {
+  transform: translateY(100vh);
+}
+
+html.pencil-intro .pencil-cue {
+  opacity: 0;
+}
+
+.flutter {
+  transition: opacity 0.3s ease-out;
+}
+
+/* ---------- Reading the head over the picture ----------
+   Paper shows through only where the words are: a soft oval of it
+   behind the name and its line, top left, and a thin fade where the sky
+   meets the top of the window. The mountains across the rest stay as
+   drawn. pencil.js sizes the oval to the head (--head-w, --head-h). */
+
+.pencil-scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      calc(var(--head-w, 46rem) * 0.78) calc(var(--head-h, 14rem) * 0.95)
+      at calc(var(--head-x, 6vw) + var(--head-w, 46rem) * 0.42) calc(var(--head-y, 5rem) + var(--head-h, 14rem) * 0.45),
+      rgba(244, 243, 238, 0.86) 0%,
+      rgba(244, 243, 238, 0.7) 45%,
+      rgba(244, 243, 238, 0) 100%),
+    linear-gradient(to bottom,
+      rgba(244, 243, 238, 0.7) 0%,
+      rgba(244, 243, 238, 0) 14%);
+}
+
+/* ---------- There's more below ----------
+   A pencil-drawn chevron at the foot of the picture, in the middle,
+   swaying slowly downward; it goes once you start down the page. */
+
+.pencil-cue {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--scene-h) - 3.4rem);
+  z-index: 2;
+  width: 3rem;
+  height: 2.25rem;
+  margin-left: -1.5rem;
+  display: grid;
+  place-items: center;
+  color: var(--color-fg);
+  cursor: pointer;
+  transition: opacity 0.4s ease;
+}
+
+.pencil-cue svg {
+  width: 2.1rem;
+  height: 1.3rem;
+  overflow: visible;
+  animation: pencil-sway 2.6s ease-in-out infinite;
+}
+
+.pencil-cue path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.pencil-cue__drawn {
+  width: 2.5rem;
+  height: auto;
+  max-width: none;
+  animation: pencil-sway 2.6s ease-in-out infinite;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@keyframes pencil-sway {
+  0%, 100% { transform: translateY(0); opacity: 0.75; }
+  50% { transform: translateY(0.3rem); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pencil-cue svg,
+  .pencil-cue__drawn { animation: none; }
+}
+
+html.pencil-scrolled .pencil-cue {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- The copyright, centred at the foot of the page ---------- */
+
+html.pencil .sheet--home .colophon {
+  align-self: stretch;
+  max-width: none;
+}
+
+html.pencil .sheet--home .colophon__inner {
+  justify-content: center;
+  text-align: center;
+}
+
+/* ---------- Inner pages: the same paper and type ---------- */
+
+html.pencil .page-title {
+  font-family: var(--font-display);
+  font-size: var(--head);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+}
+
+/* links: a soft pencil line rather than a ruled one */
+html.pencil .page p a,
+html.pencil .about__text a,
+html.pencil .contact__text a {
+  color: var(--color-fg);
+  text-decoration-color: var(--color-underline);
+}
+
+/* ---------- The picture under the words ---------- */
+
+/* The first screen is the drawing, edge to edge: the name in its sky,
+   the meadow along the bottom, fading into the paper where the rest of
+   the page goes on. */
+html.pencil {
+  --scene-h: max(calc(100svh - 5.5rem), 34rem);
+}
+
+.pencil-scene {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  width: 100%;
+  height: var(--scene-h);
+  overflow: hidden;
+  pointer-events: none;
+  /* its top dissolves in the drawing's own ragged pencil, like its foot
+     (edge.webp is the foot of the drawing turned over) */
+  --edge-h: clamp(4.5rem, 14vh, 10rem);
+  -webkit-mask:
+    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
+    linear-gradient(#000, #000) 0 var(--edge-h) / 100% 100% no-repeat;
+  mask:
+    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
+    linear-gradient(#000, #000) 0 var(--edge-h) / 100% 100% no-repeat;
+  will-change: transform;
+}
+
+.pencil-scene picture,
+.pencil-scene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 100%;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* the stand-in was drawn as a vignette: blown up so its faded sides
+   and foot fall outside the window */
+.pencil-scene--standin img {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: max(100%, 150svh);
+  height: auto;
+  transform: translateX(-50%);
+}
+
+html.pencil.has-scene .masthead--home {
+  min-height: calc(var(--scene-h) - clamp(2.5rem, 7svh, 5rem));
+}
+
+html.pencil.has-scene .page--home {
+  padding-top: 0;
+}
+
+/* ---------- Butterflies, where the koi were ---------- */
+
+html.pencil .koi {
+  display: none !important;
+}
+
+.flutter {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  pointer-events: none;
+  will-change: transform, filter;
+  contain: layout style;
+}
+
+.flutter__turn {
+  position: absolute;
+  inset: 0;
+  perspective: 240px;
+}
+
+.flutter__wing {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  backface-visibility: visible;
+}
+
+.flutter__wing--l {
+  left: 0;
+  background-position: 0 0;
+  transform-origin: 100% 50%;
+}
+
+.flutter__wing--r {
+  left: 50%;
+  background-position: 100% 0;
+  transform-origin: 0 50%;
+}
+
+

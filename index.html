@@ -236,12 +236,28 @@
           <a href="https://ankthba.substack.com/" target="_blank" rel="noopener" aria-label="Substack" title="Substack"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M15 3.604H1v1.891h14v-1.89ZM1 7.208V16l7-3.926L15 16V7.208zM15 0H1v1.89h14z"/></svg></a>
           <a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t" target="_blank" rel="noopener" aria-label="Spotify" title="Spotify"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.669 11.538a.5.5 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686m.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858m.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288"/></svg></a>
         </nav>
+        <!-- The graphite the icons above are drawn in (pencil.css): a
+             hatched fill, and a line that wobbles and catches the paper's tooth -->
+        <svg class="pencil-defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="pencil-hatch" patternUnits="userSpaceOnUse" width="1.35" height="1.35" patternTransform="rotate(-38)">
+              <path d="M0.3 0V1.35" stroke="#24221d" stroke-width="0.48" stroke-opacity="0.62"/>
+            </pattern>
+            <filter id="pencil-line" x="-15%" y="-15%" width="130%" height="130%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.4" numOctaves="2" seed="7" result="wobble"/>
+              <feDisplacementMap in="SourceGraphic" in2="wobble" scale="0.75" xChannelSelector="R" yChannelSelector="G" result="drawn"/>
+              <feTurbulence type="fractalNoise" baseFrequency="2.2 0.3" numOctaves="1" seed="3" result="grain"/>
+              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.8 0 0 0 -0.1" result="tooth"/>
+              <feComposite in="drawn" in2="tooth" operator="in"/>
+            </filter>
+          </defs>
+        </svg>
       </header>
 
 
     <main class="page page--home" id="main">
       <div class="about__text">
-      <p>I study computer science and applied math at the University of Virginia. Right now I&rsquo;m building <a href="/pragmatic/">Pragmatic</a>, the system of record for AI agents, and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a>, which uses AI to help catch oral cancer early. I started OCRadar in eighth grade, and it&rsquo;s since been covered by <a href="/press/">WTOP, the Korea Times and others</a>. I&rsquo;ve also <a href="/research/">published research</a> on using neural networks to detect oral cancer. I also built <a href="/haze/">Haze</a>, a weather app for iPhone. In my free time, I build <a href="/projects/">fun projects</a>.</p>
+      <p>I study computer science and applied mathematics at the University of Virginia. Right now I&rsquo;m building <a href="/pragmatic/">Pragmatic</a>, the system of record for AI agents, and <a href="https://ocradar.com/" target="_blank" rel="noopener">OCRadar</a>, which uses AI to help catch oral cancer early. I started OCRadar in eighth grade, and it&rsquo;s since been covered by <a href="/press/">WTOP, the Korea Times and others</a>. I&rsquo;ve also <a href="/research/">published research</a> on using neural networks to detect oral cancer. I also built <a href="/haze/">Haze</a>, a weather app for iPhone. In my free time, I build <a href="/projects/">fun projects</a>.</p>
       <p>Before UVA, I led software for Oakton&rsquo;s robotics teams for four years. I&rsquo;ve also interned at <span class="nowrap">Alarm.com</span>, attended Y Combinator&rsquo;s AI Startup School, and spoken at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/" target="_blank" rel="noopener">Tech Roast Show</a>.</p>
       <p>Outside work, I&rsquo;m an aviation and landscape photographer. My photos have been featured by more than a dozen airlines and airports, including United, Dulles and Lufthansa, with special recognition from Korean Air and BLACKPINK. I also <a href="https://ankthba.substack.com/" target="_blank" rel="noopener">write</a>, and I&rsquo;m usually outdoors with <a href="/music/">music</a> playing.</p>
       </div>

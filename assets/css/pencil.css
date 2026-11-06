@@ -114,8 +114,29 @@ html.pencil .masthead--home .social a:hover {
 }
 
 html.pencil .masthead--home .social svg {
-  width: 1rem;
-  height: 1rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  overflow: visible;
+}
+
+/* drawn, not printed: each glyph is outlined in graphite and hatched
+   in, with a line that wobbles and skips on the paper's tooth (the
+   pattern and filter are in index.html) */
+html.pencil .masthead--home .social svg path {
+  fill: url(#pencil-hatch);
+  stroke: currentColor;
+  stroke-width: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#pencil-line);
+}
+
+/* holds the pattern and filter; takes no room */
+html.pencil .pencil-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 html.pencil .page--home {

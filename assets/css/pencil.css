@@ -55,6 +55,18 @@ html.pencil body {
   font-variant-numeric: oldstyle-nums proportional-nums;
 }
 
+/* What is set in ink to be read first (the name, page and entry names,
+   titles, the page you're on) is a step heavier than the text around
+   it; the reading text stays regular. */
+html.pencil :is(
+  .masthead__name, .masthead__role, .masthead__nav-link.active,
+  .index__name, .reach__name, .project-item__title,
+  .paper__name, .paper__title, .essay__title, .essay__sub,
+  .now__name, .track__name, .stand__name, .comp__name, .stop__name
+) {
+  font-weight: 500;
+}
+
 /* keeps "at the University of Virginia" together where there's room */
 @media (min-width: 48rem) {
   html.pencil .masthead__role .pencil-keep {
@@ -88,7 +100,7 @@ html.pencil .sheet--home .sheet__page {
 html.pencil .masthead--home .masthead__name {
   font-family: var(--font-display);
   font-size: var(--head);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.02em;
   color: var(--color-fg);
@@ -123,29 +135,8 @@ html.pencil .masthead--home .social a:hover {
 }
 
 html.pencil .masthead--home .social svg {
-  width: 1.2rem;
-  height: 1.2rem;
-  overflow: visible;
-}
-
-/* drawn, not printed: each glyph is outlined in graphite and hatched
-   in, with a line that wobbles and skips on the paper's tooth (the
-   pattern and filter are in index.html) */
-html.pencil .masthead--home .social svg path {
-  fill: url(#pencil-hatch);
-  stroke: currentColor;
-  stroke-width: 0.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  filter: url(#pencil-line);
-}
-
-/* holds the pattern and filter; takes no room */
-html.pencil .pencil-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
+  width: 1rem;
+  height: 1rem;
 }
 
 html.pencil .page--home {

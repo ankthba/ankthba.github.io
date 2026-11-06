@@ -8,21 +8,21 @@
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
-  <title>Agentical: Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents | Aniketh Bandlamudi</title>
-  <meta name="description" content="Agentical: a probabilistic semantics for LLM agents proving that replay from a journal reproduces a run exactly and that crash recovery preserves its distribution, with a Lean 4 proof and a Rust prototype.">
+  <title>Agentical: Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents | Aniketh Bandlamudi</title>
+  <meta name="description" content="Agentical: a probabilistic semantics for LLM agents proving that journal replay is exact, that crash recovery preserves a run's distribution, and that concurrent agents cannot leak secrets, with Lean 4 proofs and a Rust prototype.">
   <link rel="canonical" href="https://aniketh.net/research/agentical/">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Agentical: Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents">
-  <meta property="og:description" content="Agentical: a probabilistic semantics for LLM agents proving that replay from a journal reproduces a run exactly and that crash recovery preserves its distribution, with a Lean 4 proof and a Rust prototype.">
+  <meta property="og:title" content="Agentical: Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents">
+  <meta property="og:description" content="Agentical: a probabilistic semantics for LLM agents proving that journal replay is exact, that crash recovery preserves a run's distribution, and that concurrent agents cannot leak secrets, with Lean 4 proofs and a Rust prototype.">
   <meta property="og:url" content="https://aniketh.net/research/agentical/">
   <meta property="og:image" content="https://aniketh.net/assets/img/og-agentical.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="The title page of the paper Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents">
+  <meta property="og:image:alt" content="The title page of the paper Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Agentical: Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents">
-  <meta name="twitter:description" content="Agentical: a probabilistic semantics for LLM agents proving that replay from a journal reproduces a run exactly and that crash recovery preserves its distribution, with a Lean 4 proof and a Rust prototype.">
-  <meta name="citation_title" content="Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents">
+  <meta name="twitter:title" content="Agentical: Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents">
+  <meta name="twitter:description" content="Agentical: a probabilistic semantics for LLM agents proving that journal replay is exact, that crash recovery preserves a run's distribution, and that concurrent agents cannot leak secrets, with Lean 4 proofs and a Rust prototype.">
+  <meta name="citation_title" content="Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents">
   <meta name="citation_author" content="Bandlamudi, Aniketh">
   <meta name="citation_author_institution" content="University of Virginia">
   <meta name="citation_publication_date" content="2026/11/05">
@@ -95,15 +95,15 @@
       {
         "@type": "ScholarlyArticle",
         "@id": "https://aniketh.net/research/agentical/#paper",
-        "headline": "Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents",
+        "headline": "Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents",
         "alternativeHeadline": "Agentical",
-        "description": "Agentical: a probabilistic semantics for LLM agents proving that replay from a journal reproduces a run exactly and that crash recovery preserves its distribution, with a Lean 4 proof and a Rust prototype.",
+        "description": "Agentical: a probabilistic semantics for LLM agents proving that journal replay is exact, that crash recovery preserves a run's distribution, and that concurrent agents cannot leak secrets, with Lean 4 proofs and a Rust prototype.",
         "author": [{ "@id": "https://aniketh.net/#person" }],
         "datePublished": "2026-11-05",
         "url": "https://aniketh.net/research/agentical/",
         "encoding": { "@type": "MediaObject", "contentUrl": "https://aniketh.net/research/agentical.pdf", "encodingFormat": "application/pdf" },
         "isBasedOn": "https://github.com/ankthba/agentical",
-        "about": ["Programming languages", "Formal methods", "Formal verification", "Probabilistic semantics", "Large language model agents", "Durable execution"]
+        "about": ["Programming languages", "Formal methods", "Formal verification", "Probabilistic semantics", "Information-flow control", "Large language model agents", "Durable execution"]
       },
       {
         "@type": "BreadcrumbList",
@@ -140,13 +140,13 @@
       </header>
 
     <main class="page" id="main">
-      <h1 class="page-title">Agentical: Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents</h1>
+      <h1 class="page-title">Agentical: Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents</h1>
       <article class="paper">
         <div class="paper__row">
           <h2 class="paper__name">Agentical</h2>
           <div>
             <span class="paper__role">Programming Languages &middot; Formal Methods &middot; Formal Verification &middot; Preprint</span>
-            <p class="paper__title">Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents</p>
+            <p class="paper__title">Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents</p>
             <p>Aniketh Bandlamudi &middot; University of Virginia &middot; November 2026</p>
             <div class="project-item__links paper__links">
               <a href="/research/agentical.pdf" class="project-item__link project-item__link--arrow">Read the PDF</a>
@@ -162,6 +162,7 @@
           <dd>
             <p>Agents built on large language models run for minutes or hours, call tools with real side effects, and crash. Because model calls are nondeterministic, re-running a crashed agent re-samples every call and can repeat work that already happened. Durable-execution engines avoid this by recording each nondeterministic result and replaying it, but they treat each result as an opaque value and say nothing about the distribution it came from.</p>
             <p>This paper gives a small probabilistic semantics for an LLM agent in which every model call is a draw from an abstract probability measure and every response is recorded in an append-only journal, with record, replay, and resume modes. It proves that replaying a run from its journal reproduces it exactly, so record and replay induce the same distribution over traces, and that after a crash at any point, resuming with fresh randomness behaves exactly like an uninterrupted run whose randomness is spliced at the crash point, provided the crash does not depend on a response that was never journaled.</p>
+            <p>Both results extend to systems of concurrently running agents that share memory and exchange messages, under any deterministic scheduler and with a single global journal. For such systems the paper proves a probabilistic noninterference theorem: under a floating-label discipline and a priority scheduler whose priorities depend only on public events, an agent&rsquo;s secret data does not influence, even statistically, what public observers see.</p>
           </dd>
 
           <dt>Results</dt>
@@ -169,24 +170,26 @@
             <ul>
               <li><strong>Replay soundness.</strong> Replaying a run from its journal reproduces its trace and journal exactly, so replay succeeds with probability&nbsp;1 and recording then replaying induces the same distribution over traces as recording alone.</li>
               <li><strong>Crash recovery.</strong> After a crash, resuming continues the run with exactly the distribution it would have had without the crash, conditioned on what survived, whenever the crash does not depend on a response that was never journaled.</li>
-              <li><strong>Machine-checked.</strong> The core of both results is proved in Lean&nbsp;4 for every program tree, randomness tape, and crash point, with no unproven steps.</li>
+              <li><strong>Many agents.</strong> Under a deterministic scheduler with one global journal, a whole system of agents behaves as a single program, so replay soundness and crash recovery hold for it, including every memory, message, and spawn step.</li>
+              <li><strong>Noninterference.</strong> With fixed labels on memory and channels and a priority scheduler that sees only public events, the public trace of a system is identical whatever its secret data, for every assignment of randomness and hence in distribution.</li>
+              <li><strong>Machine-checked.</strong> The core of replay soundness and crash recovery, and their lifting to any deterministic system, are proved in Lean&nbsp;4 with no unproven steps; the multi-agent instantiation and noninterference are proved on paper.</li>
               <li><strong>Measured.</strong> On a dependency-free Rust runtime, 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried without repeating a committed side effect, and journaling costs about 100 nanoseconds a step.</li>
             </ul>
           </dd>
 
           <dt>Paper</dt>
           <dd>
-            <a href="/research/agentical.pdf" aria-label="Read the paper (PDF, 19 pages)">
+            <a href="/research/agentical.pdf" aria-label="Read the paper (PDF, 24 pages)">
               <img class="paper__page" src="/research/agentical/first-page.webp" width="1400" height="1812" alt="The first page of the paper: title, author, and abstract" loading="lazy">
             </a>
-            <a href="/research/agentical.pdf" class="project-item__link project-item__link--arrow paper__more">Read all 19 pages</a>
+            <a href="/research/agentical.pdf" class="project-item__link project-item__link--arrow paper__more">Read all 24 pages</a>
           </dd>
 
           <dt id="cite">Cite</dt>
           <dd>
 <pre class="paper__bib" id="bibtex">@misc{bandlamudi2026agentical,
   author = {Aniketh Bandlamudi},
-  title = {Provably Sound Replay and Crash Recovery for Nondeterministic {LLM} Agents},
+  title = {Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic {LLM} Agents},
   year = {2026},
   month = nov,
   howpublished = {\url{https://aniketh.net/research/agentical/}},

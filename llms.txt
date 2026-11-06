@@ -12,6 +12,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - Founder and President of OCRadar, May 2022 to present
 - Engineering Intern at Alarm.com, May 2026
 - Software Lead (FRC) and R&D Captain / Software Lead (FTC) at Oakton Robotics, 2022 to 2026
+- Author of "Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents", a preprint, November 2026 (https://aniketh.net/research/agentical/)
 - Co-author of "Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection", arXiv:2510.16235, October 2025
 - Winner, Social Justice Track, Hack The Nest 2025, with IllumiSign
 - Covered by WTOP News, The Korea Times, Vision Times, Virginia News Network and Fairfax County Public Schools; photography featured by United Airlines, Star Alliance and Washington Dulles International Airport
@@ -23,7 +24,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - [Work](https://aniketh.net/work/): Pragmatic, Alarm.com, OCRadar, Oakton Robotics
 - [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
 - [Projects](https://aniketh.net/projects/): a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
-- [Research](https://aniketh.net/research/): CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
+- [Research](https://aniketh.net/research/): provably sound replay and crash recovery for LLM agents; CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
 - [Press](https://aniketh.net/press/): news coverage and recognition
 - [Resume](https://aniketh.net/resume/): resume, also as a [PDF](https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf)
 - [Contact](https://aniketh.net/contact/): email and profiles elsewhere

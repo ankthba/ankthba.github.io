@@ -9,11 +9,11 @@
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
   <title>Research | Aniketh Bandlamudi</title>
-  <meta name="description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta name="description" content="Research by Aniketh Bandlamudi: provably sound replay and crash recovery for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="canonical" href="https://aniketh.net/research/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Research | Aniketh Bandlamudi">
-  <meta property="og:description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta property="og:description" content="Research by Aniketh Bandlamudi: provably sound replay and crash recovery for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <meta property="og:url" content="https://aniketh.net/research/">
   <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
   <meta property="og:image:width" content="2400">
@@ -21,7 +21,7 @@
   <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: provably sound replay and crash recovery for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap">
@@ -46,9 +46,34 @@
         "breadcrumb": {
           "@id": "https://aniketh.net/research/#breadcrumb"
         },
-        "mainEntity": {
-          "@id": "https://aniketh.net/research/#paper"
-        }
+        "mainEntity": [
+          {
+            "@id": "https://aniketh.net/research/#agentical"
+          },
+          {
+            "@id": "https://aniketh.net/research/#paper"
+          }
+        ]
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://aniketh.net/research/#agentical",
+        "headline": "Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents",
+        "author": [
+          {
+            "@id": "https://aniketh.net/#person"
+          }
+        ],
+        "datePublished": "2026-11-05",
+        "url": "https://aniketh.net/research/agentical/",
+        "isBasedOn": "https://github.com/ankthba/agentical",
+        "about": [
+          "Programming languages",
+          "Formal methods",
+          "Formal verification",
+          "Large language model agents",
+          "Durable execution"
+        ]
       },
       {
         "@type": "ScholarlyArticle",
@@ -119,6 +144,20 @@
     <main class="page" id="main">
         <h1 class="page-title">Research</h1>
         <div class="projects__list">
+
+          <article class="project-item" data-img="/assets/img/peek/agentical.webp">
+            <div class="project-item__header">
+              <h3 class="project-item__title">Agentical</h3>
+              <span class="project-item__role">Programming Languages &middot; Formal Methods &middot; Formal Verification &middot; Preprint</span>
+            </div>
+            <p class="project-item__description">AI agents crash mid-task, and their model calls never give the same answer twice, so a crashed run can&rsquo;t simply be restarted. Agentical gives LLM agents a probabilistic semantics in which every model call is a random draw and every response is journaled, then proves that replaying a run from its journal reproduces it exactly, and that recovering from a crash continues the run with exactly the distribution it would have had, whenever the crash doesn&rsquo;t hinge on a response that was never recorded.</p>
+            <p class="project-item__description">The core of both results is machine-checked in Lean&nbsp;4 with no unproven steps, and a dependency-free Rust runtime puts them to the test: 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried, and journaling costs about 100 nanoseconds a step.</p>
+            <p class="project-item__description">Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents. November 2026.</p>
+            <div class="project-item__links">
+              <a href="/research/agentical/" class="project-item__link project-item__link--arrow">View paper</a>
+              <a href="https://github.com/ankthba/agentical" target="_blank" rel="noopener" class="project-item__link">View repo</a>
+            </div>
+          </article>
 
           <article class="project-item" data-img="/assets/img/peek/ocradar.webp">
             <div class="project-item__header">

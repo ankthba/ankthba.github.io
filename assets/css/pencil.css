@@ -2,7 +2,7 @@
    pencil.css
 
    The pencil look, laid over site.css (pages carry class="pencil"):
-   soft coloured pencil and watercolour on paper, EB Garamond, light
+   soft coloured pencil and watercolour on paper, Newsreader, light
    only. On the home page the first screen is the drawing, with the
    name in its sky and butterflies over it (pencil.js).
    ========================================================= */
@@ -28,8 +28,10 @@
   --color-scrim: rgba(244, 243, 238, 0.84);
   --pencil-shadow: rgba(96, 126, 176, 0.2);   /* a faint pale-blue pencil shadow */
 
-  --font-display: "EB Garamond", "Iowan Old Style", Garamond, Georgia, serif;
-  --font-sans: "EB Garamond", "Iowan Old Style", Garamond, Georgia, serif;
+  /* Newsreader, from Google Fonts with its optical sizes, so the big
+     headings get its sharper display cut and the text its sturdier one */
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Newsreader", "Iowan Old Style", Georgia, serif;
   --size: 1.125rem;
   /* the headline grows with the window, from phones to big screens */
   --head: clamp(2rem, 0.9rem + 3vw, 4rem);
@@ -43,6 +45,13 @@ html.pencil .theme-toggle {
 html.pencil body {
   font-weight: 400;
   line-height: 1.45;
+  /* Every size on the site was set for EB Garamond, whose lowercase is
+     small. Newsreader's runs 26% taller and 16% wider, so this sets all
+     of it a ninth smaller (x-height 0.455 of the size, where Newsreader
+     is 0.512 on its own): lines keep the length they had, and the
+     lowercase reads a little larger than Garamond's did. */
+  font-size-adjust: 0.455;
+  font-optical-sizing: auto;
   font-variant-numeric: oldstyle-nums proportional-nums;
 }
 

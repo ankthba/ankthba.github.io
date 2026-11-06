@@ -334,15 +334,20 @@ html.pencil {
   height: var(--scene-h);
   overflow: hidden;
   pointer-events: none;
-  /* its top dissolves in the drawing's own ragged pencil, like its foot
-     (edge.webp is the foot of the drawing turned over) */
+  /* Its top and its foot dissolve in ragged pencil, level across the
+     window: foot.webp is a drawing's own foot, edge.webp that foot turned
+     over. The drawing's own foot curves up at its corners like an oval,
+     which showed as a sloping bottom wherever the drawing is moved
+     sideways, so that curve is kept below the scene (see the img). */
   --edge-h: clamp(4.5rem, 14vh, 10rem);
   -webkit-mask:
     url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 var(--edge-h) / 100% 100% no-repeat;
+    linear-gradient(#000, #000) 0 var(--edge-h) / 100% calc(100% - 2 * var(--edge-h)) no-repeat,
+    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
   mask:
     url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 var(--edge-h) / 100% 100% no-repeat;
+    linear-gradient(#000, #000) 0 var(--edge-h) / 100% calc(100% - 2 * var(--edge-h)) no-repeat,
+    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
   will-change: transform;
 }
 
@@ -358,15 +363,32 @@ html.pencil {
   user-select: none;
 }
 
-/* the stand-in was drawn as a vignette: blown up so its faded sides
-   and foot fall outside the window */
+/* The drawing is a vignette, blown up so its faded sides and foot fall
+   outside the window, and placed so the Dish on the right-hand hill
+   (its top 47% down the drawing, its right side 84% across) is in
+   view on every screen:
+   - its last 7% hangs below the scene, so the meadow runs at full
+     strength into the scene's level foot (the drawing's own foot is at
+     full strength to 93% down in the middle, 87% near its sides);
+   - as wide as the window or one and a half times its height, as
+     before, but never so wide that the sky is cropped down past the
+     Dish: its top stays below the ragged top edge. The drawing is 3:2
+     and hangs 7% low, so that width is 1.5 x the clear height /
+     (1 - 0.47 - 0.07). On very wide windows this leaves the drawing's
+     own soft sides on the paper.
+   - centred, unless that puts the Dish past 88% of the window (phones,
+     tablets held upright): then moved left just enough.
+   If the drawing changes, measure the Dish again and change 0.46 and
+   0.84 here. */
 .pencil-scene--standin img {
+  --w: min(max(100%, 150svh), calc((var(--scene-h) - var(--edge-h) - 1.5rem) * 1.5 / 0.46));
   position: absolute;
-  left: 50%;
   bottom: 0;
-  width: max(100%, 150svh);
+  /* 7% of its own height (a percentage in bottom would be the scene's) */
+  transform: translateY(7%);
+  left: min(calc((100% - var(--w)) / 2), max(calc(100% - var(--w)), calc(88% - var(--w) * 0.84)));
+  width: var(--w);
   height: auto;
-  transform: translateX(-50%);
 }
 
 html.pencil.has-scene .masthead--home {

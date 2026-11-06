@@ -200,7 +200,6 @@
     var vw = 0, vh = 0, blocks = [];
     var flock = [];
     var mouse = { x: -9999, y: -9999 };
-    var lastScroll = window.scrollY;
     var deal = 0;
 
     function rand(a, b) { return a + Math.random() * (b - a); }
@@ -326,14 +325,24 @@
         b.target = pickTarget(b);
       }
       if (still.matches) {
-        flock.forEach(function (b) { b.mode = 'rest'; b.z = 0; b.heading = rand(-0.4, 0.4); draw(b, 0); });
+        flock.forEach(function (b) { land(b); b.z = 0; b.heading = rand(-0.4, 0.4); draw(b, 0); });
       }
+    }
+
+    // wholly inside the window, so one pinned to the page never widens it
+    function inside(b) {
+      var half = b.size / 2;
+      return b.x > half + 2 && b.x < vw - half - 2 && b.y > half + 2 && b.y < vh - half - 2;
     }
 
     function land(b) {
       b.mode = 'rest';
       b.clock = rand(REST[0], REST[1]);
       b.vx = b.vy = 0;
+      // Landed, it is on the paper: pinned to the page itself (see draw),
+      // so the browser carries it with the words as they scroll. Moving it
+      // from script each frame lagged behind a phone's fast scrolling.
+      b.docY = b.y + window.scrollY;
     }
 
     function takeOff(b, away) {
@@ -361,7 +370,8 @@
         b.z += (0 - b.z) * Math.min(1, dt * 4);
         // the page scrolled words under it, or it off the window: up it goes
         if (!free(b.x, b.y) || b.y < -b.size || b.y > vh + b.size) {
-          b.y = Math.min(Math.max(b.y, 40), vh - 40);
+          // from just past the window's edge, so it flies back in rather than appearing
+          b.y = Math.min(Math.max(b.y, -b.size * 0.6), vh + b.size * 0.6);
           takeOff(b, false);
         } else if (b.clock <= 0) takeOff(b, false);
         return;
@@ -371,7 +381,7 @@
       b.clock -= dt;
       var tx = b.target.x - b.x, ty = b.target.y - b.y, td = Math.hypot(tx, ty) || 1;
       if (td < 24 || !free(b.target.x, b.target.y)) {
-        if (td < 24 && b.clock <= 0 && free(b.x, b.y)) { land(b); return; }
+        if (td < 24 && b.clock <= 0 && free(b.x, b.y) && inside(b)) { land(b); return; }
         b.target = pickTarget(b);
         tx = b.target.x - b.x; ty = b.target.y - b.y; td = Math.hypot(tx, ty) || 1;
       }
@@ -414,10 +424,12 @@
       }
       b.z += (0.65 + Math.sin(t * 0.7 + b.seed) * 0.2 - b.z) * Math.min(1, dt * 1.5);
 
+      // kept in the window; one coming back in from past its edge may finish coming in
+      var y0 = b.y;
       b.x += b.vx * dt;
       b.y += b.vy * dt;
       b.x = Math.min(Math.max(b.x, EDGE), vw - EDGE);
-      b.y = Math.min(Math.max(b.y, 20), vh - 20);
+      b.y = Math.min(Math.max(b.y, Math.min(20, y0)), Math.max(vh - 20, y0));
 
       var want = Math.atan2(b.vy, b.vx) + Math.PI / 2;
       var d = Math.atan2(Math.sin(want - b.heading), Math.cos(want - b.heading));
@@ -453,7 +465,14 @@
       var lift = b.z;
       var scale = (0.86 + lift * 0.22) * (b.mode === 'fly' && b.glide <= 0 ? 1 + 0.02 * Math.sin(b.stroke * Math.PI * 2) : 1);
       var half = b.size / 2;
-      b.el.style.transform = 'translate3d(' + (b.x - half).toFixed(1) + 'px,' + (b.y - half).toFixed(1) + 'px,0)';
+      // in the air it holds its place in the window; landed, its place on the page
+      var pinned = b.mode === 'rest';
+      if (b.pinned !== pinned) {
+        b.pinned = pinned;
+        b.el.style.position = pinned ? 'absolute' : 'fixed';
+      }
+      var y = pinned ? b.docY : b.y;
+      b.el.style.transform = 'translate3d(' + (b.x - half).toFixed(1) + 'px,' + (y - half).toFixed(1) + 'px,0)';
       // its shadow on the paper: farther and softer the higher it flies
       var sx = 4 + lift * 26, sy = 8 + lift * 40, blur = 1.5 + lift * 5;
       b.el.style.filter = 'drop-shadow(' + sx.toFixed(1) + 'px ' + sy.toFixed(1) + 'px ' + blur.toFixed(1) + 'px var(--pencil-shadow))';
@@ -469,11 +488,10 @@
       var dt = Math.min(0.05, last ? t - last : 0.016);
       last = t;
       measure();
-      var sdy = window.scrollY - lastScroll;
-      lastScroll = window.scrollY;
+      var sy = window.scrollY;
       flock.forEach(function (b) {
         // landed, it sits on the paper and goes along with the page
-        if (sdy && b.mode === 'rest') b.y -= sdy;
+        if (b.mode === 'rest') b.y = b.docY - sy;
         step(b, dt, t);
         draw(b, t);
       });
@@ -494,8 +512,14 @@
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) running = false; else start();
     });
-    var resizeTimer = 0;
+    // A phone reports a resize each time its address bar slides in or out
+    // as you scroll; starting a new flock then made them all vanish and
+    // reappear elsewhere mid-scroll. Only a new width starts a new flock;
+    // a new height is taken up by measure() on the next frame.
+    var resizeTimer = 0, flockWidth = root.clientWidth;
     window.addEventListener('resize', function () {
+      if (root.clientWidth === flockWidth) return;
+      flockWidth = root.clientWidth;
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(populate, 250);
     });

@@ -302,12 +302,18 @@ html.pencil .page-title {
   letter-spacing: -0.018em;
 }
 
-/* links: a soft pencil line rather than a ruled one */
+/* links: a soft pencil line under each, darkening when pointed at */
 html.pencil .page p a,
 html.pencil .about__text a,
 html.pencil .contact__text a {
   color: var(--color-fg);
-  text-decoration-color: var(--color-underline);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+html.pencil .page p a:hover,
+html.pencil .about__text a:hover,
+html.pencil .contact__text a:hover {
+  text-decoration-color: currentColor;
 }
 
 /* ---------- The picture under the words ---------- */

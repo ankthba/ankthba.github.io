@@ -1,0 +1,262 @@
+/* Design: the work shown the way a type foundry shows a face (huge live
+   type, a tester, screenshots big on the page), in the site's own paper,
+   ink, Newsreader and left edge. Lagunita sets the big type. */
+
+@font-face {
+  font-family: "Lagunita";
+  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2-variations"),
+       url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2");
+  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2") tech(variations);
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lagunita";
+  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2-variations"),
+       url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2");
+  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2") tech(variations);
+  font-weight: 300 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+.sheet--design {
+  --dg-face: "Lagunita", "Iowan Old Style", Georgia, serif;
+  --dg-big: clamp(3rem, 10.5vw, 9.75rem);
+}
+
+.sheet--design .sheet__page {
+  max-width: 80rem;
+}
+
+.dg {
+  padding-top: clamp(2.5rem, 7vw, 5.5rem);
+  overflow-wrap: break-word;
+}
+
+/* the big type: Lagunita at its own x-height, optical size held where
+   asked (WebKit only listens with optimizeLegibility off) */
+.dg-spec,
+.dg-name--big,
+.dg-sample {
+  font-family: var(--dg-face);
+  font-size-adjust: none;
+  font-variant-numeric: normal;
+  text-rendering: auto;
+  font-kerning: normal;
+  font-weight: 400;
+  color: var(--color-fg);
+}
+
+.dg-label {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* ---------- Lagunita: its two cuts, then what it is ---------- */
+
+.dg-hero {
+  margin-top: clamp(1.5rem, 4vw, 3rem);
+}
+
+.dg-hero__lines {
+  margin: 0 0 clamp(2rem, 5vw, 3.5rem);
+}
+
+.dg-spec {
+  display: block;
+  font-size: var(--dg-big);
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" var(--o);
+  padding-bottom: 0.04em;
+}
+
+.dg-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.dg-name--big {
+  font-size: var(--dg-big);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  padding-bottom: 0.04em;
+}
+
+.dg-line {
+  max-width: 36rem;
+  margin: 0.5rem 0 0;
+  color: var(--color-muted);
+}
+
+.dg-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin: 0.75rem 0 0;
+}
+
+/* ---------- Try it ---------- */
+
+.dg-tester {
+  margin-top: clamp(3.5rem, 8vw, 6rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.dg-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 2rem;
+  color: var(--color-quiet);
+  font-size: 0.9375rem;
+}
+
+.dg-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dg-words { gap: 0.85rem; }
+
+.dg-words button {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-quiet);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+.dg-words button:hover { color: var(--color-muted); }
+.dg-words button[aria-pressed="true"] { color: var(--color-fg); }
+
+.dg-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 7.5rem;
+  height: 1.4rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.dg-range::-webkit-slider-runnable-track { height: 1px; background: var(--color-quiet); }
+.dg-range::-moz-range-track { height: 1px; background: var(--color-quiet); }
+.dg-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: calc(-0.475rem + 0.5px);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-fg);
+}
+.dg-range::-moz-range-thumb {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-fg);
+}
+
+.dg-words button:focus-visible,
+.dg-range:focus-visible,
+.dg-sample:focus-visible {
+  outline: 1.5px solid var(--color-fg);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.dg-sample {
+  margin-top: clamp(1.5rem, 4vw, 2.75rem);
+  font-size: 132px;
+  line-height: 1.12;
+  padding-bottom: 0.1em;
+  outline: none;
+  cursor: text;
+  overflow-wrap: anywhere;
+  caret-color: var(--color-fg);
+  transition: color 0.6s ease, caret-color 0.6s ease;
+}
+
+/* type "stanford": the wordmark's cardinal */
+.dg-sample.is-cardinal { color: #8c1515; caret-color: #8c1515; }
+@media (prefers-reduced-motion: reduce) { .dg-sample { transition: none; } }
+
+.dg-hint {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-quiet);
+}
+
+/* ---------- The work ---------- */
+
+.dg-work {
+  margin-top: clamp(6rem, 13vw, 11rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+  scroll-margin-top: 1.5rem;
+}
+
+.dg-shot {
+  margin: clamp(2.5rem, 6vw, 5rem) 0 0;
+}
+
+.dg-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.dg-shot figcaption {
+  margin-top: 0.85rem;
+  font-size: 0.875rem;
+  color: var(--color-quiet);
+}
+
+.dg-row {
+  display: grid;
+  gap: clamp(0.75rem, 2.5vw, 2rem);
+  align-items: end;
+}
+.dg-row--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.dg-row--ipad { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; }
+.dg-watches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.4rem, 1.2vw, 1rem); }
+.dg-row--flies { max-width: 40rem; align-items: center; }
+
+/* ---------- About ---------- */
+
+.dg-about {
+  margin-top: clamp(6rem, 13vw, 11rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.dg-about__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 2rem;
+  max-width: 56rem;
+  margin-top: 1.25rem;
+}
+.dg-about__cols p { margin: 0 0 1em; }
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 40rem) {
+  .dg-controls { gap: 0.6rem 1.5rem; }
+  .dg-range { width: 6.5rem; }
+  .dg-row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dg-row--ipad { grid-template-columns: 1fr; }
+  .dg-about__cols { grid-template-columns: 1fr; }
+}

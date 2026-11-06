@@ -9,11 +9,11 @@
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
   <title>Projects | Aniketh Bandlamudi</title>
-  <meta name="description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta name="description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Lagunita, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <link rel="canonical" href="https://aniketh.net/projects/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Projects | Aniketh Bandlamudi">
-  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta property="og:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Lagunita, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <meta property="og:url" content="https://aniketh.net/projects/">
   <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
   <meta property="og:image:width" content="2400">
@@ -21,7 +21,7 @@
   <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Projects | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
+  <meta name="twitter:description" content="Projects by Aniketh Bandlamudi, including a Rust runtime for AI agents, Genzo, Meridian, Haze, Lagunita, Hypnagogia, Aperta, Sentry, Graphite, Splatify and IllumiSign.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap">
@@ -108,6 +108,20 @@
               "position": 5,
               "item": {
                 "@type": "CreativeWork",
+                "name": "Lagunita",
+                "description": "A variable Garamond typeface for screens, with flared stems and chisel-cut terminals after the Stanford wordmark, from Light to ExtraBold in roman and italic.",
+                "url": "https://aniketh.net/lagunita/",
+                "license": "https://openfontlicense.org",
+                "creator": {
+                  "@id": "https://aniketh.net/#person"
+                }
+              }
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "item": {
+                "@type": "CreativeWork",
                 "name": "Hypnagogia",
                 "description": "A whole-brain Drosophila simulation built to test whether a learned memory reactivates on its own during sleep.",
                 "url": "https://aniketh.net/hypnagogia/",
@@ -118,7 +132,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 6,
+              "position": 7,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Aperta",
@@ -131,7 +145,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 7,
+              "position": 8,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Sentry",
@@ -144,7 +158,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 8,
+              "position": 9,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Graphite",
@@ -157,7 +171,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 9,
+              "position": 10,
               "item": {
                 "@type": "CreativeWork",
                 "name": "Splatify",
@@ -170,7 +184,7 @@
             },
             {
               "@type": "ListItem",
-              "position": 10,
+              "position": 11,
               "item": {
                 "@type": "CreativeWork",
                 "name": "IllumiSign",
@@ -217,6 +231,7 @@
         <a href="/work/" class="masthead__nav-link">Work</a>
         <a href="/education/" class="masthead__nav-link">Education</a>
         <a href="/projects/" class="masthead__nav-link active" aria-current="page">Projects</a>
+        <a href="/design/" class="masthead__nav-link">Design</a>
         <a href="/research/" class="masthead__nav-link">Research</a>
         <a href="/writing/" class="masthead__nav-link">Writing</a>
         <a href="/photos/" class="masthead__nav-link">Photos</a>
@@ -266,6 +281,16 @@
             <div class="project-item__links">
               <a href="/haze/" class="project-item__link">Learn more</a>
               <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
+            </div>
+          </article>
+          <article class="project-item" data-img="/assets/img/peek/lagunita.webp">
+            <div class="project-item__header">
+              <h3 class="project-item__title">Lagunita</h3>
+            </div>
+            <p class="project-item__description">A variable Garamond for screens, with the flared stems and chisel-cut terminals of the Stanford wordmark.</p>
+            <div class="project-item__links">
+              <a href="/lagunita/" class="project-item__link">Try it</a>
+              <a href="/lagunita/Lagunita.zip" class="project-item__link">Download</a>
             </div>
           </article>
 

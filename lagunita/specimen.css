@@ -1,0 +1,721 @@
+/* =========================================================
+   lagunita/specimen.css
+
+   The type specimen, laid over site.css + pencil.css: the same paper,
+   ink and masthead, but a wider page so the type can be set big.
+   Everything inside <main> is set in the face itself; the masthead and
+   the footer stay in the site's Newsreader.
+   ========================================================= */
+
+@font-face {
+  font-family: "Lagunita";
+  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2-variations"),
+       url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2");
+  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2") tech(variations);
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lagunita";
+  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2-variations"),
+       url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2");
+  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2") tech(variations);
+  font-weight: 300 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---------- The page: one left edge, wider than the other pages ---------- */
+
+.sheet--specimen {
+  --sp-wrap: 80rem;
+  --sp-face: "Lagunita", "Iowan Old Style", Georgia, serif;
+}
+
+.sheet--specimen .sheet__page {
+  max-width: var(--sp-wrap);
+}
+
+.specimen {
+  font-family: var(--sp-face);
+  /* the site sizes Newsreader down to Garamond's x-height; this face
+     carries its own x-height per optical size, so leave it be */
+  font-size-adjust: none;
+  font-optical-sizing: auto;
+  font-variant-numeric: normal;
+  /* WebKit drops a pinned "opsz" under text-rendering: optimizeLegibility
+     (the site's default); auto keeps kerning and ligatures on anyway */
+  text-rendering: auto;
+  font-kerning: normal;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+  padding-top: clamp(2.5rem, 7vw, 5.5rem);
+  overflow-wrap: break-word;
+}
+
+.specimen ::selection {
+  background: rgba(36, 34, 29, 0.12);
+}
+
+/* every section after the name: a hairline, its name, then the type */
+.sp-wide,
+.sp-col {
+  min-width: 0;
+  max-width: 100%;
+  margin-top: clamp(4.5rem, 10vw, 8.5rem);
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sp-label {
+  margin: 0 0 clamp(1.75rem, 4vw, 3rem);
+  font: inherit;
+  font-weight: 500;
+  color: var(--color-fg);
+}
+
+.sp-hint {
+  margin-top: 1.1rem;
+  font-size: 0.95rem;
+  color: var(--color-quiet);
+}
+
+.specimen code {
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8em;
+  color: var(--color-muted);
+  padding: 0.05em 0.3em;
+  border-radius: 4px;
+  background: var(--color-wash);
+  white-space: nowrap;
+}
+
+.specimen a {
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.specimen a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- The name ---------- */
+
+.sp-hero__name {
+  margin: 0;
+  font: inherit;
+  font-weight: 500;
+  /* specimen.js sets the size so the word runs the width of the page */
+  font-size: 22vw;
+  line-height: 0.92;
+  /* room for the g's descender above the lede */
+  padding-bottom: 0.2em;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+  color: var(--color-fg);
+}
+
+.sp-fit {
+  display: inline-block;
+}
+
+.sp-hero__meta {
+  margin-top: clamp(1.5rem, 3.5vw, 2.75rem);
+  padding-top: 0;
+  border-top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+  gap: 1.5rem 3rem;
+  align-items: start;
+}
+
+.sp-hero__lede {
+  font-size: clamp(1.2rem, 1rem + 0.7vw, 1.55rem);
+  line-height: 1.32;
+  color: var(--color-fg);
+  text-wrap: pretty;
+}
+
+.sp-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 0.35rem 2.5rem;
+  margin: 0.3rem 0 0;
+}
+
+.sp-facts div {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.sp-facts dt {
+  color: var(--color-quiet);
+}
+
+.sp-facts dd {
+  margin: 0;
+  color: var(--color-fg);
+}
+
+.sp-hero__links {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+/* ---------- Controls: words for choices, a hairline for a range ---------- */
+
+.sp-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 2.25rem;
+}
+
+.sp-ctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.sp-ctl__name {
+  color: var(--color-quiet);
+  white-space: nowrap;
+}
+
+.sp-ctl__val {
+  min-width: 2.6ch;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--color-fg);
+}
+
+.sp-ctl--words {
+  gap: 0.85rem;
+}
+
+.sp-word {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-quiet);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.sp-word:hover {
+  color: var(--color-muted);
+}
+
+.sp-word[aria-pressed="true"] {
+  color: var(--color-fg);
+}
+
+.sp-word:focus-visible,
+.sp-range:focus-visible,
+.sp-cell:focus-visible,
+.sp-sample:focus-visible {
+  outline: 1.5px solid var(--color-fg);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.sp-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8.5rem;
+  height: 1.4rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.sp-range::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--color-quiet);
+}
+
+.sp-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0.95rem;
+  height: 0.95rem;
+  margin-top: calc(-0.475rem + 0.5px);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-fg);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.sp-range::-moz-range-track {
+  height: 1px;
+  background: var(--color-quiet);
+}
+
+.sp-range::-moz-range-thumb {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-fg);
+}
+
+.sp-range:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+/* following the size: the knob shows where the browser has put it */
+.sp-range.is-auto::-webkit-slider-thumb { background: var(--color-faint); }
+.sp-range.is-auto::-moz-range-thumb { background: var(--color-faint); }
+
+/* ---------- Try it ---------- */
+
+.sp-pin--sample {
+  margin-top: clamp(1.75rem, 4vw, 3rem);
+}
+
+.sp-sample {
+  min-height: 1.1em;
+  font-size: 132px;
+  line-height: 1.1;
+  padding-bottom: 0.12em;
+  letter-spacing: -0.005em;
+  color: var(--color-fg);
+  overflow-wrap: anywhere;
+  caret-color: var(--color-fg);
+  outline: none;
+  cursor: text;
+  text-wrap: balance;
+  transition: color 0.6s ease, caret-color 0.6s ease;
+}
+
+/* type "stanford" in the sample: the wordmark's cardinal */
+.sp-sample.is-cardinal {
+  color: #8c1515;
+  caret-color: #8c1515;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sp-sample { transition: none; }
+}
+
+/* ---------- Weights ---------- */
+
+.sp-water {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-water li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  align-items: baseline;
+  padding: 0.5rem 0 0.6rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sp-water li:first-child {
+  border-top: 0;
+}
+
+.sp-water__n {
+  color: var(--color-quiet);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.sp-water__s {
+  font-size: clamp(1.85rem, 0.9rem + 3.9vw, 4.75rem);
+  font-weight: var(--w);
+  line-height: 1.12;
+  color: var(--color-fg);
+}
+
+.sp-water__s i {
+  margin-left: 0.3em;
+  font-style: italic;
+}
+
+/* ---------- Text and Display ---------- */
+
+.sp-cuts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.5rem clamp(2rem, 5vw, 5rem);
+}
+
+.sp-cut {
+  margin: 0;
+  min-width: 0;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" var(--o);
+}
+
+.sp-cut figcaption {
+  color: var(--color-quiet);
+}
+
+.sp-cut__name {
+  color: var(--color-fg);
+  margin-right: 0.35em;
+}
+
+.sp-pin--big {
+  margin: 0.5rem 0 1.1rem;
+}
+
+.sp-cut__big {
+  margin: 0;
+  font-size: clamp(3.75rem, 1.5rem + 8.5vw, 10.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+}
+
+.sp-cut__body {
+  max-width: 34rem;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.sp-cut__note {
+  max-width: 34rem;
+  margin-top: 0.9rem;
+  font-size: 0.95rem;
+  color: var(--color-quiet);
+  font-variation-settings: normal;
+  font-optical-sizing: auto;
+}
+
+.sp-morph {
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.sp-pin--morph {
+  margin-top: 0.6rem;
+}
+
+.sp-morph__word {
+  margin: 0;
+  /* the word is about 7.4 of its own size wide at optical size 10, so
+     this keeps it inside the column at any width, without clipping */
+  font-size: min(9rem, 11.5vw);
+  line-height: 1.22;
+  white-space: nowrap;
+  font-optical-sizing: none;
+  font-variation-settings: "opsz" var(--o, 10);
+  color: var(--color-fg);
+}
+
+.sp-pin {
+  min-width: 0;
+}
+
+/* ---------- OpenType features ---------- */
+
+.sp-feats {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sp-feat {
+  display: grid;
+  grid-template-columns: minmax(0, 17rem) minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0.4rem 2rem;
+  padding: 0.85rem 0 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.sp-feat:first-child {
+  border-top: 0;
+}
+
+.sp-feat__name {
+  color: var(--color-muted);
+}
+
+.sp-feat__name code {
+  margin-left: 0.2em;
+}
+
+.sp-feat__s {
+  font-size: clamp(1.45rem, 0.95rem + 2vw, 2.65rem);
+  line-height: 1.2;
+  color: var(--color-fg);
+  font-feature-settings: var(--ff, normal);
+  font-variant-ligatures: var(--fl, normal);
+  text-wrap: balance;
+}
+
+.sp-feat--italic .sp-feat__s {
+  font-style: italic;
+}
+
+.sp-feat__t {
+  min-width: 4.5rem;
+  text-align: right;
+}
+
+/* ---------- Characters ---------- */
+
+.sp-glyphs__wrap {
+  display: grid;
+  grid-template-columns: minmax(15rem, 24rem) minmax(0, 1fr);
+  gap: 2rem clamp(2rem, 4vw, 4rem);
+  align-items: start;
+}
+
+.sp-glyph-big {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.sp-glyph-big__stage {
+  position: relative;
+  height: 21.5rem;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-mat);
+  box-shadow: inset 0 0 0 1px var(--color-border);
+}
+
+.sp-glyph-big__line {
+  position: relative;
+  display: block;
+  font-size: 13.5rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--color-fg);
+}
+
+.sp-glyph-big__mark {
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+
+.sp-glyph-big__guide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10rem;
+  height: 0;
+  border-top: 1px solid var(--color-border);
+  pointer-events: none;
+}
+
+.sp-glyph-big__guide--base {
+  border-top-color: var(--color-border-hover);
+}
+
+.sp-glyph-big__guide span {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.1rem;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--color-faint);
+  font-family: var(--sp-face);
+}
+
+.sp-glyph-big__guide[data-g="asc"] span {
+  right: auto;
+  left: 0.6rem;
+}
+
+.sp-glyph-big__name {
+  margin: 0.8rem 0 0.9rem;
+  color: var(--color-fg);
+}
+
+.sp-glyph-big__code {
+  margin-left: 0.5em;
+  color: var(--color-quiet);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.sp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3.3rem, 1fr));
+  gap: 2px;
+}
+
+.sp-cell {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  font: inherit;
+  font-size: 1.7rem;
+  line-height: 1;
+  color: var(--color-fg);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.sp-cell:hover {
+  background: var(--color-wash);
+}
+
+.sp-cell[aria-current="true"] {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+.sp-glyphs.is-italic .sp-cell,
+.sp-glyphs.is-italic .sp-glyph-big__char {
+  font-style: italic;
+}
+
+/* ---------- About, Download: a reading column under a side name ---------- */
+
+.sp-col {
+  display: grid;
+  grid-template-columns: var(--col) minmax(0, 38rem);
+  column-gap: 1.5rem;
+}
+
+.sp-label--side {
+  margin: 0;
+}
+
+.sp-about__text,
+.sp-get__text {
+  display: grid;
+  gap: 1rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.sp-get__dl {
+  margin-right: 0.4em;
+  font-weight: 500;
+}
+
+.sp-get__size {
+  margin-right: 0.5em;
+  color: var(--color-quiet);
+  font-variant-numeric: lining-nums;
+}
+
+.sp-get__how {
+  margin-top: 0.5rem;
+}
+
+.sp-code {
+  margin: 0;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: var(--color-wash);
+  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-fg);
+  -webkit-text-size-adjust: 100%;
+}
+
+.sp-code code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  color: inherit;
+  white-space: pre;
+}
+
+/* ---------- Phones and narrow windows ---------- */
+
+@media (max-width: 52em) {
+  .sp-hero__meta,
+  .sp-cuts,
+  .sp-glyphs__wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sp-glyph-big {
+    position: static;
+  }
+
+  .sp-glyph-big__stage {
+    height: 15rem;
+  }
+
+  .sp-glyph-big__line {
+    font-size: 9rem;
+  }
+
+  .sp-feat {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .sp-feat__s {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 40em) {
+  .sp-col {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 1.25rem;
+  }
+
+  .sp-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+
+  .sp-ctl:not(.sp-ctl--words) {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr) 2.6ch;
+  }
+
+  .sp-ctl--opsz {
+    grid-template-columns: 6.5rem minmax(0, 1fr) 2.6ch auto !important;
+  }
+
+  .sp-range {
+    width: 100%;
+  }
+
+  .sp-water li {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 0.6rem;
+  }
+
+  .sp-water__n {
+    font-size: 0.85rem;
+  }
+
+  .sp-water__s i {
+    display: block;
+    margin-left: 0;
+  }
+
+  .sp-grid {
+    grid-template-columns: repeat(auto-fill, minmax(2.75rem, 1fr));
+  }
+
+  .sp-cell {
+    font-size: 1.45rem;
+  }
+
+  .sp-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

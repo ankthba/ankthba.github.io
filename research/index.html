@@ -9,11 +9,11 @@
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
   <title>Research | Aniketh Bandlamudi</title>
-  <meta name="description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta name="description" content="Research by Aniketh Bandlamudi: a probabilistic process calculus for durable multi-agent LLM systems, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="canonical" href="https://aniketh.net/research/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Research | Aniketh Bandlamudi">
-  <meta property="og:description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta property="og:description" content="Research by Aniketh Bandlamudi: a probabilistic process calculus for durable multi-agent LLM systems, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <meta property="og:url" content="https://aniketh.net/research/">
   <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
   <meta property="og:image:width" content="2400">
@@ -21,7 +21,7 @@
   <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection, with custom image-capture hardware (arXiv:2510.16235).">
+  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: a probabilistic process calculus for durable multi-agent LLM systems, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..700&display=swap">
@@ -46,9 +46,40 @@
         "breadcrumb": {
           "@id": "https://aniketh.net/research/#breadcrumb"
         },
-        "mainEntity": {
-          "@id": "https://aniketh.net/research/#paper"
-        }
+        "mainEntity": [
+          {
+            "@id": "https://aniketh.net/research/#agentical"
+          },
+          {
+            "@id": "https://aniketh.net/research/#paper"
+          }
+        ]
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://aniketh.net/research/#agentical",
+        "headline": "A Probabilistic Process Calculus for Durable Multi-Agent LLM Systems",
+        "author": [
+          {
+            "@id": "https://aniketh.net/#person"
+          }
+        ],
+        "datePublished": "2026-11-05",
+        "url": "https://aniketh.net/research/agentical/",
+        "encoding": {
+          "@type": "MediaObject",
+          "contentUrl": "https://aniketh.net/research/agentical.pdf",
+          "encodingFormat": "application/pdf"
+        },
+        "isBasedOn": "https://github.com/ankthba/agentical",
+        "about": [
+          "Programming languages",
+          "Process calculi",
+          "Formal methods",
+          "Formal verification",
+          "Large language model agents",
+          "Durable execution"
+        ]
       },
       {
         "@type": "ScholarlyArticle",
@@ -120,12 +151,27 @@
         <h1 class="page-title">Research</h1>
         <div class="projects__list">
 
+          <article class="project-item" data-img="/assets/img/peek/agentical.webp">
+            <div class="project-item__header">
+              <h3 class="project-item__title">Agentical</h3>
+              <span class="project-item__role">Programming Languages &middot; Formal Methods &middot; Formal Verification &middot; Preprint</span>
+            </div>
+            <p class="project-item__description">AI agents crash mid-task, and their model calls never give the same answer twice, so a failed run can&rsquo;t simply be restarted. Agentical is a formal theory of multi-agent LLM systems that treats every model call as a random draw and journals every outside value, then proves that a crashed system can be replayed and resumed exactly: the replay reproduces the original run with probability&nbsp;1, even with many agents running at once. It also proves that, under its security rules, secret data can&rsquo;t leak between agents, even statistically.</p>
+            <p class="project-item__description">The main theorem&rsquo;s single-agent core is machine-checked in Lean&nbsp;4 with no unproven steps, and a dependency-free Rust runtime puts it to the test: 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried, and journaling costs about 100 nanoseconds a step.</p>
+            <p class="project-item__description">A Probabilistic Process Calculus for Durable Multi-Agent LLM Systems. November 2026.</p>
+            <div class="project-item__links">
+              <a href="/research/agentical/" class="project-item__link project-item__link--arrow">View paper</a>
+              <a href="https://github.com/ankthba/agentical" target="_blank" rel="noopener" class="project-item__link">View repo</a>
+            </div>
+          </article>
+
           <article class="project-item" data-img="/assets/img/peek/ocradar.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">CNN OCSCC Detection</h3>
-              <span class="project-item__role">Machine Learning &middot; arXiv:2510.16235</span>
+              <span class="project-item__role">Machine Learning &middot; Medical Imaging &middot; arXiv:2510.16235</span>
             </div>
-            <p class="project-item__description">Published paper presenting a CNN trained for high-accuracy oral cancer detection, with custom hardware for optimal image capture and an open-access application.</p>
+            <p class="project-item__description">Oral cavity squamous cell carcinoma is the most common head and neck cancer, and its early stages are subtle enough that it often goes undetected until it is advanced. This co-authored paper trains a convolutional neural network on 4,293 images of malignant and benign tumors and negative samples to recognize it, pairs the model with custom hardware built to capture detailed images, and releases an open-access app that puts the model in anyone&rsquo;s hands.</p>
+            <p class="project-item__description">Testing the network at five common image resolutions showed accuracy rising on a logarithmic curve, with diminishing returns from higher pixel counts: a measure of the image quality a screening device actually needs.</p>
             <p class="project-item__description">Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection. October 2025.</p>
             <a href="https://arxiv.org/abs/2510.16235" target="_blank" rel="noopener" class="project-item__link">View paper</a>
           </article>

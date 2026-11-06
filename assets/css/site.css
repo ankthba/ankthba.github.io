@@ -288,9 +288,11 @@ p {
 }
 
 /* Links that leave the site carry a small arrow, drawn rather than
-   set, so it is the same everywhere */
+   set, so it is the same everywhere; a link to a page of its own on
+   the site (a paper's page) can ask for one with --arrow */
 .project-item__title a[target="_blank"]::after,
 .project-item__link[target="_blank"]::after,
+.project-item__link--arrow::after,
 a.index__row[target="_blank"] .index__note::after,
 .reach__row[target="_blank"] .reach__name::after,
 .photos__links a::after {
@@ -308,6 +310,7 @@ a.index__row[target="_blank"] .index__note::after,
 
 .project-item__title a[target="_blank"]:hover::after,
 .project-item__link[target="_blank"]:hover::after,
+.project-item__link--arrow:hover::after,
 a.index__row[target="_blank"]:hover .index__note::after,
 .reach__row[target="_blank"]:hover .reach__name::after,
 .photos__links a:hover::after {

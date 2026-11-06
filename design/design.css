@@ -1,25 +1,7 @@
 /* Design: the work shown the way a type foundry shows a face (huge live
    type, a tester, screenshots big on the page), in the site's own paper,
-   ink, Newsreader and left edge. Lagunita sets the big type. */
+   ink, type and left edge. */
 
-@font-face {
-  font-family: "Lagunita";
-  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2-variations"),
-       url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2");
-  src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2") tech(variations);
-  font-weight: 300 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Lagunita";
-  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2-variations"),
-       url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2");
-  src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2") tech(variations);
-  font-weight: 300 800;
-  font-style: italic;
-  font-display: swap;
-}
 
 .sheet--design {
   --dg-face: "Lagunita", "Iowan Old Style", Georgia, serif;
@@ -234,6 +216,74 @@
 .dg-watches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(0.4rem, 1.2vw, 1rem); }
 .dg-row--flies { max-width: 40rem; align-items: center; }
 
+/* ---------- Haze, in detail ---------- */
+
+.dg-details {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2rem);
+  align-items: end;
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+}
+
+.dg-d { margin: 0; min-width: 0; }
+.dg-d--4 { grid-column: span 4; }
+.dg-d--5 { grid-column: span 5; }
+.dg-d--7 { grid-column: span 7; }
+.dg-d--8 { grid-column: span 8; }
+.dg-d--9 { grid-column: span 9; }
+
+.dg-d img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.dg-d figcaption,
+.dg-cap {
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  color: var(--color-quiet);
+}
+
+.dg-glass {
+  margin-top: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+.dg-sub {
+  margin: 0 0 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* the rail stands as tall as the pill and the timeline beside it */
+.dg-glass__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 10fr);
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.dg-glass__rail {
+  position: relative;
+  min-height: 12rem;
+}
+
+.dg-glass__rail img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: auto;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.dg-glass__stack {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
 /* ---------- About ---------- */
 
 .dg-about {
@@ -259,4 +309,7 @@
   .dg-row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dg-row--ipad { grid-template-columns: 1fr; }
   .dg-about__cols { grid-template-columns: 1fr; }
+  .dg-d--4, .dg-d--5, .dg-d--7, .dg-d--8, .dg-d--9 { grid-column: span 12; }
+  .dg-glass__grid { grid-template-columns: 1fr; }
+  .dg-glass__rail { height: 26rem; }
 }

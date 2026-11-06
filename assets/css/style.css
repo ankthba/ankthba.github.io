@@ -9,7 +9,7 @@
    1. Fonts
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+/* Lagunita is linked from each page: /assets/fonts/lagunita/lagunita.css */
 
 /* ---------------------------------------------------------
    2. CSS Variables & Theme
@@ -43,9 +43,9 @@
      controls: they set the page's appearance, they don't go anywhere. */
   --color-underline-quiet: rgba(38, 38, 36, 0.32);
 
-  --font-serif: "EB Garamond", Garamond, Georgia, serif;
-  --font-display: "EB Garamond", Garamond, Georgia, serif;
-  --font-sans: "EB Garamond", Garamond, Georgia, serif;
+  --font-serif: "Lagunita", Garamond, Georgia, serif;
+  --font-display: "Lagunita", Garamond, Georgia, serif;
+  --font-sans: "Lagunita", Garamond, Georgia, serif;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;

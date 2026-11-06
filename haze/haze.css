@@ -1,7 +1,7 @@
 /* Haze, a day in the app. The page keeps the hour the way the app does:
    its sky starts at night and moves through dawn, noon and dusk as you
    read, under a single fixed layer (haze.js). Type is the app's own:
-   EB Garamond for every word, from the oversized hours to the footnotes.
+   Lagunita for every word, from the oversized hours to the footnotes.
    White on the sky, hairline rules, no capitals for decoration, and the
    devices in Apple's own frames. */
 
@@ -10,8 +10,8 @@
   --ink-2: rgba(255, 255, 255, 0.78);
   --ink-3: rgba(255, 255, 255, 0.55);
   --hairline: rgba(255, 255, 255, 0.2);
-  --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
-  --display: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --serif: 'Lagunita', Georgia, 'Times New Roman', serif;
+  --display: 'Lagunita', Georgia, 'Times New Roman', serif;
   --page: 1180px;
   --gutter: clamp(1.15rem, 4.2vw, 2.6rem);
   --device-shadow: drop-shadow(0 1.8rem 2.6rem rgba(8, 10, 24, 0.34)) drop-shadow(0 0.4rem 0.8rem rgba(8, 10, 24, 0.2));

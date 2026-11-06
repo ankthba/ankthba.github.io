@@ -4,11 +4,11 @@
    The type specimen, laid over site.css + pencil.css: the same paper,
    ink and masthead, but a wider page so the type can be set big.
    Everything inside <main> is set in the face itself; the masthead and
-   the footer stay in the site's Newsreader.
+   the footer are in the site's own Lagunita.
    ========================================================= */
 
 @font-face {
-  font-family: "Lagunita";
+  font-family: "Lagunita Specimen";
   src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2-variations"),
        url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2");
   src: url("/lagunita/fonts/Lagunita-Roman.woff2") format("woff2") tech(variations);
@@ -18,7 +18,7 @@
 }
 
 @font-face {
-  font-family: "Lagunita";
+  font-family: "Lagunita Specimen";
   src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2-variations"),
        url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2");
   src: url("/lagunita/fonts/Lagunita-Italic.woff2") format("woff2") tech(variations);
@@ -31,7 +31,7 @@
 
 .sheet--specimen {
   --sp-wrap: 80rem;
-  --sp-face: "Lagunita", "Iowan Old Style", Georgia, serif;
+  --sp-face: "Lagunita Specimen", "Lagunita", "Iowan Old Style", Georgia, serif;
 }
 
 .sheet--specimen .sheet__page {
@@ -40,8 +40,8 @@
 
 .specimen {
   font-family: var(--sp-face);
-  /* the site sizes Newsreader down to Garamond's x-height; this face
-     carries its own x-height per optical size, so leave it be */
+  /* this face carries its own x-height per optical size, so no
+     font-size-adjust */
   font-size-adjust: none;
   font-optical-sizing: auto;
   font-variant-numeric: normal;

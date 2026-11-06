@@ -20,13 +20,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Design | Aniketh Bandlamudi">
   <meta name="twitter:description" content="Design work by Aniketh Bandlamudi: Lagunita, a variable typeface; Haze, a weather app for iPhone, iPad, Mac and Apple Watch; and aniketh.net.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap">
+  <link rel="preload" href="/assets/fonts/lagunita/Lagunita-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/fonts/lagunita/lagunita.css">
   <link rel="stylesheet" href="/assets/css/site.css">
   <link rel="stylesheet" href="/assets/css/pencil.css">
-  <link rel="stylesheet" href="/design/design.css?v=4">
-  <link rel="preload" href="/lagunita/fonts/Lagunita-Roman.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/design/design.css?v=7">
   <link rel="icon" type="image/jpeg" href="/assets/img/anikethFavicon.jpg">
   <script type="application/ld+json">
   {
@@ -125,39 +123,60 @@
         <p class="dg-line">A weather app built for fast, accurate daily decisions, on iPhone, iPad, Mac and Apple Watch.</p>
         <p class="dg-links"><a href="/haze/">Learn more</a><a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener">App Store</a></p>
 
-        <figure class="dg-shot">
-          <img src="/assets/img/haze/v3/framed-duo.webp" width="1700" height="1236" alt="Haze on a foldable phone, open: the forecast for Sydney on the left and tonight's sunset on the right" loading="lazy" decoding="async">
-        </figure>
-        <figure class="dg-shot">
-          <div class="dg-row dg-row--4">
-            <img src="/assets/img/haze/v3/framed-phone-dawn.webp" width="720" height="1470" alt="Haze on iPhone at dawn" loading="lazy" decoding="async">
-            <img src="/assets/img/haze/v3/framed-phone-sunset.webp" width="720" height="1470" alt="Haze on iPhone at sunset" loading="lazy" decoding="async">
-            <img src="/assets/img/haze/v3/framed-phone-dusk.webp" width="720" height="1470" alt="Haze on iPhone at dusk" loading="lazy" decoding="async">
-            <img src="/assets/img/haze/v3/framed-phone-night.webp" width="720" height="1470" alt="Haze on iPhone at night" loading="lazy" decoding="async">
-          </div>
-          <figcaption>iPhone, at dawn, sunset, dusk and night</figcaption>
-        </figure>
-        <figure class="dg-shot">
-          <img src="/assets/img/haze/v3/framed-mac.webp" width="2000" height="1334" alt="Haze on a Mac" loading="lazy" decoding="async">
-          <figcaption>Mac</figcaption>
-        </figure>
-        <figure class="dg-shot">
-          <div class="dg-row dg-row--ipad">
-            <img src="/assets/img/haze/v3/framed-ipad.webp" width="1600" height="1227" alt="Haze on iPad" loading="lazy" decoding="async">
-            <div class="dg-watches">
-              <img src="/assets/img/haze/v3/framed-watch-01-main.webp" width="448" height="704" alt="Haze on Apple Watch" loading="lazy" decoding="async">
-              <img src="/assets/img/haze/v3/framed-watch-02-night.webp" width="448" height="704" alt="Haze on Apple Watch at night" loading="lazy" decoding="async">
-              <img src="/assets/img/haze/v3/framed-watch-03-dusk.webp" width="448" height="704" alt="Haze on Apple Watch at dusk" loading="lazy" decoding="async">
+        <!-- Details only, no whole devices: crops of the App Store screenshots. -->
+        <div class="dg-details">
+          <figure class="dg-d dg-d--5">
+            <img src="/assets/img/haze/details/type-temperature.webp" width="720" height="720" alt="Haze's current conditions: New York, 60 degrees, set in large serif numerals" loading="lazy" decoding="async">
+            <figcaption>Current conditions, in big serif numerals</figcaption>
+          </figure>
+          <figure class="dg-d dg-d--7">
+            <img src="/assets/img/haze/details/sunset-score.webp" width="1120" height="780" alt="Haze's sunset forecast: today's sunset scored 74, Great" loading="lazy" decoding="async">
+            <figcaption>The sunset forecast</figcaption>
+          </figure>
+          <figure class="dg-d dg-d--8">
+            <img src="/assets/img/haze/details/type-summary.webp" width="1060" height="190" alt="An italic forecast line: Clear and bright through the rest of the day. Four degrees warmer than this time yesterday." loading="lazy" decoding="async">
+            <figcaption>The day, written out in italic</figcaption>
+          </figure>
+          <figure class="dg-d dg-d--4">
+            <img src="/assets/img/haze/details/chart-sun.webp" width="1250" height="570" alt="Haze's sun path: an arc from sunrise at 7:36 AM to sunset at 6:27 PM" loading="lazy" decoding="async">
+            <figcaption>The sun's path</figcaption>
+          </figure>
+        </div>
+
+        <div class="dg-glass">
+          <h3 class="dg-sub">Custom glass</h3>
+          <div class="dg-glass__grid">
+            <figure class="dg-d dg-glass__rail">
+              <img src="/assets/img/haze/details/glass-rail.webp" width="246" height="1520" alt="Haze's glass control rail: round glass buttons for location, radar, settings and close, over a sunrise and sunset capsule" loading="lazy" decoding="async">
+            </figure>
+            <div class="dg-glass__stack">
+              <figure class="dg-d">
+                <img src="/assets/img/haze/details/glass-pill.webp" width="1248" height="188" alt="Haze's glass sunset and sunrise pill: sunset 36 tonight at 6:09 PM, sunrise 61 tomorrow at 7:12 AM" loading="lazy" decoding="async">
+              </figure>
+              <figure class="dg-d">
+                <img src="/assets/img/haze/details/glass-radar.webp" width="1240" height="420" alt="Haze's glass radar timeline over the map: 1:30 PM, now, with a play button and a scrubber" loading="lazy" decoding="async">
+              </figure>
             </div>
           </div>
-          <figcaption>iPad and Apple Watch</figcaption>
-        </figure>
+          <p class="dg-cap">The control rail, the sunrise and sunset pill, and the radar timeline</p>
+        </div>
+
+        <div class="dg-details">
+          <figure class="dg-d dg-d--7">
+            <img src="/assets/img/haze/details/chart-trend.webp" width="1230" height="690" alt="Haze's 72-hour temperature trend, a soft curve over three days" loading="lazy" decoding="async">
+            <figcaption>72-hour trend</figcaption>
+          </figure>
+          <figure class="dg-d dg-d--5">
+            <img src="/assets/img/haze/details/chart-10day.webp" width="1250" height="925" alt="Haze's 10-day forecast rows with coloured temperature ranges" loading="lazy" decoding="async">
+            <figcaption>10-day forecast</figcaption>
+          </figure>
+        </div>
       </section>
 
       <!-- ===== This site ===== -->
       <section class="dg-work" id="site" aria-labelledby="site-h">
         <h2 class="dg-name dg-name--big" id="site-h">aniketh.net</h2>
-        <p class="dg-line">This website, set in Newsreader and Lagunita, inside coloured-pencil drawings.</p>
+        <p class="dg-line">This website, set in Lagunita, inside coloured-pencil drawings.</p>
         <p class="dg-links"><a href="/">Home</a></p>
         <figure class="dg-shot">
           <img src="/assets/img/pencil/home-1800.webp" srcset="/assets/img/pencil/home-1800.webp 1800w, /assets/img/pencil/home-3600.webp 3600w" sizes="(min-width: 84rem) 80rem, 100vw" width="1800" height="1200" alt="The coloured-pencil scene at the top of the home page: hills, a tree and a meadow of wildflowers" loading="lazy" decoding="async">
@@ -178,7 +197,7 @@
         <h2 class="dg-label" id="about-h">About</h2>
         <div class="dg-about__cols">
           <p>Lagunita is a variable Garamond for screens, built from EB Garamond. It takes the flared stems, chisel-cut terminals and taller t of the Stanford wordmark. One optical-size axis runs from a sturdy Text cut for reading to a sharp, high-contrast Display cut for headlines, in weights from Light to ExtraBold, roman and italic. It is free under the SIL Open Font License.</p>
-          <p>Haze is a weather app for iPhone, iPad, Mac and Apple Watch, built solo in Swift, with big serif numerals and skies that shift with the day. This website is set in Newsreader and Lagunita, inside coloured-pencil drawings.</p>
+          <p>Haze is a weather app for iPhone, iPad, Mac and Apple Watch, built solo in Swift, with big serif numerals and skies that shift with the day. This website is set in Lagunita, inside coloured-pencil drawings.</p>
         </div>
       </section>
     </main>

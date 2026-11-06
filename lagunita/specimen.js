@@ -227,7 +227,7 @@
   measure();
   function settle() { measure(); }
   if (document.fonts) {
-    document.fonts.load('100px "Lagunita"').then(settle, settle);
+    document.fonts.load('100px "Lagunita Specimen"').then(settle, settle);
     document.fonts.ready.then(measure);
     document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', measure);
   }

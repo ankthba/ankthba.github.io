@@ -25,6 +25,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
 - [Projects](https://aniketh.net/projects/): a Rust runtime for AI agents, Genzo, Meridian, Haze, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
 - [Research](https://aniketh.net/research/): provably sound replay and crash recovery for LLM agents; CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)
+- [Writing](https://aniketh.net/writing/): "What You Owe" (August 2026), an essay on purpose, public benefit and building OCRadar; also on Substack
 - [Press](https://aniketh.net/press/): news coverage and recognition
 - [Resume](https://aniketh.net/resume/): resume, also as a [PDF](https://aniketh.net/assets/media/Aniketh-Bandlamudi-Resume.pdf)
 - [Contact](https://aniketh.net/contact/): email and profiles elsewhere

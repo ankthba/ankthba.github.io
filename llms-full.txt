@@ -43,6 +43,10 @@ Led software for a 25-member team, owning systems engineering and control softwa
 - "Provably Sound Replay and Crash Recovery for Nondeterministic LLM Agents." Aniketh Bandlamudi. Preprint, November 2026. https://aniketh.net/research/agentical/. Code and Lean proof: https://github.com/ankthba/agentical. Gives LLM agents a probabilistic semantics in which every model call is a draw from a probability measure and every response is journaled; proves that replay from the journal reproduces a run exactly and that crash recovery preserves its distribution, with the core of both results mechanized in Lean 4 and a Rust prototype. Developed with Anthropic's Claude as a collaborator, as the paper discloses.
 - "Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection." Aniketh Bandlamudi et al. arXiv:2510.16235, October 2025. https://arxiv.org/abs/2510.16235. A CNN trained for high-accuracy oral cancer detection, with custom hardware for image capture and an open-access application.
 
+## Writing
+
+- "What You Owe." Aniketh Bandlamudi. Essay, August 18, 2026. https://aniketh.net/writing/ (also on Substack: https://ankthba.substack.com/p/what-you-owe). Argues that public benefit is not a category of projects or a status symbol but duration: the point where quitting costs someone other than yourself. Draws on building OCRadar from eighth grade, and on how a reward system that pays out at launch leaves many student projects and nonprofits unfinished.
+
 ## Projects
 
 - Rust runtime for AI agents (https://github.com/pragmaticco/pragmatic): a zero-dependency durable execution runtime written in Rust for nondeterministic AI agents. Every model call and tool call is written to a tamper-evident, append-only journal (230 ns per append, flat latency through one million entries), so a crashed run resumes where it stopped without repeating finished work and any run can be replayed exactly without calling the model, passing a 1000/1000 replay-determinism test suite. Python bindings, a CLI, and agent execution and replay formalized with a probabilistic process calculus.

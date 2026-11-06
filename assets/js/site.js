@@ -288,7 +288,7 @@
      Escape closes. */
   var SOURCES = [
     ['/', 'Pages'], ['/work/', 'Work'], ['/education/', 'Education'],
-    ['/projects/', 'Projects'], ['/research/', 'Research'], ['/research/agentical/', 'Research'], ['/press/', 'Press'],
+    ['/projects/', 'Projects'], ['/research/', 'Research'], ['/research/agentical/', 'Research'], ['/writing/', 'Writing'], ['/press/', 'Press'],
     ['/photos/', 'Photos'], ['/fragrance/', 'Fragrance'], ['/contact/', 'Pages'],
     ['/resume/', 'Pages'], ['/music/', 'Pages']
   ];
@@ -335,6 +335,16 @@
         sub: clean((item.querySelector('.project-item__role') || {}).textContent),
         text: clean(Array.prototype.map.call(item.querySelectorAll('.project-item__description'), function (p) { return p.textContent; }).join(' ')),
         url: path + '#' + slug(title)
+      });
+    });
+
+    doc.querySelectorAll('.essay').forEach(function (item) {
+      items.push({
+        group: group,
+        title: clean((item.querySelector('.essay__title') || {}).textContent),
+        sub: clean((item.querySelector('.essay__sub') || {}).textContent),
+        text: clean((item.querySelector('.essay__body') || {}).textContent),
+        url: path + '#' + item.id
       });
     });
 

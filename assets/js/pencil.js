@@ -14,7 +14,8 @@
      body down the middle, on a clear ground. Each is split down its
      body into two wings that flap.
 
-   The butterflies go anywhere but over the words. In the air they
+   The butterflies fly anywhere, over the words too, but settle only
+   on open paper, never on a line of text. In the air they
    hold their place in the window; landed, they sit on the paper and
    scroll with it. Come near one and it lifts off and away. For anyone
    who has asked for less motion they rest, wings open, and stay put.
@@ -235,37 +236,19 @@
 
     function free(x, y) { return !over(x, y); }
 
-    // the nearest place off the words, for one that has strayed onto them
-    function nearestFree(x, y) {
-      var k = over(x, y);
-      if (!k) return { x: x, y: y };
-      var exits = [
-        { x: k.x0 - 2, y: y }, { x: k.x1 + 2, y: y },
-        { x: x, y: k.y0 - 2 }, { x: x, y: k.y1 + 2 }
-      ].filter(function (p) { return free(p.x, p.y) && p.x > EDGE && p.x < vw - EDGE; });
-      exits.sort(function (a, b) { return Math.hypot(a.x - x, a.y - y) - Math.hypot(b.x - x, b.y - y); });
-      return exits[0] || { x: x < vw / 2 ? EDGE + 20 : vw - EDGE - 20, y: y };
-    }
-
-    function clear(ax, ay, bx, by) {
-      for (var i = 1; i <= 10; i++) {
-        var t = i / 10;
-        if (!free(ax + (bx - ax) * t, ay + (by - ay) * t)) return false;
-      }
-      return true;
-    }
-
-    // somewhere a little way off, on open paper or picture, with no words in the way
+    // somewhere a little way off: anywhere in the air, over the words or
+    // not; once it's ready to settle, a spot on open paper
     function pickTarget(b) {
+      var settle = b.mode === 'fly' && b.clock <= 0;
       for (var i = 0; i < 40; i++) {
         var a = rand(0, Math.PI * 2), d = rand(ROAM * 0.35, ROAM);
         var x = b.x + Math.cos(a) * d, y = b.y + Math.sin(a) * d;
         if (x < EDGE + 30 || x > vw - EDGE - 30 || y < 50 || y > vh - 50) continue;
-        if (free(x, y) && clear(b.x, b.y, x, y)) return { x: x, y: y };
+        if (!settle || free(x, y)) return { x: x, y: y };
       }
       for (i = 0; i < 40; i++) {
         x = rand(EDGE + 30, vw - EDGE - 30); y = rand(60, vh - 60);
-        if (free(x, y)) return { x: x, y: y };
+        if (!settle || free(x, y)) return { x: x, y: y };
       }
       return { x: b.x, y: b.y };
     }
@@ -355,7 +338,7 @@
         var t = { x: b.x + dx / d * rand(140, 220), y: b.y + dy / d * rand(140, 220) };
         t.x = Math.min(Math.max(t.x, EDGE + 30), vw - EDGE - 30);
         t.y = Math.min(Math.max(t.y, 50), vh - 50);
-        b.target = free(t.x, t.y) ? t : nearestFree(t.x, t.y);
+        b.target = t;
         b.vx += dx / d * 90;
         b.vy += dy / d * 90;
       }
@@ -380,7 +363,7 @@
       b.hurry = Math.max(0, b.hurry - dt);
       b.clock -= dt;
       var tx = b.target.x - b.x, ty = b.target.y - b.y, td = Math.hypot(tx, ty) || 1;
-      if (td < 24 || !free(b.target.x, b.target.y)) {
+      if (td < 24 || (b.clock <= 0 && !free(b.target.x, b.target.y))) {
         if (td < 24 && b.clock <= 0 && free(b.x, b.y) && inside(b)) { land(b); return; }
         b.target = pickTarget(b);
         tx = b.target.x - b.x; ty = b.target.y - b.y; td = Math.hypot(tx, ty) || 1;
@@ -393,17 +376,6 @@
       var k = Math.min(1, dt * 2.6);
       b.vx += (dx - b.vx) * k;
       b.vy += (dy - b.vy) * k;
-
-      // off the words: pushed back to the nearest open place
-      if (!free(b.x, b.y)) {
-        var n = nearestFree(b.x, b.y);
-        b.vx += (n.x - b.x) * dt * 16;
-        b.vy += (n.y - b.y) * dt * 16;
-      } else if (!free(b.x + b.vx * 0.3, b.y + b.vy * 0.3)) {
-        // about to drift onto them: turn along the edge instead
-        b.vx *= 0.5; b.vy *= 0.5;
-        b.target = pickTarget(b);
-      }
 
       // a few strokes, then a glide on wings held in a shallow V
       if (b.glide > 0) {

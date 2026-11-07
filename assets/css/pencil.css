@@ -172,6 +172,37 @@ html.pencil .page--home .about__text {
   max-width: none;
 }
 
+/* ---------- Wide windows: a wider page ----------
+   On a computer the column opens up, and everything grows a little
+   with it (the root size, so it all keeps its proportions), so lines
+   stay a comfortable length to read rather than the narrow column of
+   a phone. The media queries are in the browser's own em, so the root
+   size here doesn't move them. */
+@media (min-width: 64em) {
+  html.pencil {
+    font-size: 106.25%;
+    --sheet: 44rem;
+  }
+  html.pencil .page--home,
+  html.pencil .sheet--home .colophon {
+    max-width: var(--sheet);
+  }
+  html.pencil .page--home .index {
+    max-width: none;
+  }
+  /* the bio runs the column's full width, so it takes a size up */
+  html.pencil .page--home .about__text {
+    font-size: 1.1875rem;
+  }
+}
+
+@media (min-width: 100em) {
+  html.pencil {
+    font-size: 112.5%;
+    --sheet: 46rem;
+  }
+}
+
 /* ---------- The opening (pencil.js) ----------
    Held back before it plays: the name hidden (pencil.js sets it large in
    the middle, then brings it up into its place), and the picture and the

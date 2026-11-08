@@ -7,7 +7,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 ## Key facts
 
 - Name: Aniketh Bandlamudi
-- Education: University of Virginia, School of Engineering and Applied Science, B.S. Computer Science & Applied Mathematics, expected May 2030. Oakton High School (Vienna, Virginia), Advanced Studies Diploma. Y Combinator Startup School.
+- Education: University of Virginia, School of Engineering and Applied Science, B.S. Computer Science, expected May 2030; minors in Applied Mathematics and Philosophy (planned). Oakton High School (Vienna, Virginia), Advanced Studies Diploma. Y Combinator Startup School.
 - Founder of Pragmatic (incorporated as Pragmatic Research, Inc., a Delaware C-corp, in August 2026), January 2026 to present
 - Founder and President of OCRadar, May 2022 to present
 - Engineering Intern at Alarm.com, May 2026

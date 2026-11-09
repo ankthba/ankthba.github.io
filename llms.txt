@@ -38,7 +38,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 - Rust runtime for AI agents: durable execution runtime that journals every model call and tool call, so a crashed run resumes where it stopped and any run can be replayed exactly
 - [Haze](https://aniketh.net/haze/): weather app for iPhone, iPad, Mac and Apple Watch; free on the [App Store](https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735)
 - [OCRadar](https://ocradar.com/): AI-powered mobile platform for early oral cancer detection
-- [Lagunita](https://aniketh.net/lagunita/): a variable Garamond typeface for screens, after the Stanford wordmark; free under the SIL Open Font License
+- [Lagunita](https://aniketh.net/lagunita/): a variable Garamond typeface for screens, built from EB Garamond; free under the SIL Open Font License
 - [Hypnagogia](https://aniketh.net/hypnagogia/): whole-brain Drosophila simulation testing whether a learned memory reactivates during sleep
 - [Graphite](https://aniketh.net/graphite/): 3D graphing calculator that runs in the browser
 - Genzo: film camera for iPhone that develops single-frame Bayer RAW through its own scene-linear color pipeline into five original film looks; coming soon, for iOS 26 or later

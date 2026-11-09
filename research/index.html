@@ -9,11 +9,11 @@
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
   <title>Research | Aniketh Bandlamudi</title>
-  <meta name="description" content="Research by Aniketh Bandlamudi: provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
+  <meta name="description" content="Research by Aniketh Bandlamudi: a pre-registered test for memory replay in a whole-brain Drosophila connectome model, provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="canonical" href="https://aniketh.net/research/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Research | Aniketh Bandlamudi">
-  <meta property="og:description" content="Research by Aniketh Bandlamudi: provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
+  <meta property="og:description" content="Research by Aniketh Bandlamudi: a pre-registered test for memory replay in a whole-brain Drosophila connectome model, provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <meta property="og:url" content="https://aniketh.net/research/">
   <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
   <meta property="og:image:width" content="2400">
@@ -21,7 +21,7 @@
   <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | Aniketh Bandlamudi">
-  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
+  <meta name="twitter:description" content="Research by Aniketh Bandlamudi: a pre-registered test for memory replay in a whole-brain Drosophila connectome model, provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <link rel="preload" href="/assets/fonts/lagunita/Lagunita-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/fonts/lagunita/lagunita.css">
   <link rel="stylesheet" href="/assets/css/site.css">
@@ -47,11 +47,34 @@
         },
         "mainEntity": [
           {
+            "@id": "https://aniketh.net/research/#hypnagogia"
+          },
+          {
             "@id": "https://aniketh.net/research/#agentical"
           },
           {
             "@id": "https://aniketh.net/research/#paper"
           }
+        ]
+      },
+      {
+        "@type": "ScholarlyArticle",
+        "@id": "https://aniketh.net/research/#hypnagogia",
+        "headline": "Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain Drosophila Connectome Model",
+        "author": [
+          {
+            "@id": "https://aniketh.net/#person"
+          }
+        ],
+        "datePublished": "2026-11-09",
+        "url": "https://aniketh.net/research/hypnagogia/",
+        "isBasedOn": "https://github.com/ankthba/hypnagogia",
+        "about": [
+          "Computational neuroscience",
+          "Connectomics",
+          "Memory replay",
+          "Sleep",
+          "Spiking network models"
         ]
       },
       {
@@ -146,6 +169,20 @@
     <main class="page" id="main">
         <h1 class="page-title">Research</h1>
         <div class="projects__list">
+
+          <article class="project-item" data-img="/assets/img/peek/hypnagogia.webp">
+            <div class="project-item__header">
+              <h3 class="project-item__title">Hypnagogia</h3>
+              <span class="project-item__role">Computational Neuroscience &middot; Connectomics &middot; Preprint</span>
+            </div>
+            <p class="project-item__description">Sleeping rats replay what they learned, but no one has seen an insect&rsquo;s memory cells do it. Hypnagogia simulates all 144,209 neurons of the male fruit-fly brain from its connectome, teaches the model an odour, and runs a pre-registered test of whether the cells that learned it switch back on by themselves during simulated sleep, against shuffled-wiring, wake and unlearned-weights controls.</p>
+            <p class="project-item__description">They don&rsquo;t, and the paper shows why: the memory sits one synapse downstream of the cells being scored, so learning can&rsquo;t change which of them switch on, even once the model is given the slow dynamics it needs to have episodes at all. Along the way, modelling one inhibitory neuron as the non-spiking cell it was measured to be, with no new parameters, took the model&rsquo;s odour code from 52.6% of Kenyon cells to 4.5%, against about 6% in real flies.</p>
+            <p class="project-item__description">Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain <em>Drosophila</em> Connectome Model. November 2026.</p>
+            <div class="project-item__links">
+              <a href="/research/hypnagogia/" class="project-item__link project-item__link--arrow">View paper</a>
+              <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>
+            </div>
+          </article>
 
           <article class="project-item" data-img="/assets/img/peek/agentical.webp">
             <div class="project-item__header">

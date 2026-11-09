@@ -288,7 +288,7 @@
      Escape closes. */
   var SOURCES = [
     ['/', 'Pages'], ['/work/', 'Work'], ['/education/', 'Education'],
-    ['/projects/', 'Projects'], ['/design/', 'Design'], ['/research/', 'Research'], ['/research/agentical/', 'Research'], ['/writing/', 'Writing'], ['/press/', 'Press'],
+    ['/projects/', 'Projects'], ['/design/', 'Design'], ['/research/', 'Research'], ['/research/agentical/', 'Research'], ['/research/hypnagogia/', 'Research'], ['/writing/', 'Writing'], ['/press/', 'Press'],
     ['/photos/', 'Photos'], ['/fragrance/', 'Fragrance'], ['/contact/', 'Pages'],
     ['/resume/', 'Pages'], ['/music/', 'Pages']
   ];

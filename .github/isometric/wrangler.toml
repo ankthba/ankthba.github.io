@@ -1,0 +1,10 @@
+# The Cesium ion proxy for aniketh.net/isometric. See worker.js.
+name = "aniketh-isometric"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+# Keeps the Worker's logs for a few days (Workers & Pages >
+# aniketh-isometric > Logs).
+[observability]
+enabled = true

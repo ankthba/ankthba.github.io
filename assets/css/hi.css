@@ -1,0 +1,185 @@
+/* =========================================================
+   hi.css
+
+   /hi/, the page a code on my phone opens for someone I've just met:
+   who I am, my contact to save, and three things to look at. One
+   column hung from its left edge, on a phone's first screen down to
+   the last of the ways to reach me. Laid over site.css and pencil.css;
+   the name and the two lines under it are the home page's own
+   (.masthead--home), and there is no animation of its own.
+   ========================================================= */
+
+/* no nav above it, so the page starts where the name does elsewhere */
+.hi {
+  padding-top: 0;
+}
+
+/* The photo, framed as the photographs are: square-cornered, nothing
+   round it. This rule and its one element are all there is to it. */
+.hi__photo {
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-bottom: 1.1rem;
+  object-fit: cover;
+  background: var(--color-bg-alt);
+}
+
+/* ---------- The site's one link style ----------
+   As in site.css (in ink, a thin line under it that darkens when
+   pointed at), for the links here that aren't in a paragraph; the
+   one that is, at the foot, already has it. */
+
+.hi__actions a,
+.hi__name a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.hi__actions a:hover,
+.hi__name a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Save, write, connect ----------
+   Each on a line of its own, a size up from the text, and as tall as
+   a finger (2.75rem) whatever its size. Saving my contact is the one
+   that matters: a size up again, and a step heavier. */
+
+.hi__actions {
+  margin-top: 1.15rem;
+}
+
+.hi__actions a {
+  display: block;
+  width: fit-content;
+  padding: calc((2.75rem - 1.3em) / 2) 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--color-fg);
+}
+
+.hi__actions li:first-child a {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+/* a link that leaves the site carries the site's small arrow */
+.hi__actions a[target="_blank"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 0.28em;
+  vertical-align: 0.12em;
+  background-color: var(--color-quiet);
+  -webkit-mask: var(--arrow) center / contain no-repeat;
+  mask: var(--arrow) center / contain no-repeat;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.hi__actions a[target="_blank"]:hover::after {
+  background-color: currentColor;
+  transform: translate(0.08em, -0.08em);
+}
+
+/* ---------- Three things ----------
+   As the home page's list reads on a phone: a name in ink, and a
+   sentence under it in the reading grey. */
+
+.hi__things {
+  margin-top: var(--space-md);
+}
+
+.hi__things li + li {
+  margin-top: 1.25rem;
+}
+
+.hi__name {
+  font-weight: 500;
+  color: var(--color-fg);
+}
+
+.hi__things p {
+  color: var(--color-muted);
+}
+
+/* room round the words for a finger */
+.hi__name a,
+.hi__site a,
+.hi__code > summary {
+  position: relative;
+}
+
+.hi__name a::after,
+.hi__site a::after,
+.hi__code > summary::after {
+  content: "";
+  position: absolute;
+  inset: -0.6rem -0.75rem;
+}
+
+/* ---------- The rest, quietly ---------- */
+
+.hi__site {
+  margin-top: var(--space-md);
+}
+
+/* a link like the others, but in the quiet grey until pointed at
+   (html.pencil, to outrank the ink that pencil.css gives a
+   paragraph's links) */
+html.pencil .hi .hi__site a {
+  color: var(--color-quiet);
+}
+
+html.pencil .hi .hi__site a:hover {
+  color: var(--color-fg);
+}
+
+/* The code that opens this page, for holding my own phone out to
+   someone: folded under a line of quiet text, like the long lists on
+   Education. A <details>, so it opens with no script and from the
+   keyboard. The picture carries its own clear margin, four squares
+   wide: that is the space under the line, and the picture is pulled
+   left by as much, so the squares themselves hang from the column's
+   edge. */
+.hi__code {
+  margin-top: 1.25rem;
+}
+
+.hi__code > summary {
+  display: block;
+  width: fit-content;
+  color: var(--color-quiet);
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--transition-fast);
+}
+
+.hi__code > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (hover: hover) {
+  .hi__code > summary:hover {
+    color: var(--color-fg);
+  }
+}
+
+.hi__code img {
+  --code: 16rem;
+  width: var(--code);
+  height: var(--code);
+  max-width: none;
+  margin-left: calc(var(--code) * -4 / 33);
+}
+
+/* the copyright, centred at the foot as on the home page */
+.sheet--hi .colophon__inner {
+  justify-content: center;
+  text-align: center;
+}

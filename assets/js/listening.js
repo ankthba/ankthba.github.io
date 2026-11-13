@@ -32,22 +32,37 @@
     box.hidden = false;
   }
 
-  /* The last play the Action saw, in case the Worker can't answer. */
-  fetch(box.getAttribute('data-src'), { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (data) { show(data && data.recent && data.recent[0], false, 'file'); })
-    .catch(function () {});
+  /* The last play the Action saw, in case the Worker can't answer. The
+     file is the whole listening log, some hundred times the size of the
+     Worker's answer, and the Worker's has the last plays in it too; so
+     the file is only asked for, once, while there is still nothing to
+     show: the Worker failed, answered with no song, or is taking long
+     enough over it that the row would be left empty. */
+  var asked = false;
+  function file() {
+    if (asked || shown) return;
+    asked = true;
+    fetch(box.getAttribute('data-src'), { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) { show(data && data.recent && data.recent[0], false, 'file'); })
+      .catch(function () {});
+  }
 
   /* The Worker only asks Spotify every fifteen seconds, whoever asks it. */
   function ask() {
     if (document.hidden) return;
+    var slow = shown ? 0 : setTimeout(file, 5000);
     fetch(box.getAttribute('data-live'), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (now) {
         if (now.track && now.playing) show(now.track, true, 'live');
         else show(now.track || (now.recent && now.recent[0]), false, 'live');
       })
-      .catch(function () {});
+      .catch(function () {})
+      .then(function () {
+        clearTimeout(slow);
+        file();
+      });
   }
   ask();
   setInterval(ask, 30000);

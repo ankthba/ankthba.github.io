@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f4ed" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1c1b19" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f3ee">
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
@@ -15,10 +14,10 @@
   <meta property="og:title" content="Work | Aniketh Bandlamudi">
   <meta property="og:description" content="Aniketh Bandlamudi&#x27;s work: founder of Pragmatic Research, founder of OCRadar, engineering intern at Alarm.com, and software lead at Oakton Robotics.">
   <meta property="og:url" content="https://aniketh.net/work/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
+  <meta property="og:image" content="https://aniketh.net/assets/img/og/work.jpg">
   <meta property="og:image:width" content="2400">
   <meta property="og:image:height" content="1260">
-  <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
+  <meta property="og:image:alt" content="Aniketh Bandlamudi, Work, over a coloured-pencil drawing of golden foothills">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Work | Aniketh Bandlamudi">
   <meta name="twitter:description" content="Aniketh Bandlamudi&#x27;s work: founder of Pragmatic Research, founder of OCRadar, engineering intern at Alarm.com, and software lead at Oakton Robotics.">
@@ -98,13 +97,18 @@
         <h1 class="page-title">Work</h1>
         <div class="projects__list">
 
-          <article class="project-item" data-img="/assets/img/peek/pragmatic.webp">
+          <article class="project-item" id="pragmatic" data-img="/assets/img/peek/pragmatic.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">Pragmatic</h3>
               <span class="project-item__role">Founder · Jan 2026 – Present · Pragmatic Research, Inc.</span>
             </div>
             <p class="project-item__description">The system of record for AI agents: every model and tool call journaled, so a run can be replayed exactly or resumed where it stopped.</p>
-            <a href="/pragmatic/" class="project-item__link">Visit site</a>
+            <p class="project-item__description">Underneath is a zero-dependency durable execution runtime in Rust, with agent execution and replay formalized in a probabilistic process calculus. Its append-only journal takes 230&nbsp;ns per append, with flat latency through one million entries, and passes a 1000/1000 replay-determinism test suite. Incorporated as a Delaware C-corp in August 2026.</p>
+            <div class="project-item__links">
+              <a href="/pragmatic/" class="project-item__link">Visit site</a>
+              <a href="/research/#agentical" class="project-item__link">View paper</a>
+              <a href="https://github.com/pragmaticco/pragmatic" target="_blank" rel="noopener" class="project-item__link">View repo</a>
+            </div>
           </article>
 
           <article class="project-item">
@@ -116,13 +120,18 @@
             <a href="https://www.alarm.com" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
           </article>
 
-          <article class="project-item" data-img="/assets/img/peek/ocradar.webp">
+          <article class="project-item" id="ocradar" data-img="/assets/img/peek/ocradar.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">OCRadar</h3>
               <span class="project-item__role">Founder &amp; President · May 2022 – Present</span>
             </div>
-            <p class="project-item__description">An AI app for catching oral cancer early, using computer vision.</p>
-            <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
+            <p class="project-item__description">A nonprofit with a team of four, building an AI app for catching oral cancer early, using computer vision.</p>
+            <p class="project-item__description">The published neural network, trained on 4,293 images, reached 97.8% precision, 95.3% recall and 98% test accuracy at 1440p. It runs on-device with Core&nbsp;ML, with a 3D-printed attachment for capturing images. Covered by WTOP, the Korea Times and Vision Times.</p>
+            <div class="project-item__links">
+              <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
+              <a href="/press/" class="project-item__link">Press coverage</a>
+              <a href="/research/#cnn-ocscc-detection" class="project-item__link">View paper</a>
+            </div>
           </article>
 
           <article class="project-item" data-img="/assets/img/peek/frc.webp">

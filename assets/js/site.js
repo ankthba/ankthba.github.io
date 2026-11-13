@@ -311,6 +311,11 @@
     { group: 'Do', title: 'Follow the system theme', sub: '', url: 'theme:system' }
   ];
 
+  // light only (pencil.css): there the theme commands have nothing to do
+  if (root.classList.contains('pencil')) {
+    FIXED = FIXED.filter(function (item) { return !/^theme:/.test(item.url); });
+  }
+
   var STORE = 'search-index-v1';
   var index = null;
   var building = null;
@@ -523,7 +528,8 @@
     shown = found.items;
     active = Math.min(active, Math.max(0, shown.length - 1));
     list.textContent = '';
-    count.textContent = q ? shown.length + (shown.length === 40 ? '+' : '') + ' found' : '';
+    // nothing is "0 found" while the site is still being read
+    count.textContent = q && (index || shown.length) ? shown.length + (shown.length === 40 ? '+' : '') + ' found' : '';
 
     if (!shown.length) {
       var empty = document.createElement('p');
@@ -665,8 +671,15 @@
     if (event.target === dialog) close();
   });
 
-  // start reading the site once the page is quiet, so the first search is instant
-  if ('requestIdleCallback' in window) requestIdleCallback(function () { build(); }, { timeout: 4000 });
+  /* Reading the site is every page of it, far more than the page being
+     looked at, so it waits until a search is wanted: open() starts it,
+     and so, a moment sooner, does pointing at, focusing or touching the
+     way in, so it has usually been read by the time a word is typed. */
+  document.querySelectorAll('.kbar-open').forEach(function (way) {
+    ['pointerenter', 'focus', 'touchstart'].forEach(function (type) {
+      way.addEventListener(type, function () { build(); }, { passive: true });
+    });
+  });
 
   if (!/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) {
     var key = opener.querySelector('kbd');

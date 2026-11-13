@@ -78,7 +78,7 @@ html.pencil :is(
    the picture, a margin in from the window's edge, and everything below
    hangs from that same margin: the bio, then the pages. The first
    screen stops a little short of the window's foot, so the start of
-   the bio shows under the flowers: there's more below. */
+   the bio shows under the meadow: there's more below. */
 
 html.pencil {
   --edge: clamp(1.25rem, 6.5vw, 7.5rem);
@@ -112,6 +112,22 @@ html.pencil .masthead--home .masthead__role {
   line-height: 1.3;
   color: var(--color-fg);
   text-wrap: balance;
+}
+
+/* Two lines under the name, each kept to itself so neither runs into
+   the other: what I'm building, in ink, then what I study, a step
+   quieter and smaller. Where one is too long for the window it breaks
+   evenly within itself. */
+html.pencil .masthead--home .masthead__line {
+  display: block;
+  text-wrap: balance;
+}
+
+html.pencil .masthead--home .masthead__line + .masthead__line {
+  margin-top: 0.2rem;
+  font-size: 0.88em;
+  font-weight: 400;
+  color: var(--color-muted);
 }
 
 /* the ways to reach me, in the same ink as the name, a size up */
@@ -368,15 +384,18 @@ html.pencil {
      window: foot.webp is a drawing's own foot, edge.webp that foot turned
      over. The drawing's own foot curves up at its corners like an oval,
      which showed as a sloping bottom wherever the drawing is moved
-     sideways, so that curve is kept below the scene (see the img). */
+     sideways, so that curve is kept below the scene (see the img). The
+     middle of the mask laps a pixel over each ragged end (both are solid
+     there): meeting edge to edge at a fraction of a pixel, they left a
+     hairline of paper across the meadow. */
   --edge-h: clamp(4.5rem, 14vh, 10rem);
   -webkit-mask:
     url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 var(--edge-h) / 100% calc(100% - 2 * var(--edge-h)) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
     url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
   mask:
     url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 var(--edge-h) / 100% calc(100% - 2 * var(--edge-h)) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
     url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
   will-change: transform;
 }

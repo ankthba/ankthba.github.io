@@ -192,7 +192,10 @@
 }
 
 .sp-ctl__val {
-  min-width: 2.6ch;
+  /* room for three figures (a weight, a large size), so a value never
+     breaks across lines or moves the controls beside it */
+  min-width: 3.2ch;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums lining-nums;
   color: var(--color-fg);
 }
@@ -682,11 +685,11 @@
 
   .sp-ctl:not(.sp-ctl--words) {
     display: grid;
-    grid-template-columns: 6.5rem minmax(0, 1fr) 2.6ch;
+    grid-template-columns: 6.5rem minmax(0, 1fr) 3.2ch;
   }
 
   .sp-ctl--opsz {
-    grid-template-columns: 6.5rem minmax(0, 1fr) 2.6ch auto !important;
+    grid-template-columns: 6.5rem minmax(0, 1fr) 3.2ch auto !important;
   }
 
   .sp-range {

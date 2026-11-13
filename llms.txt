@@ -7,7 +7,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 ## Key facts
 
 - Name: Aniketh Bandlamudi
-- Education: University of Virginia, School of Engineering and Applied Science, B.S. Computer Science, expected May 2030; minors in Applied Mathematics and Philosophy (planned). Oakton High School (Vienna, Virginia), Advanced Studies Diploma. Y Combinator Startup School.
+- Education: University of Virginia, School of Engineering and Applied Science, B.S. Computer Science, expected May 2030; minors in Applied Mathematics and Philosophy (planned). Oakton High School (Vienna, Virginia), Advanced Studies Diploma. Y Combinator AI Startup School.
 - Founder of Pragmatic (incorporated as Pragmatic Research, Inc., a Delaware C-corp, in August 2026), January 2026 to present
 - Founder and President of OCRadar, May 2022 to present
 - Engineering Intern at Alarm.com, May 2026
@@ -23,7 +23,7 @@ This is his personal site, aniketh.net. The facts below are taken from its pages
 
 - [About](https://aniketh.net/): short bio, latest writing, what he is listening to, recent photos
 - [Work](https://aniketh.net/work/): Pragmatic, Alarm.com, OCRadar, Oakton Robotics
-- [Education](https://aniketh.net/education/): University of Virginia, Y Combinator Startup School, Oakton High School
+- [Education](https://aniketh.net/education/): University of Virginia, Y Combinator AI Startup School, Oakton High School
 - [Projects](https://aniketh.net/projects/): a Rust runtime for AI agents, Genzo, Meridian, Haze, Lagunita, Hypnagogia, Aperta, Sentry, Graphite, Splatify, IllumiSign and more
 - [Design](https://aniketh.net/design/): Lagunita, a variable typeface, with its drawings and a tester
 - [Research](https://aniketh.net/research/): a pre-registered test for memory replay in a whole-brain Drosophila connectome model; provably sound replay, crash recovery, and noninterference for LLM agents; CNN for oral squamous cell carcinoma detection (arXiv:2510.16235)

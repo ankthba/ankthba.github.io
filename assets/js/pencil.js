@@ -6,8 +6,9 @@
    and the page slide up), and lets butterflies loose. The art is in
    /assets/img/pencil/:
 
-   - home-1800.webp / home-3600.webp: the scene the page is set in,
-     the larger one for big, sharp screens.
+   - home-1800 / home-2400 / home-3600 (.avif, with .webp of the first
+     and last for browsers without AVIF): the scene the page is set in,
+     the larger ones for phones and for big, sharp screens.
    - edge.webp: the drawing's own ragged foot, turned over, which the
      scene's top dissolves through.
    - butterfly-<kind>.webp: a butterfly seen from above, wings flat,
@@ -48,10 +49,18 @@
 
   var scene = null, headBox = null;
   var home = document.querySelector('.sheet--home');
-  // the smaller drawing unless the screen needs the larger to stay sharp
+  // the smaller drawing unless the screen needs the larger to stay sharp;
+  // the page's head has already chosen and sent for it, and kept its place
+  // (has-scene), so nothing under it moves when it lands
   var need = Math.max(root.clientWidth, window.innerHeight * 1.5) * (window.devicePixelRatio || 1);
-  var sceneReady = home ? load(ART + (need > 2000 ? 'home-3600.webp' : 'home-1800.webp')).then(function (wide) {
-    if (!wide) return null;
+  var webp = ART + (need > 2000 ? 'home-3600.webp' : 'home-1800.webp');
+  var art = root.getAttribute('data-scene') || webp;
+  // the head asks for the AVIF; where that can't be read, the WebP
+  var sceneReady = home ? load(art).then(function (wide) {
+    return wide || art === webp ? wide : load(webp);
+  }).then(function (wide) {
+    // no drawing after all: the page closes up to a plain one
+    if (!wide) { root.classList.remove('has-scene'); return null; }
     scene = document.createElement('div');
     scene.className = 'pencil-scene pencil-scene--standin';
     scene.setAttribute('aria-hidden', 'true');

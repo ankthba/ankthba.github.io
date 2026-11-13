@@ -14,7 +14,7 @@
    A touch screen has no hover, and a tint left on whatever was last
    tapped is worse than none. There the picture keeps instead to the
    row crossing the reading line as the list scrolls past, in the room
-   the row keeps for it. */
+   the row, or the margin beside its list, keeps for it. */
 
 'use strict';
 
@@ -73,12 +73,64 @@
     };
     probe.src = src;
   }
-  (window.requestIdleCallback || setTimeout)(function () {
+  function want(el) {
+    var src = el.getAttribute('data-img');
+    if (src && src !== 'none' && !(src in ratios)) { ratios[src] = 0; learn(src); }
+  }
+
+  /* But not while the page itself is still arriving: nothing is fetched
+     ahead until it has loaded. Where there is a cursor any row may be
+     pointed at next, so all of them are fetched then, when there is a
+     moment to spare. On a touch screen a picture is only seen as its row
+     comes up to the reading line, so each is fetched as its row comes
+     within half a screen of view, and one never scrolled to is never
+     fetched. A row shown before its picture was fetched fetches it
+     there and then (show()). */
+  var near = null;
+  function ahead() {
+    if (fine.matches || !('IntersectionObserver' in window)) {
+      if (near) { near.disconnect(); near = null; }
+      var all = function () { items.forEach(want); };
+      if (window.requestIdleCallback) window.requestIdleCallback(all, { timeout: 2000 });
+      else setTimeout(all, 0);
+      return;
+    }
+    if (near) return;
+    near = new IntersectionObserver(function (entries, seen) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        seen.unobserve(entry.target);
+        want(entry.target);
+      });
+    }, { rootMargin: '50% 0px' });
     items.forEach(function (el) {
-      var src = el.getAttribute('data-img');
-      if (src && src !== 'none' && !(src in ratios)) { ratios[src] = 0; learn(src); }
+      if (el.hasAttribute('data-img') && el.getAttribute('data-img') !== 'none') near.observe(el);
     });
-  });
+  }
+  var began = false;
+  function begin() {
+    if (began) return;
+    began = true;
+    ahead();
+  }
+  if (document.readyState === 'complete') begin();
+  else window.addEventListener('load', begin);
+  /* A page can be a long time loading (a slow line, a picture from
+     somewhere else that never arrives) and its lists be in use before it
+     has. So the first scroll on a touch screen, or the cursor's first
+     move onto a row, begins it too: the page is plainly on show by then. */
+  window.addEventListener('scroll', function () {
+    if (!began && !fine.matches) begin();
+  }, { passive: true });
+  document.addEventListener('pointerover', function (e) {
+    if (began || e.pointerType !== 'mouse' || !fine.matches) return;
+    var el = e.target.closest && e.target.closest(ITEMS);
+    if (el && items.indexOf(el) > -1) begin();
+  }, { passive: true });
+  // a cursor that turns up later (a trackpad on a tablet) wants them all
+  if (fine.addEventListener) {
+    fine.addEventListener('change', function () { if (began) ahead(); });
+  }
 
   var cur = null, on = false, zoom = ZOOM, snap = false;
   var tx = 0, ty = 0, x = 0, y = 0, vy = 0, s = 0.86, tilt = 0;
@@ -120,7 +172,12 @@
     fit(ratios[src]);
     if (ratios[src]) return;
     learn(src, function () {
-      if (cur && picture(cur) === src) { fit(ratios[src]); kick(); }
+      if (cur && picture(cur) === src) {
+        fit(ratios[src]);
+        // its place in the row was worked out for the shape it was taken to be
+        if (!fine.matches) inRow(cur);
+        kick();
+      }
     });
   }
 
@@ -155,13 +212,21 @@
     ty = clamp(cy - h * 0.3, 12, window.innerHeight - h - 12);
   }
 
-  // in the place the row keeps for it, at its top right
+  // In the place the row keeps for it. Either a place among its words,
+  // at its top right; or, where the list keeps a margin down its right
+  // for the pictures (the row's right padding: the home page, and the
+  // other pages on a tablet), in that margin: level with the middle of a
+  // home page row, or of any row shorter than the picture, and otherwise
+  // at the row's top.
   function inRow(el) {
     var r = el.getBoundingClientRect();
     var cs = getComputedStyle(el);
     var rem = parseFloat(getComputedStyle(root).fontSize) || 16;
-    tx = r.right - parseFloat(cs.paddingRight) - ww;
+    var left = parseFloat(cs.paddingLeft) || 0, right = parseFloat(cs.paddingRight) || 0;
+    var margin = right > left + 1;
+    tx = r.right - (margin ? left : right) - ww;
     ty = r.top + parseFloat(cs.paddingTop) + 0.2 * rem;
+    if (margin && (el.matches('.index__row') || r.height < wh + 2 * (ty - r.top))) ty = r.top + (r.height - wh) / 2;
   }
 
   function frame(now) {

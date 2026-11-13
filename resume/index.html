@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f4ed" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1c1b19" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f3ee">
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
@@ -15,10 +14,10 @@
   <meta property="og:title" content="Resume | Aniketh Bandlamudi">
   <meta property="og:description" content="Resume of Aniketh Bandlamudi: Computer Science and Applied Mathematics at the University of Virginia, founder of Pragmatic Research and OCRadar, and engineering intern at Alarm.com.">
   <meta property="og:url" content="https://aniketh.net/resume/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
+  <meta property="og:image" content="https://aniketh.net/assets/img/og/resume.jpg">
   <meta property="og:image:width" content="2400">
   <meta property="og:image:height" content="1260">
-  <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
+  <meta property="og:image:alt" content="Aniketh Bandlamudi, Resume, over a coloured-pencil drawing of golden foothills">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Resume | Aniketh Bandlamudi">
   <meta name="twitter:description" content="Resume of Aniketh Bandlamudi: Computer Science and Applied Mathematics at the University of Virginia, founder of Pragmatic Research and OCRadar, and engineering intern at Alarm.com.">
@@ -100,9 +99,9 @@
         </nav>
       </header>
 
-    <main class="page" id="main">
+    <main class="page page--resume" id="main">
         <h1 class="page-title">Resume</h1>
-        <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
+        <a class="resume__sheet" href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" target="_blank" rel="noopener" aria-label="Open resume PDF">
           <img class="resume__frame" src="/assets/media/resume.svg" alt="Resume of Aniketh Bandlamudi">
         </a>
         <a href="/assets/media/Aniketh-Bandlamudi-Resume.pdf" download="Aniketh-Bandlamudi-Resume.pdf" class="project-item__link resume__download">Download PDF</a>

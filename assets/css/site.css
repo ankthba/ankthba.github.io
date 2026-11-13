@@ -7,7 +7,7 @@
    Monet among them. Geist Serif for everything.
    Light only, in Claude's palette: ivory paper, warm near-black ink,
    warm greys, and each page's painting's colour for what you point at.
-   =========================================================
+   ========================================================= */
 
 /* ---------------------------------------------------------
    1. Tokens
@@ -544,6 +544,12 @@ a.masthead__name:hover {
   margin-top: 0.4rem;
 }
 
+/* the sentence a long entry opens with (Research), in ink: what the
+   paper is, for anyone who reads no further */
+.project-item__lead {
+  color: var(--color-fg);
+}
+
 .project-item__link {
   justify-self: start;
   margin-top: 0.15rem;
@@ -586,6 +592,58 @@ a.masthead__name:hover {
 .facts dd {
   min-width: 0;
   color: var(--color-muted);
+}
+
+/* A long list (Oakton's coursework) shows its first lines and keeps
+   the rest folded under a line of quieter text, like Show all on the
+   music page. A <details>, so it opens with no script and from the
+   keyboard. Open, the line moves to the foot of the list (it is the
+   first thing in a <details>, so it is placed there) and reads Show
+   fewer. */
+.facts__more > summary {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin-top: 0.3rem;
+  color: var(--color-quiet);
+  cursor: pointer;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--transition-fast);
+}
+
+.facts__more > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* room round the words for a finger */
+.facts__more > summary::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem -0.75rem;
+}
+
+@media (hover: hover) {
+  .facts__more > summary:hover {
+    color: var(--color-fg);
+  }
+}
+
+.facts__more[open] {
+  position: relative;
+  padding-bottom: 1.75em;
+  padding-bottom: calc(1lh + 0.3rem);
+}
+
+.facts__more[open] > summary {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.facts__more:not([open]) .facts__fewer,
+.facts__more[open] .facts__all {
+  display: none;
 }
 
 /* ---------------------------------------------------------
@@ -756,8 +814,15 @@ a.masthead__name:hover {
   box-shadow: var(--shadow-lift);
 }
 
+/* the sheet is a link to the PDF */
+.resume__sheet {
+  display: block;
+}
+
+/* clear of the sheet and the shadow under it */
 .resume__download {
-  margin-top: 1rem;
+  display: inline-block;
+  margin-top: 1.75rem;
 }
 
 /* ---------------------------------------------------------
@@ -1220,13 +1285,26 @@ a.play:hover .play__name {
     column-gap: 1rem;
   }
 
+  /* On a phone the sheet's words are too small to read, so the way to
+     the PDF comes before it rather than after */
+  .page--resume {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .resume__download {
+    order: -1;
+    align-self: flex-start;
+    margin: 0 0 1.25rem;
+  }
+
   .scent__info dt {
     margin-top: 0.35rem;
   }
 }
 
-/* On a touch screen each row keeps a place at its top right for its
-   picture, which keeps to the row at the reading line. The words run
+/* On a touch screen each entry keeps a place at its top right for its
+   picture, which keeps to the entry at the reading line. The words run
    round the place, as round a picture set into a column. */
 @media (hover: none) {
   :root {
@@ -1240,7 +1318,16 @@ a.play:hover .play__name {
     padding-bottom: 0.6rem;
   }
 
-  .index__row::before,
+  /* The home page's rows are a line or two, shorter than any picture.
+     A place for the picture inside each one held the rows with pictures
+     far apart and left the ones without close together, so its lists
+     keep a margin down their right instead, the same for every row,
+     and the picture sits in that, level with its row (peek.js). The
+     rows are then as far apart as their words make them. */
+  .index__row {
+    padding: 0.65rem calc(var(--row-pad) + var(--peek-w) + 1rem) 0.7rem var(--row-pad);
+  }
+
   .project-item::before {
     content: "";
     float: right;
@@ -1249,7 +1336,6 @@ a.play:hover .play__name {
     margin: 0.2rem 0 0.35rem 1rem;
   }
 
-  .index__row[data-img="none"]::before,
   .project-item[data-img="none"]::before {
     content: none;
   }
@@ -1273,6 +1359,21 @@ a.play:hover .play__name {
 
   .project-item__link {
     display: inline-block;
+  }
+}
+
+/* On a tablet the column is wide enough for the entries to keep that
+   margin as well. A short entry was held open by its picture's place,
+   and so stood further from the next than the others; and the words
+   now share one right edge rather than stepping in round a place that
+   is empty for every entry but one. */
+@media (hover: none) and (min-width: 64em) {
+  .project-item {
+    padding-right: calc(var(--row-pad) + var(--peek-w) + 1.5rem);
+  }
+
+  .project-item::before {
+    content: none;
   }
 }
 
@@ -1336,13 +1437,19 @@ html.intro .colophon {
    15. Motion
    --------------------------------------------------------- */
 
+/* No transitions at all, rather than very short ones: a transition of
+   any length, on every property of every element, holds a change made
+   from script back for a frame, so a script that sets a size and then
+   measures (the specimen's name fitted to the page) measured the size
+   it had before. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
 }
 

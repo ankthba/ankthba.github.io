@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f4ed" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#1c1b19" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f3ee">
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>document.documentElement.classList.add('js'); if (!('onpagereveal' in window) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('arrive');</script>
@@ -15,10 +14,10 @@
   <meta property="og:title" content="Research | Aniketh Bandlamudi">
   <meta property="og:description" content="Research by Aniketh Bandlamudi: a pre-registered test for memory replay in a whole-brain Drosophila connectome model, provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
   <meta property="og:url" content="https://aniketh.net/research/">
-  <meta property="og:image" content="https://aniketh.net/assets/img/og.jpg">
+  <meta property="og:image" content="https://aniketh.net/assets/img/og/research.jpg">
   <meta property="og:image:width" content="2400">
   <meta property="og:image:height" content="1260">
-  <meta property="og:image:alt" content="Aniketh Bandlamudi, over a coloured-pencil drawing of the Blue Ridge and a meadow of wildflowers">
+  <meta property="og:image:alt" content="Aniketh Bandlamudi, Research, over a coloured-pencil drawing of golden foothills">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | Aniketh Bandlamudi">
   <meta name="twitter:description" content="Research by Aniketh Bandlamudi: a pre-registered test for memory replay in a whole-brain Drosophila connectome model, provably sound replay, crash recovery, and noninterference for nondeterministic LLM agents, and a convolutional neural network for oral cavity squamous cell carcinoma (OCSCC) detection (arXiv:2510.16235).">
@@ -170,11 +169,12 @@
         <h1 class="page-title">Research</h1>
         <div class="projects__list">
 
-          <article class="project-item" data-img="/assets/img/peek/hypnagogia.webp">
+          <article class="project-item" id="hypnagogia" data-img="/assets/img/peek/hypnagogia.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">Hypnagogia</h3>
               <span class="project-item__role">Computational Neuroscience &middot; Connectomics &middot; Preprint</span>
             </div>
+            <p class="project-item__description project-item__lead">A whole-brain fruit-fly simulation and a pre-registered test of whether a learned memory replays during sleep. It doesn&rsquo;t, and the paper shows why.</p>
             <p class="project-item__description">Sleeping rats replay what they learned, but no one has seen an insect&rsquo;s memory cells do it. Hypnagogia simulates all 144,209 neurons of the male fruit-fly brain from its connectome, teaches the model an odour, and runs a pre-registered test of whether the cells that learned it switch back on by themselves during simulated sleep, against shuffled-wiring, wake and unlearned-weights controls.</p>
             <p class="project-item__description">They don&rsquo;t, and the paper shows why: the memory sits one synapse downstream of the cells being scored, so learning can&rsquo;t change which of them switch on, even once the model is given the slow dynamics it needs to have episodes at all. Along the way, modelling one inhibitory neuron as the non-spiking cell it was measured to be, with no new parameters, took the model&rsquo;s odour code from 52.6% of Kenyon cells to 4.5%, against about 6% in real flies.</p>
             <p class="project-item__description">Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain <em>Drosophila</em> Connectome Model. November 2026.</p>
@@ -184,11 +184,12 @@
             </div>
           </article>
 
-          <article class="project-item" data-img="/assets/img/peek/agentical.webp">
+          <article class="project-item" id="agentical" data-img="/assets/img/peek/agentical.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">Agentical</h3>
               <span class="project-item__role">Programming Languages &middot; Formal Methods &middot; Formal Verification &middot; Preprint</span>
             </div>
+            <p class="project-item__description project-item__lead">Proofs, machine-checked in Lean&nbsp;4, that an AI agent&rsquo;s run can be replayed exactly and resumed after a crash.</p>
             <p class="project-item__description">AI agents crash mid-task, and their model calls never give the same answer twice, so a crashed run can&rsquo;t simply be restarted. Agentical gives LLM agents a probabilistic semantics in which every model call is a random draw and every response is journaled, then proves that replaying a run from its journal reproduces it exactly, and that recovering from a crash continues the run with exactly the distribution it would have had, whenever the crash doesn&rsquo;t hinge on a response that was never recorded. Both results extend to many agents running at once with shared memory and messages, and a security theorem shows that, under its labelling rules and a scheduler that sees only public events, secret data can&rsquo;t leak between agents, even statistically.</p>
             <p class="project-item__description">The core results, and their lifting to any deterministically scheduled system, are machine-checked in Lean&nbsp;4 with no unproven steps; that the multi-agent calculus is such a system, and the security theorem, are proved on paper. A dependency-free Rust runtime puts the single-agent results to the test: 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried, and journaling costs about 100 nanoseconds a step.</p>
             <p class="project-item__description">Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents. November 2026.</p>
@@ -198,11 +199,12 @@
             </div>
           </article>
 
-          <article class="project-item" data-img="/assets/img/peek/ocradar.webp">
+          <article class="project-item" id="cnn-ocscc-detection" data-img="/assets/img/peek/ocradar.webp">
             <div class="project-item__header">
               <h3 class="project-item__title">CNN OCSCC Detection</h3>
               <span class="project-item__role">Machine Learning &middot; Medical Imaging &middot; arXiv:2510.16235</span>
             </div>
+            <p class="project-item__description project-item__lead">A neural network that recognizes oral cancer in photos, trained on 4,293 images, with the hardware and open-access app to use it.</p>
             <p class="project-item__description">Oral cavity squamous cell carcinoma is the most common head and neck cancer, and its early stages are subtle enough that it often goes undetected until it is advanced. This co-authored paper trains a convolutional neural network on 4,293 images of malignant and benign tumors and negative samples to recognize it, pairs the model with custom hardware built to capture detailed images, and releases an open-access app that puts the model in anyone&rsquo;s hands.</p>
             <p class="project-item__description">Testing the network at five common image resolutions showed accuracy rising on a logarithmic curve, with diminishing returns from higher pixel counts: a measure of the image quality a screening device actually needs.</p>
             <p class="project-item__description">Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection. October 2025.</p>

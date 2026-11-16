@@ -3,20 +3,15 @@
 
    Sets the home page inside its picture, plays the opening (the name
    large in the middle, then rising into its place as the picture and
-   the page slide up), and lets butterflies loose. The picture and the
-   butterflies are set in type: every mark is a character, worked out
-   afresh a dozen times a second. The art is in /assets/img/pencil/:
+   the page slide up), and lets butterflies loose. The picture is line
+   art in type, drawn here rather than loaded: a ridge and three
+   rolling hills as single lines of characters, oaks, the Dish and
+   clouds set by hand, grass as sparse ticks. It moves: the wind leans
+   the grass and stirs the oaks, the clouds drift, an aeroplane crosses
+   now and then, and the grass parts round the cursor.
 
-   - home-ascii.webp: the drawing of the foothills, small. It is never
-     shown; it is read, a character's worth at a time, for how much
-     pencil is there (its alpha) and in what colour. The hills, the oaks
-     and the ridge are set from it; the wind in the grass, the clouds
-     and the aeroplane are made up as they go.
-   - butterfly-<kind>.webp: a butterfly seen from above, wings flat,
-     body down the middle, on a clear ground. Each is turned, its two
-     wings folded, and read into characters the same way, every frame.
-
-   The butterflies fly anywhere, over the words too, but settle only
+   The butterflies are a few characters each, wings opening and
+   closing. They fly anywhere, over the words too, but settle only
    on open paper, never on a line of text. In the air they
    hold their place in the window; landed, they sit on the paper and
    scroll with it. Come near one and it lifts off and away. For anyone
@@ -28,26 +23,12 @@
   'use strict';
 
   var root = document.documentElement;
-  var ART = '/assets/img/pencil/';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  function load(src) {
-    return new Promise(function (done) {
-      var img = new Image();
-      img.decoding = 'async';
-      img.onload = function () {
-        // decoded before it's shown, so its arrival never stutters
-        (img.decode ? img.decode() : Promise.resolve()).then(function () { done(img); }, function () { done(img); });
-      };
-      img.onerror = function () { done(null); };
-      img.src = src;
-    });
-  }
 
   /* ---------- The scene the page is set in ----------
      The home page's first screen is the picture: the name sits in its
-     sky and the meadow runs off the edges and thins out into the paper,
-     where the rest of the page carries on. */
+     sky, and the meadow thins out into the paper at its foot, where the
+     rest of the page carries on. */
 
   var MONO = 'ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace';
 
@@ -57,35 +38,59 @@
     h = Math.imul(h ^ (h >>> 13), 1274126177);
     return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
   }
-  // smooth noise between those numbers, and a few layers of it
-  function noise(x, y) {
-    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
-    var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
-    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
-  }
-  function fbm(x, y) {
-    return noise(x, y) * 0.55 + noise(x * 2.1 + 9.2, y * 2.1 + 3.7) * 0.3 + noise(x * 4.3 + 1.7, y * 4.3 + 8.1) * 0.15;
-  }
   function ramp(t, a, b) {
     t = (t - a) / (b - a);
     return t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
   }
 
-  var SKY = 1, RIDGE = 2, TREE = 3, GRASS = 4, MADE = 5;
-  var DISH = ['\\_____/', ' `-.-\' ', ' /_|_\\ '];
-  var SKY_INK = '#2f6fe0', CLOUD_INK = '#d98a4e', PLANE_INK = '#4a463f';
-  var FAR = ' .:-=+*#';              // the ridge, light to heavy
-  var LEAF = ' .:;oO8&@';            // the oaks
-  var AIR = '-~-=~-';                // strokes of sky
+  // The lines of the land, back to front: how far down the scene each
+  // runs, how much it rolls, and the waves it is made of.
+  var LAND = [
+    { at: 0.40, roll: 0.030, waves: [[1.3, 0.4, 0.55], [2.9, 1.9, 0.3], [6.3, 4.0, 0.15]], line: '#5672ad', fill: '#a9b9d8' },
+    { at: 0.535, roll: 0.030, waves: [[1.1, 2.0, 0.65], [2.6, 0.5, 0.35]], line: '#a98a3a', fill: '#c9ab58' },
+    { at: 0.625, roll: 0.042, waves: [[0.9, 4.4, 0.65], [2.1, 1.2, 0.35]], line: '#a07f2c', fill: '#bd9c43' },
+    { at: 0.745, roll: 0.030, waves: [[0.7, 1.0, 0.7], [1.7, 3.3, 0.3]], line: '#96741f', fill: '#ad8a2c' }
+  ];
+  var LEAF = '#58763a', BARK = '#7a5c3c', STEEL = '#4a463f', CLOUD = '#8798b6';
+  var OAK = { trunk: 2, art: [
+    '     _.-~~-._',
+    '  .-\'  ~   ~ `-.',
+    ' (  ~    ~   ~  )',
+    '(   ~  ~   ~    ~)',
+    ' `-.  ~   ~  _.-\'',
+    '    `-._\\|/_.-\'',
+    '        |||',
+    '        |||'] };
+  var OAKLET = { trunk: 1, art: [
+    '  .-~~-.',
+    ' ( ~  ~ )',
+    '(  ~ ~  ~)',
+    ' `-.||.-\'',
+    '    ||'] };
+  var SHRUB = { trunk: 0, art: [
+    ' .-~-.',
+    '(~ ~ ~)'] };
+  var DISH = { trunk: 3, ink: STEEL, art: [
+    '\\_____/',
+    ' `-.-\'',
+    ' /_|_\\'] };
+  var CLOUDS = [
+    ['   .-~~-.', '.-(      )-.', '(__________)'],
+    ['  .--.', ' (    )_', '(_______)'],
+    ['    .-~-.', ' .-(     )--.', '(____________)']
+  ];
+  // what stands where: across the scene, and on which line of the land
+  var STAND = [
+    [OAK, 0.13, 2], [OAKLET, 0.60, 1], [DISH, 0.83, 1],
+    [SHRUB, 0.30, 1], [SHRUB, 0.345, 1], [SHRUB, 0.44, 2], [OAKLET, 0.75, 2], [SHRUB, 0.92, 2], [SHRUB, 0.69, 1]
+  ];
+  // on a phone there is room for fewer
+  var STAND_NARROW = [[OAK, 0.2, 2], [OAKLET, 0.6, 1], [DISH, 0.86, 1], [SHRUB, 0.62, 2]];
   var FPS = 12;
 
   var scene = null, headBox = null, paint = null;
   var home = document.querySelector('.sheet--home');
-  var art = root.getAttribute('data-scene') || ART + 'home-ascii.webp';
-  var sceneReady = home ? load(art).then(function (drawing) {
-    // no drawing after all: the page closes up to a plain one
-    if (!drawing) { root.classList.remove('has-scene'); return null; }
+  var sceneReady = home ? Promise.resolve().then(function () {
     scene = document.createElement('div');
     scene.className = 'pencil-scene';
     scene.setAttribute('aria-hidden', 'true');
@@ -94,29 +99,20 @@
     document.body.insertBefore(scene, document.body.firstChild);
     root.classList.add('has-scene');
     var ctx = canvas.getContext('2d');
-    var reader = document.createElement('canvas');
-    var rctx = reader.getContext('2d', { willReadFrequently: true });
 
     var cols = 0, rows = 0, cw = 0, ch = 0, fs = 0, W = 0, H = 0;
-    var kind, ink, tint, grain, show, was;   // a cell each
-    var head = null;                          // the words in the sky, in the scene's own px
+    var base, tone, live, was;   // a cell each: its character, its colour, whether it moves
+    var skyRows = 0;
+    var head = null;             // the words in the sky: a box clouds pass behind
     var mouse = { x: -9999, y: -9999 };
-    var plane = { x: 0, y: 0, wait: 6 };
+    var plane = { x: 0, y: 0, wait: 5 };
+    var clouds = [];
 
-    // The grid, and the drawing read into it. The drawing is a vignette,
-    // blown up so its faded sides and foot fall outside the window, and
-    // placed so the Dish on the right-hand hill (its top 46% down the
-    // drawing, its right side 84% across) is in view on every screen:
-    // as wide as the window or one and a half times its height, but never
-    // so wide that the sky is cropped down past the Dish; centred, unless
-    // that puts the Dish past 88% of the window (phones), then moved left
-    // just enough; and hung 7% low, so the meadow runs at full strength
-    // to the scene's foot.
     function lay() {
       W = scene.clientWidth; H = scene.clientHeight;
       if (!W || !H) return;
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      fs = W < 700 ? 10 : W < 1800 ? 12 : 14;
+      fs = W < 700 ? 11 : 13;
       ctx.font = '500 ' + fs + 'px ' + MONO;
       cw = ctx.measureText('MMMMMMMMMM').width / 10;
       ch = Math.round(fs * 1.3);
@@ -128,198 +124,175 @@
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'center';
 
-      var edge = Math.min(Math.max(72, window.innerHeight * 0.14), 160);
-      var w = Math.min(Math.max(W, window.innerHeight * 1.5), (H - edge - 24) * 1.5 / 0.46);
-      var h = w / 1.5;
-      var left = Math.min((W - w) / 2, Math.max(W - w, 0.88 * W - 0.84 * w));
-      var top = H - h * 0.93;
+      var n = cols * rows, x, y, i, k;
+      base = new Array(n); tone = new Array(n); live = new Uint8Array(n); was = new Array(n);
+      for (i = 0; i < n; i++) { base[i] = ' '; tone[i] = ''; was[i] = ''; }
 
-      reader.width = cols; reader.height = rows;
-      rctx.clearRect(0, 0, cols, rows);
-      rctx.imageSmoothingQuality = 'high';
-      rctx.drawImage(drawing, left / cw, top / ch, w / cw, h / ch);
-      var px = rctx.getImageData(0, 0, cols, rows).data;
-
-      var n = cols * rows, x, y, i, p;
-      kind = new Uint8Array(n); ink = new Float32Array(n); grain = new Float32Array(n);
-      show = new Float32Array(n); tint = new Array(n); was = new Array(n);
-
-      // where the sky stops: down each column, the first of the dark blue ridge
-      var skyline = [], r0 = Math.floor((top + h * 0.3) / ch), r1 = Math.ceil((top + h * 0.56) / ch);
+      // each line of the land, a height for every column; the same
+      // country on every screen, a wide one just sees more of it
+      var span = H * 1.9;
+      var high = LAND.map(function (l) {
+        var ys = [];
+        for (x = -1; x <= cols; x++) {
+          var u = (x + 0.5) * cw / span, v = 0;
+          l.waves.forEach(function (w) { v += Math.sin(u * w[0] * 6.2832 + w[1]) * w[2]; });
+          ys.push(H * (l.at + l.roll * v));
+        }
+        return ys;   // ys[x + 1]
+      });
+      skyRows = rows;
       for (x = 0; x < cols; x++) {
-        var at = -1;
-        for (y = Math.max(0, r0); y < Math.min(rows, r1); y++) {
-          p = (y * cols + x) * 4;
-          if (px[p + 3] > 34 && px[p + 2] < 190 && px[p + 2] > px[p] && at < 0) { at = y; break; }
-          if (px[p + 3] > 34 && px[p] > px[p + 2] + 30 && at < 0) { at = y; break; }   // or a hill, where there's no ridge
+        // which line each cell of this column lies under: the nearest one above it
+        var top = LAND.map(function (l, j) { return Math.floor(high[j][x + 1] / ch); });
+        skyRows = Math.min(skyRows, top[0]);
+        for (y = 0; y < rows; y++) {
+          var own = -1;
+          for (k = 0; k < LAND.length; k++) if (top[k] <= y) own = k;
+          if (own < 0) continue;
+          i = y * cols + x;
+          var l = LAND[own];
+          if (y === top[own]) {
+            // the line itself: a slope where it climbs or falls a row, else
+            // a stroke at the height it crosses the cell
+            var yy = high[own][x + 1], f = yy / ch - top[own];
+            var before = Math.floor(high[own][x] / ch), after = Math.floor(high[own][x + 2] / ch);
+            base[i] = after < top[own] && f < 0.5 ? '/' : before < top[own] && f < 0.5 ? '\\' :
+                      f > 0.66 ? '_' : f > 0.33 ? '-' : '"';
+            tone[i] = l.line;
+            continue;
+          }
+          var q = hash(x, y), foot = ramp(H - (y + 0.5) * ch, ch * 0.5, H * 0.2);
+          if (own === 0) {
+            // the far ridge: hatched, thinning with its depth
+            var deep = y - top[0];
+            if (deep < 6 && (x + y * 2) % 4 === 0 && q < 1 - deep * 0.14) { base[i] = deep < 3 ? ':' : '.'; tone[i] = l.fill; }
+          } else {
+            // grass: a tick here and there, never two side by side
+            var thin = (own === 3 ? 0.17 : own === 2 ? 0.11 : 0.08) * foot;
+            if (q < thin && hash(x - 1, y) >= thin) {
+              base[i] = own === 1 ? '.' : own === 2 ? ',' : '|';
+              tone[i] = l.fill;
+              live[i] = own === 3 ? 1 : 0;
+            }
+          }
         }
-        skyline.push(at < 0 ? Math.round((top + h * 0.42) / ch) : at);
       }
-      // evened out, so one stray cloud doesn't notch it
-      var even = skyline.map(function (v, k) {
-        var near = skyline.slice(Math.max(0, k - 3), k + 4).sort(function (a, b) { return a - b; });
-        return near[near.length >> 1];
+
+      // the oaks, the shrubs and the Dish, each standing on its line
+      (cols < 90 ? STAND_NARROW : STAND).forEach(function (st) {
+        var what = st[0], art = what.art, wide = 0;
+        art.forEach(function (ln) { wide = Math.max(wide, ln.length); });
+        var cx = Math.round(st[1] * cols), x0 = cx - (wide >> 1);
+        if (cx < 0 || cx >= cols) return;
+        var y1 = Math.floor(high[st[2]][cx + 1] / ch);
+        art.forEach(function (ln, j) {
+          var yy = y1 - (art.length - 1 - j), first = ln.search(/\S/);
+          if (yy < 0 || yy >= rows) return;
+          for (var c = first; c < ln.length; c++) {
+            var xx = x0 + c;
+            if (xx < 0 || xx >= cols) continue;
+            var at = yy * cols + xx, chr = ln[c];
+            // the paper inside its outline hides the hills behind
+            base[at] = chr;
+            tone[at] = what.ink || (j >= art.length - what.trunk || '|/\\'.indexOf(chr) >= 0 && j >= art.length - what.trunk - 1 ? BARK : LEAF);
+            live[at] = chr === '~' && !what.ink ? 2 : 0;
+          }
+        });
       });
 
-      for (y = 0; y < rows; y++) for (x = 0; x < cols; x++) {
-        i = y * cols + x; p = i * 4;
-        var r = px[p], g = px[p + 1], b = px[p + 2], a = px[p + 3] / 255;
-        var u = (x * cw + cw / 2 - left) / w, v = (y * ch + ch / 2 - top) / h;
-        grain[i] = hash(x, y);
-        // the scene's own top and foot: thinned out, a character here and there
-        var yy = y * ch + ch / 2;
-        show[i] = Math.min(ramp(yy, edge * 0.1, edge), ramp(H - yy, 0, edge * 0.8));
-        if (y < even[x]) {
-          // sky: the drawing's own ragged edge, drawn again, since the clouds move
-          kind[i] = SKY;
-          var side = Math.min(ramp(u, 0.02, 0.11), ramp(1 - u, 0.02, 0.11), ramp(v, 0.04, 0.15));
-          ink[i] = u < 0 || u > 1 || v < 0 ? 0 : side;
-          tint[i] = SKY_INK;
-        } else if (a < 0.03) {
-          kind[i] = 0;
-        } else {
-          var lum = (r * 0.3 + g * 0.59 + b * 0.11) / 255;
-          kind[i] = b > r + 20 ? RIDGE : lum < 0.3 ? TREE : GRASS;
-          ink[i] = Math.min(1, a / 0.5);
-          // a little deeper than drawn: a character is thinner than a pencil stroke
-          // (the oaks are near black in the drawing's own pencil: lifted to a leaf green)
-          var k = kind[i] === GRASS ? 0.9 : kind[i] === RIDGE ? 1 : Math.min(2.4, 0.27 / Math.max(lum, 0.05));
-          if (kind[i] === TREE) g *= 1.12;
-          // the shaded sides of the hills, set a little thicker
-          if (kind[i] === GRASS) ink[i] *= 1 + (0.47 - lum) * 2.2;
-          tint[i] = 'rgb(' + Math.round(r * k > 255 ? 255 : r * k) + ',' + Math.round(g * k > 255 ? 255 : g * k) + ',' + Math.round(b * k > 255 ? 255 : b * k) + ')';
-        }
+      // clouds, spread across the sky above the ridge
+      clouds = [];
+      var count = Math.max(3, Math.round(cols / 30)), room = Math.max(3, skyRows - 5);
+      for (k = 0; k < count; k++) {
+        clouds.push({
+          x: (k + hash(k, 7) * 0.7) * (cols + 16) / count,
+          y: 1 + Math.floor(hash(k, 19) * room),
+          art: CLOUDS[k % CLOUDS.length],
+          speed: 0.22 + hash(k, 31) * 0.18
+        });
       }
-      // The Dish on its hill is paper-white in the drawing, too pale to
-      // read into type, so it is set by hand where the drawing has it.
-      var dx = Math.round((left + w * 0.815) / cw) - 3, dy = Math.round((top + h * 0.528) / ch) - 2;
-      DISH.forEach(function (line, j) {
-        for (var c = 0; c < line.length; c++) {
-          x = dx + c; y = dy + j;
-          if (x < 0 || x >= cols || y < 0 || y >= rows) continue;
-          i = y * cols + x;
-          kind[i] = line[c] === ' ' ? 0 : MADE;
-          ink[i] = line.charCodeAt(c);
-          tint[i] = PLANE_INK;
-        }
-      });
-      for (i = 0; i < n; i++) was[i] = '';
       ctx.clearRect(0, 0, W, H);
     }
 
-    // one cell for this moment: a character and its colour
-    var out = { c: ' ', ink: '' };
-    function cell(x, y, i, t) {
-      out.c = ' '; out.ink = tint[i];
-      var k = kind[i];
-      if (!k) return;
-      var s = show[i], q = grain[i], amt = ink[i];
-      // paper shows through behind the words in the sky
-      if (head) {
-        var hx = (x * cw - head.x) / head.rx, hy = (y * ch - head.y) / head.ry, hd = hx * hx + hy * hy;
-        if (hd < 1) s *= 0.06 + 0.94 * hd * hd * hd;
-      }
-      if (s < 1 && q > s * 1.05) return;
-      if (k === MADE) { out.c = String.fromCharCode(amt); return; }
-
-      if (k === SKY) {
-        if (amt <= 0 || q > amt * 1.1) return;
-        // clouds: gaps in the blue, drifting east, warm along their undersides
-        var cx = x * cw / (fs * 15) - t * 0.012, cy = y * ch / (fs * 5.2);
-        var c = fbm(cx, cy);
-        var under = fbm(cx + 0.02, cy - 0.22);
-        if (c > 0.6) {
-          if (under < 0.585 && hash(x + 91, y) < 0.5) { out.c = hash(x, y + 57) < 0.5 ? '~' : '-'; out.ink = CLOUD_INK; }
-          else if (hash(x + 17, y + 3) < 0.07) { out.c = '.'; out.ink = CLOUD_INK; }
-          return;
-        }
-        if (c > 0.56) { if (q < 0.4) out.c = '.'; return; }
-        // the blue itself: short strokes, most cells left as paper
-        var d = hash(x + 7, y + 13);
-        if (d > 0.74) return;
-        var flick = noise(x * 0.31 + t * 0.07, y * 0.9 + 4);
-        out.c = d > 0.62 ? '.' : AIR[Math.floor((d * 2 + flick) * 3) % AIR.length];
-        return;
-      }
-
-      if (k === RIDGE) {
-        out.c = FAR[Math.min(FAR.length - 1, Math.round(amt * 5.4 + (q - 0.5) * 2.2))] || ' ';
-        return;
-      }
-
-      // the wind: gusts crossing the hills from the west, and a ripple round the cursor
-      var gust = Math.sin(x * cw * 0.011 - t * 1.25 + Math.sin(y * ch * 0.021 + t * 0.4) * 1.6) +
-                 (noise(x * cw * 0.02 - t * 0.5, y * ch * 0.04) - 0.5) * 1.6;
-      var mx = x * cw - mouse.x, my = y * ch - mouse.y, md = mx * mx + my * my;
-      if (md < 14400) gust += (mx > 0 ? 1.6 : -1.6) * (1 - md / 14400);
-
-      if (k === TREE) {
-        var leaf = amt * 7.2 + (q - 0.5) * 2.4 + (gust > 0.7 && q > 0.6 ? 1 : 0);
-        out.c = LEAF[Math.max(1, Math.min(LEAF.length - 1, Math.round(leaf)))];
-        return;
-      }
-
-      // grass: blades leaning with the gust, thinner where the pencil was lighter
-      var thick = amt * 1.45 + (gust > 0.9 ? 0.1 : 0);
-      if (q > thick) { if (q > 0.93) out.c = '.'; return; }
-      var lean = gust + (q - 0.4) * 1.1;
-      var kindOf = hash(x + 31, y + 77);
-      if (kindOf < 0.26) out.c = lean > 0.75 ? '\'' : lean < -0.75 ? '`' : ',';
-      else if (kindOf < 0.4) out.c = lean > 0.4 ? ';' : ':';
-      else out.c = lean > 0.75 ? '/' : lean < -0.75 ? '\\' : kindOf > 0.9 ? '!' : '|';
+    // behind the words, the sky is left as paper
+    function clear(x, y) {
+      if (!head) return true;
+      var px = (x + 0.5) * cw, py = (y + 0.5) * ch;
+      return px < head.x0 || px > head.x1 || py < head.y0 || py > head.y1;
     }
 
-    // the aeroplane, now and then, climbing east with its trail behind it
-    function fly(dt) {
-      if (plane.wait > 0) {
-        plane.wait -= dt;
-        if (plane.wait <= 0) { plane.x = -4; plane.y = rows * (0.2 + Math.random() * 0.14); }
-        return;
-      }
-      plane.x += dt * 2.6;
-      plane.y -= dt * 0.22;
-      if (plane.x > cols + 30) plane.wait = 25 + Math.random() * 35;
-    }
-    function planeAt(x, y) {
-      if (plane.wait > 0) return '';
-      var px = Math.floor(plane.x), back = px - x;
-      if (back < 0 || back > 26) return '';
-      // the trail sinks a row every so often behind it
-      if (y !== Math.round(plane.y + back * 0.085)) return '';
-      if (back === 0) return '>';
-      if (back === 1) return '=';
-      if (back === 2) return '-';
-      if (back < 5) return '';
-      return back < 12 ? '-' : back < 19 ? (back % 2 ? '-' : '') : (back % 3 ? '' : '.');
-    }
-
-    var then = 0;
+    var then = 0, sheet = null, inks = null;
     paint = function (t) {
       if (!cols) return;
       var dt = then ? Math.min(0.2, t - then) : 0;
       then = t;
-      fly(dt);
-      var x, y, i, c, key, tone;
+      var n = cols * rows, x, y, i, c, key;
+      if (!sheet || sheet.length !== n) { sheet = new Array(n); inks = new Array(n); }
+
+      for (y = 0; y < rows; y++) for (x = 0; x < cols; x++) {
+        i = y * cols + x;
+        c = base[i];
+        if (live[i]) {
+          // the wind: gusts crossing from the west, and a ripple round the cursor
+          var gust = Math.sin(x * cw * 0.011 - t * 1.3 + Math.sin(y * ch * 0.02 + t * 0.4) * 1.5) + (hash(x, y) - 0.5) * 0.5;
+          var mx = x * cw - mouse.x, my = y * ch - mouse.y, md = mx * mx + my * my;
+          if (md < 16900) gust += (mx > 0 ? 1.8 : -1.8) * (1 - md / 16900);
+          if (live[i] === 1) c = gust > 0.55 ? '/' : gust < -0.75 ? '\\' : '|';
+          else c = gust > 0.8 ? '-' : '~';
+        }
+        sheet[i] = c; inks[i] = tone[i];
+      }
+
+      // the clouds drift east, a character at a time, and come round again
+      clouds.forEach(function (cl) {
+        cl.x += cl.speed * dt;
+        if (cl.x > cols + 2) cl.x -= cols + 18;
+        var x0 = Math.floor(cl.x);
+        cl.art.forEach(function (ln, j) {
+          var yy = cl.y + j;
+          if (yy >= skyRows - 1) return;
+          for (var k = 0; k < ln.length; k++) {
+            var xx = x0 + k;
+            if (ln[k] === ' ' || xx < 0 || xx >= cols || !clear(xx, yy)) continue;
+            sheet[yy * cols + xx] = ln[k]; inks[yy * cols + xx] = CLOUD;
+          }
+        });
+      });
+
+      // the aeroplane, now and then, climbing east with its trail behind it
+      if (plane.wait > 0) {
+        plane.wait -= dt;
+        if (plane.wait <= 0) { plane.x = -2; plane.y = skyRows * (0.45 + Math.random() * 0.35); }
+      } else {
+        plane.x += dt * 3;
+        plane.y -= dt * 0.2;
+        if (plane.x > cols + 30) plane.wait = 25 + Math.random() * 35;
+        var px = Math.floor(plane.x);
+        for (var back = 0; back < 28; back++) {
+          x = px - back; y = Math.round(plane.y + back * 0.07);
+          if (x < 0 || x >= cols || y < 0 || y >= skyRows || !clear(x, y)) continue;
+          c = back === 0 ? '>' : back === 1 ? '=' : back < 4 ? '-' : back < 7 ? ' ' : back < 16 ? (back % 2 ? '-' : ' ') : (back % 3 ? ' ' : '.');
+          if (c === ' ' || sheet[y * cols + x] !== ' ') continue;
+          sheet[y * cols + x] = c; inks[y * cols + x] = back < 4 ? STEEL : CLOUD;
+        }
+      }
+
+      // only what changed is set again
       var last = '';
       for (y = 0; y < rows; y++) for (x = 0; x < cols; x++) {
         i = y * cols + x;
-        cell(x, y, i, t);
-        c = out.c; tone = out.ink;
-        if (kind[i] === SKY) {
-          var pl = planeAt(x, y);
-          if (pl && show[i] > 0.5) { c = pl; tone = PLANE_INK; }
-        }
-        key = c === ' ' ? '' : c + tone;
+        c = sheet[i];
+        key = c === ' ' ? '' : c + inks[i];
         if (key === was[i]) continue;
         was[i] = key;
-        ctx.clearRect(x * cw - 0.5, y * ch, cw + 1, ch);
+        ctx.clearRect(x * cw, y * ch, cw, ch);
         if (c === ' ') continue;
-        if (tone !== last) { ctx.fillStyle = tone; last = tone; }
+        if (inks[i] !== last) { last = inks[i]; ctx.fillStyle = last; }
         ctx.fillText(c, x * cw + cw / 2, y * ch + ch / 2);
       }
     };
 
-    // the paper behind the words is sized to the head as it will rest
+    // where the words in the sky are, as they will rest
     headBox = function () {
       var bits = document.querySelectorAll('.masthead--home .masthead__name, .masthead--home .masthead__role, .masthead--home .social');
       if (!bits.length) return;
@@ -342,14 +315,14 @@
         Array.prototype.forEach.call(el.querySelectorAll('a'), function (link) { take(link.getBoundingClientRect()); });
       });
       if (x1 < x0) return;
-      y0 += window.scrollY; y1 += window.scrollY;
-      head = { x: (x0 + x1) / 2, y: (y0 + y1) / 2, rx: (x1 - x0) * 0.66 + 50, ry: (y1 - y0) * 0.78 + 36 };
+      var top = window.scrollY;
+      head = { x0: x0 - 22, x1: x1 + 22, y0: y0 + top - 12, y1: y1 + top + 12 };
       if (!running) once();
     };
 
     // a dozen settings a second while it's in view; set once and left for less motion
     var running = false, due = 0;
-    function once() { paint(performance.now() / 1000); }
+    function once() { then = 0; paint(performance.now() / 1000); }
     function tick(now) {
       if (!running) return;
       if (now >= due) { due = now + 1000 / FPS; paint(now / 1000); }
@@ -469,14 +442,12 @@
   var page = document.querySelector('.sheet--home .sheet__page');
   if (!page || !window.requestAnimationFrame) return;
 
-  var KINDS = ['tiger', 'blue', 'orange', 'white'];
+  // one colour each: a swallowtail, a blue, a fritillary, a white
+  var KINDS = ['#b98a12', '#4f7dc4', '#d0702a', '#8b8fa3'];
+  // wings flat, half raised, and closed over the back
+  var WINGS = ['(\\ /)\n(/ \\)', ' \\|/ \n /|\\ ', '  |  \n  |  '];
 
-  Promise.all([sceneReady].concat(KINDS.map(function (k) {
-    return load(ART + 'butterfly-' + k + '.webp');
-  }))).then(function (got) {
-    var sprites = got.slice(1).filter(Boolean);
-    if (sprites.length) fly(sprites);
-  });
+  sceneReady.then(function () { fly(KINDS); });
 
   function fly(sprites) {
     var GAP = 26;               // kept clear round the words, px
@@ -489,17 +460,6 @@
     var ROAM = 380;             // how far it goes for its next spot, about
     var SHY = 120;              // how near the cursor may come, px
     var TURN = 5;               // how quickly a butterfly turns, rad/s
-    // each is set in its own small grid of type
-    var FS = 11, FONT = '700 ' + FS + 'px ' + MONO, CH = 11;
-    var DPR = Math.min(window.devicePixelRatio || 1, 2);
-    var CW = (function () {
-      var c = document.createElement('canvas').getContext('2d');
-      c.font = FONT;
-      return c.measureText('MMMMMMMMMM').width / 10;
-    })();
-    var SHADE = [14, 22];       // the farthest its shadow falls, px
-    var WING = ' .:-=+*%#@';    // light to heavy
-    var SHADOW = 'rgba(96, 126, 176, 0.5)', PAPER = '#f4f3ee';
     var WORDS = '.masthead--home .masthead__name, .masthead--home .masthead__role, .masthead--home .social, ' +
                 '.page--home .about__text p, .page--home .index, .colophon__inner';
 
@@ -559,25 +519,16 @@
     }
 
     function make(sprite) {
-      var size = rand(76, 104) * (vw < 700 ? 0.8 : 1);
-      var el = document.createElement('canvas');
+      var size = vw < 700 ? 38 : 46;
+      var el = document.createElement('pre');
       el.className = 'flutter';
       el.setAttribute('aria-hidden', 'true');
-      // room to the right and below for its shadow
-      var bw = Math.ceil((size + SHADE[0]) / CW), bh = Math.ceil((size + SHADE[1]) / CH);
-      el.width = Math.round(bw * CW * DPR); el.height = Math.round(bh * CH * DPR);
-      el.style.width = bw * CW + 'px'; el.style.height = bh * CH + 'px';
-      var pen = el.getContext('2d');
-      pen.setTransform(DPR, 0, 0, DPR, 0, 0);
-      pen.font = FONT;
-      pen.textBaseline = 'middle';
-      pen.textAlign = 'center';
-      // read at twice the grid, so each character is the mean of four
-      var seen = document.createElement('canvas');
-      seen.width = bw * 2; seen.height = bh * 2;
+      el.style.width = el.style.height = size + 'px';
+      el.style.fontSize = (size * 0.3).toFixed(1) + 'px';
+      el.style.color = sprite;
       document.body.appendChild(el);
       return {
-        el: el, pen: pen, eye: seen.getContext('2d', { willReadFrequently: true }), sprite: sprite, bw: bw, bh: bh, size: size,
+        el: el, size: size, shown: -1,
         x: 0, y: 0, vx: 0, vy: 0, z: 0.6,
         heading: rand(0, Math.PI * 2),
         stroke: rand(0, 1), beat: rand(BEAT[0], BEAT[1]), jit: 1, amp: 1,
@@ -740,8 +691,6 @@
       var flap = b.ang;
       // in a turn the outer wing works a little harder
       var bank = b.mode === 'rest' ? 0 : Math.max(-1, Math.min(1, b.turnRate)) * 7;
-      var lift = b.z;
-      var scale = (0.86 + lift * 0.22) * (b.mode === 'fly' && b.glide <= 0 ? 1 + 0.02 * Math.sin(b.stroke * Math.PI * 2) : 1);
       var half = b.size / 2;
       // in the air it holds its place in the window; landed, its place on the page
       var pinned = b.mode === 'rest';
@@ -752,61 +701,10 @@
       var y = pinned ? b.docY : b.y;
       b.el.style.transform = 'translate3d(' + (b.x - half).toFixed(1) + 'px,' + (y - half).toFixed(1) + 'px,0)';
 
-      // The butterfly as it is this instant (turned to its heading, each
-      // wing folded about the body), drawn small and read back a
-      // character's worth at a time.
-      var eye = b.eye, ew = b.bw * 2, eh = b.bh * 2;
-      eye.setTransform(1, 0, 0, 1, 0, 0);
-      eye.clearRect(0, 0, ew, eh);
-      eye.setTransform(2 / CW, 0, 0, 2 / CH, 0, 0);
-      eye.translate(half, half);
-      eye.rotate(b.heading);
-      eye.scale(scale, scale);
-      var sw = b.sprite.naturalWidth, sh = b.sprite.naturalHeight;
-      var lw = half * Math.max(0.1, Math.cos((flap + bank) * Math.PI / 180));
-      var rw = half * Math.max(0.1, Math.cos((flap - bank) * Math.PI / 180));
-      eye.drawImage(b.sprite, 0, 0, sw / 2, sh, -lw, -half, lw, b.size);
-      eye.drawImage(b.sprite, sw / 2, 0, sw / 2, sh, 0, -half, rw, b.size);
-      var px = eye.getImageData(0, 0, ew, eh).data;
-
-      var pen = b.pen, bw = b.bw, bh = b.bh, cx, cy, i, j, p;
-      var body = b.body || (b.body = new Float32Array(bw * bh * 4));
-      for (cy = 0; cy < bh; cy++) for (cx = 0; cx < bw; cx++) {
-        var r = 0, g = 0, bl = 0, a = 0;
-        for (j = 0; j < 2; j++) for (i = 0; i < 2; i++) {
-          p = ((cy * 2 + j) * ew + cx * 2 + i) * 4;
-          var al = px[p + 3] / 255;
-          r += px[p] * al; g += px[p + 1] * al; bl += px[p + 2] * al; a += al;
-        }
-        p = (cy * bw + cx) * 4;
-        body[p] = a ? r / a : 0; body[p + 1] = a ? g / a : 0; body[p + 2] = a ? bl / a : 0; body[p + 3] = a / 4;
-      }
-      pen.clearRect(0, 0, bw * CW, bh * CH);
-      // its shadow on the paper, in faint dots: farther off the higher it flies
-      var sx = Math.round((3 + lift * (SHADE[0] - 3)) / CW), sy = Math.round((4 + lift * (SHADE[1] - 4)) / CH);
-      pen.fillStyle = SHADOW;
-      for (cy = 0; cy < bh - sy; cy++) for (cx = 0; cx < bw - sx; cx++) {
-        if (body[(cy * bw + cx) * 4 + 3] < 0.45) continue;
-        if (body[((cy + sy) * bw + cx + sx) * 4 + 3] >= 0.3) continue;
-        pen.fillText((cx + cy) % 2 ? ':' : '.', (cx + sx + 0.5) * CW, (cy + sy + 0.5) * CH);
-      }
-      for (cy = 0; cy < bh; cy++) for (cx = 0; cx < bw; cx++) {
-        p = (cy * bw + cx) * 4;
-        var cover = body[p + 3];
-        if (cover < 0.3) continue;
-        // it is paper itself, and hides what it flies over
-        pen.fillStyle = PAPER;
-        pen.fillRect(cx * CW - 0.5, cy * CH - 0.5, CW + 1, CH + 1);
-        var R = body[p], G = body[p + 1], B = body[p + 2];
-        var dark = 1 - (R * 0.3 + G * 0.59 + B * 0.11) / 255;
-        // pale wings in light characters, their markings and the body in heavy ones
-        var w = Math.min(WING.length - 1, Math.max(2, Math.round((0.34 + dark * 1.3) * cover * (WING.length - 1))));
-        // deeper than drawn, and richer, to hold on the paper
-        var mid = (R + G + B) / 3, deep = 0.7;
-        R = (mid + (R - mid) * 2.2) * deep; G = (mid + (G - mid) * 2.2) * deep; B = (mid + (B - mid) * 2.2) * deep;
-        pen.fillStyle = 'rgb(' + (R < 0 ? 0 : R > 255 ? 255 : R | 0) + ',' + (G < 0 ? 0 : G > 255 ? 255 : G | 0) + ',' + (B < 0 ? 0 : B > 255 ? 255 : B | 0) + ')';
-        pen.fillText(WING[w], (cx + 0.5) * CW, (cy + 0.5) * CH);
-      }
+      // its wings, as far open as they are this instant
+      var open = Math.abs(flap) + Math.abs(bank) * 0.5;
+      var shown = open < 30 ? 0 : open < 62 ? 1 : 2;
+      if (shown !== b.shown) { b.shown = shown; b.el.textContent = WINGS[shown]; }
     }
 
     var last = 0, running = false;

@@ -14,20 +14,9 @@
     (function () {
       var root = document.documentElement;
       root.classList.add('js');
-      /* The drawing the picture is set from (pencil.js) is sent for now,
-         and the picture's place kept from the first paint, so the page
-         under it never jumps down when it lands. */
-      try {
-        var art = '/assets/img/pencil/home-ascii.webp';
-        var ahead = document.createElement('link');
-        ahead.rel = 'preload';
-        ahead.as = 'image';
-        ahead.type = 'image/webp';
-        ahead.href = art;
-        document.head.appendChild(ahead);
-        root.setAttribute('data-scene', art);
-        root.classList.add('has-scene');
-      } catch (e) {}
+      /* The picture the page is set in (pencil.js): its place is kept
+         from the first paint, so the page under it never jumps down. */
+      root.classList.add('has-scene');
       try {
         var from = document.referrer.indexOf(location.origin + '/') === 0;
         var again = /[?&]intro\b/.test(location.search);

@@ -2,41 +2,29 @@
    pencil.css
 
    The look laid over site.css (pages carry class="pencil"): a
-   Rothko filling the window, a light one by day and a dark one by
-   night, Lagunita over it, and on the home page butterflies
-   (pencil.js).
+   warm white page, Lagunita in warm near-black, light only.
    ========================================================= */
 
-/* ---------- The painting ----------
-   The whole page is a Rothko, hung still in the window with the words
-   moving over it: by day a light one (violet-blue round fields of
-   ochre and cream), by night a dark one (a black field over a
-   steel-blue one on deep blue). Each is stretched to the window, so
-   the whole painting is always in it, and a thin veil of its own
-   lightest or darkest colour lies over it, just enough that the words
-   read on every field. Light, dark, or as the system has it: the
-   switch is in the foot of each page (theme.js). :root:root outranks
-   site.css's own rules. */
+/* ---------- Paper and ink ----------
+   A warm white page and warm near-black ink, whatever the system asks
+   for. :root:root outranks site.css's dark rules; the Light / Dark /
+   System switch is gone. */
 
 :root:root.pencil {
   color-scheme: light;
-  --painting: url("/assets/img/rothko/light.webp");
-  --veil: rgba(244, 239, 224, 0.4);
-  --color-bg: #b9b7b4;          /* the painting's middle, till it loads */
-  --color-bg-alt: rgba(28, 26, 22, 0.08);
-  --color-fg: #1b1915;          /* warm near-black */
-  --color-muted: #2b2823;
-  --color-quiet: #3f3b35;
-  --color-faint: #5b564e;
-  --color-border: rgba(28, 26, 22, 0.2);
-  --color-border-hover: rgba(28, 26, 22, 0.36);
-  --color-wash: rgba(28, 26, 22, 0.07);
-  --color-underline: rgba(28, 26, 22, 0.42);
-  --color-mat: #d9d2bd;
-  --color-scrim: rgba(226, 220, 203, 0.9);
-  --pencil-shadow: rgba(40, 46, 86, 0.3);
-  --mark: brightness(0) opacity(0.82);        /* a white logo, printed in ink */
-  --wing: none;
+  --color-bg: #f6f3ec;          /* warm white */
+  --color-bg-alt: #ece8de;
+  --color-fg: #24221d;          /* warm near-black */
+  --color-muted: #4a463f;
+  --color-quiet: #75716a;
+  --color-faint: #a19d95;
+  --color-border: #dcd8cc;
+  --color-border-hover: #c9c5b8;
+  --color-wash: rgba(36, 34, 29, 0.045);
+  --color-underline: rgba(36, 34, 29, 0.3);
+  --color-mat: #faf8f3;
+  --color-scrim: rgba(246, 243, 236, 0.86);
+  --pencil-shadow: rgba(96, 126, 176, 0.2);
 
   /* Lagunita, self-hosted (/assets/fonts/lagunita/), with its optical
      sizes, so the big headings get its sharper Display cut and the text
@@ -48,69 +36,15 @@
   --head: clamp(2rem, 0.9rem + 3vw, 4rem);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:root.pencil:not([data-theme="light"]) {
-    color-scheme: dark;
-    --painting: url("/assets/img/rothko/dark.webp");
-    --veil: rgba(10, 14, 36, 0.16);
-    --color-bg: #1d2748;
-    --color-bg-alt: rgba(244, 241, 232, 0.08);
-    --color-fg: #f4f1e8;
-    --color-muted: #e3e5ee;
-    --color-quiet: #c9cfdf;
-    --color-faint: #9aa4bd;
-    --color-border: rgba(244, 241, 232, 0.2);
-    --color-border-hover: rgba(244, 241, 232, 0.34);
-    --color-wash: rgba(244, 241, 232, 0.08);
-    --color-underline: rgba(244, 241, 232, 0.42);
-    --color-mat: #26335c;
-    --color-scrim: rgba(16, 22, 48, 0.9);
-    --pencil-shadow: rgba(0, 0, 0, 0.45);
-    --mark: none;
-    --wing: grayscale(1) brightness(1.9) contrast(0.8);
-  }
+html.pencil .theme-toggle {
+  display: none !important;
 }
-
-:root:root.pencil[data-theme="dark"] {
-  color-scheme: dark;
-  --painting: url("/assets/img/rothko/dark.webp");
-  --veil: rgba(10, 14, 36, 0.16);
-  --color-bg: #1d2748;
-  --color-bg-alt: rgba(244, 241, 232, 0.08);
-  --color-fg: #f4f1e8;
-  --color-muted: #e3e5ee;
-  --color-quiet: #c9cfdf;
-  --color-faint: #9aa4bd;
-  --color-border: rgba(244, 241, 232, 0.2);
-  --color-border-hover: rgba(244, 241, 232, 0.34);
-  --color-wash: rgba(244, 241, 232, 0.08);
-  --color-underline: rgba(244, 241, 232, 0.42);
-  --color-mat: #26335c;
-  --color-scrim: rgba(16, 22, 48, 0.9);
-  --pencil-shadow: rgba(0, 0, 0, 0.45);
-  --mark: none;
-  --wing: grayscale(1) brightness(1.9) contrast(0.8);
-}
-
 
 html.pencil {
   background-color: var(--color-bg);
 }
 
-/* the painting, under its veil, fixed in the window behind the page */
-html.pencil body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(var(--veil), var(--veil)),
-    var(--painting) center / 100% 100% no-repeat;
-}
-
 html.pencil body {
-  background: none;
   font-weight: 400;
   line-height: 1.45;
   /* Every size on the site was set for EB Garamond. Lagunita is built
@@ -382,9 +316,4 @@ html.pencil .page-title--shown {
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.015em;
-}
-
-/* by night the butterflies are pale prints of themselves, as in a cyanotype */
-.flutter__wing {
-  filter: var(--wing);
 }

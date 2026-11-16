@@ -99,12 +99,15 @@
 
   var KINDS = ['tiger', 'blue', 'orange', 'white'];
 
-  Promise.all(KINDS.map(function (k) {
-    return load(ART + 'butterfly-' + k + '.webp');
-  })).then(function (got) {
-    var sprites = got.filter(Boolean);
-    if (sprites.length) fly(sprites);
-  });
+  /* No butterflies for now. To let them loose again, uncomment:
+
+  // Promise.all(KINDS.map(function (k) {
+  //   return load(ART + 'butterfly-' + k + '.webp');
+  // })).then(function (got) {
+  //   var sprites = got.filter(Boolean);
+  //   if (sprites.length) fly(sprites);
+  // });
+  */
 
   function fly(sprites) {
     var GAP = 26;               // kept clear round the words, px

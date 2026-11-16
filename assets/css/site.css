@@ -1623,7 +1623,12 @@ html.intro-play .koi {
   border-radius: 0;
   background: none;
   padding: 0.2rem 0;
-  filter: var(--mark, none);
+}
+
+/* a mark that only comes in white, printed in ink until its colours are found */
+.projects__list--index img.project-item__thumb--ink {
+  filter: brightness(0);
+  opacity: 0.82;
 }
 
 .projects__list--index .project-item__title {

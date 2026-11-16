@@ -1623,6 +1623,7 @@ html.intro-play .koi {
   border-radius: 0;
   background: none;
   padding: 0.2rem 0;
+  filter: var(--mark, none);
 }
 
 .projects__list--index .project-item__title {

@@ -2,32 +2,35 @@
    pencil.css
 
    The look laid over site.css (pages carry class="pencil"): a
-   colour-field ground after Rothko, Lagunita in warm white. The home
-   page opens with a small colour-field painting across its column,
-   and pale butterflies over the page (pencil.js).
+   colour-field painting after Rothko filling the window, Lagunita in
+   warm white over it, and on the home page pale butterflies
+   (pencil.js).
    ========================================================= */
 
-/* ---------- The field ----------
-   A colour-field ground, after Rothko: the whole page is one deep
-   periwinkle, uneven and grained like paint on canvas, and the type is
-   a warm white on it. One look whatever the system asks for.
-   :root:root outranks site.css's own rules; the Light / Dark / System
-   switch is gone. */
+/* ---------- The painting ----------
+   The whole page is one colour-field painting, after Rothko: on a deep
+   canvas, a wide periwinkle field, a thin band of rust under it, and a
+   dark indigo field below, their edges soft and a little uneven, a
+   fine grain over all of it. It hangs still in the window and the
+   words move over it in warm white; every field is deep enough to
+   read them on. One look whatever the system asks for. :root:root
+   outranks site.css's own rules; the Light / Dark / System switch is
+   gone. */
 
 :root:root.pencil {
   color-scheme: dark;
-  --color-bg: #4246a2;          /* the field */
-  --color-bg-alt: #393c92;
+  --color-bg: #33368a;          /* the canvas */
+  --color-bg-alt: #2c2f7c;
   --color-fg: #f7f3e9;          /* warm white */
   --color-muted: #e0e0f4;
-  --color-quiet: #c3c6ee;
-  --color-faint: #9fa3da;
+  --color-quiet: #d2d4f5;
+  --color-faint: #a9ace0;
   --color-border: rgba(247, 243, 233, 0.18);
   --color-border-hover: rgba(247, 243, 233, 0.32);
   --color-wash: rgba(247, 243, 233, 0.07);
   --color-underline: rgba(247, 243, 233, 0.4);
-  --color-mat: #4b4fae;
-  --color-scrim: rgba(57, 60, 146, 0.88);
+  --color-mat: #3d4097;
+  --color-scrim: rgba(40, 43, 118, 0.9);
   --pencil-shadow: rgba(22, 24, 84, 0.42);   /* a butterfly's shadow on the field */
 
   /* Lagunita, self-hosted (/assets/fonts/lagunita/), with its optical
@@ -44,20 +47,24 @@ html.pencil .theme-toggle {
   display: none !important;
 }
 
-/* The field is never flat: lighter and deeper passages drift across
-   it, and a fine grain lies over the lot. */
 html.pencil {
   background-color: var(--color-bg);
 }
 
-html.pencil body {
-  background-color: var(--color-bg);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.9 0 0 0 -0.42'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.28'/%3E%3C/svg%3E"),
-    radial-gradient(120% 60% at 20% 0%, rgba(140, 146, 232, 0.34), transparent 70%),
-    radial-gradient(90% 50% at 85% 38%, rgba(34, 36, 110, 0.3), transparent 70%),
-    radial-gradient(110% 55% at 30% 100%, rgba(118, 108, 214, 0.26), transparent 70%);
+/* the painting, and its grain, fixed in the window behind the page */
+html.pencil body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.9 0 0 0 -0.42'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.26'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='s' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03 0.09' numOctaves='2' seed='4' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='2.4'/%3E%3CfeGaussianBlur stdDeviation='1.5'/%3E%3C/filter%3E%3ClinearGradient id='a' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235e63cb'/%3E%3Cstop offset='1' stop-color='%235055bb'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23b2512b'/%3E%3Cstop offset='.55' stop-color='%23bd5c30'/%3E%3Cstop offset='1' stop-color='%23a94a29'/%3E%3C/linearGradient%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23262974'/%3E%3Cstop offset='1' stop-color='%231e2163'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='%2333368a'/%3E%3Cg filter='url(%23s)'%3E%3Crect x='4.5' y='6' width='91' height='45' fill='url(%23a)'/%3E%3Crect x='9' y='11' width='82' height='33' fill='%23666bd2' opacity='.35'/%3E%3Crect x='5.5' y='55' width='89' height='6.5' fill='url(%23b)'/%3E%3Crect x='4.5' y='65.5' width='91' height='28.5' fill='url(%23c)'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
 
+html.pencil body {
+  background: none;
   font-weight: 400;
   line-height: 1.45;
   /* Every size on the site was set for EB Garamond. Lagunita is built
@@ -89,8 +96,8 @@ html.pencil :is(
 
 /* ---------- Home: one column ----------
    Down the middle of the window, everything the column's width: a
-   small line of pages, the drawing as a banner, then the name, what I
-   do, the bio, and where else to find me. */
+   small line of pages, then the name, what I do, the bio, and where
+   else to find me. */
 
 html.pencil .sheet {
   padding-top: clamp(1.25rem, 4svh, 2.5rem);
@@ -100,32 +107,8 @@ html.pencil .sheet--home .sheet__page {
   max-width: var(--sheet);
 }
 
-/* The painting: three soft-edged fields on a darker canvas, a pale
-   one, a thin ember one and a deep one, drawn as SVG in the page with
-   their edges wavered and feathered and a grain over them. */
-.pencil-banner {
-  margin-top: clamp(1.5rem, 5svh, 3rem);
-  aspect-ratio: 3.4 / 1;
-  overflow: hidden;
-  border-radius: 2px;
-  box-shadow: 0 1px 0 rgba(247, 243, 233, 0.06), 0 18px 40px -22px rgba(16, 17, 60, 0.7);
-}
-
-.pencil-banner svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* a phone's column is narrow: a deeper band */
-@media (max-width: 40em) {
-  .pencil-banner {
-    aspect-ratio: 2.3 / 1;
-  }
-}
-
 html.pencil .masthead--home {
-  margin-top: clamp(1.5rem, 4.5svh, 2.5rem);
+  margin-top: clamp(2rem, 6svh, 3.25rem);
 }
 
 /* the name, then what I do under it, smaller */
@@ -221,7 +204,6 @@ html.pencil-intro .masthead--home .masthead__name {
 }
 
 html.pencil-intro .site-nav,
-html.pencil-intro .pencil-banner,
 html.pencil-intro .masthead--home .masthead__role,
 html.pencil-intro .page--home,
 html.pencil-intro .sheet--home .colophon {

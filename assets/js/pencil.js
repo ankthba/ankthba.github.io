@@ -81,7 +81,7 @@
         nameEl.style.transform = '';
         anims.push(nameEl.animate([{ transform: from }, { transform: 'none' }], { duration: MOVE, easing: EASE, fill: 'both' }));
         var rise = [{ transform: 'translateY(' + vh + 'px)' }, { transform: 'none' }];
-        document.querySelectorAll('.site-nav, .pencil-banner, .masthead--home .masthead__role, .page--home, .sheet--home .colophon')
+        document.querySelectorAll('.site-nav, .masthead--home .masthead__role, .page--home, .sheet--home .colophon')
           .forEach(function (el) {
             anims.push(el.animate(rise, { duration: MOVE, easing: EASE, fill: 'both' }));
           });

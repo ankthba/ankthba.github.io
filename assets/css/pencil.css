@@ -1,33 +1,34 @@
 /* =========================================================
    pencil.css
 
-   The pencil look, laid over site.css (pages carry class="pencil"):
-   soft coloured pencil and watercolour on paper, Lagunita, light
-   only. The home page opens with the drawing as a banner across its
-   column, ragged at the edges, and butterflies over the page
-   (pencil.js).
+   The look laid over site.css (pages carry class="pencil"): a
+   colour-field ground after Rothko, Lagunita in warm white. The home
+   page opens with a small colour-field painting across its column,
+   and pale butterflies over the page (pencil.js).
    ========================================================= */
 
-/* ---------- Paper and ink ----------
-   Light only: the drawings are pencil on white paper, so the page is
-   that paper whatever the system asks for. :root:root outranks
-   site.css's dark rules; the Light / Dark / System switch is gone. */
+/* ---------- The field ----------
+   A colour-field ground, after Rothko: the whole page is one deep
+   periwinkle, uneven and grained like paint on canvas, and the type is
+   a warm white on it. One look whatever the system asks for.
+   :root:root outranks site.css's own rules; the Light / Dark / System
+   switch is gone. */
 
 :root:root.pencil {
-  color-scheme: light;
-  --color-bg: #f4f3ee;          /* clean, light paper */
-  --color-bg-alt: #ebeae4;
-  --color-fg: #24221d;          /* warm near-black, softer than print black */
-  --color-muted: #4a463f;
-  --color-quiet: #75716a;
-  --color-faint: #a19d95;
-  --color-border: #d9dbd5;
-  --color-border-hover: #c6c8c1;
-  --color-wash: rgba(36, 34, 29, 0.045);
-  --color-underline: rgba(36, 34, 29, 0.3);
-  --color-mat: #f6f6f2;
-  --color-scrim: rgba(244, 243, 238, 0.84);
-  --pencil-shadow: rgba(96, 126, 176, 0.2);   /* a faint pale-blue pencil shadow */
+  color-scheme: dark;
+  --color-bg: #4246a2;          /* the field */
+  --color-bg-alt: #393c92;
+  --color-fg: #f7f3e9;          /* warm white */
+  --color-muted: #e0e0f4;
+  --color-quiet: #c3c6ee;
+  --color-faint: #9fa3da;
+  --color-border: rgba(247, 243, 233, 0.18);
+  --color-border-hover: rgba(247, 243, 233, 0.32);
+  --color-wash: rgba(247, 243, 233, 0.07);
+  --color-underline: rgba(247, 243, 233, 0.4);
+  --color-mat: #4b4fae;
+  --color-scrim: rgba(57, 60, 146, 0.88);
+  --pencil-shadow: rgba(22, 24, 84, 0.42);   /* a butterfly's shadow on the field */
 
   /* Lagunita, self-hosted (/assets/fonts/lagunita/), with its optical
      sizes, so the big headings get its sharper Display cut and the text
@@ -43,8 +44,20 @@ html.pencil .theme-toggle {
   display: none !important;
 }
 
-/* the page is clean paper; the texture lives in the drawings */
+/* The field is never flat: lighter and deeper passages drift across
+   it, and a fine grain lies over the lot. */
+html.pencil {
+  background-color: var(--color-bg);
+}
+
 html.pencil body {
+  background-color: var(--color-bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.9 0 0 0 -0.42'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.28'/%3E%3C/svg%3E"),
+    radial-gradient(120% 60% at 20% 0%, rgba(140, 146, 232, 0.34), transparent 70%),
+    radial-gradient(90% 50% at 85% 38%, rgba(34, 36, 110, 0.3), transparent 70%),
+    radial-gradient(110% 55% at 30% 100%, rgba(118, 108, 214, 0.26), transparent 70%);
+
   font-weight: 400;
   line-height: 1.45;
   /* Every size on the site was set for EB Garamond. Lagunita is built
@@ -87,40 +100,24 @@ html.pencil .sheet--home .sheet__page {
   max-width: var(--sheet);
 }
 
-/* The drawing, cropped to a band: clouds, the ridge, the hills with
-   their oaks and the Dish. Its sides are the drawing's own soft pencil
-   edges; its top and foot are cut ragged with a drawing's foot
-   (foot.webp, and edge.webp, the same turned over). The middle of the
-   mask laps a pixel over each ragged end, or a hairline of paper shows
-   between them. */
+/* The painting: three soft-edged fields on a darker canvas, a pale
+   one, a thin ember one and a deep one, drawn as SVG in the page with
+   their edges wavered and feathered and a grain over them. */
 .pencil-banner {
-  --edge-h: clamp(1.1rem, 3.4vw, 2rem);
   margin-top: clamp(1.5rem, 5svh, 3rem);
   aspect-ratio: 3.4 / 1;
   overflow: hidden;
-  -webkit-mask:
-    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
-    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
-  mask:
-    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
-    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
-    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
+  border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(247, 243, 233, 0.06), 0 18px 40px -22px rgba(16, 17, 60, 0.7);
 }
 
-.pencil-banner picture,
-.pencil-banner img {
+.pencil-banner svg {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: 50% 47%;
-  -webkit-user-drag: none;
-  user-select: none;
 }
 
-/* a phone's column is narrow: a deeper band, and more of the drawing's middle */
+/* a phone's column is narrow: a deeper band */
 @media (max-width: 40em) {
   .pencil-banner {
     aspect-ratio: 2.3 / 1;
@@ -357,4 +354,11 @@ html.pencil .page-title--shown {
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.015em;
+}
+
+/* on the field the butterflies are pale prints of themselves, as in a cyanotype */
+.flutter__wing {
+  filter: grayscale(1) brightness(1.9) contrast(0.8);
+  opacity: 0.92;
+  mix-blend-mode: screen;
 }

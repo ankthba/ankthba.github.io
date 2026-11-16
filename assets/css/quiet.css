@@ -8,12 +8,16 @@
    a soft wash under the row you point at, fine grey underlines. No
    drawing, no effects.
 
+   Light and dark: the same page on off-white or on near-black. It
+   follows the system unless Dark or Light is picked in the footer
+   (theme.js, which sets data-theme on <html>).
+
    The Lagunita and Design pages are shown in Lagunita (the user:
    "makes 0 sense for the lagunita page to be anything but lagunita").
    ========================================================= */
 
 :root:root:root.quiet {
-  color-scheme: light;
+  color-scheme: light dark;
   --qu-ink: #171717;
   --qu-text: #3b3b3b;
   --qu-mid: #6f6f6f;
@@ -21,6 +25,10 @@
   --qu-bg: #fafaf9;
   --qu-hover: #f0f0ee;
   --qu-line: #cfcfcc;
+  --qu-rule: #e6e6e3;
+  --qu-rule-hover: #d6d6d2;
+  --qu-scrim: rgba(250, 250, 249, 0.94);
+  --qu-cardinal: #8c1515;
   --qu-col: 34.5rem;          /* about 75 characters a line */
   --qu-font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 
@@ -30,13 +38,13 @@
   --color-muted: var(--qu-text);
   --color-quiet: var(--qu-mid);
   --color-faint: var(--qu-soft);
-  --color-border: #e6e6e3;
-  --color-border-hover: #d6d6d2;
+  --color-border: var(--qu-rule);
+  --color-border-hover: var(--qu-rule-hover);
   --color-accent: var(--qu-ink);
   --color-wash: var(--qu-hover);
   --color-underline: var(--qu-line);
-  --color-mat: #f0f0ee;
-  --color-scrim: rgba(250, 250, 249, 0.94);
+  --color-mat: var(--qu-hover);
+  --color-scrim: var(--qu-scrim);
   --pencil-shadow: transparent;
   --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 32px -16px rgba(0, 0, 0, 0.18);
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 32px -16px rgba(0, 0, 0, 0.18);
@@ -48,6 +56,47 @@
   --col: 7.5rem;
   --row-pad: 0.6rem;
   --gap: 3.75rem;
+}
+
+/* Dark: near-black paper, near-white ink, the greys stepped the same
+   way so everything keeps its place in the order of what to read. */
+@media (prefers-color-scheme: dark) {
+  :root:root:root.quiet:not([data-theme="light"]) {
+    --qu-ink: #ededec;
+    --qu-text: #c2c2c0;
+    --qu-mid: #8e8e8c;
+    --qu-soft: #6b6b69;
+    --qu-bg: #151515;
+    --qu-hover: #212120;
+    --qu-line: #454543;
+    --qu-rule: #2a2a29;
+    --qu-rule-hover: #3a3a38;
+    --qu-scrim: rgba(21, 21, 21, 0.94);
+    --qu-cardinal: #e7838a;
+    --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
+  }
+}
+
+:root:root:root.quiet[data-theme="dark"] {
+  color-scheme: dark;
+  --qu-ink: #ededec;
+  --qu-text: #c2c2c0;
+  --qu-mid: #8e8e8c;
+  --qu-soft: #6b6b69;
+  --qu-bg: #151515;
+  --qu-hover: #212120;
+  --qu-line: #454543;
+  --qu-rule: #2a2a29;
+  --qu-rule-hover: #3a3a38;
+  --qu-scrim: rgba(21, 21, 21, 0.94);
+  --qu-cardinal: #e7838a;
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
+}
+
+:root:root:root.quiet[data-theme="light"] {
+  color-scheme: light;
 }
 
 /* the type pages, in their own face */
@@ -104,7 +153,7 @@ html.quiet :is(h1, h2, h3, h4, p, li, dt, dd, button, input, kbd, figcaption, bl
   letter-spacing: inherit;
 }
 
-html.quiet :is(.pencil-scene, .pencil-cue, .flutter, .koi, .theme-toggle) {
+html.quiet :is(.pencil-scene, .pencil-cue, .flutter, .koi) {
   display: none !important;
 }
 
@@ -408,6 +457,39 @@ html.quiet .colophon__meta {
   color: var(--qu-soft);
 }
 
+/* Dark, System, Light: three words in the footer's grey, the one in
+   use in ink. Only where the script is there to make them work. */
+html.quiet.js .theme-toggle {
+  display: inline-flex !important;
+  gap: 0.9rem;
+}
+
+html.quiet .theme-toggle__option {
+  padding: 0;
+  font: inherit;
+  color: var(--qu-soft);
+  transition: color 0.15s;
+}
+
+html.quiet .theme-toggle__option:hover {
+  color: var(--qu-mid);
+}
+
+html.quiet .theme-toggle__option[aria-pressed="true"] {
+  color: var(--qu-ink);
+}
+
+/* typing "stanford" in a specimen: the cardinal, lighter on dark */
+html.quiet :is(.sp-sample, .dg-sample).is-cardinal {
+  color: var(--qu-cardinal);
+  caret-color: var(--qu-cardinal);
+}
+
+/* the code on /hi stays black on white, so a camera can read it */
+html.quiet .hi__code img {
+  background: #fff;
+}
+
 html.quiet .colophon .social {
   display: none;
 }
@@ -449,7 +531,7 @@ html.quiet .photos__grid {
 html.quiet .photo-item {
   margin-bottom: 0.6rem;
   padding: 0.4rem;
-  background: #efefec;
+  background: var(--qu-hover);
   border-radius: 2px;
 }
 

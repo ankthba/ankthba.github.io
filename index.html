@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fafaf9">
+  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#151515" media="(prefers-color-scheme: dark)">
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>
@@ -258,9 +259,9 @@
         <div class="colophon__inner">
           <p class="colophon__meta">&copy; 2026 Aniketh Bandlamudi</p>
           <span class="theme-toggle" role="group" aria-label="Colour theme">
-            <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
             <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
             <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
+            <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
           </span>
         </div>
       </footer>

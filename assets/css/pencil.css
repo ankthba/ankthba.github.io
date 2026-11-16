@@ -1,10 +1,11 @@
 /* =========================================================
    pencil.css
 
-   The look laid over site.css (pages carry class="pencil"): clean
-   paper, Lagunita, light only. On the home page the first screen is a
-   picture of the foothills as line art in type, which moves, with the
-   name in its sky and butterflies of the same over it (pencil.js).
+   The pencil look, laid over site.css (pages carry class="pencil"):
+   soft coloured pencil and watercolour on paper, Lagunita, light
+   only. The home page opens with the drawing as a banner across its
+   column, ragged at the edges, and butterflies over the page
+   (pencil.js).
    ========================================================= */
 
 /* ---------- Paper and ink ----------
@@ -26,7 +27,7 @@
   --color-underline: rgba(36, 34, 29, 0.3);
   --color-mat: #f6f6f2;
   --color-scrim: rgba(244, 243, 238, 0.84);
-  --pencil-shadow: rgba(96, 126, 176, 0.3);   /* a faint pale-blue pencil shadow */
+  --pencil-shadow: rgba(96, 126, 176, 0.2);   /* a faint pale-blue pencil shadow */
 
   /* Lagunita, self-hosted (/assets/fonts/lagunita/), with its optical
      sizes, so the big headings get its sharper Display cut and the text
@@ -73,142 +74,158 @@ html.pencil :is(
   }
 }
 
-/* ---------- Home: hung from the page's left margin ----------
-   As in the post the look comes from: the name sits at the top left of
-   the picture, a margin in from the window's edge, and everything below
-   hangs from that same margin: the bio, then the pages. The first
-   screen stops a little short of the window's foot, so the start of
-   the bio shows under the meadow: there's more below. */
-
-html.pencil {
-  --edge: clamp(1.25rem, 6.5vw, 7.5rem);
-}
+/* ---------- Home: one column ----------
+   Down the middle of the window, everything the column's width: a
+   small line of pages, the drawing as a banner, then the name, what I
+   do, the bio, and where else to find me. */
 
 html.pencil .sheet--home {
-  justify-content: flex-start;
-  padding-top: clamp(2.5rem, 8svh, 5.5rem);
-  padding-left: var(--edge);
-  padding-right: var(--edge);
+  padding-top: clamp(1.25rem, 4svh, 2.5rem);
 }
 
 html.pencil .sheet--home .sheet__page {
-  max-width: none;
+  max-width: var(--sheet);
 }
 
-/* the name is the one big line; what I do sits under it, smaller */
+/* the pages, small and quiet, the one you're on in ink */
+.home-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.8rem;
+  font-size: 0.875rem;
+  color: var(--color-quiet);
+}
+
+.home-nav a,
+.home-nav button {
+  color: inherit;
+  font: inherit;
+  transition: color var(--transition-fast);
+}
+
+.home-nav a:hover,
+.home-nav button:hover,
+.home-nav a[aria-current] {
+  color: var(--color-fg);
+}
+
+/* The drawing, cropped to a band: clouds, the ridge, the hills with
+   their oaks and the Dish. Its sides are the drawing's own soft pencil
+   edges; its top and foot are cut ragged with a drawing's foot
+   (foot.webp, and edge.webp, the same turned over). The middle of the
+   mask laps a pixel over each ragged end, or a hairline of paper shows
+   between them. */
+.pencil-banner {
+  --edge-h: clamp(1.1rem, 3.4vw, 2rem);
+  margin-top: clamp(1.5rem, 5svh, 3rem);
+  aspect-ratio: 3.4 / 1;
+  overflow: hidden;
+  -webkit-mask:
+    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
+    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
+  mask:
+    url("/assets/img/pencil/edge.webp") 0 0 / 100% var(--edge-h) no-repeat,
+    linear-gradient(#000, #000) 0 calc(var(--edge-h) - 1px) / 100% calc(100% - 2 * var(--edge-h) + 2px) no-repeat,
+    url("/assets/img/pencil/foot.webp") 0 100% / 100% var(--edge-h) no-repeat;
+}
+
+.pencil-banner picture,
+.pencil-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 47%;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* a phone's column is narrow: a deeper band, and more of the drawing's middle */
+@media (max-width: 40em) {
+  .pencil-banner {
+    aspect-ratio: 2.3 / 1;
+  }
+}
+
+html.pencil .masthead--home {
+  margin-top: clamp(1.5rem, 4.5svh, 2.5rem);
+}
+
+/* the name, then what I do under it, smaller */
 html.pencil .masthead--home .masthead__name {
   font-family: var(--font-display);
-  font-size: var(--head);
+  font-size: clamp(1.6rem, 1.35rem + 1vw, 2.1rem);
   font-weight: 500;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
   color: var(--color-fg);
 }
 
 html.pencil .masthead--home .masthead__role {
-  margin-top: 0.55rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem);
-  line-height: 1.3;
+  margin-top: 0.4rem;
+  font-size: 1.0625rem;
+  line-height: 1.35;
   color: var(--color-fg);
-  text-wrap: balance;
 }
 
-/* Two lines under the name, each kept to itself so neither runs into
-   the other: what I'm building, in ink, then what I study, a step
-   quieter and smaller. Where one is too long for the window it breaks
-   evenly within itself. */
+/* Two lines under the name, each kept to itself: what I'm building,
+   in ink, then what I study, a step quieter. */
 html.pencil .masthead--home .masthead__line {
   display: block;
   text-wrap: balance;
 }
 
 html.pencil .masthead--home .masthead__line + .masthead__line {
-  margin-top: 0.2rem;
-  font-size: 0.88em;
   font-weight: 400;
   color: var(--color-muted);
 }
 
-/* the ways to reach me, in the same ink as the name, a size up */
-html.pencil .masthead--home .social {
-  margin-top: 1.5rem;
-  gap: 0.35rem;
-}
-
-html.pencil .masthead--home .social a {
-  width: 2.1rem;
-  height: 2.1rem;
-  color: var(--color-fg);
-  opacity: 0.82;
-  transition: opacity var(--transition-fast), background-color var(--transition-fast);
-}
-
-html.pencil .masthead--home .social a:hover {
-  opacity: 1;
-  background: rgba(244, 243, 238, 0.55);
-}
-
-html.pencil .masthead--home .social svg {
-  width: 1rem;
-  height: 1rem;
-}
-
 html.pencil .page--home {
-  padding-top: 1.75rem;
-}
-
-html.pencil .page--home .about__text {
-  max-width: 34rem;
-  font-size: 1.0625rem;
-  line-height: 1.45;
-  gap: 0.75rem;
-  color: var(--color-muted);
-}
-
-html.pencil .page--home .index {
-  max-width: 36rem;
-}
-
-html.pencil .page--home .index:first-of-type {
-  margin-top: 3rem;
-}
-
-/* below the picture: one column, centred on the page, the text in it
-   set from its left edge; the bio, the pages and the copyright all
-   share its width */
-html.pencil .page--home,
-html.pencil .sheet--home .colophon {
-  align-self: center;
-  width: 100%;
-  max-width: 36rem;
+  padding-top: 1.5rem;
 }
 
 html.pencil .page--home .about__text {
   max-width: none;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  gap: 1.1rem;
+  color: var(--color-muted);
+}
+
+html.pencil .page--home .index {
+  margin-top: 2.25rem;
+}
+
+/* where else to find me, a quiet line at the foot */
+.home-links {
+  margin-top: 2.25rem;
+  font-size: 0.9375rem;
+  color: var(--color-quiet);
+}
+
+.home-links a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.18em;
+  transition: color var(--transition-fast);
+}
+
+.home-links a:hover {
+  color: var(--color-fg);
 }
 
 /* ---------- Wide windows: a wider page ----------
    On a computer the column opens up, and everything grows a little
-   with it (the root size, so it all keeps its proportions), so lines
-   stay a comfortable length to read rather than the narrow column of
-   a phone. The media queries are in the browser's own em, so the root
-   size here doesn't move them. */
+   with it (the root size, so it all keeps its proportions). The media
+   queries are in the browser's own em, so the root size here doesn't
+   move them. */
 @media (min-width: 64em) {
   html.pencil {
     font-size: 106.25%;
     --sheet: 44rem;
-  }
-  html.pencil .page--home,
-  html.pencil .sheet--home .colophon {
-    max-width: var(--sheet);
-  }
-  html.pencil .page--home .index {
-    max-width: none;
-  }
-  /* the bio runs the column's full width, so it takes a size up */
-  html.pencil .page--home .about__text {
-    font-size: 1.1875rem;
   }
 }
 
@@ -221,69 +238,23 @@ html.pencil .page--home .about__text {
 
 /* ---------- The opening (pencil.js) ----------
    Held back before it plays: the name hidden (pencil.js sets it large in
-   the middle, then brings it up into its place), and the picture and the
-   rest of the page a window's height down, to slide up with it. */
+   the middle, then brings it into its place), and the rest of the page
+   a window's height down, to slide up with it. */
 
 html.pencil-intro .masthead--home .masthead__name {
   opacity: 0;
 }
 
+html.pencil-intro .home-nav,
+html.pencil-intro .pencil-banner,
 html.pencil-intro .masthead--home .masthead__role,
-html.pencil-intro .masthead--home .social,
 html.pencil-intro .page--home,
-html.pencil-intro .sheet--home .colophon,
-html.pencil-intro .pencil-scene {
+html.pencil-intro .sheet--home .colophon {
   transform: translateY(100vh);
-}
-
-html.pencil-intro .pencil-cue {
-  opacity: 0;
 }
 
 .flutter {
   transition: opacity 0.3s ease-out;
-}
-
-/* ---------- There's more below ----------
-   A chevron in two strokes of type at the foot of the picture, in the
-   middle, swaying slowly downward; it goes once you start down the
-   page. */
-
-.pencil-cue {
-  position: absolute;
-  left: 50%;
-  top: calc(var(--scene-h) - 3.4rem);
-  z-index: 2;
-  width: 3rem;
-  height: 2.25rem;
-  margin-left: -1.5rem;
-  display: grid;
-  place-items: center;
-  color: var(--color-fg);
-  cursor: pointer;
-  transition: opacity 0.4s ease;
-}
-
-.pencil-cue__drawn {
-  font: 600 1.25rem/1 ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  letter-spacing: -0.12em;
-  color: var(--color-muted);
-  animation: pencil-sway 2.6s ease-in-out infinite;
-  user-select: none;
-}
-
-@keyframes pencil-sway {
-  0%, 100% { transform: translateY(0); opacity: 0.75; }
-  50% { transform: translateY(0.3rem); opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pencil-cue__drawn { animation: none; }
-}
-
-html.pencil-scrolled .pencil-cue {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* ---------- The copyright, centred at the foot of the page ---------- */
@@ -322,39 +293,6 @@ html.pencil .contact__text a:hover {
   text-decoration-color: currentColor;
 }
 
-/* ---------- The picture under the words ---------- */
-
-/* The first screen is the picture, edge to edge, set in type on a
-   canvas (pencil.js): the name in its sky, the meadow along the bottom,
-   thinning out into the paper where the rest of the page goes on. */
-html.pencil {
-  --scene-h: max(calc(100svh - 5.5rem), 34rem);
-}
-
-.pencil-scene {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  width: 100%;
-  height: var(--scene-h);
-  overflow: hidden;
-  pointer-events: none;
-  will-change: transform;
-}
-
-.pencil-scene canvas {
-  display: block;
-}
-
-html.pencil.has-scene .masthead--home {
-  min-height: calc(var(--scene-h) - clamp(2.5rem, 7svh, 5rem));
-}
-
-html.pencil.has-scene .page--home {
-  padding-top: 0;
-}
-
 /* ---------- Butterflies, where the koi were ---------- */
 
 html.pencil .koi {
@@ -366,14 +304,37 @@ html.pencil .koi {
   left: 0;
   top: 0;
   z-index: 30;
-  margin: 0;
-  display: grid;
-  place-content: center;
-  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-weight: 700;
-  line-height: 1.05;
-  text-align: center;
   pointer-events: none;
-  will-change: transform;
+  will-change: transform, filter;
   contain: layout style;
 }
+
+.flutter__turn {
+  position: absolute;
+  inset: 0;
+  perspective: 240px;
+}
+
+.flutter__wing {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  backface-visibility: visible;
+}
+
+.flutter__wing--l {
+  left: 0;
+  background-position: 0 0;
+  transform-origin: 100% 50%;
+}
+
+.flutter__wing--r {
+  left: 50%;
+  background-position: 100% 0;
+  transform-origin: 0 50%;
+}
+
+

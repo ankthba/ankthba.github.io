@@ -535,6 +535,18 @@ a.masthead__name:hover {
   display: contents;
 }
 
+/* an entry's picture, always there: under its name, in the name's
+   column, at its own shape */
+.project-item__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  background: var(--color-bg-alt);
+  box-shadow: 0 0 0 0.5px rgba(20, 20, 19, 0.08), 0 1px 2px rgba(20, 20, 19, 0.06);
+}
+
 .project-item__title {
   grid-column: 1;
   grid-row: 1 / span 12;
@@ -1280,6 +1292,12 @@ a.play:hover .play__name {
     grid-row: auto;
   }
 
+  /* one column: the picture under the name, above the words */
+  .project-item__img {
+    width: min(100%, 20rem);
+    margin: 0.4rem 0 0.5rem;
+  }
+
   .facts {
     grid-template-columns: 5.5rem minmax(0, 1fr);
     column-gap: 1rem;
@@ -1338,6 +1356,13 @@ a.play:hover .play__name {
 
   .project-item[data-img="none"]::before {
     content: none;
+  }
+
+  /* an entry's own picture takes that place itself */
+  .project-item__img {
+    float: right;
+    width: var(--peek-w);
+    margin: 0.2rem 0 0.35rem 1rem;
   }
 
   .index__name,

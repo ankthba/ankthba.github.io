@@ -147,33 +147,33 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="sheet">
     <div class="sheet__page">
-      <header class="masthead">
-        <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-        <nav class="masthead__nav" aria-label="Pages">
-        <a href="/work/" class="masthead__nav-link">Work</a>
-        <a href="/education/" class="masthead__nav-link">Education</a>
-        <a href="/projects/" class="masthead__nav-link">Projects</a>
-        <a href="/design/" class="masthead__nav-link">Design</a>
-        <a href="/research/" class="masthead__nav-link active" aria-current="page">Research</a>
-        <a href="/writing/" class="masthead__nav-link">Writing</a>
-        <a href="/photos/" class="masthead__nav-link">Photos</a>
-        <a href="/music/" class="masthead__nav-link">Music</a>
-        <a href="/press/" class="masthead__nav-link">Press</a>
-        <a href="/resume/" class="masthead__nav-link">Resume</a>
-        <a href="/contact/" class="masthead__nav-link">Contact</a>
-        <button type="button" class="masthead__nav-link kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>⌘K</kbd></button>
-        </nav>
-      </header>
+      <nav class="site-nav" aria-label="Pages">
+        <a href="/">home</a>
+        <a href="/work/">work</a>
+        <a href="/education/">education</a>
+        <a href="/projects/">projects</a>
+        <a href="/design/">design</a>
+        <a href="/research/" aria-current="page">research</a>
+        <a href="/writing/">writing</a>
+        <a href="/photos/">photos</a>
+        <a href="/music/">music</a>
+        <a href="/press/">press</a>
+        <a href="/resume/">resume</a>
+        <a href="/contact/">contact</a>
+        <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">search</button>
+      </nav>
 
     <main class="page" id="main">
-        <h1 class="page-title">Research</h1>
-        <div class="projects__list projects__list--shots">
+        <h1 class="page-title page-title--shown">Research</h1>
+        <div class="projects__list projects__list--index">
 
           <article class="project-item" id="hypnagogia">
+            <img class="project-item__thumb" src="/assets/img/peek/hypnagogia.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Hypnagogia</h3>
               <span class="project-item__role">Computational Neuroscience &middot; Connectomics &middot; Preprint</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Sleeping rats replay what they learned, but no one has seen an insect&rsquo;s memory cells do it. Hypnagogia simulates all 144,209 neurons of the male fruit-fly brain from its connectome, teaches the model an odour, and runs a pre-registered test of whether the cells that learned it switch back on by themselves during simulated sleep, against shuffled-wiring, wake and unlearned-weights controls.</p>
             <p class="project-item__description project-item__lead">A whole-brain fruit-fly simulation and a pre-registered test of whether a learned memory replays during sleep. It doesn&rsquo;t, and the paper shows why.</p>
             <p class="project-item__description">Sleeping rats replay what they learned, but no one has seen an insect&rsquo;s memory cells do it. Hypnagogia simulates all 144,209 neurons of the male fruit-fly brain from its connectome, teaches the model an odour, and runs a pre-registered test of whether the cells that learned it switch back on by themselves during simulated sleep, against shuffled-wiring, wake and unlearned-weights controls.</p>
             <p class="project-item__description">They don&rsquo;t, and the paper shows why: the memory sits one synapse downstream of the cells being scored, so learning can&rsquo;t change which of them switch on, even once the model is given the slow dynamics it needs to have episodes at all. Along the way, modelling one inhibitory neuron as the non-spiking cell it was measured to be, with no new parameters, took the model&rsquo;s odour code from 52.6% of Kenyon cells to 4.5%, against about 6% in real flies.</p>
@@ -182,14 +182,16 @@
               <a href="/research/hypnagogia/" class="project-item__link project-item__link--arrow">View paper</a>
               <a href="https://github.com/ankthba/hypnagogia" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             </div>
-            <img class="project-item__img" src="/assets/img/peek/hypnagogia.webp" alt="" width="1200" height="800" decoding="async">
+            <img class="project-item__img" src="/assets/img/peek/hypnagogia.webp" alt="" width="1200" height="800" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item" id="agentical">
+            <img class="project-item__thumb" src="/assets/img/peek/agentical.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Agentical</h3>
               <span class="project-item__role">Programming Languages &middot; Formal Methods &middot; Formal Verification &middot; Preprint</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">AI agents crash mid-task, and their model calls never give the same answer twice, so a crashed run can&rsquo;t simply be restarted. Agentical gives LLM agents a probabilistic semantics in which every model call is a random draw and every response is journaled, then proves that replaying a run from its journal reproduces it exactly, and that recovering from a crash continues the run with exactly the distribution it would have had, whenever the crash doesn&rsquo;t hinge on a response that was never recorded. Both results extend to many agents running at once with shared memory and messages, and a security theorem shows that, under its labelling rules and a scheduler that sees only public events, secret data can&rsquo;t leak between agents, even statistically.</p>
             <p class="project-item__description project-item__lead">Proofs, machine-checked in Lean&nbsp;4, that an AI agent&rsquo;s run can be replayed exactly and resumed after a crash.</p>
             <p class="project-item__description">AI agents crash mid-task, and their model calls never give the same answer twice, so a crashed run can&rsquo;t simply be restarted. Agentical gives LLM agents a probabilistic semantics in which every model call is a random draw and every response is journaled, then proves that replaying a run from its journal reproduces it exactly, and that recovering from a crash continues the run with exactly the distribution it would have had, whenever the crash doesn&rsquo;t hinge on a response that was never recorded. Both results extend to many agents running at once with shared memory and messages, and a security theorem shows that, under its labelling rules and a scheduler that sees only public events, secret data can&rsquo;t leak between agents, even statistically.</p>
             <p class="project-item__description">The core results, and their lifting to any deterministically scheduled system, are machine-checked in Lean&nbsp;4 with no unproven steps; that the multi-agent calculus is such a system, and the security theorem, are proved on paper. A dependency-free Rust runtime puts the single-agent results to the test: 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried, and journaling costs about 100 nanoseconds a step.</p>
@@ -198,14 +200,16 @@
               <a href="/research/agentical/" class="project-item__link project-item__link--arrow">View paper</a>
               <a href="https://github.com/ankthba/agentical" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             </div>
-            <img class="project-item__img" src="/assets/img/peek/agentical.webp" alt="" width="1200" height="800" decoding="async">
+            <img class="project-item__img" src="/assets/img/peek/agentical.webp" alt="" width="1200" height="800" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item" id="cnn-ocscc-detection">
+            <img class="project-item__thumb" src="/assets/img/peek/ocradar.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">CNN OCSCC Detection</h3>
               <span class="project-item__role">Machine Learning &middot; Medical Imaging &middot; arXiv:2510.16235</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Oral cavity squamous cell carcinoma is the most common head and neck cancer, and its early stages are subtle enough that it often goes undetected until it is advanced. This co-authored paper trains a convolutional neural network on 4,293 images of malignant and benign tumors and negative samples to recognize it, pairs the model with custom hardware built to capture detailed images, and releases an open-access app that puts the model in anyone&rsquo;s hands.</p>
             <p class="project-item__description project-item__lead">A neural network that recognizes oral cancer in photos, trained on 4,293 images, with the hardware and open-access app to use it.</p>
             <p class="project-item__description">Oral cavity squamous cell carcinoma is the most common head and neck cancer, and its early stages are subtle enough that it often goes undetected until it is advanced. This co-authored paper trains a convolutional neural network on 4,293 images of malignant and benign tumors and negative samples to recognize it, pairs the model with custom hardware built to capture detailed images, and releases an open-access app that puts the model in anyone&rsquo;s hands.</p>
             <p class="project-item__description">Testing the network at five common image resolutions showed accuracy rising on a logarithmic curve, with diminishing returns from higher pixel counts: a measure of the image quality a screening device actually needs.</p>

@@ -223,48 +223,52 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="sheet">
     <div class="sheet__page">
-      <header class="masthead">
-        <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-        <nav class="masthead__nav" aria-label="Pages">
-        <a href="/work/" class="masthead__nav-link">Work</a>
-        <a href="/education/" class="masthead__nav-link">Education</a>
-        <a href="/projects/" class="masthead__nav-link active" aria-current="page">Projects</a>
-        <a href="/design/" class="masthead__nav-link">Design</a>
-        <a href="/research/" class="masthead__nav-link">Research</a>
-        <a href="/writing/" class="masthead__nav-link">Writing</a>
-        <a href="/photos/" class="masthead__nav-link">Photos</a>
-        <a href="/music/" class="masthead__nav-link">Music</a>
-        <a href="/press/" class="masthead__nav-link">Press</a>
-        <a href="/resume/" class="masthead__nav-link">Resume</a>
-        <a href="/contact/" class="masthead__nav-link">Contact</a>
-        <button type="button" class="masthead__nav-link kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>⌘K</kbd></button>
-        </nav>
-      </header>
+      <nav class="site-nav" aria-label="Pages">
+        <a href="/">home</a>
+        <a href="/work/">work</a>
+        <a href="/education/">education</a>
+        <a href="/projects/" aria-current="page">projects</a>
+        <a href="/design/">design</a>
+        <a href="/research/">research</a>
+        <a href="/writing/">writing</a>
+        <a href="/photos/">photos</a>
+        <a href="/music/">music</a>
+        <a href="/press/">press</a>
+        <a href="/resume/">resume</a>
+        <a href="/contact/">contact</a>
+        <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">search</button>
+      </nav>
 
     <main class="page" id="main">
-        <h1 class="page-title">Projects</h1>
-        <div class="projects__list projects__list--across projects__list--shots">
+        <h1 class="page-title page-title--shown">Projects</h1>
+        <div class="projects__list projects__list--across projects__list--index">
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/peek/pragmatic.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Rust Runtime for AI Agents</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A durable execution runtime that journals every model and tool call, so a crashed run resumes where it stopped and any run replays exactly.</p>
             <p class="project-item__description">A durable execution runtime that journals every model and tool call, so a crashed run resumes where it stopped and any run replays exactly.</p>
             <a href="https://github.com/pragmaticco/pragmatic" target="_blank" rel="noopener" class="project-item__link">View repo</a>
-            <img class="project-item__img" src="/assets/img/peek/pragmatic.webp" alt="" width="1200" height="630" decoding="async">
+            <img class="project-item__img" src="/assets/img/peek/pragmatic.webp" alt="" width="1200" height="630" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">Genzo</h3>
               <span class="project-item__role">Coming soon</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A film camera for iPhone that develops single-frame Bayer RAW through five original film looks.</p>
             <p class="project-item__description">A film camera for iPhone that develops single-frame Bayer RAW through five original film looks.</p>
           </article>
 
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">Meridian</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A fast, native market terminal for the Mac, with an AI analyst built on Claude.</p>
             <p class="project-item__description">A fast, native market terminal for the Mac, with an AI analyst built on Claude.</p>
             <div class="project-item__links">
               <a href="https://github.com/ankthba/meridian/releases/latest" target="_blank" rel="noopener" class="project-item__link">Download</a>
@@ -273,20 +277,24 @@
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/haze/v3/framed-duo.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Haze</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A weather app built for fast, accurate daily decisions, on iPhone, iPad, Mac and Apple Watch.</p>
             <p class="project-item__description">A weather app built for fast, accurate daily decisions, on iPhone, iPad, Mac and Apple Watch.</p>
             <div class="project-item__links">
               <a href="/haze/" class="project-item__link">Learn more</a>
               <a href="https://apps.apple.com/us/app/haze-beautiful-weather/id6777465735" target="_blank" rel="noopener" class="project-item__link">App Store</a>
             </div>
-            <img class="project-item__img" src="/assets/img/haze/v3/framed-duo.webp" alt="" width="1700" height="1236" decoding="async">
+            <img class="project-item__img" src="/assets/img/haze/v3/framed-duo.webp" alt="" width="1700" height="1236" loading="lazy" decoding="async">
           </article>
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/peek/lagunita.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Lagunita</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A variable Garamond for screens, with flared stems and chisel-cut terminals.</p>
             <p class="project-item__description">A variable Garamond for screens, with flared stems and chisel-cut terminals.</p>
             <div class="project-item__links">
               <a href="/lagunita/" class="project-item__link">Try it</a>
@@ -296,9 +304,11 @@
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/hypnagogia.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Hypnagogia</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A whole-brain Drosophila simulation that tests whether a learned memory comes back on its own during sleep.</p>
             <p class="project-item__description">A whole-brain <em>Drosophila</em> simulation that tests whether a learned memory comes back on its own during sleep.</p>
             <div class="project-item__links">
               <a href="/hypnagogia/" class="project-item__link">Open it</a>
@@ -309,10 +319,12 @@
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/peek/aperta.webp" alt="" style="object-position: 0% 0%" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Aperta</h3>
               <span class="project-item__role">Co-creator</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Turns a clinical discharge note into something the patient understands at home. Built at VTHacks 14.</p>
             <p class="project-item__description">Turns a clinical discharge note into something the patient understands at home. Built at VTHacks 14.</p>
             <div class="project-item__links">
               <a href="https://aperta.health" target="_blank" rel="noopener" class="project-item__link">Open it</a>
@@ -322,19 +334,23 @@
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/sentry.webp" alt="" style="object-position: 50% 0%" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Sentry</h3>
               <span class="project-item__role">Co-developer</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A privacy-first system monitor for macOS, with companion iPhone and Apple Watch apps.</p>
             <p class="project-item__description">A privacy-first system monitor for macOS, with companion iPhone and Apple Watch apps.</p>
             <a href="https://github.com/malekTheCoder/Sentry" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             <img class="project-item__img" src="/assets/img/projects/sentry.webp" alt="" style="object-position: 50% 0%" width="1400" height="1021" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/graphite.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Graphite</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A 3D graphing calculator that runs entirely in the browser.</p>
             <p class="project-item__description">A 3D graphing calculator that runs entirely in the browser.</p>
             <div class="project-item__links">
               <a href="/graphite/" class="project-item__link">Use it</a>
@@ -345,64 +361,78 @@
 
           <!-- OCRadar hidden for now; covered under Work experience.
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">OCRadar</h3>
               <span class="project-item__role">Founder &amp; President</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
             <p class="project-item__description">AI-powered mobile platform for early oral cancer detection, combining computer vision with cross-platform development to drive global health impact.</p>
             <a href="https://ocradar.com/" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
           </article>
           -->
 
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">Splatify</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Turns ordinary phone videos of a place into a 3D Gaussian splat scene, fully local on a Mac.</p>
             <p class="project-item__description">Turns ordinary phone videos of a place into a 3D Gaussian splat scene, fully local on a Mac.</p>
             <a href="https://github.com/ankthba/Splatify" target="_blank" rel="noopener" class="project-item__link">View repo</a>
           </article>
 
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">Ejector</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A tiny menu bar app for ejecting drives on the Mac, all in a single Swift file.</p>
             <p class="project-item__description">A tiny menu bar app for ejecting drives on the Mac, all in a single Swift file.</p>
             <a href="https://github.com/ankthba/ejector" target="_blank" rel="noopener" class="project-item__link">View repo</a>
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/edgefabric.webp" alt="" style="object-position: 0% 0%" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">EdgeFabric</h3>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Distributed inference across the edge devices around you.</p>
             <p class="project-item__description">Distributed inference across the edge devices around you.</p>
             <a href="https://github.com/ankthba/EdgeFabric" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             <img class="project-item__img" src="/assets/img/projects/edgefabric.webp" alt="" style="object-position: 0% 0%" width="1200" height="729" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/illumisign.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">IllumiSign</h3>
               <span class="project-item__role">Hack The Nest 2025 Winner</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Lets people with ALS speak by choosing letters with their eyes, in the browser.</p>
             <p class="project-item__description">Lets people with ALS speak by choosing letters with their eyes, in the browser.</p>
             <a href="https://devpost.com/software/illumisign" target="_blank" rel="noopener" class="project-item__link">View project</a>
             <img class="project-item__img" src="/assets/img/projects/illumisign.webp" alt="" width="1200" height="705" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/pcb.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">PCB Design</h3>
               <span class="project-item__role">Hardware</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Compact, efficient boards for USB-C storage and embedded work.</p>
             <p class="project-item__description">Compact, efficient boards for USB-C storage and embedded work.</p>
             <img class="project-item__img" src="/assets/img/projects/pcb.webp" alt="" width="1200" height="1028" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/projects/apple-silicon.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Apple Silicon Analysis</h3>
               <span class="project-item__role">Research</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A model of how Apple Silicon&rsquo;s CPU, GPU and Neural Engine share caches and power.</p>
             <p class="project-item__description">A model of how Apple Silicon&rsquo;s CPU, GPU and Neural Engine share caches and power.</p>
             <img class="project-item__img" src="/assets/img/projects/apple-silicon.webp" alt="" width="1200" height="679" loading="lazy" decoding="async">
           </article>

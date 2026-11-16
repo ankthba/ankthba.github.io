@@ -79,34 +79,12 @@ html.pencil :is(
    small line of pages, the drawing as a banner, then the name, what I
    do, the bio, and where else to find me. */
 
-html.pencil .sheet--home {
+html.pencil .sheet {
   padding-top: clamp(1.25rem, 4svh, 2.5rem);
 }
 
 html.pencil .sheet--home .sheet__page {
   max-width: var(--sheet);
-}
-
-/* the pages, small and quiet, the one you're on in ink */
-.home-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.15rem 0.8rem;
-  font-size: 0.875rem;
-  color: var(--color-quiet);
-}
-
-.home-nav a,
-.home-nav button {
-  color: inherit;
-  font: inherit;
-  transition: color var(--transition-fast);
-}
-
-.home-nav a:hover,
-.home-nav button:hover,
-.home-nav a[aria-current] {
-  color: var(--color-fg);
 }
 
 /* The drawing, cropped to a band: clouds, the ridge, the hills with
@@ -245,7 +223,7 @@ html.pencil-intro .masthead--home .masthead__name {
   opacity: 0;
 }
 
-html.pencil-intro .home-nav,
+html.pencil-intro .site-nav,
 html.pencil-intro .pencil-banner,
 html.pencil-intro .masthead--home .masthead__role,
 html.pencil-intro .page--home,
@@ -337,4 +315,46 @@ html.pencil .koi {
   transform-origin: 0 50%;
 }
 
+/* ---------- Every page: the same head ----------
+   A small line of the pages across the top, the one you're on in ink;
+   then, on the pages under home, the page's name as its heading, at
+   the size the home page sets my name. */
 
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.8rem;
+  font-size: 0.875rem;
+  color: var(--color-quiet);
+}
+
+.site-nav a,
+.site-nav button {
+  color: inherit;
+  font: inherit;
+  transition: color var(--transition-fast);
+}
+
+.site-nav a:hover,
+.site-nav button:hover,
+.site-nav a[aria-current] {
+  color: var(--color-fg);
+}
+
+html.pencil .page:not(.page--home) {
+  padding-top: clamp(2rem, 6svh, 3.25rem);
+}
+
+html.pencil .page-title--shown {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.6rem, 1.35rem + 1vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}

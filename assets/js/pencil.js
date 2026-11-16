@@ -81,7 +81,7 @@
         nameEl.style.transform = '';
         anims.push(nameEl.animate([{ transform: from }, { transform: 'none' }], { duration: MOVE, easing: EASE, fill: 'both' }));
         var rise = [{ transform: 'translateY(' + vh + 'px)' }, { transform: 'none' }];
-        document.querySelectorAll('.home-nav, .pencil-banner, .masthead--home .masthead__role, .page--home, .sheet--home .colophon')
+        document.querySelectorAll('.site-nav, .pencil-banner, .masthead--home .masthead__role, .page--home, .sheet--home .colophon')
           .forEach(function (el) {
             anims.push(el.animate(rise, { duration: MOVE, easing: EASE, fill: 'both' }));
           });
@@ -117,7 +117,7 @@
     var ROAM = 380;             // how far it goes for its next spot, about
     var SHY = 120;              // how near the cursor may come, px
     var TURN = 5;               // how quickly a butterfly turns, rad/s
-    var WORDS = '.home-nav, .masthead--home .masthead__name, .masthead--home .masthead__role, ' +
+    var WORDS = '.site-nav, .masthead--home .masthead__name, .masthead--home .masthead__role, ' +
                 '.page--home .about__text p, .page--home .index, .home-links, .colophon__inner';
 
     var vw = 0, vh = 0, blocks = [];

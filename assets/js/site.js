@@ -686,3 +686,44 @@
     if (key) key.textContent = 'Ctrl K';
   }
 })();
+
+/* The index of entries (Work, Education, Projects, Press, Research):
+   each is a line until it is opened. Its name becomes a button that
+   opens and closes it; a click anywhere on a closed line opens it too.
+   An entry a link points at (/research/#agentical) arrives open. */
+(function () {
+  var items = document.querySelectorAll('.projects__list--index > .project-item');
+  if (!items.length) return;
+  function set(item, open) {
+    item.classList.toggle('is-open', open);
+    var b = item.querySelector('.project-item__toggle');
+    if (b) b.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  Array.prototype.forEach.call(items, function (item) {
+    var title = item.querySelector('.project-item__title');
+    if (title && !title.querySelector('a, button')) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'project-item__toggle';
+      b.setAttribute('aria-expanded', 'false');
+      while (title.firstChild) b.appendChild(title.firstChild);
+      title.appendChild(b);
+    }
+    item.addEventListener('click', function (e) {
+      var open = item.classList.contains('is-open');
+      var onName = e.target.closest('.project-item__toggle');
+      if (open && !onName) return;                       // open: only its name closes it
+      if (!onName && e.target.closest('a, button, summary')) return;
+      set(item, !open);
+    });
+  });
+  function arrive() {
+    var id = location.hash.slice(1);
+    var at = id && document.getElementById(id);
+    var item = at && at.closest('.projects__list--index > .project-item');
+    if (item) { set(item, true); item.scrollIntoView({ block: 'start' }); }
+  }
+  arrive();
+  window.addEventListener('hashchange', arrive);
+})();
+

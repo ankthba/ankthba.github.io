@@ -75,33 +75,33 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="sheet">
     <div class="sheet__page">
-      <header class="masthead">
-        <a class="masthead__name" href="/">Aniketh Bandlamudi</a>
-        <nav class="masthead__nav" aria-label="Pages">
-        <a href="/work/" class="masthead__nav-link active" aria-current="page">Work</a>
-        <a href="/education/" class="masthead__nav-link">Education</a>
-        <a href="/projects/" class="masthead__nav-link">Projects</a>
-        <a href="/design/" class="masthead__nav-link">Design</a>
-        <a href="/research/" class="masthead__nav-link">Research</a>
-        <a href="/writing/" class="masthead__nav-link">Writing</a>
-        <a href="/photos/" class="masthead__nav-link">Photos</a>
-        <a href="/music/" class="masthead__nav-link">Music</a>
-        <a href="/press/" class="masthead__nav-link">Press</a>
-        <a href="/resume/" class="masthead__nav-link">Resume</a>
-        <a href="/contact/" class="masthead__nav-link">Contact</a>
-        <button type="button" class="masthead__nav-link kbar-open" aria-keyshortcuts="Meta+K Control+K">Search<kbd>⌘K</kbd></button>
-        </nav>
-      </header>
+      <nav class="site-nav" aria-label="Pages">
+        <a href="/">home</a>
+        <a href="/work/" aria-current="page">work</a>
+        <a href="/education/">education</a>
+        <a href="/projects/">projects</a>
+        <a href="/design/">design</a>
+        <a href="/research/">research</a>
+        <a href="/writing/">writing</a>
+        <a href="/photos/">photos</a>
+        <a href="/music/">music</a>
+        <a href="/press/">press</a>
+        <a href="/resume/">resume</a>
+        <a href="/contact/">contact</a>
+        <button type="button" class="kbar-open" aria-keyshortcuts="Meta+K Control+K">search</button>
+      </nav>
 
     <main class="page" id="main">
-        <h1 class="page-title">Work</h1>
-        <div class="projects__list projects__list--shots">
+        <h1 class="page-title page-title--shown">Work</h1>
+        <div class="projects__list projects__list--index">
 
           <article class="project-item" id="pragmatic">
+            <img class="project-item__thumb" src="/assets/img/peek/pragmatic.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">Pragmatic</h3>
               <span class="project-item__role">Founder · Jan 2026 – Present · Pragmatic Research, Inc.</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">The system of record for AI agents: every model and tool call journaled, so a run can be replayed exactly or resumed where it stopped.</p>
             <p class="project-item__description">The system of record for AI agents: every model and tool call journaled, so a run can be replayed exactly or resumed where it stopped.</p>
             <p class="project-item__description">Underneath is a zero-dependency durable execution runtime in Rust, with agent execution and replay formalized in a probabilistic process calculus. Its append-only journal takes 230&nbsp;ns per append, with flat latency through one million entries, and passes a 1000/1000 replay-determinism test suite. Incorporated as a Delaware C-corp in August 2026.</p>
             <div class="project-item__links">
@@ -109,23 +109,27 @@
               <a href="/research/#agentical" class="project-item__link">View paper</a>
               <a href="https://github.com/pragmaticco/pragmatic" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             </div>
-            <img class="project-item__img" src="/assets/img/peek/pragmatic.webp" alt="" width="1200" height="630" decoding="async">
+            <img class="project-item__img" src="/assets/img/peek/pragmatic.webp" alt="" width="1200" height="630" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <span class="project-item__thumb" aria-hidden="true"></span>
             <div class="project-item__header">
               <h3 class="project-item__title">Alarm.com</h3>
               <span class="project-item__role">Engineering Intern · May 2026</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Hardware QA for home security systems, from soldering boards to an internal tool for managing lab devices.</p>
             <p class="project-item__description">Hardware QA for home security systems, from soldering boards to an internal tool for managing lab devices.</p>
             <a href="https://www.alarm.com" target="_blank" rel="noopener" class="project-item__link">Visit site</a>
           </article>
 
           <article class="project-item" id="ocradar">
+            <img class="project-item__thumb" src="/assets/img/peek/ocradar.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">OCRadar</h3>
               <span class="project-item__role">Founder &amp; President · May 2022 – Present</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">A nonprofit with a team of four, building an AI app for catching oral cancer early, using computer vision.</p>
             <p class="project-item__description">A nonprofit with a team of four, building an AI app for catching oral cancer early, using computer vision.</p>
             <p class="project-item__description">The published neural network, trained on 4,293 images, reached 97.8% precision, 95.3% recall and 98% test accuracy at 1440p. It runs on-device with Core&nbsp;ML, with a 3D-printed attachment for capturing images. Covered by WTOP, the Korea Times and Vision Times.</p>
             <div class="project-item__links">
@@ -133,24 +137,28 @@
               <a href="/press/" class="project-item__link">Press coverage</a>
               <a href="/research/#cnn-ocscc-detection" class="project-item__link">View paper</a>
             </div>
-            <img class="project-item__img" src="/assets/img/peek/ocradar.webp" alt="" width="1200" height="801" decoding="async">
+            <img class="project-item__img" src="/assets/img/peek/ocradar.webp" alt="" width="1200" height="801" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/peek/frc.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">FRC Robotics</h3>
               <span class="project-item__role">Software Lead · Dec 2023 – Oct 2025</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Systems engineering and control software for competition robots.</p>
             <p class="project-item__description">Systems engineering and control software for competition robots.</p>
             <a href="https://github.com/OaktonCougarRobotics" target="_blank" rel="noopener" class="project-item__link">View repo</a>
             <img class="project-item__img" src="/assets/img/peek/frc.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async">
           </article>
 
           <article class="project-item">
+            <img class="project-item__thumb" src="/assets/img/peek/ftc.webp" alt="" width="88" height="88" decoding="async">
             <div class="project-item__header">
               <h3 class="project-item__title">FTC Robotics</h3>
               <span class="project-item__role">R&amp;D Captain / Software Lead · Sep 2022 – May 2026</span>
             </div>
+            <p class="project-item__tag" aria-hidden="true">Robot design, code and STEM outreach, as R&amp;D captain and software lead.</p>
             <p class="project-item__description">Robot design, code and STEM outreach, as R&amp;D captain and software lead.</p>
             <img class="project-item__img" src="/assets/img/peek/ftc.webp" alt="" width="1200" height="900" loading="lazy" decoding="async">
           </article>

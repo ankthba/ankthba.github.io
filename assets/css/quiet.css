@@ -1,0 +1,440 @@
+/* =========================================================
+   quiet.css — the site's look since 2026-11, laid over site.css +
+   pencil.css (pages carry class="pencil quiet qu-<page>")
+
+   Concept A (2026-11-16), a ground-up language: one narrow column
+   centred on off-white paper, Inter at one size, ink for what is
+   named and grey for what's said about it, small grey section names,
+   a soft wash under the row you point at, fine grey underlines. No
+   drawing, no effects.
+
+   The Lagunita and Design pages are shown in Lagunita (the user:
+   "makes 0 sense for the lagunita page to be anything but lagunita").
+   ========================================================= */
+
+:root:root:root.quiet {
+  color-scheme: light;
+  --qu-ink: #171717;
+  --qu-text: #3b3b3b;
+  --qu-mid: #6f6f6f;
+  --qu-soft: #a3a3a3;
+  --qu-bg: #fafaf9;
+  --qu-hover: #f0f0ee;
+  --qu-line: #cfcfcc;
+  --qu-col: 34.5rem;          /* about 75 characters a line */
+  --qu-font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  --color-bg: var(--qu-bg);
+  --color-bg-alt: var(--qu-hover);
+  --color-fg: var(--qu-ink);
+  --color-muted: var(--qu-text);
+  --color-quiet: var(--qu-mid);
+  --color-faint: var(--qu-soft);
+  --color-border: #e6e6e3;
+  --color-border-hover: #d6d6d2;
+  --color-accent: var(--qu-ink);
+  --color-wash: var(--qu-hover);
+  --color-underline: var(--qu-line);
+  --color-mat: #f0f0ee;
+  --color-scrim: rgba(250, 250, 249, 0.94);
+  --pencil-shadow: transparent;
+  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 32px -16px rgba(0, 0, 0, 0.18);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 32px -16px rgba(0, 0, 0, 0.18);
+  --font-display: var(--qu-font);
+  --font-sans: var(--qu-font);
+  --size: 14.5px;
+  --head: 14.5px;
+  --sheet: var(--qu-col);
+  --col: 7.5rem;
+  --row-pad: 0.6rem;
+  --gap: 3.75rem;
+}
+
+/* the type pages, in their own face */
+:root:root:root.quiet:is(.qu-lagunita, .qu-design) {
+  --font-display: "Lagunita", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Lagunita", "Iowan Old Style", Georgia, serif;
+  --qu-font: "Lagunita", "Iowan Old Style", Georgia, serif;
+  --size: 1.0625rem;
+}
+
+html.quiet,
+html.quiet.pencil {
+  font-size: 100%;
+  background: var(--qu-bg);
+}
+
+html.quiet body {
+  background: var(--qu-bg);
+  color: var(--qu-ink);
+  font-family: var(--qu-font);
+  font-size: var(--size);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.006em;
+  font-variant-numeric: normal;
+  hanging-punctuation: none;
+}
+
+html.quiet:is(.qu-lagunita, .qu-design) body {
+  letter-spacing: 0;
+  font-feature-settings: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+}
+
+/* no paragraph ends on one word */
+html.quiet :is(p, li) {
+  text-wrap: pretty;
+}
+
+/* the keyboard's place, plainly */
+html.quiet :is(a, button, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--qu-ink);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+html.quiet ::selection {
+  background: var(--qu-ink);
+  color: var(--qu-bg);
+}
+
+html.quiet :is(h1, h2, h3, h4, p, li, dt, dd, button, input, kbd, figcaption, blockquote) {
+  font-family: var(--qu-font);
+  letter-spacing: inherit;
+}
+
+html.quiet :is(.pencil-scene, .pencil-cue, .flutter, .koi, .theme-toggle) {
+  display: none !important;
+}
+
+/* names a step heavier; everything else regular */
+html.quiet.pencil :is(.masthead__name, .masthead__nav-link.active, .index__name, .reach__name,
+  .project-item__title, .paper__name, .paper__title, .essay__title, .essay__sub,
+  .now__name, .track__name, .stand__name, .comp__name, .stop__name) {
+  font-weight: 500;
+}
+
+html.quiet.pencil .masthead__role {
+  font-weight: 400;
+}
+
+/* links in running text: a fine grey line that darkens */
+html.quiet .page p a,
+html.quiet .about__text a,
+html.quiet .contact__text a,
+.qu-elsewhere a {
+  color: var(--qu-ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--qu-line);
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.15s;
+}
+
+html.quiet .page p a:hover,
+html.quiet .about__text a:hover,
+html.quiet .contact__text a:hover,
+.qu-elsewhere a:hover {
+  text-decoration-color: var(--qu-ink);
+}
+
+/* ---------- The column ---------- */
+
+html.quiet .sheet,
+html.quiet .sheet--home {
+  display: flex;
+  justify-content: center;
+  padding: clamp(4.5rem, 14vh, 8.5rem) 1.5rem 3rem;
+}
+
+html.quiet .sheet__page,
+html.quiet .sheet--home .sheet__page {
+  width: 100%;
+  max-width: var(--qu-col);
+}
+
+/* ---------- Header: the name, then what I do or the pages ---------- */
+
+html.quiet .masthead__name,
+html.quiet .masthead--home .masthead__name {
+  margin: 0;
+  font-family: var(--qu-font);
+  font-size: var(--size);
+  line-height: 1.6;
+  letter-spacing: inherit;
+  color: var(--qu-ink);
+}
+
+html.quiet .masthead--home {
+  min-height: 0;
+}
+
+html.quiet .masthead--home .masthead__role {
+  margin: 0;
+  font-family: var(--qu-font);
+  font-size: var(--size);
+  line-height: 1.6;
+  color: var(--qu-mid);
+}
+
+html.quiet .masthead--home .masthead__line,
+html.quiet .masthead--home .masthead__line + .masthead__line {
+  display: block;
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+  color: var(--qu-mid);
+  text-wrap: pretty;
+}
+
+/* each line under the name stays whole where there's room for it */
+@media (min-width: 48rem) {
+  html.quiet .masthead--home .masthead__line,
+  html.quiet .masthead--home .masthead__line + .masthead__line {
+    /* text-wrap is a shorthand that resets the wrap mode, so both are set */
+    text-wrap: nowrap;
+    white-space: nowrap;
+  }
+}
+
+html.quiet .masthead--home .social {
+  display: none;
+}
+
+/* the pages, in two even lines where they don't fit on one */
+html.quiet .masthead__nav {
+  margin-top: 0;
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+html.quiet .masthead__nav-link {
+  margin-right: 0.7em;
+  transition: color 0.15s;
+  color: var(--qu-mid);
+}
+
+html.quiet .masthead__nav-link:hover,
+html.quiet .masthead__nav-link.active {
+  color: var(--qu-ink);
+}
+
+html.quiet .kbar-open kbd {
+  color: var(--qu-soft);
+}
+
+/* ---------- The page ---------- */
+
+html.quiet .page,
+html.quiet .page--home {
+  padding: var(--gap) 0 0;
+  align-self: stretch;
+  max-width: none;
+}
+
+html.quiet .page-title {
+  font-size: var(--size);
+}
+
+html.quiet .section-label,
+html.quiet .writing__heading,
+.qu-h {
+  margin: var(--gap) 0 0.9rem;
+  font-family: var(--qu-font);
+  font-size: var(--size);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--qu-soft);
+}
+
+html.quiet .section-label:first-child {
+  margin-top: 0;
+}
+
+/* rows: the name in ink, what it is in grey, a soft wash when pointed at */
+html.quiet .index__row,
+html.quiet .project-item,
+html.quiet .reach__row {
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+/* essays: a step up for reading at length */
+html.quiet .essay__body {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--qu-text);
+}
+
+html.quiet .essay__body p + p {
+  margin-top: 1.1em;
+}
+
+html.quiet .index__note,
+html.quiet .project-item__role {
+  color: var(--qu-mid);
+}
+
+/* ---------- Home: about, what's lately, the pages, elsewhere ---------- */
+
+html.quiet .page--home {
+  display: flex;
+  flex-direction: column;
+}
+
+html.quiet .page--home .about__text {
+  order: 1;
+  max-width: none;
+  font-size: var(--size);
+  line-height: 1.6;
+  color: var(--qu-text);
+}
+
+html.quiet .page--home .about__text p + p {
+  margin-top: 1em;
+}
+
+html.quiet .page--home .index[aria-label="Lately"] {
+  order: 2;
+  margin-top: 1.1rem;
+}
+
+html.quiet .page--home .index[aria-label="Lately"] .index__row {
+  display: block;
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
+
+html.quiet .page--home .index[aria-label="Lately"] .index__name {
+  margin-right: 0.5em;
+  font-weight: 400;
+  color: var(--qu-soft);
+}
+
+html.quiet .page--home .index[aria-label="Lately"] .index__note {
+  color: var(--qu-text);
+}
+
+/* while a song is playing, a small light beside it in the album's colour
+   (quiet.js reads it off the cover), breathing slowly */
+html.quiet .page--home [data-listening].qu-live .index__name::after {
+  content: "";
+  display: inline-block;
+  width: 0.4em;
+  height: 0.4em;
+  margin-left: 0.45em;
+  border-radius: 50%;
+  background: var(--qu-live, #3aa564);
+  vertical-align: 0.12em;
+  transition: background-color 0.6s ease;
+  animation: qu-breathe 2.8s ease-in-out infinite;
+}
+
+@keyframes qu-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.quiet .page--home [data-listening].qu-live .index__name::after { animation: none; }
+}
+
+.qu-h--pages { order: 3; }
+
+html.quiet .page--home .index[aria-label="Pages"] {
+  order: 4;
+  margin-top: 0;
+}
+
+.qu-h--else { order: 5; }
+
+.qu-elsewhere--home { order: 6; }
+
+html.quiet .page--home .index {
+  max-width: none;
+}
+
+.qu-elsewhere {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.1rem;
+  margin: 0;
+}
+
+/* ---------- Footer ---------- */
+
+html.quiet .colophon,
+html.quiet .sheet--home .colophon {
+  align-self: stretch;
+  max-width: none;
+  margin-top: 6rem;
+  padding: 0;
+}
+
+html.quiet .colophon__inner,
+html.quiet .sheet--home .colophon__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+html.quiet .colophon__meta {
+  color: var(--qu-soft);
+}
+
+html.quiet .colophon .social {
+  display: none;
+}
+
+html.quiet .colophon .qu-elsewhere {
+  justify-content: center;
+}
+
+html.quiet .colophon .qu-elsewhere a {
+  color: var(--qu-mid);
+}
+
+/* ---------- Pages that need more room ---------- */
+
+/* the type pages keep the measure their specimens were set for */
+:root:root:root.quiet:is(.qu-lagunita, .qu-design) {
+  --qu-col: 46rem;
+}
+
+@media (min-width: 64em) {
+  html.quiet:is(.qu-lagunita, .qu-design) {
+    font-size: 106.25%;
+  }
+}
+
+/* the specimen is set on its own, wider sheet */
+html.quiet .sheet--specimen .sheet__page {
+  max-width: var(--sp-wrap, 80rem);
+}
+
+/* photographs break out of the text column, centred under it, each
+   on a light mat like a mounted print */
+html.quiet .photos__grid {
+  width: min(64rem, 100vw - 3rem);
+  margin-left: calc(50% - min(64rem, 100vw - 3rem) / 2);
+  column-gap: 0.6rem;
+}
+
+html.quiet .photo-item {
+  margin-bottom: 0.6rem;
+  padding: 0.4rem;
+  background: #efefec;
+  border-radius: 2px;
+}
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 34rem) {
+  html.quiet .sheet,
+  html.quiet .sheet--home {
+    padding-top: 5rem;
+  }
+}

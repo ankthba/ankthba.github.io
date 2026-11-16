@@ -1,48 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="pencil" data-painting="/assets/img/monet/cliff-walk-at-pourville-1882-1400.webp">
+<html lang="en" class="pencil quiet qu-home" data-painting="/assets/img/monet/cliff-walk-at-pourville-1882-1400.webp">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f4f3ee">
+  <meta name="theme-color" content="#fafaf9">
   <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
   <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
   <script>
-    /* Before paint: mark the root, and decide whether the opening
-       (pencil.js) plays: once a visit, when the site is entered here
-       rather than from another of its pages, and motion is allowed.
-       ?intro plays it again. */
-    (function () {
-      var root = document.documentElement;
-      root.classList.add('js');
-      /* The drawing the page is set in (pencil.js) is sent for now, and
-         its place kept from the first paint, so the page under it never
-         jumps down when it lands. The smallest drawing that stays sharp:
-         1800 across for ordinary screens, 2400 for phones (which show
-         only a slice of it), 3600 for big sharp ones. It is sent as AVIF,
-         a quarter the weight of the WebP; a browser that can't read AVIF
-         skips this, and pencil.js falls back to the WebP. */
-      try {
-        var need = Math.max(root.clientWidth, window.innerHeight * 1.5) * (window.devicePixelRatio || 1);
-        var art = '/assets/img/pencil/home-' + (need > 2000 ? (root.clientWidth < 700 ? '2400' : '3600') : '1800') + '.avif';
-        var ahead = document.createElement('link');
-        ahead.rel = 'preload';
-        ahead.as = 'image';
-        ahead.type = 'image/avif';
-        ahead.href = art;
-        document.head.appendChild(ahead);
-        root.setAttribute('data-scene', art);
-        root.classList.add('has-scene');
-      } catch (e) {}
-      try {
-        var from = document.referrer.indexOf(location.origin + '/') === 0;
-        var again = /[?&]intro\b/.test(location.search);
-        if (again || (!sessionStorage.getItem('intro') && !from &&
-            !matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-          sessionStorage.setItem('intro', '1');
-          root.classList.add('pencil-intro');
-        }
-      } catch (e) {}
-    })();
+    /* Before paint: mark the root (scripts are running) */
+    document.documentElement.classList.add('js');
   </script>
   <title>Aniketh Bandlamudi</title>
   <meta name="description" content="Aniketh Bandlamudi is a CS and Applied Math student at the University of Virginia, founder of Pragmatic, the system of record for AI agents, and OCRadar, and maker of the Haze weather app.">
@@ -238,6 +204,10 @@
     ]
   }
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;1,14..32,400&display=swap">
+  <link rel="stylesheet" href="/assets/css/quiet.css">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -300,6 +270,6 @@
   <script src="/assets/js/site.js"></script>
   <script src="/assets/js/peek.js"></script>
   <script src="/assets/js/listening.js"></script>
-  <script src="/assets/js/pencil.js"></script>
+  <script src="/assets/js/quiet.js"></script>
 </body>
 </html>

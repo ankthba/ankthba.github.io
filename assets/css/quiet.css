@@ -316,28 +316,51 @@ html.quiet .page--home .index[aria-label="Lately"] .index__note {
   color: var(--qu-text);
 }
 
-/* while a song is playing, a small light beside it in the album's colour
-   (quiet.js reads it off the cover), breathing slowly */
-html.quiet .page--home [data-listening].qu-live .index__name::after {
-  content: "";
-  display: inline-block;
-  width: 0.4em;
-  height: 0.4em;
-  margin-left: 0.45em;
-  border-radius: 50%;
-  background: var(--qu-live, #3aa564);
-  vertical-align: 0.12em;
-  transition: background-color 0.6s ease;
-  animation: qu-breathe 2.8s ease-in-out infinite;
+/* while a song is playing, a small waveform beside it, after the one in
+   the iPhone's Dynamic Island: five rounded bars in the album's colour
+   (quiet.js reads it off the cover), each rising and falling about its
+   middle at its own pace. Still bars if motion is turned down. */
+.qu-wave {
+  display: none;
+  align-items: center;
+  gap: 0.13em;
+  height: 0.8em;
+  margin: 0 0.55em 0 0.05em;
+  vertical-align: -0.06em;
 }
 
-@keyframes qu-breathe {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
+html.quiet .page--home [data-listening].qu-live .qu-wave {
+  display: inline-flex;
+}
+
+.qu-wave i {
+  display: block;
+  width: 0.15em;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--qu-live, #3aa564);
+  transform-origin: 50% 50%;
+  transition: background-color 0.6s ease;
+  animation: qu-wave var(--t, 1s) ease-in-out var(--d, 0s) infinite alternate;
+}
+
+.qu-wave i:nth-child(1) { --t: 0.82s; --d: -0.30s; }
+.qu-wave i:nth-child(2) { --t: 1.06s; --d: -0.65s; }
+.qu-wave i:nth-child(3) { --t: 0.74s; --d: -0.10s; }
+.qu-wave i:nth-child(4) { --t: 0.96s; --d: -0.85s; }
+.qu-wave i:nth-child(5) { --t: 0.88s; --d: -0.45s; }
+
+@keyframes qu-wave {
+  0%   { transform: scaleY(0.28); }
+  35%  { transform: scaleY(0.9); }
+  60%  { transform: scaleY(0.5); }
+  100% { transform: scaleY(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html.quiet .page--home [data-listening].qu-live .index__name::after { animation: none; }
+  .qu-wave i { animation: none; }
+  .qu-wave i:nth-child(1), .qu-wave i:nth-child(5) { transform: scaleY(0.45); }
+  .qu-wave i:nth-child(2), .qu-wave i:nth-child(4) { transform: scaleY(0.75); }
 }
 
 .qu-h--pages { order: 3; }

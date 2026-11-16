@@ -27,11 +27,19 @@
   var live = home.querySelector('[data-listening]');
   if (live) {
     var head = live.querySelector('[data-listening-heading]');
+    // the waveform that shows while a song is playing (quiet.css .qu-wave)
+    if (head && !live.querySelector('.qu-wave')) {
+      var wave = document.createElement('span');
+      wave.className = 'qu-wave';
+      wave.setAttribute('aria-hidden', 'true');
+      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
+      head.parentNode.insertBefore(wave, head.nextSibling);
+    }
     var mark = function () { live.classList.toggle('qu-live', !!head && /now/i.test(head.textContent)); };
     mark();
     if (head) new MutationObserver(mark).observe(head, { childList: true, characterData: true, subtree: true });
 
-    // the light takes the album's colour: the cover's most vivid hue,
+    // the waveform takes the album's colour: the cover's most vivid hue,
     // kept dark enough to show on the paper
     var art = live.querySelector('[data-listening-art]');
     var tint = function () {

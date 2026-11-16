@@ -148,7 +148,7 @@
 
   /* ---------- The last 7 days, or the last 30 ---------- */
   var data = null;
-  var range = 'month'; // the range shown, the past 30 days to begin with, kept when the file is read again
+  var range = 'week'; // the range shown, the past 7 days to begin with, kept when the file is read again
 
   function rangeOf(which) {
     var r = data.ranges && data.ranges[which];
@@ -1419,7 +1419,7 @@
     });
     /* Before the calendar, whose today is drawn from the same plays. */
     logged = data.recent;
-    showRange('month');
+    showRange('week');
     calendar();
 
     log(logged);

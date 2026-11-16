@@ -14,20 +14,15 @@
     (function () {
       var root = document.documentElement;
       root.classList.add('js');
-      /* The drawing the page is set in (pencil.js) is sent for now, and
-         its place kept from the first paint, so the page under it never
-         jumps down when it lands. The smallest drawing that stays sharp:
-         1800 across for ordinary screens, 2400 for phones (which show
-         only a slice of it), 3600 for big sharp ones. It is sent as AVIF,
-         a quarter the weight of the WebP; a browser that can't read AVIF
-         skips this, and pencil.js falls back to the WebP. */
+      /* The drawing the picture is set from (pencil.js) is sent for now,
+         and the picture's place kept from the first paint, so the page
+         under it never jumps down when it lands. */
       try {
-        var need = Math.max(root.clientWidth, window.innerHeight * 1.5) * (window.devicePixelRatio || 1);
-        var art = '/assets/img/pencil/home-' + (need > 2000 ? (root.clientWidth < 700 ? '2400' : '3600') : '1800') + '.avif';
+        var art = '/assets/img/pencil/home-ascii.webp';
         var ahead = document.createElement('link');
         ahead.rel = 'preload';
         ahead.as = 'image';
-        ahead.type = 'image/avif';
+        ahead.type = 'image/webp';
         ahead.href = art;
         document.head.appendChild(ahead);
         root.setAttribute('data-scene', art);

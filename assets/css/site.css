@@ -1555,26 +1555,19 @@ html.intro-play .koi {
 
 /* ---------------------------------------------------------
    Entries with pictures (Work, Education, Projects, Press, Research)
-   Two to a row, each a picture and under it its name, its role and
-   what is said: the home page's own order, a drawing and then the
-   words. Every picture is the same shape and has the drawing's ragged
-   pencil edge (frame.webp, cut from the drawing's own). An entry with
-   no picture has its name set large on a tint of the paper instead,
-   so no place in the rows is empty. One to a row on a narrow screen.
-   Nothing waits for a cursor.
+   The rows as they are everywhere else, a name on the left and what
+   is said beside it, and an entry's picture simply set under its
+   words, small, from the text's left edge. Plain: square-cut, no frame, no
+   wash, nothing waiting for a cursor.
    --------------------------------------------------------- */
 
 .projects__list--shots {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 3rem 2.25rem;
-  margin: 0;
+  gap: 1.75rem;
 }
 
-.projects__list--shots > .project-item {
-  display: block;
-  padding: 0;
-  border-radius: 0;
+.projects__list--shots > .project-item,
+.projects__list--shots > .project-item:hover,
+.projects__list--shots > .project-item.is-on {
   background: none;
 }
 
@@ -1584,65 +1577,11 @@ html.intro-play .koi {
 
 .projects__list--shots .project-item__img {
   display: block;
-  width: 100%;
+  width: min(100%, 20rem);
   height: auto;
   aspect-ratio: 3 / 2;
   object-fit: cover;
-  margin: 0 0 0.85rem;
+  margin-top: 0.75rem;
+  border-radius: 3px;
   background: var(--color-bg-alt);
-  -webkit-mask: url("/assets/img/pencil/frame.webp") center / 100% 100% no-repeat;
-  mask: url("/assets/img/pencil/frame.webp") center / 100% 100% no-repeat;
-}
-
-.projects__list--shots .project-item__img--type {
-  display: grid;
-  place-items: center;
-  padding: 1.5rem 1.75rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
-  font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  text-align: center;
-  text-wrap: balance;
-  color: var(--color-fg);
-}
-
-.projects__list--shots .project-item__header {
-  display: block;
-  margin: 0;
-}
-
-.projects__list--shots .project-item__title {
-  display: block;
-  font-size: 1.125em;
-  line-height: 1.25;
-}
-
-.projects__list--shots .project-item__role {
-  display: block;
-  margin-top: 0.1rem;
-  font-size: 0.9375em;
-}
-
-.projects__list--shots .project-item__header + .project-item__description {
-  margin-top: 0.5rem;
-}
-
-/* an entry's facts: each label over what it says */
-.projects__list--shots .facts {
-  display: block;
-  margin-top: 0.9rem;
-}
-
-.projects__list--shots .facts dt {
-  margin-top: 0.7rem;
-  font-size: 0.9375em;
-}
-
-@media (max-width: 44em) {
-  .projects__list--shots {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2.75rem;
-  }
 }

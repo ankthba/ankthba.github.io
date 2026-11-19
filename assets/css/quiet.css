@@ -398,24 +398,24 @@ html.quiet .page--home [data-listening].qu-live .qu-wave {
   display: inline-flex;
 }
 
-/* each bar is one flat colour, its place along c1 -> c2 -> c3 */
+/* each bar is one flat colour, its place along c1 -> c2 -> c3, and a
+   full-height bar clipped about its middle to --v of its height */
 .qu-wave i {
   display: block;
   flex: none;
   width: var(--w);
-  min-height: var(--w);
-  border-radius: 999px;
+  height: 100%;
   background: var(--qu-c2);
-  will-change: height;
+  clip-path: inset(calc((1 - var(--v, 1)) * 50%) 0 round 999px);
 }
 
-.qu-wave i:nth-child(1) { height: 0.12em; background: var(--qu-c1); }
-.qu-wave i:nth-child(2) { height: 0.4em; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 33%); }
-.qu-wave i:nth-child(3) { height: 0.78em; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 67%); }
-.qu-wave i:nth-child(4) { height: 1em; }
-.qu-wave i:nth-child(5) { height: 0.74em; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 33%); }
-.qu-wave i:nth-child(6) { height: 0.38em; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 67%); }
-.qu-wave i:nth-child(7) { height: 0.12em; background: var(--qu-c3); }
+.qu-wave i:nth-child(1) { --v: 0.12; background: var(--qu-c1); }
+.qu-wave i:nth-child(2) { --v: 0.4; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 33%); }
+.qu-wave i:nth-child(3) { --v: 0.78; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 67%); }
+.qu-wave i:nth-child(4) { --v: 1; }
+.qu-wave i:nth-child(5) { --v: 0.74; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 33%); }
+.qu-wave i:nth-child(6) { --v: 0.38; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 67%); }
+.qu-wave i:nth-child(7) { --v: 0.12; background: var(--qu-c3); }
 
 .qu-h--pages { order: 3; }
 

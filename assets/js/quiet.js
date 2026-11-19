@@ -35,34 +35,29 @@
       wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
-    // the bars move like the ones in the Dynamic Island: each is on a spring,
-    // chasing a new height every beat or so, tallest in the middle and down
-    // to dots at the ends, the
-    // whole lot swelling and easing with a slow shared energy. Heights are
-    // set in em (not scaled), so the round ends stay round.
+    // the bars move like the ones in the Dynamic Island: tallest in the
+    // middle and down to dots at the ends, each riding a few slow waves
+    // that never line up, offset from its neighbours so the movement
+    // travels along the row, the whole lot swelling and easing together.
+    // Nothing jumps: the height is a smooth function of time, and it is
+    // drawn by clipping a full-height bar (quiet.css, --v), which moves by
+    // fractions of a pixel and keeps the round ends round.
     var bars = live.querySelectorAll('.qu-wave i');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], H = 1, MIN = 0;
-    var st = [], raf = 0, last = 0;
-    for (var bi = 0; bi < bars.length; bi++) st.push({ v: 0.2, vel: 0, target: 0.2, next: 0 });
+    var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], TAU = Math.PI * 2;
+    var raf = 0;
     var frame = function (now) {
       raf = requestAnimationFrame(frame);
-      var dt = Math.min(0.05, (now - last) / 1000 || 0.016);
-      last = now;
       var t = now / 1000;
-      // slow shared energy, about 0.7..1, from two sines that never line up
-      var energy = 0.84 + 0.11 * Math.sin(t * 1.9) + 0.05 * Math.sin(t * 0.63 + 1.3);
-      for (var i = 0; i < st.length; i++) {
-        var b = st[i];
-        if (now >= b.next) {
-          var r = Math.random();
-          b.target = ENV[i] * energy * (0.22 + 0.78 * r * (2 - r));
-          b.next = now + 110 + Math.random() * 170;
-        }
-        // a slightly underdamped spring
-        b.vel += ((b.target - b.v) * 210 - b.vel * 19) * dt;
-        b.v += b.vel * dt;
-        bars[i].style.height = Math.max(MIN, Math.min(H, b.v * H)).toFixed(3) + 'em';
+      // slow shared energy, about 0.75..1
+      var energy = 0.87 + 0.09 * Math.sin(t * 1.3) + 0.04 * Math.sin(t * 0.47 + 1.3);
+      for (var i = 0; i < bars.length; i++) {
+        var n = 0.5 +
+          0.27 * Math.sin(TAU * 0.83 * t - i * 0.95) +
+          0.15 * Math.sin(TAU * 1.37 * t + i * 1.7 + 1.1) +
+          0.08 * Math.sin(TAU * 2.11 * t - i * 2.6 + 2.3);
+        var v = ENV[i] * energy * (0.3 + 0.7 * n);
+        bars[i].style.setProperty('--v', Math.max(0.12, Math.min(1, v)).toFixed(4));
       }
     };
     var mark = function () {

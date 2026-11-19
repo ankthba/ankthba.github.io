@@ -32,16 +32,16 @@
       var wave = document.createElement('span');
       wave.className = 'qu-wave';
       wave.setAttribute('aria-hidden', 'true');
-      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
+      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
     // the bars move like the ones in the Dynamic Island: each is on a spring,
-    // chasing a new height every beat or so, taller toward the middle, the
+    // chasing a new height every beat or so, any of them free to run tall, the
     // whole lot swelling and easing with a slow shared energy. Heights are
     // set in em (not scaled), so the round ends stay round.
     var bars = live.querySelectorAll('.qu-wave i');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ENV = [0.5, 0.82, 1, 0.74, 0.46], H = 0.9, MIN = 0.15;
+    var ENV = [0.86, 1, 1, 0.96, 1, 0.9], H = 1, MIN = 0.1;
     var st = [], raf = 0, last = 0;
     for (var bi = 0; bi < bars.length; bi++) st.push({ v: 0.2, vel: 0, target: 0.2, next: 0 });
     var frame = function (now) {
@@ -55,7 +55,7 @@
         var b = st[i];
         if (now >= b.next) {
           var r = Math.random();
-          b.target = ENV[i] * energy * (0.3 + 0.7 * r * (2 - r));
+          b.target = ENV[i] * energy * (0.22 + 0.78 * r * (2 - r));
           b.next = now + 110 + Math.random() * 170;
         }
         // a slightly underdamped spring
@@ -74,9 +74,15 @@
     if (head) new MutationObserver(mark).observe(head, { childList: true, characterData: true, subtree: true });
 
     // the waveform takes the album's colours, as the real one does: up to
-    // three of the cover's most vivid hues, in the order they sit across the
-    // cover, run as one gradient over the bars; each kept dark enough to
-    // show on the paper
+    // three of the colours that cover most of it, muted ones included, in
+    // the order they sit across the cover, run as one gradient over the
+    // bars. Their lightness is held to what shows on the page: pale on the
+    // dark theme (as on the Island's black), deeper on the light one.
+    var root = document.documentElement;
+    var dark = function () {
+      var t = root.getAttribute('data-theme');
+      return t ? t === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    };
     var art = live.querySelector('[data-listening-art]');
     var hsl = function (R, G, B) {
       var M = Math.max(R, G, B), m = Math.min(R, G, B), L = (M + m) / 2, S = 0, Hh = 0;
@@ -85,7 +91,8 @@
         Hh = M === R ? (G - B) / (M - m) + (G < B ? 6 : 0) : M === G ? (B - R) / (M - m) + 2 : (R - G) / (M - m) + 4;
         Hh *= 60;
       }
-      return [Hh, S, Math.min(0.58, Math.max(0.34, L))];
+      var lo = dark() ? 0.62 : 0.4, hi = dark() ? 0.8 : 0.6;
+      return [Hh, S, Math.min(hi, Math.max(lo, L))];
     };
     var css = function (c) {
       return 'hsl(' + ((c[0] % 360 + 360) % 360).toFixed(0) + ' ' + (c[1] * 100).toFixed(0) + '% ' + (c[2] * 100).toFixed(0) + '%)';
@@ -111,7 +118,7 @@
               h = mx === r ? (g - b) / (mx - mn) : mx === g ? 2 + (b - r) / (mx - mn) : 4 + (r - g) / (mx - mn);
               h = (h * 60 + 360) % 360;
             }
-            var grey = s < 0.15, k = grey ? 'grey' : String(Math.round(h / 15) % 24), w = 0.05 + s * s;
+            var grey = s < 0.15, k = grey ? 'grey' : String(Math.round(h / 15) % 24), w = 0.3 + s;
             var o = bins[k] || (bins[k] = { k: grey ? -1 : +k, w: 0, r: 0, g: 0, b: 0, x: 0 });
             o.w += w; o.r += r * w; o.g += g * w; o.b += b * w; o.x += ((i / 4) % n) * w;
           }
@@ -124,9 +131,9 @@
           var picks = [all[0]];
           for (var j = 1; j < all.length && picks.length < 3; j++) {
             var c = all[j];
-            if (c.k < 0 || c.w < all[0].w * 0.1) continue;
+            if (c.w < all[0].w * 0.12) continue;
             var far = picks.every(function (p) {
-              if (p.k < 0) return true;
+              if (p.k < 0 || c.k < 0) return true;
               var dk = Math.abs(p.k - c.k);
               return Math.min(dk, 24 - dk) >= 2;
             });
@@ -137,7 +144,7 @@
           if (cols.length === 1) {
             // one-colour cover: the same hue, leaning a little either way
             var one = cols[0];
-            cols = [[one[0] - 14, one[1], Math.max(0.34, one[2] - 0.05)], one, [one[0] + 14, one[1], Math.min(0.58, one[2] + 0.06)]];
+            cols = [[one[0] - 14, one[1], one[2] - 0.04], one, [one[0] + 14, one[1], one[2] + 0.05]];
           } else if (cols.length === 2) {
             cols = [cols[0], cols[1], cols[0]];
           }
@@ -149,6 +156,7 @@
     if (art) {
       tint();
       new MutationObserver(tint).observe(art, { attributes: true, attributeFilter: ['src'] });
+      new MutationObserver(tint).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     }
   }
 

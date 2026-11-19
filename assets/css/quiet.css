@@ -366,10 +366,10 @@ html.quiet .page--home .index[aria-label="Lately"] .index__note {
 }
 
 /* while a song is playing, a small waveform beside it, after the one in
-   the iPhone's Dynamic Island: five rounded bars, taller toward the
-   middle, with one gradient of the album's colours running across them
-   (quiet.js reads the colours off the cover and moves the bars on
-   springs). Still bars if motion is turned down. */
+   the iPhone's Dynamic Island: six thin, close-set, round-ended bars
+   about as tall as the text, with one gradient of the album's colours
+   running across them (quiet.js reads the colours off the cover and
+   moves the bars on springs). Still bars if motion is turned down. */
 @property --qu-c1 { syntax: '<color>'; inherits: true; initial-value: #3aa564; }
 @property --qu-c2 { syntax: '<color>'; inherits: true; initial-value: #2f9c8f; }
 @property --qu-c3 { syntax: '<color>'; inherits: true; initial-value: #3d86c4; }
@@ -381,8 +381,8 @@ html.quiet .page--home [data-listening] {
 .qu-wave {
   display: none;
   align-items: center;
-  gap: 0.11em;
-  height: 0.9em;
+  gap: 0.1em;
+  height: 1em;
   margin: 0 0.55em 0 0.05em;
   /* middle, not baseline: a flex box's baseline follows its first bar,
      which would make the row jump as that bar moves */
@@ -393,25 +393,26 @@ html.quiet .page--home [data-listening].qu-live .qu-wave {
   display: inline-flex;
 }
 
-/* each bar shows its own slice of the one gradient (1.19em = 5 bars + 4 gaps) */
+/* each bar shows its own slice of the one gradient (1.1em = 6 bars + 5 gaps) */
 .qu-wave i {
   display: block;
   flex: none;
-  width: 0.15em;
-  height: 0.15em;
+  width: 0.1em;
+  height: 0.1em;
   border-radius: 999px;
   background-image: linear-gradient(90deg, var(--qu-c1), var(--qu-c2), var(--qu-c3));
-  background-size: 1.19em 100%;
+  background-size: 1.1em 100%;
   background-repeat: no-repeat;
-  background-position: calc(var(--n) * -0.26em) 0;
+  background-position: calc(var(--n) * -0.2em) 0;
   will-change: height;
 }
 
-.qu-wave i:nth-child(1) { --n: 0; height: 0.36em; }
-.qu-wave i:nth-child(2) { --n: 1; height: 0.62em; }
-.qu-wave i:nth-child(3) { --n: 2; height: 0.84em; }
-.qu-wave i:nth-child(4) { --n: 3; height: 0.54em; }
-.qu-wave i:nth-child(5) { --n: 4; height: 0.3em; }
+.qu-wave i:nth-child(1) { --n: 0; height: 0.62em; }
+.qu-wave i:nth-child(2) { --n: 1; height: 0.94em; }
+.qu-wave i:nth-child(3) { --n: 2; height: 0.86em; }
+.qu-wave i:nth-child(4) { --n: 3; height: 0.92em; }
+.qu-wave i:nth-child(5) { --n: 4; height: 1em; }
+.qu-wave i:nth-child(6) { --n: 5; height: 0.9em; }
 
 .qu-h--pages { order: 3; }
 

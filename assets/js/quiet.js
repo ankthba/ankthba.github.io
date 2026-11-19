@@ -32,20 +32,34 @@
       var wave = document.createElement('span');
       wave.className = 'qu-wave';
       wave.setAttribute('aria-hidden', 'true');
-      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
+      // seven round-capped lines in an svg, placed by percentages so the
+      // drawing follows the font size (quiet.css sizes the svg)
+      var lines = '';
+      for (var li = 0; li < 7; li++) {
+        var lx = ((2 * li + 0.5) / 13 * 100).toFixed(3) + '%';
+        lines += '<line x1="' + lx + '" x2="' + lx + '" y1="50%" y2="50%"/>';
+      }
+      wave.innerHTML = '<svg focusable="false">' + lines + '</svg>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
     // the bars move like the ones in the Dynamic Island: tallest in the
     // middle and down to dots at the ends, each riding a few slow waves
     // that never line up, offset from its neighbours so the movement
     // travels along the row, the whole lot swelling and easing together.
-    // Nothing jumps: the height is a smooth function of time, and it is
-    // drawn by clipping a full-height bar (quiet.css, --v), which moves by
-    // fractions of a pixel and keeps the round ends round.
-    var bars = live.querySelectorAll('.qu-wave i');
+    // Nothing jumps: the height is a smooth function of time, and each
+    // bar is an svg line with round caps, whose ends move by fractions of
+    // a pixel (a line of no length is a dot).
+    var bars = live.querySelectorAll('.qu-wave line');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], TAU = Math.PI * 2;
     var raf = 0;
+    // v is 0..1 of the full height; the caps add the bar's width to it
+    var draw = function (bar, v) {
+      var half = Math.max(0, Math.min(1, v) - 0.12) / 0.88 * 43;
+      bar.setAttribute('y1', (50 - half).toFixed(2) + '%');
+      bar.setAttribute('y2', (50 + half + 0.01).toFixed(2) + '%');
+    };
+    for (var bi = 0; bi < bars.length; bi++) draw(bars[bi], ENV[bi] * 0.9);
     var frame = function (now) {
       raf = requestAnimationFrame(frame);
       var t = now / 1000;
@@ -57,7 +71,7 @@
           0.15 * Math.sin(TAU * 1.37 * t + i * 1.7 + 1.1) +
           0.08 * Math.sin(TAU * 2.11 * t - i * 2.6 + 2.3);
         var v = ENV[i] * energy * (0.3 + 0.7 * n);
-        bars[i].style.setProperty('--v', Math.max(0.12, Math.min(1, v)).toFixed(4));
+        draw(bars[i], v);
       }
     };
     var mark = function () {

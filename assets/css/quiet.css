@@ -379,43 +379,41 @@ html.quiet .page--home [data-listening] {
   transition: --qu-c1 0.8s ease, --qu-c2 0.8s ease, --qu-c3 0.8s ease;
 }
 
-/* widths and gaps are whole pixels, so every bar is drawn the same
-   width (at a fraction of a pixel the outer ones came out thinner) */
+/* the bar width is a whole number of pixels, and the gaps the same */
 .qu-wave {
   --w: 2px;
   --w: max(2px, round(0.12em, 1px));
   display: none;
-  align-items: center;
-  gap: var(--w);
+  width: calc(var(--w) * 13);
   height: 1em;
   margin: 0 0.55em 0 0.05em;
-  /* middle, not baseline: a flex box's baseline follows its first bar,
-     which would make the row jump as that bar moves */
   vertical-align: middle;
 }
 
 html.quiet .page--home [data-listening].qu-live .qu-wave {
-  display: inline-flex;
+  display: inline-block;
 }
 
-/* each bar is one flat colour, its place along c1 -> c2 -> c3, and a
-   full-height bar clipped about its middle to --v of its height */
-.qu-wave i {
+.qu-wave svg {
   display: block;
-  flex: none;
-  width: var(--w);
+  width: 100%;
   height: 100%;
-  background: var(--qu-c2);
-  clip-path: inset(calc((1 - var(--v, 1)) * 50%) 0 round 999px);
+  overflow: visible;
 }
 
-.qu-wave i:nth-child(1) { --v: 0.12; background: var(--qu-c1); }
-.qu-wave i:nth-child(2) { --v: 0.4; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 33%); }
-.qu-wave i:nth-child(3) { --v: 0.78; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 67%); }
-.qu-wave i:nth-child(4) { --v: 1; }
-.qu-wave i:nth-child(5) { --v: 0.74; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 33%); }
-.qu-wave i:nth-child(6) { --v: 0.38; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 67%); }
-.qu-wave i:nth-child(7) { --v: 0.12; background: var(--qu-c3); }
+/* each bar is one flat colour, its place along c1 -> c2 -> c3 */
+.qu-wave line {
+  stroke: var(--qu-c2);
+  stroke-width: var(--w);
+  stroke-linecap: round;
+}
+
+.qu-wave line:nth-child(1) { stroke: var(--qu-c1); }
+.qu-wave line:nth-child(2) { stroke: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 33%); }
+.qu-wave line:nth-child(3) { stroke: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 67%); }
+.qu-wave line:nth-child(5) { stroke: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 33%); }
+.qu-wave line:nth-child(6) { stroke: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 67%); }
+.qu-wave line:nth-child(7) { stroke: var(--qu-c3); }
 
 .qu-h--pages { order: 3; }
 

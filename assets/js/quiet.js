@@ -35,13 +35,61 @@
       wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
-    var mark = function () { live.classList.toggle('qu-live', !!head && /now/i.test(head.textContent)); };
+    // the bars move like the ones in the Dynamic Island: each is on a spring,
+    // chasing a new height every beat or so, taller toward the middle, the
+    // whole lot swelling and easing with a slow shared energy. Heights are
+    // set in em (not scaled), so the round ends stay round.
+    var bars = live.querySelectorAll('.qu-wave i');
+    var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ENV = [0.5, 0.82, 1, 0.74, 0.46], H = 0.9, MIN = 0.15;
+    var st = [], raf = 0, last = 0;
+    for (var bi = 0; bi < bars.length; bi++) st.push({ v: 0.2, vel: 0, target: 0.2, next: 0 });
+    var frame = function (now) {
+      raf = requestAnimationFrame(frame);
+      var dt = Math.min(0.05, (now - last) / 1000 || 0.016);
+      last = now;
+      var t = now / 1000;
+      // slow shared energy, about 0.7..1, from two sines that never line up
+      var energy = 0.84 + 0.11 * Math.sin(t * 1.9) + 0.05 * Math.sin(t * 0.63 + 1.3);
+      for (var i = 0; i < st.length; i++) {
+        var b = st[i];
+        if (now >= b.next) {
+          var r = Math.random();
+          b.target = ENV[i] * energy * (0.3 + 0.7 * r * (2 - r));
+          b.next = now + 110 + Math.random() * 170;
+        }
+        // a slightly underdamped spring
+        b.vel += ((b.target - b.v) * 210 - b.vel * 19) * dt;
+        b.v += b.vel * dt;
+        bars[i].style.height = Math.max(MIN, Math.min(H, b.v * H)).toFixed(3) + 'em';
+      }
+    };
+    var mark = function () {
+      var on = !!head && /now/i.test(head.textContent);
+      live.classList.toggle('qu-live', on);
+      if (on && !raf && !still && bars.length) raf = requestAnimationFrame(frame);
+      else if (!on && raf) { cancelAnimationFrame(raf); raf = 0; }
+    };
     mark();
     if (head) new MutationObserver(mark).observe(head, { childList: true, characterData: true, subtree: true });
 
-    // the waveform takes the album's colour: the cover's most vivid hue,
-    // kept dark enough to show on the paper
+    // the waveform takes the album's colours, as the real one does: up to
+    // three of the cover's most vivid hues, in the order they sit across the
+    // cover, run as one gradient over the bars; each kept dark enough to
+    // show on the paper
     var art = live.querySelector('[data-listening-art]');
+    var hsl = function (R, G, B) {
+      var M = Math.max(R, G, B), m = Math.min(R, G, B), L = (M + m) / 2, S = 0, Hh = 0;
+      if (M !== m) {
+        S = L > 0.5 ? (M - m) / (2 - M - m) : (M - m) / (M + m);
+        Hh = M === R ? (G - B) / (M - m) + (G < B ? 6 : 0) : M === G ? (B - R) / (M - m) + 2 : (R - G) / (M - m) + 4;
+        Hh *= 60;
+      }
+      return [Hh, S, Math.min(0.58, Math.max(0.34, L))];
+    };
+    var css = function (c) {
+      return 'hsl(' + ((c[0] % 360 + 360) % 360).toFixed(0) + ' ' + (c[1] * 100).toFixed(0) + '% ' + (c[2] * 100).toFixed(0) + '%)';
+    };
     var tint = function () {
       var src = art && art.getAttribute('src');
       if (!src) return;
@@ -53,7 +101,7 @@
           cv.width = cv.height = n;
           var cx = cv.getContext('2d');
           cx.drawImage(im, 0, 0, n, n);
-          var d = cx.getImageData(0, 0, n, n).data, bins = {}, best = null;
+          var d = cx.getImageData(0, 0, n, n).data, bins = {};
           for (var i = 0; i < d.length; i += 4) {
             var r = d[i] / 255, g = d[i + 1] / 255, b = d[i + 2] / 255;
             var mx = Math.max(r, g, b), mn = Math.min(r, g, b), s = mx ? (mx - mn) / mx : 0;
@@ -63,22 +111,37 @@
               h = mx === r ? (g - b) / (mx - mn) : mx === g ? 2 + (b - r) / (mx - mn) : 4 + (r - g) / (mx - mn);
               h = (h * 60 + 360) % 360;
             }
-            var k = s < 0.15 ? 'grey' : String(Math.round(h / 15)), w = 0.05 + s * s;
-            var o = bins[k] || (bins[k] = { w: 0, r: 0, g: 0, b: 0 });
-            o.w += w; o.r += r * w; o.g += g * w; o.b += b * w;
+            var grey = s < 0.15, k = grey ? 'grey' : String(Math.round(h / 15) % 24), w = 0.05 + s * s;
+            var o = bins[k] || (bins[k] = { k: grey ? -1 : +k, w: 0, r: 0, g: 0, b: 0, x: 0 });
+            o.w += w; o.r += r * w; o.g += g * w; o.b += b * w; o.x += ((i / 4) % n) * w;
           }
-          for (var key in bins) if (!best || bins[key].w > best.w) best = bins[key];
-          if (!best) return;
-          var R = best.r / best.w, G = best.g / best.w, B = best.b / best.w;
-          // to HSL, lightness held between 0.32 and 0.56
-          var M = Math.max(R, G, B), m = Math.min(R, G, B), L = (M + m) / 2, S = 0, H = 0;
-          if (M !== m) {
-            S = L > 0.5 ? (M - m) / (2 - M - m) : (M - m) / (M + m);
-            H = M === R ? (G - B) / (M - m) + (G < B ? 6 : 0) : M === G ? (B - R) / (M - m) + 2 : (R - G) / (M - m) + 4;
-            H *= 60;
+          var all = [];
+          for (var key in bins) all.push(bins[key]);
+          if (!all.length) return;
+          all.sort(function (p, q) { return q.w - p.w; });
+          // the heaviest, then others that are clearly a different hue and
+          // not a trace
+          var picks = [all[0]];
+          for (var j = 1; j < all.length && picks.length < 3; j++) {
+            var c = all[j];
+            if (c.k < 0 || c.w < all[0].w * 0.1) continue;
+            var far = picks.every(function (p) {
+              if (p.k < 0) return true;
+              var dk = Math.abs(p.k - c.k);
+              return Math.min(dk, 24 - dk) >= 2;
+            });
+            if (far) picks.push(c);
           }
-          L = Math.min(0.56, Math.max(0.32, L));
-          live.style.setProperty('--qu-live', 'hsl(' + H.toFixed(0) + ' ' + (S * 100).toFixed(0) + '% ' + (L * 100).toFixed(0) + '%)');
+          picks.sort(function (p, q) { return p.x / p.w - q.x / q.w; });
+          var cols = picks.map(function (p) { return hsl(p.r / p.w, p.g / p.w, p.b / p.w); });
+          if (cols.length === 1) {
+            // one-colour cover: the same hue, leaning a little either way
+            var one = cols[0];
+            cols = [[one[0] - 14, one[1], Math.max(0.34, one[2] - 0.05)], one, [one[0] + 14, one[1], Math.min(0.58, one[2] + 0.06)]];
+          } else if (cols.length === 2) {
+            cols = [cols[0], cols[1], cols[0]];
+          }
+          for (var q = 0; q < 3; q++) live.style.setProperty('--qu-c' + (q + 1), css(cols[q]));
         } catch (e) {}
       };
       im.src = src;

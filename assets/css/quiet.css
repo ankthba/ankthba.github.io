@@ -366,51 +366,52 @@ html.quiet .page--home .index[aria-label="Lately"] .index__note {
 }
 
 /* while a song is playing, a small waveform beside it, after the one in
-   the iPhone's Dynamic Island: five rounded bars in the album's colour
-   (quiet.js reads it off the cover), each rising and falling about its
-   middle at its own pace. Still bars if motion is turned down. */
+   the iPhone's Dynamic Island: five rounded bars, taller toward the
+   middle, with one gradient of the album's colours running across them
+   (quiet.js reads the colours off the cover and moves the bars on
+   springs). Still bars if motion is turned down. */
+@property --qu-c1 { syntax: '<color>'; inherits: true; initial-value: #3aa564; }
+@property --qu-c2 { syntax: '<color>'; inherits: true; initial-value: #2f9c8f; }
+@property --qu-c3 { syntax: '<color>'; inherits: true; initial-value: #3d86c4; }
+
+html.quiet .page--home [data-listening] {
+  transition: --qu-c1 0.8s ease, --qu-c2 0.8s ease, --qu-c3 0.8s ease;
+}
+
 .qu-wave {
   display: none;
   align-items: center;
-  gap: 0.13em;
-  height: 0.8em;
+  gap: 0.11em;
+  height: 0.9em;
   margin: 0 0.55em 0 0.05em;
-  vertical-align: -0.06em;
+  /* middle, not baseline: a flex box's baseline follows its first bar,
+     which would make the row jump as that bar moves */
+  vertical-align: middle;
 }
 
 html.quiet .page--home [data-listening].qu-live .qu-wave {
   display: inline-flex;
 }
 
+/* each bar shows its own slice of the one gradient (1.19em = 5 bars + 4 gaps) */
 .qu-wave i {
   display: block;
+  flex: none;
   width: 0.15em;
-  height: 100%;
+  height: 0.15em;
   border-radius: 999px;
-  background: var(--qu-live, #3aa564);
-  transform-origin: 50% 50%;
-  transition: background-color 0.6s ease;
-  animation: qu-wave var(--t, 1s) ease-in-out var(--d, 0s) infinite alternate;
+  background-image: linear-gradient(90deg, var(--qu-c1), var(--qu-c2), var(--qu-c3));
+  background-size: 1.19em 100%;
+  background-repeat: no-repeat;
+  background-position: calc(var(--n) * -0.26em) 0;
+  will-change: height;
 }
 
-.qu-wave i:nth-child(1) { --t: 0.82s; --d: -0.30s; }
-.qu-wave i:nth-child(2) { --t: 1.06s; --d: -0.65s; }
-.qu-wave i:nth-child(3) { --t: 0.74s; --d: -0.10s; }
-.qu-wave i:nth-child(4) { --t: 0.96s; --d: -0.85s; }
-.qu-wave i:nth-child(5) { --t: 0.88s; --d: -0.45s; }
-
-@keyframes qu-wave {
-  0%   { transform: scaleY(0.28); }
-  35%  { transform: scaleY(0.9); }
-  60%  { transform: scaleY(0.5); }
-  100% { transform: scaleY(1); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .qu-wave i { animation: none; }
-  .qu-wave i:nth-child(1), .qu-wave i:nth-child(5) { transform: scaleY(0.45); }
-  .qu-wave i:nth-child(2), .qu-wave i:nth-child(4) { transform: scaleY(0.75); }
-}
+.qu-wave i:nth-child(1) { --n: 0; height: 0.36em; }
+.qu-wave i:nth-child(2) { --n: 1; height: 0.62em; }
+.qu-wave i:nth-child(3) { --n: 2; height: 0.84em; }
+.qu-wave i:nth-child(4) { --n: 3; height: 0.54em; }
+.qu-wave i:nth-child(5) { --n: 4; height: 0.3em; }
 
 .qu-h--pages { order: 3; }
 

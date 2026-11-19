@@ -32,16 +32,17 @@
       var wave = document.createElement('span');
       wave.className = 'qu-wave';
       wave.setAttribute('aria-hidden', 'true');
-      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
+      wave.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i><i></i>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
     // the bars move like the ones in the Dynamic Island: each is on a spring,
-    // chasing a new height every beat or so, any of them free to run tall, the
+    // chasing a new height every beat or so, tallest in the middle and down
+    // to dots at the ends, the
     // whole lot swelling and easing with a slow shared energy. Heights are
     // set in em (not scaled), so the round ends stay round.
     var bars = live.querySelectorAll('.qu-wave i');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ENV = [0.86, 1, 1, 0.96, 1, 0.9], H = 1, MIN = 0.1;
+    var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], H = 1, MIN = 0;
     var st = [], raf = 0, last = 0;
     for (var bi = 0; bi < bars.length; bi++) st.push({ v: 0.2, vel: 0, target: 0.2, next: 0 });
     var frame = function (now) {

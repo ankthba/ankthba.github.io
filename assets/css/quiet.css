@@ -366,10 +366,11 @@ html.quiet .page--home .index[aria-label="Lately"] .index__note {
 }
 
 /* while a song is playing, a small waveform beside it, after the one in
-   the iPhone's Dynamic Island: six thin, close-set, round-ended bars
-   about as tall as the text, with one gradient of the album's colours
-   running across them (quiet.js reads the colours off the cover and
-   moves the bars on springs). Still bars if motion is turned down. */
+   the iPhone's Dynamic Island: seven round-ended bars of one width,
+   tallest in the middle and down to dots at the ends, coloured along a
+   gradient of the album's colours (quiet.js reads the colours off the
+   cover and moves the bars on springs). Still bars if motion is turned
+   down. */
 @property --qu-c1 { syntax: '<color>'; inherits: true; initial-value: #3aa564; }
 @property --qu-c2 { syntax: '<color>'; inherits: true; initial-value: #2f9c8f; }
 @property --qu-c3 { syntax: '<color>'; inherits: true; initial-value: #3d86c4; }
@@ -378,10 +379,14 @@ html.quiet .page--home [data-listening] {
   transition: --qu-c1 0.8s ease, --qu-c2 0.8s ease, --qu-c3 0.8s ease;
 }
 
+/* widths and gaps are whole pixels, so every bar is drawn the same
+   width (at a fraction of a pixel the outer ones came out thinner) */
 .qu-wave {
+  --w: 2px;
+  --w: max(2px, round(0.12em, 1px));
   display: none;
   align-items: center;
-  gap: 0.1em;
+  gap: var(--w);
   height: 1em;
   margin: 0 0.55em 0 0.05em;
   /* middle, not baseline: a flex box's baseline follows its first bar,
@@ -393,26 +398,24 @@ html.quiet .page--home [data-listening].qu-live .qu-wave {
   display: inline-flex;
 }
 
-/* each bar shows its own slice of the one gradient (1.1em = 6 bars + 5 gaps) */
+/* each bar is one flat colour, its place along c1 -> c2 -> c3 */
 .qu-wave i {
   display: block;
   flex: none;
-  width: 0.1em;
-  height: 0.1em;
+  width: var(--w);
+  min-height: var(--w);
   border-radius: 999px;
-  background-image: linear-gradient(90deg, var(--qu-c1), var(--qu-c2), var(--qu-c3));
-  background-size: 1.1em 100%;
-  background-repeat: no-repeat;
-  background-position: calc(var(--n) * -0.2em) 0;
+  background: var(--qu-c2);
   will-change: height;
 }
 
-.qu-wave i:nth-child(1) { --n: 0; height: 0.62em; }
-.qu-wave i:nth-child(2) { --n: 1; height: 0.94em; }
-.qu-wave i:nth-child(3) { --n: 2; height: 0.86em; }
-.qu-wave i:nth-child(4) { --n: 3; height: 0.92em; }
-.qu-wave i:nth-child(5) { --n: 4; height: 1em; }
-.qu-wave i:nth-child(6) { --n: 5; height: 0.9em; }
+.qu-wave i:nth-child(1) { height: 0.12em; background: var(--qu-c1); }
+.qu-wave i:nth-child(2) { height: 0.4em; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 33%); }
+.qu-wave i:nth-child(3) { height: 0.78em; background: color-mix(in oklab, var(--qu-c1), var(--qu-c2) 67%); }
+.qu-wave i:nth-child(4) { height: 1em; }
+.qu-wave i:nth-child(5) { height: 0.74em; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 33%); }
+.qu-wave i:nth-child(6) { height: 0.38em; background: color-mix(in oklab, var(--qu-c2), var(--qu-c3) 67%); }
+.qu-wave i:nth-child(7) { height: 0.12em; background: var(--qu-c3); }
 
 .qu-h--pages { order: 3; }
 

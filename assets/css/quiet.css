@@ -369,7 +369,7 @@ html.quiet .page--home .index[aria-label="Lately"] .index__note {
    the iPhone's Dynamic Island: seven round-ended bars of one width,
    tallest in the middle and down to dots at the ends, coloured along a
    gradient of the album's colours (quiet.js reads the colours off the
-   cover and moves the bars on springs). Still bars if motion is turned
+   cover and moves the bars to a beat). Still bars if motion is turned
    down. */
 @property --qu-c1 { syntax: '<color>'; inherits: true; initial-value: #3aa564; }
 @property --qu-c2 { syntax: '<color>'; inherits: true; initial-value: #2f9c8f; }
@@ -385,7 +385,7 @@ html.quiet .page--home [data-listening] {
   --w: max(2px, round(0.12em, 1px));
   display: none;
   width: calc(var(--w) * 13);
-  height: 1em;
+  height: 1.15em;
   margin: 0 0.55em 0 0.05em;
   vertical-align: middle;
 }

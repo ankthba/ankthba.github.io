@@ -42,37 +42,69 @@
       wave.innerHTML = '<svg focusable="false">' + lines + '</svg>';
       head.parentNode.insertBefore(wave, head.nextSibling);
     }
-    // the bars move like the ones in the Dynamic Island: tallest in the
-    // middle and down to dots at the ends, each riding a few slow waves
-    // that never line up, offset from its neighbours so the movement
-    // travels along the row, the whole lot swelling and easing together.
-    // Nothing jumps: the height is a smooth function of time, and each
-    // bar is an svg line with round caps, whose ends move by fractions of
-    // a pixel (a line of no length is a dot).
+    // the bars move as if to music. The page can't hear the song, so it
+    // keeps a beat of its own: a tempo taken from the song's name (so each
+    // song has its own, and keeps it), counted in sixteenths, with hits
+    // most likely and hardest on the beat, lighter off it, and now and
+    // then a quick one in between. Each hit throws the bars up by a
+    // different amount around a peak that wanders about the middle; they
+    // rise fast and fall back slower, as a level meter does, onto a low
+    // restless floor. Every few bars the whole thing gets louder or
+    // quieter. Each bar is an svg line with round caps, so its ends move
+    // by fractions of a pixel (a line of no length is a dot).
     var bars = live.querySelectorAll('.qu-wave line');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], TAU = Math.PI * 2;
-    var raf = 0;
-    // v is 0..1 of the full height; the caps add the bar's width to it.
-    // Small v eases down to a dot rather than stopping dead at one.
+    var REST = [0.2, 0.5, 0.82, 1, 0.8, 0.48, 0.2];
+    var named = live.querySelector('[data-listening-name]');
+    var raf = 0, last = 0, step = 0, nextStep = 0, sixteenth = 0.125, loud = 0.9, song = null;
+    var hit = [], lvl = [];
+    // v is 0..1 of the full height; the caps add the bar's width to it
     var draw = function (bar, v) {
-      var half = v * v / (v + 0.15) / 0.87 * 43;
+      var half = Math.max(0, Math.min(1, v)) * 44;
       bar.setAttribute('y1', (50 - half).toFixed(2) + '%');
       bar.setAttribute('y2', (50 + half + 0.01).toFixed(2) + '%');
     };
-    for (var bi = 0; bi < bars.length; bi++) draw(bars[bi], ENV[bi] * 0.9);
+    for (var bi = 0; bi < bars.length; bi++) { hit.push(0); lvl.push(REST[bi] * 0.8); draw(bars[bi], lvl[bi]); }
+    var tempo = function () {
+      var name = named ? named.textContent : '';
+      if (name === song) return;
+      song = name;
+      var h = 7;
+      for (var c = 0; c < name.length; c++) h = (h * 31 + name.charCodeAt(c)) % 9973;
+      sixteenth = 60 / (88 + h % 50) / 4;   // 88 to 137 beats a minute
+    };
+    var strike = function () {
+      var pos = step % 16;
+      if (pos === 0) tempo();
+      // every two bars, a new loudness; now and then a quiet stretch
+      if (step % 32 === 0) loud = Math.random() < 0.15 ? 0.5 + Math.random() * 0.15 : 0.82 + Math.random() * 0.18;
+      var chance = pos % 4 === 0 ? 0.96 : pos % 2 === 0 ? 0.6 : 0.2;
+      var force = pos === 0 ? 1.3 : pos % 8 === 0 ? 1.2 : pos % 4 === 0 ? 1.08 : pos % 2 === 0 ? 0.8 : 0.6;
+      step++;
+      if (Math.random() > chance) return;
+      force *= loud * (0.95 + 0.2 * Math.random());
+      var peak = 3 + (Math.random() - 0.5) * 2.6;
+      for (var i = 0; i < bars.length; i++) {
+        var d = (i - peak) / 2.2;
+        var h = force * (0.14 + 0.86 * Math.exp(-d * d)) * (0.78 + 0.22 * Math.random());
+        if (h > 1) h = 1;
+        if (h > hit[i]) hit[i] = h;
+      }
+    };
     var frame = function (now) {
       raf = requestAnimationFrame(frame);
-      var t = now / 1000;
-      // slow shared energy, about 0.75..1
-      var energy = 0.87 + 0.09 * Math.sin(t * 0.9) + 0.04 * Math.sin(t * 0.37 + 1.3);
+      var t = now / 1000, dt = Math.min(0.1, t - last || 0.016);
+      last = t;
+      if (t - nextStep > 0.5) nextStep = t;   // back from a hidden tab
+      while (t >= nextStep) { strike(); nextStep += sixteenth; }
+      var fall = Math.exp(-dt / 0.26);
       for (var i = 0; i < bars.length; i++) {
-        var n = 0.5 +
-          0.3 * Math.sin(TAU * 0.43 * t - i * 0.8) +
-          0.14 * Math.sin(TAU * 0.79 * t + i * 1.5 + 1.1) +
-          0.06 * Math.sin(TAU * 1.21 * t - i * 2.3 + 2.3);
-        var v = ENV[i] * energy * (0.3 + 0.7 * n);
-        draw(bars[i], v);
+        hit[i] *= fall;
+        var floor = REST[i] * loud * (0.3 + 0.07 * Math.sin(t * 3.1 + i * 1.9) + 0.04 * Math.sin(t * 4.7 - i * 2.7));
+        var goal = Math.max(hit[i], floor);
+        lvl[i] += (goal - lvl[i]) * (1 - Math.exp(-dt / (goal > lvl[i] ? 0.02 : 0.07)));
+        // a little over, since a rising bar never quite catches a falling hit
+        draw(bars[i], lvl[i] * 1.18);
       }
     };
     var mark = function () {

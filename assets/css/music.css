@@ -107,34 +107,8 @@
   color: var(--gray);
 }
 
-/* while a song plays, four bars moving beside "Playing now" */
-.now__eq {
-  display: none;
-  align-items: flex-end;
-  gap: 2px;
-  height: 0.7rem;
-}
-
-.now.is-live .now__eq {
-  display: inline-flex;
-}
-
-.now__eq i {
-  width: 2px;
-  height: 100%;
-  background: var(--fg);
-  transform-origin: bottom;
-  animation: eq 1s ease-in-out infinite;
-}
-
-.now__eq i:nth-child(2) { animation-delay: -0.35s; animation-duration: 0.8s; }
-.now__eq i:nth-child(3) { animation-delay: -0.6s; animation-duration: 1.15s; }
-.now__eq i:nth-child(4) { animation-delay: -0.15s; animation-duration: 0.9s; }
-
-@keyframes eq {
-  0%, 100% { transform: scaleY(0.25); }
-  50% { transform: scaleY(1); }
-}
+/* while a song plays, the waveform beside "Playing now" is quiet.css's
+   .qu-wave, the same one as on the home page */
 
 .now__name {
   margin-top: var(--s2);
@@ -1057,9 +1031,6 @@ a.stop__song:hover {
   color: var(--fg);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .now__eq i { animation: none; transform: scaleY(0.6); }
-}
 
 /* ---------- Quiet, like the rest of the site ----------
    One size of type here too: the song playing, and the figures, set

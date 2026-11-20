@@ -1,6 +1,7 @@
 /* quiet.js, after the page (the site's look since 2026-11): the profiles as words (an
    "Elsewhere" list on the home page, a line in the footer elsewhere),
-   and the home page's section names. */
+   the home page's section names, and the waveform beside a song that is
+   playing (home page and music page). */
 (function () {
   var home = document.querySelector('.sheet--home');
   var social = document.querySelector('.masthead .social') || document.querySelector('.colophon .social');
@@ -18,115 +19,79 @@
     });
     return p;
   }
-  if (!home) {
-    var foot = document.querySelector('.colophon__inner');
-    if (foot) foot.appendChild(words());
-    return;
-  }
-  // now playing: mark the row while a song is actually playing
-  var live = home.querySelector('[data-listening]');
-  if (live) {
-    var head = live.querySelector('[data-listening-heading]');
-    // the waveform that shows while a song is playing (quiet.css .qu-wave)
-    if (head && !live.querySelector('.qu-wave')) {
-      var wave = document.createElement('span');
-      wave.className = 'qu-wave';
-      wave.setAttribute('aria-hidden', 'true');
-      // seven round-capped lines in an svg, placed by percentages so the
-      // drawing follows the font size (quiet.css sizes the svg)
-      var lines = '';
-      for (var li = 0; li < 7; li++) {
-        var lx = ((2 * li + 0.5) / 13 * 100).toFixed(3) + '%';
-        lines += '<line x1="' + lx + '" x2="' + lx + '" y1="50%" y2="50%"/>';
-      }
-      wave.innerHTML = '<svg focusable="false">' + lines + '</svg>';
-      head.parentNode.insertBefore(wave, head.nextSibling);
+
+  /* The waveform beside a song that is playing, after the now-playing
+     one in the Mac's notch and the iPhone's Dynamic Island (quiet.css
+     .qu-wave): five round-ended bars in the album's colours.
+
+     The motion is copied from a recording of the real one, measured
+     frame by frame: five times a second every bar is given a new height
+     at once, each its own, anywhere from a dot to the full height, and
+     glides straight to it in the fifth of a second before the next. The
+     bars have nothing to do with their neighbours. The real one takes its
+     heights from the sound; the page can't hear the song, so these are
+     drawn at random, staying put about a time in four as the real one
+     does on a held note.
+
+       host   takes the colours (--qu-c1..3)
+       wave   the empty .qu-wave span
+       art    the cover, an <img>, whose colours it takes
+       on     says whether a song is playing now
+       watch  [node, MutationObserver options] that change when it does */
+  function waveform(o) {
+    var host = o.host, wave = o.wave, art = o.art;
+    var N = 5, TICK = 0.2, REST = [0.4, 0.8, 0.55, 0.95, 0.3];
+    var lines = '';
+    for (var k = 0; k < N; k++) {
+      var x = ((2 * k + 0.5) / (2 * N - 1) * 100).toFixed(3) + '%';
+      lines += '<line x1="' + x + '" x2="' + x + '" y1="50%" y2="50%"/>';
     }
-    // the bars move as if to music. The page can't hear the song, so it
-    // keeps a beat of its own: a tempo taken from the song's name (so each
-    // song has its own, and keeps it), counted in sixteenths, with hits
-    // most likely and hardest on the beat, lighter off it, and now and
-    // then a quick one in between. Each hit throws the bars up by a
-    // different amount around a peak that wanders about the middle; they
-    // rise fast and fall back slower, as a level meter does, onto a low
-    // restless floor. Every few bars the whole thing gets louder or
-    // quieter. Each bar is an svg line with round caps, so its ends move
-    // by fractions of a pixel (a line of no length is a dot).
-    var bars = live.querySelectorAll('.qu-wave line');
+    wave.innerHTML = '<svg focusable="false">' + lines + '</svg>';
+    var bars = wave.querySelectorAll('line');
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var REST = [0.2, 0.5, 0.82, 1, 0.8, 0.48, 0.2];
-    var named = live.querySelector('[data-listening-name]');
-    var raf = 0, last = 0, step = 0, nextStep = 0, sixteenth = 0.125, loud = 0.9, song = null;
-    var hit = [], lvl = [];
-    // v is 0..1 of the full height; the caps add the bar's width to it
+    // v is 0..1: a dot to the full height (the round caps add the width)
     var draw = function (bar, v) {
       var half = Math.max(0, Math.min(1, v)) * 44;
       bar.setAttribute('y1', (50 - half).toFixed(2) + '%');
       bar.setAttribute('y2', (50 + half + 0.01).toFixed(2) + '%');
     };
-    for (var bi = 0; bi < bars.length; bi++) { hit.push(0); lvl.push(REST[bi] * 0.8); draw(bars[bi], lvl[bi]); }
-    var tempo = function () {
-      var name = named ? named.textContent : '';
-      if (name === song) return;
-      song = name;
-      var h = 7;
-      for (var c = 0; c < name.length; c++) h = (h * 31 + name.charCodeAt(c)) % 9973;
-      sixteenth = 60 / (88 + h % 50) / 4;   // 88 to 137 beats a minute
-    };
-    var strike = function () {
-      var pos = step % 16;
-      if (pos === 0) tempo();
-      // every two bars, a new loudness; now and then a quiet stretch
-      if (step % 32 === 0) loud = Math.random() < 0.15 ? 0.5 + Math.random() * 0.15 : 0.82 + Math.random() * 0.18;
-      var chance = pos % 4 === 0 ? 0.96 : pos % 2 === 0 ? 0.6 : 0.2;
-      var force = pos === 0 ? 1.3 : pos % 8 === 0 ? 1.2 : pos % 4 === 0 ? 1.08 : pos % 2 === 0 ? 0.8 : 0.6;
-      step++;
-      if (Math.random() > chance) return;
-      force *= loud * (0.95 + 0.2 * Math.random());
-      var peak = 3 + (Math.random() - 0.5) * 2.6;
-      for (var i = 0; i < bars.length; i++) {
-        var d = (i - peak) / 2.2;
-        var h = force * (0.14 + 0.86 * Math.exp(-d * d)) * (0.78 + 0.22 * Math.random());
-        if (h > 1) h = 1;
-        if (h > hit[i]) hit[i] = h;
+    var from = [], to = [], raf = 0, tick = 0;
+    for (var b = 0; b < N; b++) { from.push(REST[b]); to.push(REST[b]); draw(bars[b], REST[b]); }
+    var next = function () {
+      for (var i = 0; i < N; i++) {
+        from[i] = to[i];
+        to[i] = Math.random() < 0.25
+          ? Math.max(0, Math.min(1, to[i] + (Math.random() - 0.5) * 0.12))
+          : Math.pow(Math.random(), 1.15);
       }
     };
     var frame = function (now) {
       raf = requestAnimationFrame(frame);
-      var t = now / 1000, dt = Math.min(0.1, t - last || 0.016);
-      last = t;
-      if (t - nextStep > 0.5) nextStep = t;   // back from a hidden tab
-      while (t >= nextStep) { strike(); nextStep += sixteenth; }
-      var fall = Math.exp(-dt / 0.26);
-      for (var i = 0; i < bars.length; i++) {
-        hit[i] *= fall;
-        var floor = REST[i] * loud * (0.3 + 0.07 * Math.sin(t * 3.1 + i * 1.9) + 0.04 * Math.sin(t * 4.7 - i * 2.7));
-        var goal = Math.max(hit[i], floor);
-        lvl[i] += (goal - lvl[i]) * (1 - Math.exp(-dt / (goal > lvl[i] ? 0.02 : 0.07)));
-        // a little over, since a rising bar never quite catches a falling hit
-        draw(bars[i], lvl[i] * 1.18);
-      }
+      var t = now / 1000;
+      if (t - tick > 1) { tick = t; next(); }   // first frame, or back from a hidden tab
+      while (t - tick >= TICK) { tick += TICK; next(); }
+      var u = (t - tick) / TICK;
+      for (var i = 0; i < N; i++) draw(bars[i], from[i] + (to[i] - from[i]) * u);
     };
     var mark = function () {
-      var on = !!head && /now/i.test(head.textContent);
-      live.classList.toggle('qu-live', on);
-      if (on && !raf && !still && bars.length) raf = requestAnimationFrame(frame);
+      var on = !!o.on();
+      if (o.mark) o.mark(on);
+      if (on && !raf && !still) raf = requestAnimationFrame(frame);
       else if (!on && raf) { cancelAnimationFrame(raf); raf = 0; }
     };
     mark();
-    if (head) new MutationObserver(mark).observe(head, { childList: true, characterData: true, subtree: true });
+    if (o.watch) new MutationObserver(mark).observe(o.watch[0], o.watch[1]);
 
-    // the waveform takes the album's colours, as the real one does: up to
-    // three of the colours that cover most of it, muted ones included, in
-    // the order they sit across the cover, run as one gradient over the
-    // bars. Their lightness is held to what shows on the page: pale on the
-    // dark theme (as on the Island's black), deeper on the light one.
+    // the album's colours, as the real one takes them: up to three of the
+    // colours that cover most of the cover, muted ones included, in the
+    // order they sit across it, run as a gradient over the bars. Their
+    // lightness is held to what shows on the page: pale on the dark theme
+    // (as on the Island's black), deeper on the light one.
     var root = document.documentElement;
     var dark = function () {
-      var t = root.getAttribute('data-theme');
-      return t ? t === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+      var th = root.getAttribute('data-theme');
+      return th ? th === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
     };
-    var art = live.querySelector('[data-listening-art]');
     var hsl = function (R, G, B) {
       var M = Math.max(R, G, B), m = Math.min(R, G, B), L = (M + m) / 2, S = 0, Hh = 0;
       if (M !== m) {
@@ -191,7 +156,7 @@
           } else if (cols.length === 2) {
             cols = [cols[0], cols[1], cols[0]];
           }
-          for (var q = 0; q < 3; q++) live.style.setProperty('--qu-c' + (q + 1), css(cols[q]));
+          for (var q = 0; q < 3; q++) host.style.setProperty('--qu-c' + (q + 1), css(cols[q]));
         } catch (e) {}
       };
       im.src = src;
@@ -201,6 +166,38 @@
       new MutationObserver(tint).observe(art, { attributes: true, attributeFilter: ['src'] });
       new MutationObserver(tint).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     }
+  }
+
+  // the music page: beside "Playing now" (music.js sets .is-live)
+  var now = document.querySelector('.now[data-now]');
+  var nowWave = now && now.querySelector('.qu-wave');
+  if (nowWave) {
+    waveform({
+      host: now, wave: nowWave, art: now.querySelector('[data-now-img]'),
+      on: function () { return now.classList.contains('is-live'); },
+      watch: [now, { attributes: true, attributeFilter: ['class'] }]
+    });
+  }
+
+  if (!home) {
+    var foot = document.querySelector('.colophon__inner');
+    if (foot) foot.appendChild(words());
+    return;
+  }
+  // the home page: the listening row, marked while a song is playing
+  var live = home.querySelector('[data-listening]');
+  var head = live && live.querySelector('[data-listening-heading]');
+  if (head && !live.querySelector('.qu-wave')) {
+    var wave = document.createElement('span');
+    wave.className = 'qu-wave';
+    wave.setAttribute('aria-hidden', 'true');
+    head.parentNode.insertBefore(wave, head.nextSibling);
+    waveform({
+      host: live, wave: wave, art: live.querySelector('[data-listening-art]'),
+      on: function () { return /now/i.test(head.textContent); },
+      mark: function (on) { live.classList.toggle('qu-live', on); },
+      watch: [head, { childList: true, characterData: true, subtree: true }]
+    });
   }
 
   var main = home.querySelector('.page--home');

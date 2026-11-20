@@ -53,9 +53,10 @@
     var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     var ENV = [0.2, 0.52, 0.86, 1, 0.84, 0.5, 0.2], TAU = Math.PI * 2;
     var raf = 0;
-    // v is 0..1 of the full height; the caps add the bar's width to it
+    // v is 0..1 of the full height; the caps add the bar's width to it.
+    // Small v eases down to a dot rather than stopping dead at one.
     var draw = function (bar, v) {
-      var half = Math.max(0, Math.min(1, v) - 0.12) / 0.88 * 43;
+      var half = v * v / (v + 0.15) / 0.87 * 43;
       bar.setAttribute('y1', (50 - half).toFixed(2) + '%');
       bar.setAttribute('y2', (50 + half + 0.01).toFixed(2) + '%');
     };
@@ -64,12 +65,12 @@
       raf = requestAnimationFrame(frame);
       var t = now / 1000;
       // slow shared energy, about 0.75..1
-      var energy = 0.87 + 0.09 * Math.sin(t * 1.3) + 0.04 * Math.sin(t * 0.47 + 1.3);
+      var energy = 0.87 + 0.09 * Math.sin(t * 0.9) + 0.04 * Math.sin(t * 0.37 + 1.3);
       for (var i = 0; i < bars.length; i++) {
         var n = 0.5 +
-          0.27 * Math.sin(TAU * 0.83 * t - i * 0.95) +
-          0.15 * Math.sin(TAU * 1.37 * t + i * 1.7 + 1.1) +
-          0.08 * Math.sin(TAU * 2.11 * t - i * 2.6 + 2.3);
+          0.3 * Math.sin(TAU * 0.43 * t - i * 0.8) +
+          0.14 * Math.sin(TAU * 0.79 * t + i * 1.5 + 1.1) +
+          0.06 * Math.sin(TAU * 1.21 * t - i * 2.3 + 2.3);
         var v = ENV[i] * energy * (0.3 + 0.7 * n);
         draw(bars[i], v);
       }

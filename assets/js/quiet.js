@@ -85,13 +85,8 @@
     // the album's colours, as the real one takes them: up to three of the
     // colours that cover most of the cover, muted ones included, in the
     // order they sit across it, run as a gradient over the bars. Their
-    // lightness is held to what shows on the page: pale on the dark theme
-    // (as on the Island's black), deeper on the light one.
+    // lightness is held to what shows on the off-white page.
     var root = document.documentElement;
-    var dark = function () {
-      var th = root.getAttribute('data-theme');
-      return th ? th === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-    };
     var hsl = function (R, G, B) {
       var M = Math.max(R, G, B), m = Math.min(R, G, B), L = (M + m) / 2, S = 0, Hh = 0;
       if (M !== m) {
@@ -99,7 +94,7 @@
         Hh = M === R ? (G - B) / (M - m) + (G < B ? 6 : 0) : M === G ? (B - R) / (M - m) + 2 : (R - G) / (M - m) + 4;
         Hh *= 60;
       }
-      var lo = dark() ? 0.62 : 0.4, hi = dark() ? 0.8 : 0.6;
+      var lo = 0.4, hi = 0.6;
       return [Hh, S, Math.min(hi, Math.max(lo, L))];
     };
     var css = function (c) {
@@ -164,7 +159,6 @@
     if (art) {
       tint();
       new MutationObserver(tint).observe(art, { attributes: true, attributeFilter: ['src'] });
-      new MutationObserver(tint).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     }
   }
 

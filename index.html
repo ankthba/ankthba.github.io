@@ -3,10 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#151515" media="(prefers-color-scheme: dark)">
-  <!-- Before paint: a stored choice of light or dark (theme.js); none follows the system -->
-  <script>try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}</script>
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#fcf5e8">
   <script>
     /* Before paint: mark the root (scripts are running) */
     document.documentElement.classList.add('js');
@@ -208,7 +206,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;1,14..32,400&display=swap">
-  <link rel="stylesheet" href="/assets/css/quiet.css?v=4">
+  <link rel="stylesheet" href="/assets/css/quiet.css?v=7">
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -234,7 +232,7 @@
       <p>Outside work, I&rsquo;m an aviation and landscape photographer. My photos have been featured by more than a dozen airlines and airports, including United, Dulles and Lufthansa, with special recognition from Korean Air and BLACKPINK. I also <a href="/writing/">write</a>, and I&rsquo;m usually outdoors with <a href="/music/">music</a> playing.</p>
       </div>
 
-      <ul class="index" aria-label="Pages">
+      <ul class="index index--run" aria-label="Pages">
         <li><a class="index__row" href="/work/" data-img="/assets/img/peek/frc.webp"><span class="index__name">Work</span><span class="index__note">Pragmatic, OCRadar, Alarm.com</span></a></li>
         <li><a class="index__row" href="/education/" data-img="/assets/img/peek/uva.webp"><span class="index__name">Education</span><span class="index__note">UVA, Y Combinator AI Startup School, Oakton</span></a></li>
         <li><a class="index__row" href="/projects/" data-img="/assets/img/projects/hypnagogia.webp"><span class="index__name">Projects</span><span class="index__note">Things I&rsquo;ve designed and built</span></a></li>
@@ -258,19 +256,14 @@
     <footer class="colophon">
         <div class="colophon__inner">
           <p class="colophon__meta">&copy; 2026 Aniketh Bandlamudi</p>
-          <span class="theme-toggle" role="group" aria-label="Colour theme">
-            <button type="button" class="theme-toggle__option" data-theme-choice="dark" aria-pressed="false">Dark</button>
-            <button type="button" class="theme-toggle__option" data-theme-choice="system" aria-pressed="true">System</button>
-            <button type="button" class="theme-toggle__option" data-theme-choice="light" aria-pressed="false">Light</button>
-          </span>
         </div>
       </footer>
     </div>
   </div>
-  <script src="/assets/js/theme.js"></script>
+  <img class="lamp-art" src="/assets/img/lamp/home-1900.webp" srcset="/assets/img/lamp/home-1000.webp 1000w, /assets/img/lamp/home-1900.webp 1900w" sizes="(min-width: 72rem) min(52vw, 58rem), 116vw" width="1900" height="1223" alt="" aria-hidden="true" decoding="async">
   <script src="/assets/js/site.js"></script>
   <script src="/assets/js/peek.js"></script>
   <script src="/assets/js/listening.js"></script>
-  <script src="/assets/js/quiet.js?v=4"></script>
+  <script src="/assets/js/quiet.js?v=5"></script>
 </body>
 </html>

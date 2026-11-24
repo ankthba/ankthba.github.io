@@ -38,10 +38,6 @@
   --head: clamp(2rem, 0.9rem + 3vw, 4rem);
 }
 
-html.pencil .theme-toggle {
-  display: none !important;
-}
-
 /* the page is clean paper; the texture lives in the drawings */
 html.pencil body {
   font-weight: 400;

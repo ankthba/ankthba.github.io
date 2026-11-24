@@ -27,7 +27,8 @@
   var still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   var items = Array.prototype.slice.call(document.querySelectorAll(ITEMS))
-    .filter(function (el) { return el.parentNode.closest(LISTS); });
+    // a run of names (the home page's pages) is plain words: no pictures
+    .filter(function (el) { return el.parentNode.closest(LISTS) && !el.closest('.index--run'); });
   if (!items.length) return;
 
   var ZOOM = 1.08;      // how much larger than its frame the picture is

@@ -1,7 +1,7 @@
 /* The details: the highlight that slides between rows, the stack of
    photographs you can throw, links to any entry, search, and the copy
    key beside an address.
-   The theme control is theme.js; picking the photographs, shuffle.js. */
+   Picking the photographs is shuffle.js. */
 
 'use strict';
 
@@ -305,16 +305,8 @@
     { group: 'Elsewhere', title: 'Haze', sub: 'Weather for iPhone, iPad, Mac and Apple Watch', url: '/haze/' },
     { group: 'Do', title: 'Copy email address', sub: 'me@aniketh.net', url: 'copy:me@aniketh.net' },
     { group: 'Do', title: 'Email me', sub: 'me@aniketh.net', url: 'mailto:me@aniketh.net' },
-    { group: 'Do', title: 'Download resume', sub: 'PDF', url: '/assets/media/Aniketh-Bandlamudi-Resume.pdf' },
-    { group: 'Do', title: 'Light theme', sub: '', url: 'theme:light' },
-    { group: 'Do', title: 'Dark theme', sub: '', url: 'theme:dark' },
-    { group: 'Do', title: 'Follow the system theme', sub: '', url: 'theme:system' }
+    { group: 'Do', title: 'Download resume', sub: 'PDF', url: '/assets/media/Aniketh-Bandlamudi-Resume.pdf' }
   ];
-
-  // light only (pencil.css): there the theme commands have nothing to do
-  if (root.classList.contains('pencil')) {
-    FIXED = FIXED.filter(function (item) { return !/^theme:/.test(item.url); });
-  }
 
   var STORE = 'search-index-v1';
   var index = null;
@@ -613,11 +605,6 @@
     close();
     if (/^copy:/.test(target)) {
       if (navigator.clipboard) navigator.clipboard.writeText(target.slice(5));
-      return;
-    }
-    if (/^theme:/.test(target)) {
-      var choice = document.querySelector('[data-theme-choice="' + target.slice(6) + '"]');
-      if (choice) choice.click();
       return;
     }
     if (/^https?:/.test(target)) {

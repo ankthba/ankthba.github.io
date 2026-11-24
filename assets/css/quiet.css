@@ -3,31 +3,36 @@
    pencil.css (pages carry class="pencil quiet qu-<page>")
 
    Concept A (2026-11-16), a ground-up language: one narrow column
-   centred on off-white paper, Inter at one size, ink for what is
-   named and grey for what's said about it, small grey section names,
-   a soft wash under the row you point at, fine grey underlines. No
-   drawing, no effects.
+   centred on the paper, Inter at one size, ink for what is named and
+   grey for what's said about it, small grey section names, a soft
+   wash under the row you point at.
 
-   Light and dark: the same page on off-white or on near-black. It
-   follows the system unless Dark or Light is picked in the footer
-   (theme.js, which sets data-theme on <html>).
+   Since 2026-11-23 the paper, the pen line under links and the yellow
+   are those of the home page's drawing: a still life in thin pen on a
+   yellow table, in the bottom-right corner of the home page.
+
+   Light only: off-white paper whatever the system is set to (the user,
+   2026-11-23: "remove dark and system only light").
 
    The Lagunita and Design pages are shown in Lagunita (the user:
    "makes 0 sense for the lagunita page to be anything but lagunita").
    ========================================================= */
 
 :root:root:root.quiet {
-  color-scheme: light dark;
-  --qu-ink: #171717;
-  --qu-text: #3b3b3b;
-  --qu-mid: #6f6f6f;
-  --qu-soft: #a3a3a3;
-  --qu-bg: #fafaf9;
-  --qu-hover: #f0f0ee;
-  --qu-line: #cfcfcc;
-  --qu-rule: #e6e6e3;
-  --qu-rule-hover: #d6d6d2;
-  --qu-scrim: rgba(250, 250, 249, 0.94);
+  color-scheme: light;
+  /* the colours of the home page's drawing (assets/img/lamp): its own
+     cream paper, pen black, and the yellow of its table */
+  --qu-ink: #0d0d0d;
+  --qu-text: #262626;
+  --qu-mid: #6e6a63;
+  --qu-soft: #9f998d;
+  --qu-bg: #fcf5e8;
+  --qu-hover: #f4ebd9;
+  --qu-line: #d6ccb7;
+  --qu-rule: #ebe2cf;
+  --qu-rule-hover: #dcd2bd;
+  --qu-scrim: rgba(252, 245, 232, 0.94);
+  --qu-yellow: #fed508;
   --qu-cardinal: #8c1515;
   --qu-col: 34.5rem;          /* about 75 characters a line */
   --qu-font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -56,47 +61,6 @@
   --col: 7.5rem;
   --row-pad: 0.6rem;
   --gap: 3.75rem;
-}
-
-/* Dark: near-black paper, near-white ink, the greys stepped the same
-   way so everything keeps its place in the order of what to read. */
-@media (prefers-color-scheme: dark) {
-  :root:root:root.quiet:not([data-theme="light"]) {
-    --qu-ink: #ededec;
-    --qu-text: #c2c2c0;
-    --qu-mid: #8e8e8c;
-    --qu-soft: #6b6b69;
-    --qu-bg: #151515;
-    --qu-hover: #212120;
-    --qu-line: #454543;
-    --qu-rule: #2a2a29;
-    --qu-rule-hover: #3a3a38;
-    --qu-scrim: rgba(21, 21, 21, 0.94);
-    --qu-cardinal: #e7838a;
-    --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
-    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
-  }
-}
-
-:root:root:root.quiet[data-theme="dark"] {
-  color-scheme: dark;
-  --qu-ink: #ededec;
-  --qu-text: #c2c2c0;
-  --qu-mid: #8e8e8c;
-  --qu-soft: #6b6b69;
-  --qu-bg: #151515;
-  --qu-hover: #212120;
-  --qu-line: #454543;
-  --qu-rule: #2a2a29;
-  --qu-rule-hover: #3a3a38;
-  --qu-scrim: rgba(21, 21, 21, 0.94);
-  --qu-cardinal: #e7838a;
-  --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 32px -16px rgba(0, 0, 0, 0.6);
-}
-
-:root:root:root.quiet[data-theme="light"] {
-  color-scheme: light;
 }
 
 /* the type pages, in their own face */
@@ -176,16 +140,22 @@ html.quiet .contact__text a,
   color: var(--qu-ink);
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--qu-line);
+  text-decoration-color: var(--qu-ink);   /* a pen line */
   text-underline-offset: 0.22em;
-  transition: text-decoration-color 0.15s;
+  transition: background-color 0.12s;
 }
 
+/* pointing at a link lays the table's yellow behind it */
 html.quiet .page p a:hover,
 html.quiet .about__text a:hover,
 html.quiet .contact__text a:hover,
 .qu-elsewhere a:hover {
-  text-decoration-color: var(--qu-ink);
+  background: var(--qu-yellow);
+}
+
+html.quiet ::selection {
+  background: var(--qu-yellow);
+  color: var(--qu-ink);
 }
 
 /* ---------- The column ---------- */
@@ -428,6 +398,43 @@ html.quiet .page--home .index[aria-label="Pages"] {
   margin-top: 0;
 }
 
+/* the pages as one run of names, as at the top of every other page:
+   no notes beside them, in even lines where they don't fit on one */
+html.quiet .page--home .index--run {
+  display: block;
+  margin-left: 0;
+  margin-right: 0;
+  line-height: 1.82;   /* the lines as far apart as Elsewhere's */
+  text-wrap: balance;
+}
+
+html.quiet .page--home .index--run li {
+  display: inline;
+}
+
+html.quiet .page--home .index--run .index__row {
+  display: inline;
+  width: auto;
+  margin-right: 1.1rem;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+}
+
+html.quiet .page--home .index--run .index__name {
+  display: inline;
+  font-weight: 400;
+  transition: background-color 0.12s;
+}
+
+html.quiet .page--home .index--run .index__row:is(:hover, :focus-visible) .index__name {
+  background: var(--qu-yellow);
+}
+
+html.quiet .page--home .index--run .index__note {
+  display: none;
+}
+
 .qu-h--else { order: 5; }
 
 .qu-elsewhere--home { order: 6; }
@@ -441,6 +448,48 @@ html.quiet .page--home .index {
   flex-wrap: wrap;
   gap: 0.2rem 1.1rem;
   margin: 0;
+}
+
+/* ---------- Home: the drawing ----------
+   A still life in thin pen on a yellow table, its paper cut away so it
+   sits on the page's own. On a wide window it is in the page's
+   bottom-right corner, beside the column, running off the right and the
+   bottom; on a narrower one it is at the foot of the page. */
+
+html.quiet.qu-home body {
+  position: relative;
+  overflow-x: clip;
+}
+
+html.quiet.qu-home .sheet {
+  position: relative;
+  z-index: 1;
+}
+
+.lamp-art {
+  display: block;
+  width: 116%;
+  max-width: none;
+  height: auto;
+  margin: 2.5rem 0 0 -16%;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (min-width: 72rem) {
+  .lamp-art {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    width: min(52vw, 58rem);
+    margin: 0;
+  }
+
+  html.quiet.qu-home .sheet--home {
+    padding-bottom: 9rem;
+  }
 }
 
 /* ---------- Footer ---------- */
@@ -466,26 +515,12 @@ html.quiet .colophon__meta {
   color: var(--qu-soft);
 }
 
-/* Dark, System, Light: three words in the footer's grey, the one in
-   use in ink. Only where the script is there to make them work. */
-html.quiet.js .theme-toggle {
-  display: inline-flex !important;
-  gap: 0.9rem;
-}
-
-html.quiet .theme-toggle__option {
-  padding: 0;
-  font: inherit;
-  color: var(--qu-soft);
-  transition: color 0.15s;
-}
-
-html.quiet .theme-toggle__option:hover {
-  color: var(--qu-mid);
-}
-
-html.quiet .theme-toggle__option[aria-pressed="true"] {
-  color: var(--qu-ink);
+/* beside the drawing, the home page's footer keeps to the column's left edge */
+@media (min-width: 72rem) {
+  html.quiet.qu-home .colophon__inner {
+    align-items: flex-start;
+    text-align: left;
+  }
 }
 
 /* typing "stanford" in a specimen: the cardinal, lighter on dark */

@@ -290,11 +290,6 @@
   .dw-fig figcaption { position: sticky; left: 0; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .sheet--design { --dw-pt: #e7838a; }
-}
-:root[data-theme="dark"] .sheet--design { --dw-pt: #e7838a; }
-
 /* ---------- About ---------- */
 
 .dg-about {

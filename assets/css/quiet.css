@@ -471,7 +471,7 @@ html.quiet.qu-home .sheet {
   width: 116%;
   max-width: none;
   height: auto;
-  margin: 2.5rem 0 0 -16%;
+  margin: 0 0 0 -16%;
   pointer-events: none;
   user-select: none;
   -webkit-user-select: none;

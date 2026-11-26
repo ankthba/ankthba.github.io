@@ -7,9 +7,8 @@
    grey for what's said about it, small grey section names, a soft
    wash under the row you point at.
 
-   Since 2026-11-23 the paper, the pen line under links and the yellow
-   are those of the home page's drawing: a still life in thin pen on a
-   yellow table, in the bottom-right corner of the home page.
+   Bare: no drawing, no colour, no effects (the user, 2026-11-25:
+   "just have it be bareeee like extremely minimal").
 
    Light only: off-white paper whatever the system is set to (the user,
    2026-11-23: "remove dark and system only light").
@@ -20,19 +19,16 @@
 
 :root:root:root.quiet {
   color-scheme: light;
-  /* the colours of the home page's drawing (assets/img/lamp): its own
-     cream paper, pen black, and the yellow of its table */
-  --qu-ink: #0d0d0d;
-  --qu-text: #262626;
-  --qu-mid: #6e6a63;
-  --qu-soft: #9f998d;
-  --qu-bg: #fcf5e8;
-  --qu-hover: #f4ebd9;
-  --qu-line: #d6ccb7;
-  --qu-rule: #ebe2cf;
-  --qu-rule-hover: #dcd2bd;
-  --qu-scrim: rgba(252, 245, 232, 0.94);
-  --qu-yellow: #fed508;
+  --qu-ink: #171717;
+  --qu-text: #3b3b3b;
+  --qu-mid: #6f6f6f;
+  --qu-soft: #a3a3a3;
+  --qu-bg: #fafaf9;
+  --qu-hover: #f0f0ee;
+  --qu-line: #cfcfcc;
+  --qu-rule: #e6e6e3;
+  --qu-rule-hover: #d6d6d2;
+  --qu-scrim: rgba(250, 250, 249, 0.94);
   --qu-cardinal: #8c1515;
   --qu-col: 34.5rem;          /* about 75 characters a line */
   --qu-font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -140,22 +136,16 @@ html.quiet .contact__text a,
   color: var(--qu-ink);
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
-  text-decoration-color: var(--qu-ink);   /* a pen line */
+  text-decoration-color: var(--qu-line);
   text-underline-offset: 0.22em;
-  transition: background-color 0.12s;
+  transition: text-decoration-color 0.15s;
 }
 
-/* pointing at a link lays the table's yellow behind it */
 html.quiet .page p a:hover,
 html.quiet .about__text a:hover,
 html.quiet .contact__text a:hover,
 .qu-elsewhere a:hover {
-  background: var(--qu-yellow);
-}
-
-html.quiet ::selection {
-  background: var(--qu-yellow);
-  color: var(--qu-ink);
+  text-decoration-color: var(--qu-ink);
 }
 
 /* ---------- The column ---------- */
@@ -421,14 +411,19 @@ html.quiet .page--home .index--run .index__row {
   background: none;
 }
 
+/* a page's name is underlined like any other link when pointed at */
 html.quiet .page--home .index--run .index__name {
   display: inline;
   font-weight: 400;
-  transition: background-color 0.12s;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.15s;
 }
 
 html.quiet .page--home .index--run .index__row:is(:hover, :focus-visible) .index__name {
-  background: var(--qu-yellow);
+  text-decoration-color: var(--qu-ink);
 }
 
 html.quiet .page--home .index--run .index__note {
@@ -448,48 +443,6 @@ html.quiet .page--home .index {
   flex-wrap: wrap;
   gap: 0.2rem 1.1rem;
   margin: 0;
-}
-
-/* ---------- Home: the drawing ----------
-   A still life in thin pen on a yellow table, its paper cut away so it
-   sits on the page's own. On a wide window it is in the page's
-   bottom-right corner, beside the column, running off the right and the
-   bottom; on a narrower one it is at the foot of the page. */
-
-html.quiet.qu-home body {
-  position: relative;
-  overflow-x: clip;
-}
-
-html.quiet.qu-home .sheet {
-  position: relative;
-  z-index: 1;
-}
-
-.lamp-art {
-  display: block;
-  width: 116%;
-  max-width: none;
-  height: auto;
-  margin: 0 0 0 -16%;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-@media (min-width: 72rem) {
-  .lamp-art {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    width: min(52vw, 58rem);
-    margin: 0;
-  }
-
-  html.quiet.qu-home .sheet--home {
-    padding-bottom: 9rem;
-  }
 }
 
 /* ---------- Footer ---------- */
@@ -513,14 +466,6 @@ html.quiet .sheet--home .colophon__inner {
 
 html.quiet .colophon__meta {
   color: var(--qu-soft);
-}
-
-/* beside the drawing, the home page's footer keeps to the column's left edge */
-@media (min-width: 72rem) {
-  html.quiet.qu-home .colophon__inner {
-    align-items: flex-start;
-    text-align: left;
-  }
 }
 
 /* typing "stanford" in a specimen: the cardinal, lighter on dark */

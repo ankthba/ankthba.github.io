@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research | Aniketh Bandlamudi</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://aniketh.net/research/">
+<style>
+	body {
+	  line-height: 1.4;
+	    font-size: 16px;
+	    padding: 0 10px;
+	    margin: 50px auto;
+	    max-width: 650px;
+	}
+</style>
+</head>
+<body>
+
+<p><b><a href="/plain/">Aniketh Bandlamudi</a></b></p>
+
+<p>
+<a href="/plain/work/">Work</a>
+<a href="/plain/education/">Education</a>
+<a href="/plain/projects/">Projects</a>
+<a href="/design/">Design</a>
+Research
+<a href="/plain/writing/">Writing</a>
+<a href="/plain/photos/">Photos</a>
+<a href="/plain/music/">Music</a>
+<a href="/plain/press/">Press</a>
+<a href="/plain/resume/">Resume</a>
+<a href="/plain/contact/">Contact</a>
+</p>
+
+<h1 id="main">Research</h1>
+
+<h3 id="hypnagogia">Hypnagogia</h3>
+
+<p>Computational Neuroscience · Connectomics · Preprint</p>
+
+<p>A whole-brain fruit-fly simulation and a pre-registered test of whether a learned memory replays during sleep. It doesn’t, and the paper shows why.</p>
+
+<p>Sleeping rats replay what they learned, but no one has seen an insect’s memory cells do it. Hypnagogia simulates all 144,209 neurons of the male fruit-fly brain from its connectome, teaches the model an odour, and runs a pre-registered test of whether the cells that learned it switch back on by themselves during simulated sleep, against shuffled-wiring, wake and unlearned-weights controls.</p>
+
+<p>They don’t, and the paper shows why: the memory sits one synapse downstream of the cells being scored, so learning can’t change which of them switch on, even once the model is given the slow dynamics it needs to have episodes at all. Along the way, modelling one inhibitory neuron as the non-spiking cell it was measured to be, with no new parameters, took the model’s odour code from 52.6% of Kenyon cells to 4.5%, against about 6% in real flies.</p>
+
+<p>Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain <em>Drosophila</em> Connectome Model. November 2026.</p>
+
+<p><a href="/plain/research/hypnagogia/">View paper</a> <a href="https://github.com/ankthba/hypnagogia">View repo</a></p>
+
+<h3 id="agentical">Agentical</h3>
+
+<p>Programming Languages · Formal Methods · Formal Verification · Preprint</p>
+
+<p>Proofs, machine-checked in Lean&nbsp;4, that an AI agent’s run can be replayed exactly and resumed after a crash.</p>
+
+<p>AI agents crash mid-task, and their model calls never give the same answer twice, so a crashed run can’t simply be restarted. Agentical gives LLM agents a probabilistic semantics in which every model call is a random draw and every response is journaled, then proves that replaying a run from its journal reproduces it exactly, and that recovering from a crash continues the run with exactly the distribution it would have had, whenever the crash doesn’t hinge on a response that was never recorded. Both results extend to many agents running at once with shared memory and messages, and a security theorem shows that, under its labelling rules and a scheduler that sees only public events, secret data can’t leak between agents, even statistically.</p>
+
+<p>The core results, and their lifting to any deterministically scheduled system, are machine-checked in Lean&nbsp;4 with no unproven steps; that the multi-agent calculus is such a system, and the security theorem, are proved on paper. A dependency-free Rust runtime puts the single-agent results to the test: 1,000 of 1,000 replays matched exactly, recovery succeeded from all 4,664 crash points tried, and journaling costs about 100 nanoseconds a step.</p>
+
+<p>Provably Sound Replay, Crash Recovery, and Noninterference for Nondeterministic LLM Agents. November 2026.</p>
+
+<p><a href="/plain/research/agentical/">View paper</a> <a href="https://github.com/ankthba/agentical">View repo</a></p>
+
+<h3 id="cnn-ocscc-detection">CNN OCSCC Detection</h3>
+
+<p>Machine Learning · Medical Imaging · arXiv:2510.16235</p>
+
+<p>A neural network that recognizes oral cancer in photos, trained on 4,293 images, with the hardware and open-access app to use it.</p>
+
+<p>Oral cavity squamous cell carcinoma is the most common head and neck cancer, and its early stages are subtle enough that it often goes undetected until it is advanced. This co-authored paper trains a convolutional neural network on 4,293 images of malignant and benign tumors and negative samples to recognize it, pairs the model with custom hardware built to capture detailed images, and releases an open-access app that puts the model in anyone’s hands.</p>
+
+<p>Testing the network at five common image resolutions showed accuracy rising on a logarithmic curve, with diminishing returns from higher pixel counts: a measure of the image quality a screening device actually needs.</p>
+
+<p>Designing a Convolutional Neural Network for High-Accuracy Oral Cavity Squamous Cell Carcinoma (OCSCC) Detection. October 2025.</p>
+
+<p><a href="https://arxiv.org/abs/2510.16235">View paper</a></p>
+
+<p>© 2026</p>
+
+<p>
+<a href="https://www.linkedin.com/in/anikethb/">LinkedIn</a>
+<a href="https://github.com/ankthba">GitHub</a>
+<a href="https://x.com/ankthba">X</a>
+<a href="https://www.instagram.com/ankthba/">Instagram</a>
+<a href="https://ankthba.substack.com/">Substack</a>
+<a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t">Spotify</a>
+</p>
+
+</body>
+</html>

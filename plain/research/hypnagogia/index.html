@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain Drosophila Connectome Model | Aniketh Bandlamudi</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://aniketh.net/research/hypnagogia/">
+<style>
+	body {
+	  line-height: 1.4;
+	    font-size: 16px;
+	    padding: 0 10px;
+	    margin: 50px auto;
+	    max-width: 650px;
+	}
+</style>
+</head>
+<body>
+
+<p><b><a href="/plain/">Aniketh Bandlamudi</a></b></p>
+
+<p>
+<a href="/plain/work/">Work</a>
+<a href="/plain/education/">Education</a>
+<a href="/plain/projects/">Projects</a>
+<a href="/design/">Design</a>
+Research
+<a href="/plain/writing/">Writing</a>
+<a href="/plain/photos/">Photos</a>
+<a href="/plain/music/">Music</a>
+<a href="/plain/press/">Press</a>
+<a href="/plain/resume/">Resume</a>
+<a href="/plain/contact/">Contact</a>
+</p>
+
+<h1 id="main">Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain <em>Drosophila</em> Connectome Model</h1>
+
+<h2>Hypnagogia</h2>
+
+<p>Computational Neuroscience · Connectomics · Preprint</p>
+
+<p>Aniketh Bandlamudi · University of Virginia · November 2026</p>
+
+<p><a href="/research/hypnagogia.pdf">Read the PDF</a> <a href="/research/hypnagogia.pdf">Download</a> <a href="https://github.com/ankthba/hypnagogia">Code and data</a> <a href="/hypnagogia/">Results viewer</a> <a href="/plain/research/hypnagogia/#cite">Cite</a></p>
+
+<dl>
+<dt>Abstract</dt>
+<dd>
+<p>In the rat hippocampus, ensembles that fire together during waking fire together again in later sleep, but offline reactivation of a learned ensemble has never been observed in an insect. This paper asks whether a whole-brain leaky integrate-and-fire model of the <em>Drosophila</em> male central brain connectome, 144,209 neurons and 21.9 million connections, built on the model of Shiu et al. (2024), reactivates a learned Kenyon-cell ensemble during simulated sleep.</p>
+<p>The reimplementation reproduces the published model on its own data. Two mushroom-body cells are then corrected against direct measurements, adding no parameter: APL becomes a non-spiking, graded-release neuron and DPM becomes inhibitory. An odour memory is encoded by dopamine-gated depression at Kenyon-cell-to-output-neuron synapses and tested against four pre-registered comparisons over 20 seeds.</p>
+<p>The test fails. The memory changes offline Kenyon-cell activity in every seed and cuts drive through the learned synapses by a third, but it does not make the trained ensemble reactivate more. A positive control shows that the published model cannot hold a discrete episode; adding spike-frequency adaptation produces episodes, and the memory still contributes nothing. The model’s only plastic synapses sit downstream of the cells being scored, so the negative is a finding about the model, not about the fly.</p>
+</dd>
+<dt>Results</dt>
+<dd>
+<ul>
+<li><strong>Engine check.</strong> The Brian2 reimplementation matches the published model’s own output on FlyWire v630, with per-neuron rate correlations of 0.9997 and 0.9999.</li>
+<li><strong>The APL correction.</strong> Modelling APL as non-spiking, as it was measured to be, takes odour coding from 52.6% of Kenyon cells at 23.0&nbsp;Hz to 4.5% at 0.79&nbsp;Hz, against about 6% measured in flies, with nothing else changed.</li>
+<li><strong>No replay.</strong> Only one of the four pre-registered comparisons passes, and the identical sleep run with unlearned weights gives the same reactivation (+0.016, 95% CI −0.011 to +0.044).</li>
+<li><strong>A tonic memory trace.</strong> Offline drive through the learned synapses falls by 32.5%, a 26-fold amplification of a 1.23% weight change, expressed continuously rather than in episodes.</li>
+<li><strong>Why.</strong> The only path from the memory back to the Kenyon cells delivers under 1% of a threshold gap even at 50&nbsp;Hz, and the corrected APL holds its source neuron far below threshold.</li>
+<li><strong>With episodes.</strong> Adding adaptation, a labelled deviation, gives the model episodes and a realistic sparse code, but in 13 of 20 seeds the ensemble stays on for the whole run, and the memory still contributes nothing (+0.040, 95% CI −0.010 to +0.090).</li>
+</ul>
+</dd>
+<dt>Paper</dt>
+<dd><a href="/research/hypnagogia.pdf"><img src="/research/hypnagogia/first-page.webp" alt="The first page of the paper: title, author, and abstract" width="100%"></a> <a href="/research/hypnagogia.pdf">Read all 18 pages</a></dd>
+<dt id="cite">Cite</dt>
+<dd>
+<p id="bibtex"><code>@misc{bandlamudi2026hypnagogia,<br>
+&nbsp;&nbsp;author = {Aniketh Bandlamudi},<br>
+&nbsp;&nbsp;title = {Hypnagogia: A Pre-Registered Test for Offline Memory Replay in a Whole-Brain {Drosophila} Connectome Model},<br>
+&nbsp;&nbsp;year = {2026},<br>
+&nbsp;&nbsp;month = nov,<br>
+&nbsp;&nbsp;howpublished = {\url{https://aniketh.net/research/hypnagogia/}},<br>
+&nbsp;&nbsp;note = {Preprint}<br>
+}</code></p>
+</dd>
+</dl>
+
+<p>© 2026</p>
+
+<p>
+<a href="https://www.linkedin.com/in/anikethb/">LinkedIn</a>
+<a href="https://github.com/ankthba">GitHub</a>
+<a href="https://x.com/ankthba">X</a>
+<a href="https://www.instagram.com/ankthba/">Instagram</a>
+<a href="https://ankthba.substack.com/">Substack</a>
+<a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t">Spotify</a>
+</p>
+
+</body>
+</html>

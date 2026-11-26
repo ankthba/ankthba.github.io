@@ -255,5 +255,21 @@
   <script src="/assets/js/peek.js"></script>
   <script src="/assets/js/listening.js"></script>
   <script src="/assets/js/quiet.js?v=5"></script>
+  <script>
+    /* Ten quick clicks on the name: the site with no stylesheet (/plain/).
+       Ten more on the name there come back. */
+    (function () {
+      var name = document.querySelector('.masthead__name'), n = 0, last = 0;
+      if (!name) return;
+      name.style.touchAction = 'manipulation';   /* so quick taps are taps, not a zoom */
+      name.addEventListener('mousedown', function (e) { if (e.detail > 1) e.preventDefault(); });
+      name.addEventListener('click', function () {
+        var now = Date.now();
+        n = now - last < 500 ? n + 1 : 1;
+        last = now;
+        if (n >= 10) location.href = '/plain/';
+      });
+    })();
+  </script>
 </body>
 </html>

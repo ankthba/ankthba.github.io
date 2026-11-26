@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aniketh Bandlamudi</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://aniketh.net/">
+<style>
+	body {
+	  line-height: 1.4;
+	    font-size: 16px;
+	    padding: 0 10px;
+	    margin: 50px auto;
+	    max-width: 650px;
+	}
+</style>
+</head>
+<body>
+
+<h1>Aniketh Bandlamudi</h1>
+
+<p>I&rsquo;m building <a href="/pragmatic/">Pragmatic</a>, the system of record for AI agents. Its Rust runtime records every model and tool call an agent makes, so any run can be replayed exactly, a guarantee I&rsquo;ve <a href="/plain/research/#agentical">proved</a> in Lean&nbsp;4. I also lead <a href="https://ocradar.com/">OCRadar</a>, the nonprofit I founded in eighth grade to catch oral cancer early. Our <a href="/plain/research/#cnn-ocscc-detection">neural network</a> is 98% accurate in testing and runs entirely on a phone, and the work has been covered by <a href="/plain/press/">WTOP, the Korea Times and others</a>.</p>
+
+<p>I study computer science, applied math and philosophy at the University of Virginia. Before UVA, I led software for Oakton&rsquo;s robotics teams for four years, interned at Alarm.com, attended Y Combinator&rsquo;s AI Startup School, and spoke at the <a href="https://www.instagram.com/p/DJh3DyTxumJ/">Tech Roast Show</a>. I&rsquo;ve also built <a href="/haze/">Haze</a>, a weather app for iPhone, a simulation of all 144,209 neurons in a fruit fly&rsquo;s brain that <a href="/plain/research/#hypnagogia">tests whether memories replay during sleep</a>, and <a href="/plain/projects/">plenty more</a>.</p>
+
+<p>Outside of work, I love art and art history. I&rsquo;m an aviation and landscape <a href="/plain/photos/">photographer</a>, and more than a dozen airlines and airports have featured my photos, including United, Dulles and Lufthansa, with special recognition from Korean Air and BLACKPINK. I also <a href="/plain/writing/">write</a>, and I&rsquo;m usually outdoors with <a href="/plain/music/">music</a> playing.</p>
+
+<p>
+Writing: <a href="/plain/writing/">What You Owe</a><span data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden><br>
+<span data-listening-heading>Listening</span>: <a href="/plain/music/" data-listening-link><span data-listening-name></span></a> &middot; <span data-listening-by></span><img alt="" data-listening-art hidden></span>
+</p>
+
+<p>Pages</p>
+
+<p>
+<a href="/plain/work/">Work</a>
+<a href="/plain/education/">Education</a>
+<a href="/plain/projects/">Projects</a>
+<a href="/design/">Design</a>
+<a href="/plain/research/">Research</a>
+<a href="/plain/writing/">Writing</a>
+<a href="/plain/photos/">Photos</a>
+<a href="/plain/music/">Music</a>
+<a href="/plain/press/">Press</a>
+<a href="/plain/resume/">Resume</a>
+<a href="/plain/contact/">Contact</a>
+</p>
+
+<p>Elsewhere</p>
+
+<p>
+<a href="https://www.linkedin.com/in/anikethb/">LinkedIn</a>
+<a href="https://github.com/ankthba">GitHub</a>
+<a href="https://x.com/ankthba">X</a>
+<a href="https://www.instagram.com/ankthba/">Instagram</a>
+<a href="https://ankthba.substack.com/">Substack</a>
+<a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t">Spotify</a>
+</p>
+
+<script src="/assets/js/listening.js"></script>
+
+<script>
+/* Ten quick clicks on the name: back to the site with its stylesheet. */
+(function () {
+  var name = document.querySelector('h1'), n = 0, last = 0;
+  if (!name) return;
+  name.style.touchAction = 'manipulation';   /* so quick taps are taps, not a zoom */
+  name.addEventListener('mousedown', function (e) { if (e.detail > 1) e.preventDefault(); });
+  name.addEventListener('click', function () {
+    var now = Date.now();
+    n = now - last < 500 ? n + 1 : 1;
+    last = now;
+    if (n >= 10) location.href = '/';
+  });
+})();
+</script>
+
+</body>
+</html>

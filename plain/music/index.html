@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music | Aniketh Bandlamudi</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://aniketh.net/music/">
+<style>
+	body {
+	  line-height: 1.4;
+	    font-size: 16px;
+	    padding: 0 10px;
+	    margin: 50px auto;
+	    max-width: 650px;
+	}
+</style>
+</head>
+<body>
+
+<p><b><a href="/plain/">Aniketh Bandlamudi</a></b></p>
+
+<p>
+<a href="/plain/work/">Work</a>
+<a href="/plain/education/">Education</a>
+<a href="/plain/projects/">Projects</a>
+<a href="/design/">Design</a>
+<a href="/plain/research/">Research</a>
+<a href="/plain/writing/">Writing</a>
+<a href="/plain/photos/">Photos</a>
+Music
+<a href="/plain/press/">Press</a>
+<a href="/plain/resume/">Resume</a>
+<a href="/plain/contact/">Contact</a>
+</p>
+
+<h1>Music</h1>
+
+<p>What I’m listening to, live from Spotify.</p>
+
+<p data-listening data-src="https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/music.json" data-live="https://aniketh-now.ankthba.workers.dev/" hidden><span data-listening-heading>Listening</span>: <a data-listening-link><span data-listening-name></span></a> &middot; <span data-listening-by></span><img alt="" data-listening-art hidden></p>
+
+<div id="music"><p>Nothing to show just yet.</p></div>
+
+<script src="/assets/js/listening.js"></script>
+<script>
+/* The music page with no stylesheet: the same music.json the styled page draws,
+   written out as headings and lists. A day's songs are fetched when it is opened. */
+(function () {
+  var SRC = 'https://raw.githubusercontent.com/ankthba/ankthba.github.io/listening-data/';
+  var box = document.getElementById('music');
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function num(n) { return Number(n || 0).toLocaleString('en-US'); }
+  function plural(n, one, many) { return num(n) + ' ' + (n === 1 ? one : many); }
+  function day(iso, how) {
+    var p = String(iso).split('-');
+    if (p.length < 3) return esc(iso);
+    return new Date(+p[0], p[1] - 1, +p[2]).toLocaleDateString('en-US', how || { month: 'short', day: 'numeric' });
+  }
+  function length(minutes) {
+    var h = Math.floor(minutes / 60), m = minutes % 60;
+    return [h ? plural(h, 'hour', 'hours') : '', m || !h ? plural(m, 'minute', 'minutes') : ''].filter(Boolean).join(' ');
+  }
+  function link(x) { return x.url ? '<a href="' + esc(x.url) + '">' + esc(x.name) + '</a>' : esc(x.name); }
+  function by(x) { return x.artists ? ' · ' + esc(x.artists) : ''; }
+  function change(now, was) {
+    if (!was) return '';
+    var p = Math.round((now - was) / was * 100);
+    return ' (' + (p < 0 ? '−' : '+') + Math.abs(p) + '%)';
+  }
+  function list(tag, items) {
+    return items.length ? '<' + tag + '>\n' + items.map(function (i) { return '<li>' + i + '</li>'; }).join('\n') + '\n</' + tag + '>' : '';
+  }
+  function fans(n) { return (n >= 1e6 ? (Math.round(n / 1e5) / 10) + 'M' : num(n)) + (n === 1 ? ' fan' : ' fans'); }
+  function clock(ms) { var s = Math.round(ms / 1000); return Math.floor(s / 60) + ':' + ('0' + (s % 60)).slice(-2); }
+
+  function range(title, r, span) {
+    var s = r.stats || {}, b = r.before, out = ['<h2>' + title + '</h2>', '<p>' + day(r.from) + ' – ' + day(r.to) + '</p>'];
+    out.push(list('ul', [
+      plural(r.plays, 'play', 'plays') + (b ? change(r.plays, b.plays) : ''),
+      plural(Math.round(r.minutes / 60), 'hour', 'hours') + (b ? change(r.minutes, b.minutes) : ''),
+      plural(s.tracks, 'song', 'songs') + (b ? change(s.tracks, b.tracks) : ''),
+      plural(s.artists, 'artist', 'artists') + (b ? change(s.artists, b.artists) : '')
+    ]));
+    if (b) out.push('<p>Against the ' + span + ' days before.</p>');
+    var songs = (r.tracks || []).map(function (t) { return link(t) + by(t) + ', ' + plural(t.plays, 'play', 'plays'); });
+    if (songs.length) out.push('<h3>Top songs</h3>', list('ol', songs));
+    var artists = (r.artists || []).map(function (a) { return link(a) + ', ' + plural(a.plays, 'play', 'plays'); });
+    if (artists.length) out.push('<h3>Top artists</h3>', list('ol', artists));
+    var st = [], rel = s.released || {};
+    function add(label, x, figure) { if (x && x.name) st.push(label + ': ' + link(x) + by(x) + ', ' + figure(x)); }
+    add('Top album', s.topAlbum, function (x) { return plural(x.plays, 'play', 'plays'); });
+    add('Top playlist', s.topPlaylist, function (x) { return plural(x.plays, 'play', 'plays'); });
+    add('On repeat', s.onRepeat, function (x) { return x.times + ' in a row'; });
+    add('Most in a row', s.binge, function (x) { return x.times + ' songs'; });
+    add('Longest song', s.longest, function (x) { return clock(x.duration_ms); });
+    add('Deepest cut', s.deepCut, function (x) { return x.popularity + '/100'; });
+    add('Oldest song', rel.oldest, function (x) { return String(x.year); });
+    add('Newest song', rel.newest, function (x) { return day(x.released); });
+    add('Most followed artist', s.biggest, function (x) { return fans(x.fans); });
+    add('Least known artist', s.nichest, function (x) { return fans(x.fans); });
+    if (st.length) out.push('<h3>Standouts</h3>', list('ul', st));
+    var rising = (r.rising || []).map(function (t) {
+      var risen = 'wasTop' in t ? t.wasTop : t.before > 0;
+      return link(t) + by(t) + ', ' + (risen ? 'from ' + num(t.before) + ' to ' : 'new, ') + plural(t.plays, 'play', 'plays');
+    });
+    if (rising.length) out.push('<h3>Rising</h3>', list('ul', rising));
+    return out.join('\n\n');
+  }
+
+  function calendar(d) {
+    var keys = Object.keys(d.calendar || {}).sort().reverse().slice(0, 30);
+    if (!keys.length) return '';
+    return '<h2>Calendar</h2>\n\n' + keys.map(function (k) {
+      var c = d.calendar[k];
+      return '<details data-day="' + esc(k) + '">\n<summary>' + day(k, { weekday: 'long', month: 'long', day: 'numeric' }) + ': ' +
+        (c.plays ? plural(c.plays, 'play', 'plays') + ', ' + length(c.minutes) : 'nothing played') + '</summary>\n<p>Loading…</p>\n</details>';
+    }).join('\n\n');
+  }
+
+  function open(el, zone) {
+    if (!el.open || el.getAttribute('data-got')) return;
+    el.setAttribute('data-got', '1');
+    var into = el.querySelector('p');
+    fetch(SRC + 'days/' + el.getAttribute('data-day') + '.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (plays) {
+        plays = (plays || []).slice().sort(function (a, b) { return a.played_at < b.played_at ? -1 : 1; });
+        if (!plays.length) { into.textContent = 'Nothing played.'; return; }
+        into.outerHTML = list('ul', plays.map(function (p) {
+          var at = new Date(p.played_at).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: zone });
+          return esc(at) + ': ' + link(p) + by(p);
+        }));
+      })
+      .catch(function () { el.removeAttribute('data-got'); into.textContent = 'That day could not be loaded.'; });
+  }
+
+  fetch(SRC + 'music.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (d) {
+      var parts = [];
+      if (d.ranges && d.ranges.week) parts.push(range('Past 7 days', d.ranges.week, 7));
+      if (d.ranges && d.ranges.month) parts.push(range('Past 30 days', d.ranges.month, 30));
+      parts.push(calendar(d));
+      parts = parts.filter(Boolean);
+      if (!parts.length) return;
+      box.innerHTML = parts.join('\n\n');
+      [].forEach.call(box.querySelectorAll('details[data-day]'), function (el) {
+        el.addEventListener('toggle', function () { open(el, d.timeZone); });
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+
+<p>© 2026</p>
+
+<p>
+<a href="https://www.linkedin.com/in/anikethb/">LinkedIn</a>
+<a href="https://github.com/ankthba">GitHub</a>
+<a href="https://x.com/ankthba">X</a>
+<a href="https://www.instagram.com/ankthba/">Instagram</a>
+<a href="https://ankthba.substack.com/">Substack</a>
+<a href="https://open.spotify.com/user/9boft0x75s9wyfvm6qqppyb6t">Spotify</a>
+</p>
+
+</body>
+</html>

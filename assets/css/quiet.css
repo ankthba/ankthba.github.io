@@ -3,18 +3,21 @@
    pencil.css (pages carry class="pencil quiet qu-<page>")
 
    Concept A (2026-11-16), a ground-up language: one narrow column
-   centred on the paper, Inter at one size, ink for what is named and
+   centred on the paper, one size of type, ink for what is named and
    grey for what's said about it, small grey section names, a soft
    wash under the row you point at.
 
    Bare: no drawing, no colour, no effects (the user, 2026-11-25:
-   "just have it be bareeee like extremely minimal").
+   "just have it be bareeee like extremely minimal"). Its character is
+   the type: the whole site is set in Lagunita, and the home page opens
+   with the name large (2026-11-26: "extremely minimal barebones but
+   have some soul").
 
    Light only: off-white paper whatever the system is set to (the user,
    2026-11-23: "remove dark and system only light").
 
-   The Lagunita and Design pages are shown in Lagunita (the user:
-   "makes 0 sense for the lagunita page to be anything but lagunita").
+   The Lagunita and Design pages keep the wider measure their
+   specimens were set for.
    ========================================================= */
 
 :root:root:root.quiet {
@@ -30,8 +33,8 @@
   --qu-rule-hover: #d6d6d2;
   --qu-scrim: rgba(250, 250, 249, 0.94);
   --qu-cardinal: #8c1515;
-  --qu-col: 34.5rem;          /* about 75 characters a line */
-  --qu-font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --qu-col: 38.5rem;          /* about 75 characters a line */
+  --qu-font: "Lagunita", "Iowan Old Style", Georgia, serif;
 
   --color-bg: var(--qu-bg);
   --color-bg-alt: var(--qu-hover);
@@ -51,19 +54,17 @@
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 16px 32px -16px rgba(0, 0, 0, 0.18);
   --font-display: var(--qu-font);
   --font-sans: var(--qu-font);
-  --size: 14.5px;
-  --head: 14.5px;
+  --size: 18.5px;
+  --head: 18.5px;
   --sheet: var(--qu-col);
-  --col: 7.5rem;
+  --small: 15.5px;
+  --col: 8.25rem;
   --row-pad: 0.6rem;
-  --gap: 3.75rem;
+  --gap: 3.5rem;
 }
 
-/* the type pages, in their own face */
+/* the type pages, at the size their specimens were set for */
 :root:root:root.quiet:is(.qu-lagunita, .qu-design) {
-  --font-display: "Lagunita", "Iowan Old Style", Georgia, serif;
-  --font-sans: "Lagunita", "Iowan Old Style", Georgia, serif;
-  --qu-font: "Lagunita", "Iowan Old Style", Georgia, serif;
   --size: 1.0625rem;
 }
 
@@ -79,16 +80,11 @@ html.quiet body {
   font-family: var(--qu-font);
   font-size: var(--size);
   font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: -0.006em;
-  font-variant-numeric: normal;
-  hanging-punctuation: none;
-}
-
-html.quiet:is(.qu-lagunita, .qu-design) body {
+  line-height: 1.5;
   letter-spacing: 0;
   font-feature-settings: normal;
   font-variant-numeric: oldstyle-nums proportional-nums;
+  hanging-punctuation: none;
 }
 
 /* no paragraph ends on one word */
@@ -170,7 +166,7 @@ html.quiet .masthead--home .masthead__name {
   margin: 0;
   font-family: var(--qu-font);
   font-size: var(--size);
-  line-height: 1.6;
+  line-height: 1.5;
   letter-spacing: inherit;
   color: var(--qu-ink);
 }
@@ -179,11 +175,29 @@ html.quiet .masthead--home {
   min-height: 0;
 }
 
+/* the home page opens with the name large, one word to a line */
+html.quiet .masthead--home .masthead__name {
+  width: min-content;
+  margin-left: -0.04em;
+  font-size: clamp(2.9rem, 6.4vw, 4.6rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.014em;
+}
+
+html.quiet.qu-home {
+  --gap: 3rem;
+}
+
+html.quiet .sheet--home {
+  padding-top: clamp(4rem, 12vh, 7.5rem);
+}
+
 html.quiet .masthead--home .masthead__role {
-  margin: 0;
+  margin: 0.9rem 0 0;
   font-family: var(--qu-font);
   font-size: var(--size);
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--qu-mid);
 }
 
@@ -194,17 +208,7 @@ html.quiet .masthead--home .masthead__line + .masthead__line {
   font-size: inherit;
   font-weight: 400;
   color: var(--qu-mid);
-  text-wrap: pretty;
-}
-
-/* each line under the name stays whole where there's room for it */
-@media (min-width: 48rem) {
-  html.quiet .masthead--home .masthead__line,
-  html.quiet .masthead--home .masthead__line + .masthead__line {
-    /* text-wrap is a shorthand that resets the wrap mode, so both are set */
-    text-wrap: nowrap;
-    white-space: nowrap;
-  }
+  text-wrap: balance;
 }
 
 html.quiet .masthead--home .social {
@@ -214,7 +218,7 @@ html.quiet .masthead--home .social {
 /* the pages, in two even lines where they don't fit on one */
 html.quiet .masthead__nav {
   margin-top: 0;
-  line-height: 1.6;
+  line-height: 1.5;
   text-wrap: balance;
 }
 
@@ -252,7 +256,7 @@ html.quiet .writing__heading,
   margin: var(--gap) 0 0.9rem;
   font-family: var(--qu-font);
   font-size: var(--size);
-  font-style: normal;
+  font-style: italic;
   font-weight: 400;
   color: var(--qu-soft);
 }
@@ -271,8 +275,8 @@ html.quiet .reach__row {
 
 /* essays: a step up for reading at length */
 html.quiet .essay__body {
-  font-size: 15.5px;
-  line-height: 1.65;
+  font-size: 20px;
+  line-height: 1.55;
   color: var(--qu-text);
 }
 
@@ -296,7 +300,7 @@ html.quiet .page--home .about__text {
   order: 1;
   max-width: none;
   font-size: var(--size);
-  line-height: 1.6;
+  line-height: 1.5;
   color: var(--qu-text);
 }
 
@@ -317,6 +321,7 @@ html.quiet .page--home .index[aria-label="Lately"] .index__row {
 
 html.quiet .page--home .index[aria-label="Lately"] .index__name {
   margin-right: 0.5em;
+  font-style: italic;
   font-weight: 400;
   color: var(--qu-soft);
 }
@@ -394,7 +399,7 @@ html.quiet .page--home .index--run {
   display: block;
   margin-left: 0;
   margin-right: 0;
-  line-height: 1.82;   /* the lines as far apart as Elsewhere's */
+  line-height: 1.7;
   text-wrap: balance;
 }
 

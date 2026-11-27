@@ -1336,7 +1336,8 @@
      ones after the file's last are asked for once, from its storage
      (no call to Spotify), and the log has no hole. */
   function catchUp() {
-    var after = data.recent[0].played_at;
+    /* With nothing in the file from yesterday or today, everything since. */
+    var after = newest(data) || new Date(Date.now() - 2 * 864e5).toISOString();
     fetch(LIVE.replace(/\/?$/, '/since') + '?after=' + encodeURIComponent(after), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (plays) {
@@ -1365,7 +1366,7 @@
           current = now.playing ? now.track : null;
           var plays = merged(now.recent);
           log(plays, current);
-          showNow(now, plays[0]);
+          showNow(now, plays[0] || lastKnown);
           if (cal) cal.live();
         })
         .catch(function () {});
@@ -1393,8 +1394,8 @@
     fetch(src, { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (file) {
-        if (!file || !file.recent || !file.recent.length) return;
-        if (file.recent[0].played_at === data.recent[0].played_at && file.today === data.today) return;
+        if (!usable(file)) return;
+        if (newest(file) === newest(data) && file.today === data.today) return;
         data = file;
         log(merged(file.recent), current);
         showRange(range);
@@ -1403,8 +1404,38 @@
       .catch(function () {});
   }
 
+  /* A file is worth drawing if it has any play in it. Its short list of
+     recent plays reaches back only to yesterday, so after a day or two
+     without music that list is empty while the calendar and the figures
+     are not; the page is drawn all the same. */
+  function usable(file) {
+    if (!file) return false;
+    if (!Array.isArray(file.recent)) file.recent = [];
+    return file.recent.length > 0 || Object.keys(file.calendar || {}).length > 0;
+  }
+  function newest(file) { return file.recent.length ? file.recent[0].played_at : ''; }
+
+  /* With that list empty, the last song heard is the newest in the log of
+     the last day that has one. Like the file's own last play, it is shown
+     only when the live answer hasn't come. */
+  var lastKnown = null;
+  var waited = false;
+  function lastHeard() {
+    var day = Object.keys(data.calendar || {}).sort().pop();
+    if (!day) return;
+    fetch(base + 'days/' + day + '.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (plays) {
+        if (!Array.isArray(plays) || !plays.length) return;
+        if (!dayFiles[day]) dayFiles[day] = plays;
+        lastKnown = plays.reduce(function (a, b) { return a.played_at > b.played_at ? a : b; });
+        if (waited && !answered) showNow(null, merged([])[0] || lastKnown);
+      })
+      .catch(function () {});
+  }
+
   function render(file) {
-    if (!file || !file.recent || !file.recent.length) return;
+    if (!usable(file)) return;
     data = file;
     $('[data-music-empty]').hidden = true;
     $('[data-music-body]').hidden = false;
@@ -1412,7 +1443,8 @@
     /* The live answer comes first; only if it hasn't arrived after a few
        seconds is the last play the Action saw shown instead, since that
        can be a quarter of an hour old. */
-    setTimeout(function () { if (!answered) showNow(null, merged([])[0]); }, 3000);
+    setTimeout(function () { waited = true; if (!answered) showNow(null, merged([])[0] || lastKnown); }, 3000);
+    if (!data.recent.length) lastHeard();
 
     Array.prototype.forEach.call(page.querySelectorAll('[data-range]'), function (b) {
       b.addEventListener('click', function () { showRange(b.getAttribute('data-range')); });
